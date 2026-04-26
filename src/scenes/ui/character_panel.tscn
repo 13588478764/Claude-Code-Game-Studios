@@ -1,0 +1,176 @@
+[gd_scene load_steps=3 format=3 uid="uid://character_panel_ui"]
+
+[ext_resource type="Script" path="res://scripts/ui/character_panel_script.gd" id="1"]
+
+[node name="CharacterPanel" type="Control"]
+visible = false
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="Background" type="Panel" parent="."]
+anchor_left = 0.2
+anchor_top = 0.1
+anchor_right = 0.8
+anchor_bottom = 0.9
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="TitleLabel" type="Label" parent="Background"]
+anchor_left = 0.0
+anchor_top = 0.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+text = "角色信息"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_type_variation = "HeaderLarge"
+
+[node name="LevelInfo" type="HBoxContainer" parent="Background"]
+anchor_left = 0.0
+anchor_top = 0.0
+offset_left = 20.0
+offset_top = 80.0
+offset_right = -20.0
+offset_bottom = 120.0
+
+[node name="LevelLabel" type="Label" parent="LevelInfo"]
+text = "等级: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelValue" type="Label" parent="LevelInfo"]
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RealmLabel" type="Label" parent="LevelInfo"]
+text = " 境界: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RealmValue" type="Label" parent="LevelInfo"]
+text = "炼气期"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttributesPanel" type="VBoxContainer" parent="Background"]
+anchor_left = 0.0
+anchor_top = 0.0
+offset_left = 20.0
+offset_top = 140.0
+offset_right = -20.0
+offset_bottom = 300.0
+
+[node name="StrengthRow" type="HBoxContainer" parent="AttributesPanel"]
+
+[node name="StrengthLabel" type="Label" parent="StrengthRow"]
+text = "力道: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StrengthValue" type="Label" parent="StrengthRow"]
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AgilityRow" type="HBoxContainer" parent="AttributesPanel"]
+
+[node name="AgilityLabel" type="Label" parent="AgilityRow"]
+text = "身法: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AgilityValue" type="Label" parent="AgilityRow"]
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ConstitutionRow" type="HBoxContainer" parent="AttributesPanel"]
+
+[node name="ConstitutionLabel" type="Label" parent="ConstitutionRow"]
+text = "根骨: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ConstitutionValue" type="Label" parent="ConstitutionRow"]
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IntelligenceRow" type="HBoxContainer" parent="AttributesPanel"]
+
+[node name="IntelligenceLabel" type="Label" parent="IntelligenceRow"]
+text = "悟性: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IntelligenceValue" type="Label" parent="IntelligenceRow"]
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WillpowerRow" type="HBoxContainer" parent="AttributesPanel"]
+
+[node name="WillpowerLabel" type="Label" parent="WillpowerRow"]
+text = "定力: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WillpowerValue" type="Label" parent="WillpowerRow"]
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LuckRow" type="HBoxContainer" parent="AttributesPanel"]
+
+[node name="LuckLabel" type="Label" parent="LuckRow"]
+text = "福缘: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LuckValue" type="Label" parent="LuckRow"]
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttributePointsRow" type="HBoxContainer" parent="Background"]
+anchor_left = 0.0
+anchor_top = 0.0
+offset_left = 20.0
+offset_top = 320.0
+offset_right = -20.0
+offset_bottom = 360.0
+
+[node name="AttributePointsLabel" type="Label" parent="AttributePointsRow"]
+text = "可用属性点: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AttributePointsValue" type="Label" parent="AttributePointsRow"]
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
+text = "关闭"
+
+[connection signal="pressed" from="CloseButton" to="CharacterPanel" method="_on_close_button_pressed"]
+
+[node name="CharacterPanelScript" type="Node" parent="."]
+script = ExtResource("1")

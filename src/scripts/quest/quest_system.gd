@@ -257,6 +257,27 @@ func distribute_quest_rewards(quest):
 func get_quest_data(quest_id):
 	"""获取任务数据（从数据库）"""
 	# 这里应该从任务数据库获取数据
+	# 简化实现：支持测试任务
+	
+	# 如果是测试任务，返回测试数据
+	if quest_id == "test_quest":
+		var test_quest = QuestData.new()
+		test_quest.id = "test_quest"
+		test_quest.name = "测试任务"
+		test_quest.description = "这是一个测试任务"
+		test_quest.type = QuestType.MAIN
+		test_quest.state = QuestState.AVAILABLE
+		test_quest.required_level = 5
+		test_quest.required_realm = 0
+		test_quest.targets = []
+		test_quest.rewards = {}
+		test_quest.npc_id = ""
+		test_quest.location = ""
+		test_quest.is_repeatable = false
+		test_quest.completion_count = 0
+		return test_quest
+	
+	# 这里应该从任务数据库获取数据
 	# 简化实现：返回null
 	return null
 

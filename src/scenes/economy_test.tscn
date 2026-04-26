@@ -1,74 +1,83 @@
-[gd_scene load_steps=4 format=3 uid="uid://m6t8w2ga7f4z9"]
+[gd_scene format=3 uid="uid://blmm5vojitiqy"]
 
-[ext_resource type="Script" path="res://scripts/economy/economy_system.gd" id="1_m6t8w2ga7f4z9"]
-[ext_resource type="Script" path="res://scripts/character/character_system.gd" id="2_m6t8w2ga7f4z9"]
-[ext_resource type="Script" path="res://scripts/combat/combat_system.gd" id="3_m6t8w2ga7f4z9"]
-[ext_resource type="Script" path="res://scripts/encounter/encounter_system.gd" id="4_m6t8w2ga7f4z9"]
+[ext_resource type="Script" uid="uid://dsn5aas1c8mr0" path="res://scripts/economy/economy_system.gd" id="1_m6t8w2ga7f4z9"]
+[ext_resource type="Script" uid="uid://vwdf38qt3d4x" path="res://scripts/character/character_system.gd" id="2_m6t8w2ga7f4z9"]
+[ext_resource type="Script" uid="uid://bbejsovfreo4w" path="res://scripts/combat/combat_system.gd" id="3_m6t8w2ga7f4z9"]
+[ext_resource type="Script" uid="uid://8bkuudisl8y3" path="res://scripts/encounter/encounter_system.gd" id="4_m6t8w2ga7f4z9"]
 
-[node name="EconomyTest" type="Node2D"]
+[node name="EconomyTest" type="Node2D" unique_id=1337238237]
 
-[node name="EconomySystem" type="Node" parent="."]
+[node name="EconomySystem" type="Node" parent="." unique_id=1852389163]
 script = ExtResource("1_m6t8w2ga7f4z9")
 
-[node name="CharacterSystem" type="Node" parent="."]
+[node name="CharacterSystem" type="Node" parent="." unique_id=1511180796]
 script = ExtResource("2_m6t8w2ga7f4z9")
 
-[node name="CombatSystem" type="Node" parent="."]
+[node name="CombatSystem" type="Node" parent="." unique_id=773421285]
 script = ExtResource("3_m6t8w2ga7f4z9")
 
-[node name="EncounterSystem" type="Node" parent="."]
+[node name="EncounterSystem" type="Node" parent="." unique_id=245513937]
 script = ExtResource("4_m6t8w2ga7f4z9")
 
-[node name="TestCombatDropButton" type="Button" parent="."]
+[node name="TestCombatDropButton" type="Button" parent="." unique_id=642591213]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -250.0
-offset_right = -50.0
-offset_bottom = -200.0
+offset_left = 264.0
+offset_top = 166.0
+offset_right = 464.0
+offset_bottom = 216.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "测试战斗掉落"
-focus_mode = 2
 
-[node name="TestShopPurchaseButton" type="Button" parent="."]
+[node name="TestShopPurchaseButton" type="Button" parent="." unique_id=428284209]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -200.0
-offset_right = -50.0
-offset_bottom = -150.0
+offset_left = 264.0
+offset_top = 216.0
+offset_right = 464.0
+offset_bottom = 266.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "测试商店购买"
-focus_mode = 2
 
-[node name="TestItemSellButton" type="Button" parent="."]
+[node name="TestItemSellButton" type="Button" parent="." unique_id=1844076880]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -150.0
-offset_right = -50.0
-offset_bottom = -100.0
+offset_left = 264.0
+offset_top = 266.0
+offset_right = 464.0
+offset_bottom = 316.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "测试物品出售"
-focus_mode = 2
 
-[node name="TestReinforcementCostButton" type="Button" parent="."]
+[node name="TestReinforcementCostButton" type="Button" parent="." unique_id=904913290]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -250.0
-offset_top = -100.0
-offset_right = -50.0
-offset_bottom = -50.0
+offset_left = 264.0
+offset_top = 316.0
+offset_right = 464.0
+offset_bottom = 366.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "测试强化费用"
-focus_mode = 2
 
-[node name="DebugLabel" type="Label" parent="."]
+[node name="DebugLabel" type="Label" parent="." unique_id=1416917044]
+anchors_preset = 10
 anchor_right = 1.0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = -20.0
 offset_bottom = 200.0
+text = "点击按钮测试经济系统功能"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 1
-text = "点击按钮测试经济系统功能"
 
 [connection signal="pressed" from="TestCombatDropButton" to="EconomySystem" method="_on_test_combat_drop_pressed"]
 [connection signal="pressed" from="TestShopPurchaseButton" to="EconomySystem" method="_on_test_shop_purchase_pressed"]

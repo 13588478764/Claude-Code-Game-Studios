@@ -240,7 +240,7 @@ func get_state_name(state):
 func debug_print_ui_info():
 	"""打印UI信息用于调试"""
 	print("=== UI管理器信息 ===")
-	print("当前状态: % s" % get_state_name(current_state))
+	print("当前状态: %s" % get_state_name(current_state))
 	print("品阶颜色配置:")
 	for tier in tier_colors:
 		print("  %s: %s" % [tier, str(tier_colors[tier])])

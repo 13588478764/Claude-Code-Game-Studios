@@ -54,6 +54,10 @@ func _ready():
 
 func can_trigger_encounter(trigger_context, character_luck, location_data=null):
 	"""检查是否可以触发奇遇"""
+	# 检查保底机制（优先于冷却时间）
+	if consecutive_failures >= config["consecutive_failures_limit"]:
+		return true
+	
 	# 检查冷却时间
 	if trigger_context == TriggerContext.MAP_MOVEMENT:
 		if current_move_count - last_trigger_move_count < config["cooldown_moves"]:
@@ -65,10 +69,6 @@ func can_trigger_encounter(trigger_context, character_luck, location_data=null):
 	# 应用福缘修正
 	var final_chance = base_chance * (1.0 + (character_luck / 100.0) * config["luck_influence_factor"])
 	final_chance = min(final_chance, config["max_trigger_chance"])
-	
-	# 检查保底机制
-	if consecutive_failures >= config["consecutive_failures_limit"]:
-		return true
 	
 	# 随机判定
 	return randf() < final_chance

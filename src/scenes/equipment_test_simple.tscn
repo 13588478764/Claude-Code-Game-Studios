@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://simple_equipment_test"]
+
+[ext_resource type="Script" path="res://scripts/database/database_manager.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/equipment/equipment_system.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/character/character_system.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/test/simple_equipment_test.gd" id="4"]
+
+[node name="SimpleEquipmentTest" type="Node2D"]
+script = ExtResource("4")
+
+[node name="DatabaseManager" type="Node" parent="."]
+script = ExtResource("1")
+
+[node name="EquipmentSystem" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="CharacterSystem" type="Node" parent="."]
+script = ExtResource("3")

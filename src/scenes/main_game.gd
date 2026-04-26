@@ -5,6 +5,19 @@ extends Node2D
 
 func _ready():
 	print("主游戏脚本初始化完成")
+	
+	# 手动连接按钮信号（Godot 4可靠方案）
+	var start_button = get_node("StartNewGameButton")
+	if start_button != null:
+		start_button.pressed.connect(_on_start_new_game_pressed)
+	
+	var load_button = get_node("LoadGameButton")
+	if load_button != null:
+		load_button.pressed.connect(_on_load_game_pressed)
+	
+	var test_button = get_node("TestAllSystemsButton")
+	if test_button != null:
+		test_button.pressed.connect(_on_test_all_systems_pressed)
 
 func _on_start_new_game_pressed():
 	"""开始新游戏按钮回调"""
@@ -122,7 +135,7 @@ func validate_character_system():
 		return false
 	
 	# 测试境界数量
-	var realms = character_system.realms
+	var realms = character_system.REALMS
 	if realms.size() != 10:
 		print("❌ 境界数量不是10个")
 		return false
@@ -240,7 +253,7 @@ func validate_experience_system():
 		return false
 	
 	# 检查EXP曲线
-	var exp_for_level_10 = experience_system.get_exp_for_level(10)
+	var exp_for_level_10 = experience_system.get_exp_required_for_level(10)
 	if exp_for_level_10 <= 0:
 		print("❌ EXP曲线计算错误")
 		return false
