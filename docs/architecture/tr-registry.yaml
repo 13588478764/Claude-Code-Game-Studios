@@ -192,3 +192,28 @@ requirements:
     created: "2026-04-26"
     revised: ""
     status: active
+
+  # 快速旅行系统
+  - id: TR-fast-travel-001
+    system: fast-travel
+    gdd: design/gdd/fast-travel-system.md
+    requirement: "快速旅行功能 - 实现传送点交互、旅行成本计算、时间消耗和状态管理"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-fast-travel-002
+    system: fast-travel
+    gdd: design/gdd/fast-travel-system.md
+    requirement: "已发现地点访问 - 实现传送点解锁机制、状态持久化、地图标记更新和主线任务关联解锁"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-fast-travel-003
+    system: fast-travel
+    gdd: design/gdd/fast-travel-system.md
+    requirement: "旅行成本机制 - 实现银两消耗公式、时间跳跃公式、余额验证和货币回收功能"
+    created: "2026-04-26"
+    revised: ""
+    status: active

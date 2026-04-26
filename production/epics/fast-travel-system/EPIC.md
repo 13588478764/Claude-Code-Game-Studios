@@ -4,7 +4,18 @@
 > **GDD**: design/gdd/fast-travel-system.md
 > **Architecture Module**: World Management
 > **Status**: Ready
-> **Stories**: Not yet created — run `/create-stories fast-travel-system`
+> **Stories**: 
+> - [story-001-fast-travel-functionality.md](story-001-fast-travel-functionality.md)
+> - [story-002-discovered-location-access.md](story-002-discovered-location-access.md)
+> - [story-003-travel-cost-mechanism.md](story-003-travel-cost-mechanism.md)
+
+## Stories
+
+| ID | Title | Status | Type | Layer |
+|----|-------|--------|------|-------|
+| [Story 001](story-001-fast-travel-functionality.md) | 快速旅行功能 | Ready | Logic | Core |
+| [Story 002](story-002-discovered-location-access.md) | 已发现地点访问 | Ready | Logic | Core |
+| [Story 003](story-003-travel-cost-mechanism.md) | 旅行成本机制 | Ready | Logic | Core |
 
 ## Overview
 
@@ -34,4 +45,4 @@ This epic is complete when:
 
 ## Next Step
 
-Run `/create-stories fast-travel-system` to break this epic into implementable stories.
+Run `/dev-story [story-path]` to begin implementation of individual stories.
