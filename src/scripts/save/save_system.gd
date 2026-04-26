@@ -187,8 +187,21 @@ func save_to_slot(slot_index):
 	# 创建存档数据
 	var save_data = create_save_data()
 	
+	# 将SaveData对象转换为字典以便JSON序列化
+	var save_dict = {
+		"version": save_data.version,
+		"timestamp": save_data.timestamp,
+		"character_data": save_data.character_data,
+		"equipment_data": save_data.equipment_data,
+		"inventory_data": save_data.inventory_data,
+		"quest_data": save_data.quest_data,
+		"encounter_data": save_data.encounter_data,
+		"world_state": save_data.world_state,
+		"settings": save_data.settings
+	}
+	
 	# 序列化为JSON
-	var json_string = JSON.stringify(save_data, "\t")
+	var json_string = JSON.stringify(save_dict, "\t")
 	
 	# 创建备份（如果启用）
 	if config["backup_enabled"]:
@@ -232,25 +245,39 @@ func load_from_slot(slot_index):
 	
 	is_loading = true
 	
-	# 读取存档文件
-	var file = FileAccess.open(save_path, FileAccess.READ)
-	if file == null:
-		push_error("无法读取存档文件: %s" % save_path)
+	# 读取存档文件内容
+	var file_content = FileAccess.get_file_as_string(save_path)
+	
+	# 检查file_content是否真的是字符串类型
+	if typeof(file_content) != TYPE_STRING:
+		push_error("存档文件读取失败: 读取的内容不是字符串类型，而是: %s" % typeof(file_content))
 		is_loading = false
 		return null
 	
-	var json_string = file.get_as_text()
-	file.close()
+	# 将file_content赋值给json_string
+	var json_string = file_content
+	
+	# 确保json_string不为空
+	if json_string.length() == 0:
+		push_error("存档文件读取失败: 文件内容为空")
+		is_loading = false
+		return null
 	
 	# 解析JSON
 	var json = JSON.new()
 	var parse_result = json.parse(json_string)
 	if parse_result != OK:
-		push_error("存档文件解析失败: %s" % save_path)
+		push_error("存档文件解析失败: %s, 错误: %s" % [save_path, json.error_message])
 		is_loading = false
 		return null
 	
 	var save_data = json.data
+	
+	# 检查解析后的数据是否为有效的字典
+	if typeof(save_data) != TYPE_DICTIONARY:
+		push_error("存档文件格式错误: %s, 解析结果类型: %s, 原始内容: %s" % [save_path, typeof(save_data), json_string])
+		is_loading = false
+		return null
 	
 	# 应用存档数据
 	apply_save_data(save_data)
@@ -263,26 +290,52 @@ func load_from_slot(slot_index):
 
 func apply_save_data(save_data):
 	"""应用存档数据到游戏系统"""
+	# 检查save_data是否为有效字典
+	if typeof(save_data) != TYPE_DICTIONARY or save_data == null:
+		push_error("无效的存档数据: %s, 类型: %s" % [str(save_data), typeof(save_data)])
+		return
+	
 	# 应用角色数据
-	apply_character_data(save_data.character_data)
+	if save_data.has("character_data") and typeof(save_data["character_data"]) == TYPE_DICTIONARY:
+		apply_character_data(save_data["character_data"])
+	else:
+		push_warning("存档数据中缺少或无效的character_data字段")
 	
 	# 应用装备数据
-	apply_equipment_data(save_data.equipment_data)
+	if save_data.has("equipment_data") and typeof(save_data["equipment_data"]) == TYPE_DICTIONARY:
+		apply_equipment_data(save_data["equipment_data"])
+	else:
+		push_warning("存档数据中缺少或无效的equipment_data字段")
 	
 	# 应用背包数据
-	apply_inventory_data(save_data.inventory_data)
+	if save_data.has("inventory_data") and typeof(save_data["inventory_data"]) == TYPE_DICTIONARY:
+		apply_inventory_data(save_data["inventory_data"])
+	else:
+		push_warning("存档数据中缺少或无效的inventory_data字段")
 	
 	# 应用任务数据
-	apply_quest_data(save_data.quest_data)
+	if save_data.has("quest_data") and typeof(save_data["quest_data"]) == TYPE_DICTIONARY:
+		apply_quest_data(save_data["quest_data"])
+	else:
+		push_warning("存档数据中缺少或无效的quest_data字段")
 	
 	# 应用奇遇数据
-	apply_encounter_data(save_data.encounter_data)
+	if save_data.has("encounter_data") and typeof(save_data["encounter_data"]) == TYPE_DICTIONARY:
+		apply_encounter_data(save_data["encounter_data"])
+	else:
+		push_warning("存档数据中缺少或无效的encounter_data字段")
 	
 	# 应用世界状态
-	apply_world_state(save_data.world_state)
+	if save_data.has("world_state") and typeof(save_data["world_state"]) == TYPE_DICTIONARY:
+		apply_world_state(save_data["world_state"])
+	else:
+		push_warning("存档数据中缺少或无效的world_state字段")
 	
 	# 应用设置
-	apply_settings_data(save_data.settings)
+	if save_data.has("settings") and typeof(save_data["settings"]) == TYPE_DICTIONARY:
+		apply_settings_data(save_data["settings"])
+	else:
+		push_warning("存档数据中缺少或无效的settings字段")
 
 func apply_character_data(character_data):
 	"""应用角色数据"""
@@ -399,7 +452,10 @@ func get_save_info(slot_index):
 	if file == null:
 		return {"exists": false}
 	
-	var json_string = file.get_as_text()
+	# 正确读取文件内容
+	var file_size = file.get_length()
+	var file_bytes = file.get_buffer(file_size)
+	var json_string = file_bytes.get_string_from_utf8()
 	file.close()
 	
 	var json = JSON.new()

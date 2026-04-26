@@ -92,10 +92,15 @@ func show_character_panel():
 	if ui_manager != null:
 		ui_manager.switch_to_state(ui_manager.UIState.CHARACTER_PANEL)
 	
-	# 获取角色面板实例并显示
-	var character_panel = get_node("CharacterPanelInstance/CharacterPanel")
-	if character_panel != null:
-		character_panel.visible = true
+	# 更新角色数据（通过UIManager）
+	var character_system = get_node_or_null("/root/CharacterSystem")
+	if character_system != null:
+		var character_data = {
+			"level": character_system.level,
+			"realm": character_system.get_current_realm()["name"],
+			"attributes": character_system.attributes.get_total(),
+			"attribute_points": character_system.total_attribute_points - character_system.allocated_attribute_points
+		}
 		
-		# 更新角色数据
-		var character_system = get_node_or_null("/
+		# UIManager会自动调用角色面板的update_display函数
+		ui_manager.update_character_panel()

@@ -83,6 +83,10 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="StrengthAddButton" type="Button" parent="StrengthRow"]
+text = "+"
+size_flags_horizontal = 2
+
 [node name="AgilityRow" type="HBoxContainer" parent="AttributesPanel"]
 
 [node name="AgilityLabel" type="Label" parent="AgilityRow"]
@@ -94,6 +98,10 @@ vertical_alignment = 1
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AgilityAddButton" type="Button" parent="AgilityRow"]
+text = "+"
+size_flags_horizontal = 2
 
 [node name="ConstitutionRow" type="HBoxContainer" parent="AttributesPanel"]
 
@@ -107,6 +115,10 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ConstitutionAddButton" type="Button" parent="ConstitutionRow"]
+text = "+"
+size_flags_horizontal = 2
+
 [node name="IntelligenceRow" type="HBoxContainer" parent="AttributesPanel"]
 
 [node name="IntelligenceLabel" type="Label" parent="IntelligenceRow"]
@@ -118,6 +130,10 @@ vertical_alignment = 1
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="IntelligenceAddButton" type="Button" parent="IntelligenceRow"]
+text = "+"
+size_flags_horizontal = 2
 
 [node name="WillpowerRow" type="HBoxContainer" parent="AttributesPanel"]
 
@@ -131,6 +147,10 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="WillpowerAddButton" type="Button" parent="WillpowerRow"]
+text = "+"
+size_flags_horizontal = 2
+
 [node name="LuckRow" type="HBoxContainer" parent="AttributesPanel"]
 
 [node name="LuckLabel" type="Label" parent="LuckRow"]
@@ -142,6 +162,10 @@ vertical_alignment = 1
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="LuckAddButton" type="Button" parent="LuckRow"]
+text = "+"
+size_flags_horizontal = 2
 
 [node name="AttributePointsRow" type="HBoxContainer" parent="Background"]
 anchor_left = 0.0
@@ -161,13 +185,31 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="ResetButton" type="Button" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -240.0
+offset_top = -60.0
+offset_right = -140.0
+offset_bottom = -20.0
+text = "重置"
+
+[node name="ApplyButton" type="Button" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -130.0
+offset_top = -60.0
+offset_right = -30.0
+offset_bottom = -20.0
+text = "应用"
+
 [node name="CloseButton" type="Button" parent="Background"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -120.0
-offset_top = -60.0
+offset_top = -100.0
 offset_right = -20.0
-offset_bottom = -20.0
+offset_bottom = -60.0
 text = "关闭"
 
 [connection signal="pressed" from="CloseButton" to="CharacterPanel" method="_on_close_button_pressed"]

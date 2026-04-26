@@ -326,6 +326,9 @@ func validate_save_system():
 		print("❌ 存档系统保存失败")
 		return false
 	
+	# 等待文件系统刷新，确保文件写入完成
+	DirAccess.open("user://").list_dir_begin()
+	
 	# 测试加载
 	var loaded_data = save_system.load_from_slot(0)
 	if loaded_data == null:
@@ -418,6 +421,9 @@ func validate_economy_system():
 	if economy_system == null:
 		print("❌ 经济系统未找到")
 		return false
+	
+	# 重置银两数量以进行准确测试
+	economy_system.silver = 0
 	
 	# 测试银两添加
 	economy_system.add_silver(1000)

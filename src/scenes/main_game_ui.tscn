@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://dsn5aas1c8mr0" path="res://scripts/economy/economy_system.gd" id="13"]
 [ext_resource type="Script" uid="uid://coe1bbfybqorf" path="res://scenes/main_game_ui_script.gd" id="14"]
 [ext_resource type="Script" uid="uid://13vex0dp7qjh" path="res://scripts/test_mvp_validation.gd" id="15_5rmyx"]
+[ext_resource type="PackedScene" path="res://scenes/ui/character_panel.tscn" id="16"]
 
 [node name="MainGameUI" type="Node2D" unique_id=1671278993]
 script = ExtResource("14")
@@ -138,6 +139,7 @@ text = "测试所有系统"
 focus_mode = 2
 
 [node name="CharacterPanelInstance" type="Node2D" parent="." unique_id=78969482]
+instance = ExtResource("16")
 
 [connection signal="pressed" from="StartNewGameButton" to="MainGameUI" method="_on_start_new_game_pressed"]
 [connection signal="pressed" from="LoadGameButton" to="MainGameUI" method="_on_load_game_pressed"]

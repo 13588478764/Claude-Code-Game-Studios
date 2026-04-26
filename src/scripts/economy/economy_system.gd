@@ -83,7 +83,7 @@ func load_economy_data():
 func add_silver(amount):
 	"""添加银两"""
 	if amount <= 0:
-		return
+		return false
 	
 	silver += amount
 	if silver > config["silver_cap"]:
@@ -91,6 +91,7 @@ func add_silver(amount):
 		push_warning("银两达到上限: %d" % config["silver_cap"])
 	
 	print("获得银两: %d (当前: %d)" % [amount, silver])
+	return true
 
 func remove_silver(amount):
 	"""移除银两"""

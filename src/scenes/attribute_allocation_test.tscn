@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://attribute_allocation_test"]
+
+[ext_resource type="Script" uid="uid://attribute_allocation_test_script" path="res://scenes/attribute_allocation_test_script.gd" id="1"]
+
+[node name="AttributeAllocationTest" type="Node2D"]
+script = ExtResource("1")
+
+[node name="TestDataLabel" type="Label" parent="." unique_id=1001]
+text = "属性点分配测试数据"
+position = Vector2(20, 20)
+
+[node name="InitialAttributesLabel" type="Label" parent="." unique_id=1002]
+text = "初始属性: 力道=10, 身法=10, 根骨=10, 悟性=10, 定力=10, 福缘=10"
+position = Vector2(20, 50)
+
+[node name="AvailablePointsLabel" type="Label" parent="." unique_id=1003]
+text = "可用属性点: 5"
+position = Vector2(20, 80)
+
+[node name="TestAllocationButton" type="Button" parent="." unique_id=1004]
+text = "测试分配属性点"
+position = Vector2(20, 120)
+size = Vector2(200, 40)
+
+[node name="TestResetButton" type="Button" parent="." unique_id=1005]
+text = "测试重置属性"
+position = Vector2(20, 170)
+size = Vector2(200, 40)
+
+[node name="ResultLabel" type="Label" parent="." unique_id=1006]
+text = "结果将显示在这里..."
+position = Vector2(20, 220)
+size = Vector2(400, 100)
+
+[node name="VerificationLabel" type="Label" parent="." unique_id=1007]
+text = "验证状态: 待验证"
+position = Vector2(20, 330)
