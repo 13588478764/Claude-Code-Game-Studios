@@ -1,0 +1,424 @@
+[gd_scene load_steps=4 format=3 uid="uid://-jz0q00000000"]
+
+[ext_resource type="Script" uid="uid://-jz0q00000001" path="res://src/scripts/ui/character_growth_ui_script.gd"]
+[ext_resource type="Texture2D" uid="uid://-jz0q00000002" path="res://src/assets/icons/character_icon.png"]
+[ext_resource type="Theme" uid="uid://-jz0q00000003" path="res://src/assets/ui/ink_wash_theme.tres"]
+
+[node]
+name = "CharacterGrowthUI"
+type = "Control"
+script = ExtResource("uid://-jz0q00000001")
+
+[node/TabContainer]
+type = "TabContainer"
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node/TabContainer/CharacterPanel]
+type = "Panel"
+tooltip_text = "角色面板"
+
+[node/TabContainer/CharacterPanel/Background]
+type = "TextureRect"
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("uid://-jz0q00000002")
+
+[node/TabContainer/CharacterPanel/Background/LevelInfo]
+type = "HBoxContainer"
+anchor_right = 1.0
+size_flags_vertical = 0
+alignment = 2
+
+[node/TabContainer/CharacterPanel/Background/LevelInfo/LevelLabel]
+type = "Label"
+text = "等级:"
+
+[node/TabContainer/CharacterPanel/Background/LevelInfo/LevelValue]
+type = "Label"
+text = "1"
+
+[node/TabContainer/CharacterPanel/Background/LevelInfo/RealmLabel]
+type = "Label"
+text = "境界:"
+
+[node/TabContainer/CharacterPanel/Background/LevelInfo/RealmValue]
+type = "Label"
+text = "炼气"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel]
+type = "VBoxContainer"
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow/StrengthLabel]
+type = "Label"
+text = "力道:"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow/StrengthValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow/StrengthAddButton]
+type = "Button"
+text = "+"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow/AgilityLabel]
+type = "Label"
+text = "身法:"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow/AgilityValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow/AgilityAddButton]
+type = "Button"
+text = "+"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow/ConstitutionLabel]
+type = "Label"
+text = "根骨:"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow/ConstitutionValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow/ConstitutionAddButton]
+type = "Button"
+text = "+"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow/IntelligenceLabel]
+type = "Label"
+text = "悟性:"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow/IntelligenceValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow/IntelligenceAddButton]
+type = "Button"
+text = "+"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow/WillpowerLabel]
+type = "Label"
+text = "定力:"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow/WillpowerValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow/WillpowerAddButton]
+type = "Button"
+text = "+"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow/LuckLabel]
+type = "Label"
+text = "福缘:"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow/LuckValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow/LuckAddButton]
+type = "Button"
+text = "+"
+
+[node/TabContainer/CharacterPanel/Background/AttributePointsRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/CharacterPanel/Background/AttributePointsRow/AttributePointsLabel]
+type = "Label"
+text = "可用属性点:"
+
+[node/TabContainer/CharacterPanel/Background/AttributePointsRow/AttributePointsValue]
+type = "Label"
+text = "0"
+
+[node/TabContainer/CharacterPanel/Background/AttributePointsRow/ResetButton]
+type = "Button"
+text = "重置"
+
+[node/TabContainer/CharacterPanel/Background/AttributePointsRow/ApplyButton]
+type = "Button"
+text = "应用"
+
+[node/TabContainer/CharacterPanel/Background/CloseButton]
+type = "Button"
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "关闭"
+
+[node/TabContainer/AttributeAllocationPanel]
+type = "Panel"
+tooltip_text = "属性分配"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders]
+type = "VBoxContainer"
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow/StrengthSliderLabel]
+type = "Label"
+text = "力道:"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow/StrengthSlider]
+type = "HSlider"
+max_value = 100
+step = 1
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow/StrengthSliderValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow/AgilitySliderLabel]
+type = "Label"
+text = "身法:"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow/AgilitySlider]
+type = "HSlider"
+max_value = 100
+step = 1
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow/AgilitySliderValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow/ConstitutionSliderLabel]
+type = "Label"
+text = "根骨:"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow/ConstitutionSlider]
+type = "HSlider"
+max_value = 100
+step = 1
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow/ConstitutionSliderValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow/IntelligenceSliderLabel]
+type = "Label"
+text = "悟性:"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow/IntelligenceSlider]
+type = "HSlider"
+max_value = 100
+step = 1
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow/IntelligenceSliderValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow/WillpowerSliderLabel]
+type = "Label"
+text = "定力:"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow/WillpowerSlider]
+type = "HSlider"
+max_value = 100
+step = 1
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow/WillpowerSliderValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow/LuckSliderLabel]
+type = "Label"
+text = "福缘:"
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow/LuckSlider]
+type = "HSlider"
+max_value = 100
+step = 1
+
+[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow/LuckSliderValue]
+type = "Label"
+text = "10"
+
+[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo]
+type = "HBoxContainer"
+size_flags_vertical = 0
+
+[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/AvailablePointsLabel]
+type = "Label"
+text = "可用属性点:"
+
+[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/AvailablePointsValue]
+type = "Label"
+text = "0"
+
+[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/ResetAllocationButton]
+type = "Button"
+text = "重置分配"
+
+[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/ApplyAllocationButton]
+type = "Button"
+text = "应用分配"
+
+[node/TabContainer/TalentGridPanel]
+type = "Panel"
+tooltip_text = "天赋网格"
+
+[node/TabContainer/TalentGridPanel/TalentGridTitle]
+type = "Label"
+anchor_right = 1.0
+size_flags_vertical = 0
+text = "天赋网格 (4x4)"
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer]
+type = "GridContainer"
+anchor_right = 1.0
+anchor_bottom = 1.0
+columns = 4
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode00]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode01]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode02]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode03]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode10]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode11]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode12]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode13]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode20]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode21]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode22]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode23]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode30]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode31]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode32]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode33]
+type = "TextureButton"
+size = Vector2(64, 64)
+stretched = true
+
+[node/TabContainer/TalentGridPanel/TalentGridDescription]
+type = "Label"
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 1
+text = "将鼠标悬停在天赋节点上查看描述"
+
+[node/TabContainer/TalentGridPanel/ResetTalentsButton]
+type = "Button"
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "重置天赋"
+
+[node/TabContainer/TalentGridPanel/CloseTalentGridButton]
+type = "Button"
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "关闭"
+
+[theme]
+theme = ExtResource("uid://-jz0q00000003")

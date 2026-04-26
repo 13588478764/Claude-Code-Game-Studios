@@ -25,32 +25,170 @@
 # STATUS VALUES: active | deprecated | superseded-by: TR-[system]-NNN
 
 version: 1
-last_updated: ""
+last_updated: "2026-04-26"
 
-requirements: []
+requirements:
+  # 角色成长系统
+  - id: TR-char-progression-001
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "基础等级系统 - 99级等级上限，每升一级获得5点属性点和1点天赋点"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+  
+  - id: TR-char-progression-002
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "境界突破系统 - 10个大境界（炼气→筑基→金丹→元婴→化神→返虚→合道→大乘→渡劫→真仙），每个境界提供全属性+10%加成"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+  
+  - id: TR-char-progression-003
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "六维属性系统 - 力道、身法、根骨、悟性、定力、福缘，每个属性影响不同的战斗面板数据"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+  
+  - id: TR-char-progression-004
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "天赋网格系统 - 4x4天赋网格，无前置依赖，可免费重置"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+  
+  - id: TR-char-progression-005
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "奇遇触发概率计算 - 基础概率 × (1 + 福缘/100)，上限10%"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+  
+  - id: TR-char-progression-006
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "角色数据持久化 - 等级、境界、属性点、天赋点等数据的保存和加载"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+  
+  - id: TR-char-progression-007
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "属性点分配验证 - 防止超出可用点数，支持重置功能"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+  
+  - id: TR-char-progression-008
+    system: character-progression
+    gdd: design/gdd/character-progression-system.md
+    requirement: "奇遇奖励发放 - 支持多种奖励类型（属性点、天赋点、EXP、物品）"
+    created: "2026-04-26"
+    revised: ""
+    status: active
 
-# --- EXAMPLE ENTRIES (remove when first real entries are added) ---
-#
-# - id: TR-combat-001
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Player takes damage from enemies based on attack power minus defence"
-#   created: 2026-03-10
-#   revised: ""
-#   status: active
-#
-# - id: TR-combat-002
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Combo window timing is 0.4 seconds between hits"
-#   created: 2026-03-10
-#   revised: "2026-04-01"
-#   status: active
-#
-# - id: TR-combat-003
-#   system: combat
-#   gdd: design/gdd/combat-system.md
-#   requirement: "Old damage formula using raw stats"
-#   created: 2026-03-10
-#   revised: ""
-#   status: superseded-by: TR-combat-001
+  # 战斗系统
+  - id: TR-combat-001
+    system: combat
+    gdd: design/gdd/combat-system.md
+    requirement: "回合制战斗机制 - 采用策略指令回合制模式，根据身法属性生成行动队列，玩家在暂停时间中选择指令"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-combat-002
+    system: combat
+    gdd: design/gdd/combat-system.md
+    requirement: "弱点打击系统 - 通过属性克制（金/木/水/火/土）实现弱点打击，击倒敌人后可发动总攻击"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-combat-003
+    system: combat
+    gdd: design/gdd/combat-system.md
+    requirement: "连携系统 - 支持主角+1名队友的多角色控制，通过连携攻击、合体武学和援护防御实现丰富的战术组合"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  # 经济系统
+  - id: TR-economy-001
+    system: economy
+    gdd: design/gdd/economy-system.md
+    requirement: "货币管理系统 - 实现银两和核心资源的获取、消耗、验证和存储功能"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-economy-002
+    system: economy
+    gdd: design/gdd/economy-system.md
+    requirement: "交易系统 - 实现商店购买、物品出售、拆解回收和交易验证功能"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-economy-003
+    system: economy
+    gdd: design/gdd/economy-system.md
+    requirement: "价格平衡机制 - 实现强化费用、掉落修正、出售价格和黑市价格的计算公式"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  # 奇遇系统
+  - id: TR-encounter-001
+    system: encounter
+    gdd: design/gdd/encounter-system.md
+    requirement: "奇遇事件触发 - 实现基于福缘属性的概率触发机制，包含多种触发时机和保底机制"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-encounter-002
+    system: encounter
+    gdd: design/gdd/encounter-system.md
+    requirement: "奇遇奖励系统 - 实现五种核心奇遇类型的奖励发放，包含福缘影响和冲突处理"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-encounter-003
+    system: encounter
+    gdd: design/gdd/encounter-system.md
+    requirement: "奇遇记录管理 - 实现奇遇完成状态记录、连续失败计数器和历史记录管理"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  # 装备系统
+  - id: TR-equipment-001
+    system: equipment
+    gdd: design/gdd/equipment-system.md
+    requirement: "装备穿戴系统 - 实现6+3槽位结构的装备穿戴、兼容性验证和外观渲染"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-equipment-002
+    system: equipment
+    gdd: design/gdd/equipment-system.md
+    requirement: "装备属性计算 - 实现基础属性、强化加成、宝石效果和流派加成的计算公式"
+    created: "2026-04-26"
+    revised: ""
+    status: active
+
+  - id: TR-equipment-003
+    system: equipment
+    gdd: design/gdd/equipment-system.md
+    requirement: "装备管理功能 - 实现装备获取、存储、筛选、排序、拆解和绑定机制"
+    created: "2026-04-26"
+    revised: ""
+    status: active
