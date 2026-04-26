@@ -178,7 +178,7 @@ func distribute_exp_to_party(exp_amount, party_members, active_members):
 	# 分配EXP
 	for member in party_members:
 		var is_active = active_members.has(member)
-		var shares = is_active ? 1.0 : config["reserve_member_bonus"]
+		var shares = 1.0 if is_active else config["reserve_member_bonus"]
 		var member_exp = int(exp_per_share * shares)
 		
 		exp_distribution.append({"character": member, "exp": member_exp})
@@ -297,4 +297,4 @@ func _on_test_realm_breakthrough_pressed():
 		
 		print("等级%d: 当前境界=%s, 可突破=%s" % [
 			level, current_realm["name"], "是" if breakthrough_info["can_breakthrough"] else "否"
-		])</content>
+		])

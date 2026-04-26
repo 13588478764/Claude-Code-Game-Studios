@@ -94,7 +94,11 @@ func trigger_encounter(character_luck, character_level, character_realm, trigger
 	
 	# 随机选择一个奇遇
 	var selected_encounter_id = available_encounters[randi() % available_encounters.size()]
-	var encounter_data = DatabaseManager.get_encounter(selected_encounter_id)
+	var database_manager = get_node_or_null("/root/DatabaseManager")
+	if database_manager == null:
+		push_warning("无法访问DatabaseManager")
+		return null
+	var encounter_data = database_manager.get_encounter(selected_encounter_id)
 	
 	if encounter_data == null:
 		push_warning("奇遇数据不存在: %s" % selected_encounter_id)
@@ -153,10 +157,14 @@ func get_available_encounters(encounter_type, character_level, character_realm):
 			type_name = "secret_realm_discovery"
 	
 	# 获取所有奇遇ID
-	var all_encounter_ids = DatabaseManager.get_all_encounter_ids()
+	var database_manager = get_node_or_null("/root/DatabaseManager")
+	if database_manager == null:
+		push_warning("无法访问DatabaseManager")
+		return []
+	var all_encounter_ids = database_manager.get_all_encounter_ids()
 	
 	for encounter_id in all_encounter_ids:
-		var encounter_data = DatabaseManager.get_encounter(encounter_id)
+		var encounter_data = database_manager.get_encounter(encounter_id)
 		if encounter_data == null:
 			continue
 		
@@ -171,10 +179,6 @@ func get_available_encounters(encounter_type, character_level, character_realm):
 		# 检查等级和境界要求
 		if encounter_data.has("trigger_conditions"):
 			var conditions = encounter_data["trigger_conditions"]
-			
-			# 检查最低福缘
-			if conditions.has("min_luck") and character_luck < conditions["min_luck"]:
-				continue
 			
 			# 检查最低等级
 			if conditions.has("min_level") and character_level < conditions["min_level"]:
@@ -374,8 +378,12 @@ func _on_test_reward_execution_pressed():
 	var test_encounters = ["jianghu_rumor", "heavenly_treasure", "wise_master_guidance"]
 	
 	print("=== 奇遇奖励执行测试 ===")
+	var database_manager = get_node_or_null("/root/DatabaseManager")
+	if database_manager == null:
+		push_warning("无法访问DatabaseManager")
+		return
 	for encounter_id in test_encounters:
-		var encounter_data = DatabaseManager.get_encounter(encounter_id)
+		var encounter_data = database_manager.get_encounter(encounter_id)
 		if encounter_data != null:
 			var character_data = {
 				"attribute_points": 0,
@@ -420,4 +428,4 @@ func _on_test_guaranteed_trigger_pressed():
 	else:
 		print("保底触发失败")
 	
-	print("========================")</content>
+	print("========================")

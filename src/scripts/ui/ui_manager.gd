@@ -110,31 +110,43 @@ func show_new_state(new_state):
 func update_character_panel():
 	"""更新角色面板数据"""
 	# 获取角色数据
-	var character_data = CharacterSystem.get_final_attributes()
-	var combat_stats = CharacterSystem.get_combat_stats()
+	var character_system = get_node_or_null("/root/CharacterSystem")
+	if character_system == null:
+		push_warning("无法访问CharacterSystem")
+		return
+	var character_data = character_system.get_final_attributes()
+	var combat_stats = character_system.get_combat_stats()
 	
 	# 更新UI显示
 	if character_panel != null:
 		character_panel.update_display({
-			"level": CharacterSystem.level,
-			"realm": CharacterSystem.get_current_realm()["name"],
+			"level": character_system.level,
+			"realm": character_system.get_current_realm()["name"],
 			"attributes": character_data,
 			"combat_stats": combat_stats,
-			"attribute_points": CharacterSystem.total_attribute_points - CharacterSystem.allocated_attribute_points
+			"attribute_points": character_system.total_attribute_points - character_system.allocated_attribute_points
 		})
 
 func update_equipment_panel():
 	"""更新装备界面数据"""
 	# 获取装备数据
-	var equipped_items = EquipmentSystem.equipped_items
-	var equipment_attributes = EquipmentSystem.get_equipment_attributes()
+	var equipment_system = get_node_or_null("/root/EquipmentSystem")
+	if equipment_system == null:
+		push_warning("无法访问EquipmentSystem")
+		return
+	var character_system = get_node_or_null("/root/CharacterSystem")
+	if character_system == null:
+		push_warning("无法访问CharacterSystem")
+		return
+	var equipped_items = equipment_system.equipped_items
+	var equipment_attributes = equipment_system.get_equipment_attributes()
 	
 	# 更新UI显示
 	if equipment_panel != null:
 		equipment_panel.update_display({
 			"equipped_items": equipped_items,
 			"equipment_attributes": equipment_attributes,
-			"slot_unlock_status": get_slot_unlock_status(CharacterSystem.realm_index)
+			"slot_unlock_status": get_slot_unlock_status(character_system.realm_index)
 		})
 
 func update_backpack_panel():
@@ -151,9 +163,13 @@ func update_backpack_panel():
 func update_combat_interface():
 	"""更新战斗界面数据"""
 	# 获取战斗数据
-	var player_characters = CombatSystem.player_characters
-	var enemy_characters = CombatSystem.enemy_characters
-	var turn_order = CombatSystem.turn_order
+	var combat_system = get_node_or_null("/root/CombatSystem")
+	if combat_system == null:
+		push_warning("无法访问CombatSystem")
+		return
+	var player_characters = combat_system.player_characters
+	var enemy_characters = combat_system.enemy_characters
+	var turn_order = combat_system.turn_order
 	
 	# 更新UI显示
 	if combat_interface != null:
@@ -161,15 +177,19 @@ func update_combat_interface():
 			"players": player_characters,
 			"enemies": enemy_characters,
 			"turn_order": turn_order,
-			"combo_count": CombatSystem.combo_count,
-			"link_gauge": CombatSystem.link_gauge
+			"combo_count": combat_system.combo_count,
+			"link_gauge": combat_system.link_gauge
 		})
 
 func get_slot_unlock_status(character_realm):
 	"""获取槽位解锁状态"""
+	var equipment_system = get_node_or_null("/root/EquipmentSystem")
+	if equipment_system == null:
+		push_warning("无法访问EquipmentSystem")
+		return {}
 	var slot_status = {}
-	for slot in EquipmentSystem.slot_unlock_realm:
-		slot_status[slot] = character_realm >= EquipmentSystem.slot_unlock_realm[slot]
+	for slot in equipment_system.slot_unlock_realm:
+		slot_status[slot] = character_realm >= equipment_system.slot_unlock_realm[slot]
 	return slot_status
 
 func get_backpack_items():
@@ -235,14 +255,14 @@ func _on_test_character_panel_pressed():
 	print("=== 角色面板测试 ===")
 	
 	# 初始化角色数据进行测试
-	CharacterSystem.initialize_character()
-	CharacterSystem.add_experience(1000)  # 升级到10级左右
+	var character_system = get_node_or_null("/root/CharacterSystem")
+	if character_system != null:
+		character_system.initialize_character()
+		character_system.add_experience(1000)  # 升级到10级左右
+		character_system.debug_print_character_info()
 	
 	# 更新角色面板
 	update_character_panel()
-	
-	# 打印角色信息
-	CharacterSystem.debug_print_character_info()
 	
 	print("====================")
 
@@ -251,18 +271,21 @@ func _on_test_equipment_panel_pressed():
 	print("=== 装备界面测试 ===")
 	
 	# 装备一些测试物品
-	CharacterSystem.level = 10
-	CharacterSystem.realm_index = 1
+	var character_system = get_node_or_null("/root/CharacterSystem")
+	var equipment_system = get_node_or_null("/root/EquipmentSystem")
 	
-	EquipmentSystem.equip_item("common_sword", 10, 1)
-	EquipmentSystem.equip_item("rare_helmet", 10, 1)
-	EquipmentSystem.equip_item("epic_ring", 10, 1)
+	if character_system != null:
+		character_system.level = 10
+		character_system.realm_index = 1
+	
+	if equipment_system != null:
+		equipment_system.equip_item("common_sword", 10, 1)
+		equipment_system.equip_item("rare_helmet", 10, 1)
+		equipment_system.equip_item("epic_ring", 10, 1)
+		equipment_system.debug_print_equipment_info()
 	
 	# 更新装备界面
 	update_equipment_panel()
-	
-	# 打印装备信息
-	EquipmentSystem.debug_print_equipment_info()
 	
 	print("====================")
 
@@ -329,13 +352,13 @@ func _on_test_combat_interface_pressed():
 	}
 	
 	# 开始战斗
-	CombatSystem.start_battle([player_data], [enemy_data])
+	var combat_system = get_node_or_null("/root/CombatSystem")
+	if combat_system != null:
+		combat_system.start_battle([player_data], [enemy_data])
+		combat_system.debug_print_battle_info()
 	
 	# 更新战斗界面
 	update_combat_interface()
-	
-	# 打印战斗信息
-	CombatSystem.debug_print_battle_info()
 	
 	print("====================")
 
@@ -351,4 +374,4 @@ func _on_test_ui_colors_pressed():
 	for state in state_colors:
 		print("状态 %s 颜色: %s" % [state, str(state_colors[state])])
 	
-	print("====================")</content>
+	print("====================")

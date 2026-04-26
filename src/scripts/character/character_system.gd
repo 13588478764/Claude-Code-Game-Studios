@@ -284,4 +284,4 @@ func _on_test_button_pressed():
 		breakthrough_realm()
 	
 	# 打印调试信息
-	debug_print_character_info()</content>
+	debug_print_character_info()

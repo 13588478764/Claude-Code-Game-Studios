@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://j3q5t9dx4c1w6"]
+
+[ext_resource type="Script" path="res://scripts/audio/audio_system.gd" id="1_j3q5t9dx4c1w6"]
+[ext_resource type="Script" path="res://scripts/combat/combat_system.gd" id="2_j3q5t9dx4c1w6"]
+[ext_resource type="Script" path="res://scripts/encounter/encounter_system.gd" id="3_j3q5t9dx4c1w6"]
+[ext_resource type="Script" path="res://scripts/ui/ui_manager.gd" id="4_j3q5t9dx4c1w6"]
+
+[node name="AudioTest" type="Node2D"]
+
+[node name="AudioSystem" type="Node" parent="."]
+script = ExtResource("1_j3q5t9dx4c1w6")
+
+[node name="CombatSystem" type="Node" parent="."]
+script = ExtResource("2_j3q5t9dx4c1w6")
+
+[node name="EncounterSystem" type="Node" parent="."]
+script = ExtResource("3_j3q5t9dx4c1w6")
+
+[node name="UIManager" type="Node" parent="."]
+script = ExtResource("4_j3q5t9dx4c1w6")
+
+[node name="TestBGMButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -250.0
+offset_right = -50.0
+offset_bottom = -200.0
+text = "测试背景音乐"
+focus_mode = 2
+
+[node name="TestCombatSFXButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -200.0
+offset_right = -50.0
+offset_bottom = -150.0
+text = "测试战斗音效"
+focus_mode = 2
+
+[node name="TestEncounterSFXButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -150.0
+offset_right = -50.0
+offset_bottom = -100.0
+text = "测试奇遇音效"
+focus_mode = 2
+
+[node name="TestUISFXButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+text = "测试UI音效"
+focus_mode = 2
+
+[node name="DebugLabel" type="Label" parent="."]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 200.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+text = "点击按钮测试音效系统功能"
+
+[connection signal="pressed" from="TestBGMButton" to="AudioSystem" method="_on_test_bgm_pressed"]
+[connection signal="pressed" from="TestCombatSFXButton" to="AudioSystem" method="_on_test_combat_sfx_pressed"]
+[connection signal="pressed" from="TestEncounterSFXButton" to="AudioSystem" method="_on_test_encounter_sfx_pressed"]
+[connection signal="pressed" from="TestUISFXButton" to="AudioSystem" method="_on_test_ui_sfx_pressed"]

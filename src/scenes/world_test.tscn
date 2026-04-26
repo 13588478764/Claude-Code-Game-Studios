@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://l5s7v1fz6e3y8"]
+
+[ext_resource type="Script" path="res://scripts/world/world_system.gd" id="1_l5s7v1fz6e3y8"]
+[ext_resource type="Script" path="res://scripts/character/character_system.gd" id="2_l5s7v1fz6e3y8"]
+[ext_resource type="Script" path="res://scripts/quest/quest_system.gd" id="3_l5s7v1fz6e3y8"]
+[ext_resource type="Script" path="res://scripts/encounter/encounter_system.gd" id="4_l5s7v1fz6e3y8"]
+
+[node name="WorldTest" type="Node2D"]
+
+[node name="WorldSystem" type="Node" parent="."]
+script = ExtResource("1_l5s7v1fz6e3y8")
+
+[node name="CharacterSystem" type="Node" parent="."]
+script = ExtResource("2_l5s7v1fz6e3y8")
+
+[node name="QuestSystem" type="Node" parent="."]
+script = ExtResource("3_l5s7v1fz6e3y8")
+
+[node name="EncounterSystem" type="Node" parent="."]
+script = ExtResource("4_l5s7v1fz6e3y8")
+
+[node name="TestRegionEnterButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -250.0
+offset_right = -50.0
+offset_bottom = -200.0
+text = "测试区域进入"
+focus_mode = 2
+
+[node name="TestPOICollectButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -200.0
+offset_right = -50.0
+offset_bottom = -150.0
+text = "测试兴趣点收集"
+focus_mode = 2
+
+[node name="TestFastTravelButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -150.0
+offset_right = -50.0
+offset_bottom = -100.0
+text = "测试快速旅行"
+focus_mode = 2
+
+[node name="TestRealmRestrictionButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+text = "测试境界限制"
+focus_mode = 2
+
+[node name="DebugLabel" type="Label" parent="."]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 200.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+text = "点击按钮测试世界系统功能"
+
+[connection signal="pressed" from="TestRegionEnterButton" to="WorldSystem" method="_on_test_region_enter_pressed"]
+[connection signal="pressed" from="TestPOICollectButton" to="WorldSystem" method="_on_test_poi_collect_pressed"]
+[connection signal="pressed" from="TestFastTravelButton" to="WorldSystem" method="_on_test_fast_travel_pressed"]
+[connection signal="pressed" from="TestRealmRestrictionButton" to="WorldSystem" method="_on_test_realm_restriction_pressed"]

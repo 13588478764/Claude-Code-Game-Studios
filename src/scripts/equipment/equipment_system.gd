@@ -99,7 +99,11 @@ func _ready():
 
 func can_equip_item(item_id, character_level, character_realm):
 	"""检查是否可以装备指定物品"""
-	var item_data = DatabaseManager.get_item(item_id)
+	var database_manager = get_node_or_null("/root/DatabaseManager")
+	if database_manager == null:
+		push_warning("无法访问DatabaseManager")
+		return false
+	var item_data = database_manager.get_item(item_id)
 	if item_data == null:
 		return false
 	
@@ -160,7 +164,11 @@ func equip_item(item_id, character_level, character_realm):
 		push_warning("无法装备物品: %s" % item_id)
 		return false
 	
-	var item_data = DatabaseManager.get_item(item_id)
+	var database_manager = get_node_or_null("/root/DatabaseManager")
+	if database_manager == null:
+		push_warning("无法访问DatabaseManager")
+		return false
+	var item_data = database_manager.get_item(item_id)
 	var slot = get_slot_type_from_item(item_data)
 	
 	# 卸下当前装备（如果有）
@@ -404,13 +412,17 @@ func apply_appearance_override(slot, appearance_item_id):
 		return false
 	
 	# 检查幻化物品是否已收集
-	var appearance_data = DatabaseManager.get_item(appearance_item_id)
+	var database_manager = get_node_or_null("/root/DatabaseManager")
+	if database_manager == null:
+		push_warning("无法访问DatabaseManager")
+		return false
+	var appearance_data = database_manager.get_item(appearance_item_id)
 	if appearance_data == null:
 		push_warning("幻化物品不存在: %s" % appearance_item_id)
 		return false
 	
 	# 检查装备类型是否匹配
-	var current_item = DatabaseManager.get_item(equipped_items[slot])
+	var current_item = database_manager.get_item(equipped_items[slot])
 	if not can_transmog(current_item, appearance_data):
 		push_warning("装备类型不匹配，无法幻化")
 		return false
@@ -476,9 +488,11 @@ func get_equipment_attributes():
 	# 累加所有装备的属性
 	for slot in equipped_items:
 		if equipped_items[slot] != null:
-			var item_data = DatabaseManager.get_item(equipped_items[slot])
-			if item_data != null and item_data.has("attributes"):
-				add_item_attributes(total_attributes, item_data["attributes"])
+			var database_manager = get_node_or_null("/root/DatabaseManager")
+			if database_manager != null:
+				var item_data = database_manager.get_item(equipped_items[slot])
+				if item_data != null and item_data.has("attributes"):
+					add_item_attributes(total_attributes, item_data["attributes"])
 	
 	# 应用宝石加成
 	apply_gem_bonuses(total_attributes)
@@ -519,9 +533,13 @@ func debug_print_equipment_info():
 	print("=== 装备信息 ===")
 	for slot in equipped_items:
 		if equipped_items[slot] != null:
-			var item_data = DatabaseManager.get_item(equipped_items[slot])
-			var enhancement_level = get_item_enhancement_level(slot)
-			print("%s: %s (+%d)" % [get_slot_name(slot), item_data["name"], enhancement_level])
+			var database_manager = get_node_or_null("/root/DatabaseManager")
+			if database_manager != null:
+				var item_data = database_manager.get_item(equipped_items[slot])
+				var enhancement_level = get_item_enhancement_level(slot)
+				print("%s: %s (+%d)" % [get_slot_name(slot), item_data["name"], enhancement_level])
+			else:
+				print("%s: %s (+%d)" % [get_slot_name(slot), "未知", 0])
 		else:
 			print("%s: 空" % get_slot_name(slot))
 	
@@ -539,8 +557,12 @@ func debug_print_equipment_info():
 	print("幻化外观:")
 	for slot in appearance_overrides:
 		if appearance_overrides.has(slot):
-			var appearance_data = DatabaseManager.get_item(appearance_overrides[slot])
-			print("%s: %s" % [get_slot_name(slot), appearance_data["name"]])
+			var database_manager = get_node_or_null("/root/DatabaseManager")
+			if database_manager != null:
+				var appearance_data = database_manager.get_item(appearance_overrides[slot])
+				print("%s: %s" % [get_slot_name(slot), appearance_data["name"]])
+			else:
+				print("%s: %s" % [get_slot_name(slot), "未知"])
 	
 	print("================")
 
@@ -606,4 +628,4 @@ func _on_test_enhancement_pressed():
 	print("当前装备属性:")
 	print("  力道: %d" % equipment_attrs["base"]["strength"])
 	print("  攻击力: %d" % equipment_attrs["combat"]["attack"])
-	print("  火属性: %d" % equipment_attrs["elemental"]["fire"])</content>
+	print("  火属性: %d" % equipment_attrs["elemental"]["fire"])

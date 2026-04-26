@@ -49,7 +49,7 @@ func load_database(file_path):
 	var json = JSON.new()
 	var parse_result = json.parse(json_text)
 	if parse_result != OK:
-		push_error("JSON解析失败: " + file_path + " - " + str(json.get_error_line()))
+		push_error("JSON解析失败: " + file_path + " - " + str(json.get_error_line()) + " - " + json.get_error_message())
 		return {}
 	
 	return json.data

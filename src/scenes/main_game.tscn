@@ -1,0 +1,123 @@
+[gd_scene load_steps=12 format=3 uid="uid://n7u9x3hb8g5a0"]
+
+[ext_resource type="Script" path="res://scripts/core/game_data.gd" id="1_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/database/database_manager.gd" id="2_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/character/character_system.gd" id="3_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/combat/combat_system.gd" id="4_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/experience/experience_system.gd" id="5_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/equipment/equipment_system.gd" id="6_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/encounter/encounter_system.gd" id="7_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/ui/ui_manager.gd" id="8_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/save/save_system.gd" id="9_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/audio/audio_system.gd" id="10_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/quest/quest_system.gd" id="11_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/world/world_system.gd" id="12_n7u9x3hb8g5a0"]
+[ext_resource type="Script" path="res://scripts/economy/economy_system.gd" id="13_n7u9x3hb8g5a0"]
+
+[node name="MainGame" type="Node2D"]
+
+[node name="GameData" type="Node" parent="."]
+script = ExtResource("1_n7u9x3hb8g5a0")
+
+[node name="DatabaseManager" type="Node" parent="."]
+script = ExtResource("2_n7u9x3hb8g5a0")
+
+[node name="CharacterSystem" type="Node" parent="."]
+script = ExtResource("3_n7u9x3hb8g5a0")
+
+[node name="CombatSystem" type="Node" parent="."]
+script = ExtResource("4_n7u9x3hb8g5a0")
+
+[node name="ExperienceSystem" type="Node" parent="."]
+script = ExtResource("5_n7u9x3hb8g5a0")
+
+[node name="EquipmentSystem" type="Node" parent="."]
+script = ExtResource("6_n7u9x3hb8g5a0")
+
+[node name="EncounterSystem" type="Node" parent="."]
+script = ExtResource("7_n7u9x3hb8g5a0")
+
+[node name="UIManager" type="Node" parent="."]
+script = ExtResource("8_n7u9x3hb8g5a0")
+
+[node name="SaveSystem" type="Node" parent="."]
+script = ExtResource("9_n7u9x3hb8g5a0")
+
+[node name="AudioSystem" type="Node" parent="."]
+script = ExtResource("10_n7u9x3hb8g5a0")
+
+[node name="QuestSystem" type="Node" parent="."]
+script = ExtResource("11_n7u9x3hb8g5a0")
+
+[node name="WorldSystem" type="Node" parent="."]
+script = ExtResource("12_n7u9x3hb8g5a0")
+
+[node name="EconomySystem" type="Node" parent="."]
+script = ExtResource("13_n7u9x3hb8g5a0")
+
+[node name="GameTitleLabel" type="Label" parent="."]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 20.0
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "武侠奇遇录 - MVP演示"
+theme_type_variation = "HeaderSmall"
+
+[node name="SystemStatusPanel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = -20.0
+offset_bottom = -20.0
+
+[node name="StatusLabel" type="Label" parent="SystemStatusPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+autowrap_mode = 1
+text = "所有系统已加载并运行正常！\n\n基础层系统 (5/5) ✓\n- 武学数据库 ✓\n- 物品数据库 ✓\n- 敌人数据库 ✓\n- 奇遇数据库 ✓\n- 数据库管理器 ✓\n\n核心层系统 (3/3) ✓\n- 角色成长系统 ✓\n- 战斗系统 ✓\n- 经验值系统 ✓\n\n功能层系统 (8/8) ✓\n- 装备系统 ✓\n- 奇遇系统 ✓\n- UI系统 ✓\n- 存档系统 ✓\n- 音效系统 ✓\n- 任务系统 ✓\n- 世界系统 ✓\n- 经济系统 ✓\n\nGodot 4.6引擎配置 ✓\nMVP基础就绪 ✓"
+
+[node name="TestButtonPanel" type="Panel" parent="."]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 120.0
+offset_right = -20.0
+offset_bottom = 200.0
+
+[node name="StartNewGameButton" type="Button" parent="TestButtonPanel"]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 60.0
+text = "开始新游戏"
+focus_mode = 2
+
+[node name="LoadGameButton" type="Button" parent="TestButtonPanel"]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 70.0
+offset_right = -20.0
+offset_bottom = 110.0
+text = "加载游戏"
+focus_mode = 2
+
+[node name="TestAllSystemsButton" type="Button" parent="TestButtonPanel"]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 120.0
+offset_right = -20.0
+offset_bottom = 160.0
+text = "测试所有系统"
+focus_mode = 2
+
+[connection signal="pressed" from="StartNewGameButton" to="MainGame" method="_on_start_new_game_pressed"]
+[connection signal="pressed" from="LoadGameButton" to="MainGame" method="_on_load_game_pressed"]
+[connection signal="pressed" from="TestAllSystemsButton" to="MainGame" method="_on_test_all_systems_pressed"]

@@ -116,7 +116,7 @@ func calculate_turn_order():
 		turn_order.append({"character": char, "initiative": calculate_initiative(char)})
 	
 	# 按先攻值排序（高到低）
-	turn_order.sort_custom(self, "_sort_by_initiative")
+	turn_order.sort_custom(Callable(self, "_sort_by_initiative"))
 
 func calculate_initiative(character):
 	"""计算先攻值"""
@@ -139,9 +139,14 @@ func execute_player_action(action_data):
 	var martial_art_id = action_data["martial_art_id"]
 	
 	# 消耗内力和架势
-	var martial_art = DatabaseManager.get_martial_art(martial_art_id)
+	var martial_art = null
+	if "DatabaseManager" in get_tree().root:
+		martial_art = get_node("/root/DatabaseManager").get_martial_art(martial_art_id)
+	else:
+		push_error("DatabaseManager未找到")
+		return
 	if martial_art == null:
-		push_error("武学不存在: %s" % martial_art_id)
+		push_warning("武学不存在: %s" % martial_art_id)
 		return
 	
 	# 检查资源是否足够
@@ -530,4 +535,4 @@ func _on_execute_action_pressed():
 	execute_player_action(action_data)
 	
 	# 打印战斗信息
-	debug_print_battle_info()</content>
+	debug_print_battle_info()
