@@ -9,6 +9,19 @@ func _ready():
 	var character_system = get_node_or_null("/root/CharacterSystem")
 	if character_system != null:
 		character_system.initialize_character()
+	
+	# 手动连接按钮信号
+	var start_button = get_node("StartNewGameButton")
+	if start_button != null:
+		start_button.pressed.connect(_on_start_new_game_pressed)
+	
+	var load_button = get_node("LoadGameButton")
+	if load_button != null:
+		load_button.pressed.connect(_on_load_game_pressed)
+	
+	var test_button = get_node("TestAllSystemsButton")
+	if test_button != null:
+		test_button.pressed.connect(_on_test_all_systems_pressed)
 
 func _on_start_new_game_pressed():
 	"""开始新游戏按钮回调"""
@@ -80,21 +93,9 @@ func show_character_panel():
 		ui_manager.switch_to_state(ui_manager.UIState.CHARACTER_PANEL)
 	
 	# 获取角色面板实例并显示
-	var character_panel = get_node("CharacterPanelInstance")
+	var character_panel = get_node("CharacterPanelInstance/CharacterPanel")
 	if character_panel != null:
 		character_panel.visible = true
 		
 		# 更新角色数据
-		var character_system = get_node_or_null("/root/CharacterSystem")
-		if character_system != null:
-			var character_data = {
-				"level": character_system.level,
-				"realm": character_system.get_current_realm()["name"],
-				"attributes": character_system.attributes.get_total(),
-				"attribute_points": character_system.total_attribute_points - character_system.allocated_attribute_points
-			}
-			
-			# 调用角色面板的更新函数
-			var panel_script = character_panel.get_node("CharacterPanelScript")
-			if panel_script != null:
-				panel_script.update_display(character_data)
+		var character_system = get_node_or_null("/
