@@ -1,0 +1,403 @@
+{
+  "common_sword": {
+    "id": "common_sword",
+    "name": "普通铁剑",
+    "description": "一把普通的铁剑，适合初学者使用。",
+    "tier": "common",
+    "type": "weapon",
+    "slot": "weapon_main",
+    "required_level": 1,
+    "required_realm": 0,
+    "attributes": {
+      "base": {
+        "strength": 2
+      },
+      "combat": {
+        "attack": 10
+      }
+    },
+    "element": "metal",
+    "durability": 100,
+    "value_gold": 50,
+    "weight": 2,
+    "icon": "res://assets/icons/items/common_sword.png"
+  },
+  "rare_sword": {
+    "id": "rare_sword",
+    "name": "精钢剑",
+    "description": "由精钢打造的优质剑，锋利异常。",
+    "tier": "rare",
+    "type": "weapon",
+    "slot": "weapon_main",
+    "required_level": 10,
+    "required_realm": 1,
+    "attributes": {
+      "base": {
+        "strength": 5,
+        "agility": 2
+      },
+      "combat": {
+        "attack": 25,
+        "critical_rate": 0.05
+      }
+    },
+    "element": "metal",
+    "durability": 150,
+    "value_gold": 200,
+    "weight": 2,
+    "icon": "res://assets/icons/items/rare_sword.png"
+  },
+  "epic_sword": {
+    "id": "epic_sword",
+    "name": "青冥剑",
+    "description": "传说中的名剑，剑身泛着青色光芒。",
+    "tier": "epic",
+    "type": "weapon",
+    "slot": "weapon_main",
+    "required_level": 30,
+    "required_realm": 3,
+    "attributes": {
+      "base": {
+        "strength": 10,
+        "agility": 5,
+        "intelligence": 3
+      },
+      "combat": {
+        "attack": 50,
+        "critical_rate": 0.1,
+        "critical_damage": 0.2
+      },
+      "elemental": {
+        "water": 20
+      }
+    },
+    "element": "water",
+    "durability": 200,
+    "value_gold": 800,
+    "weight": 1.5,
+    "icon": "res://assets/icons/items/epic_sword.png",
+    "special_effects": [
+      "对火属性敌人造成1.2倍伤害"
+    ]
+  },
+  "legendary_sword": {
+    "id": "legendary_sword",
+    "name": "轩辕剑",
+    "description": "上古神器，蕴含无穷威力。",
+    "tier": "legendary",
+    "type": "weapon",
+    "slot": "weapon_main",
+    "required_level": 70,
+    "required_realm": 7,
+    "attributes": {
+      "base": {
+        "strength": 20,
+        "agility": 10,
+        "intelligence": 15,
+        "constitution": 5
+      },
+      "combat": {
+        "attack": 100,
+        "critical_rate": 0.2,
+        "critical_damage": 0.5,
+        "hit_rate": 0.1
+      },
+      "elemental": {
+        "fire": 50,
+        "water": 50,
+        "earth": 50,
+        "metal": 50,
+        "wood": 50
+      }
+    },
+    "element": "none",
+    "durability": 999,
+    "value_gold": 5000,
+    "weight": 1,
+    "icon": "res://assets/icons/items/legendary_sword.png",
+    "special_effects": [
+      "免疫所有控制效果",
+      "攻击时有10%几率触发全属性+50%",
+      "对所有元素属性敌人都有克制效果"
+    ],
+    "unique_effect": "每击杀一个敌人，恢复5%最大生命值和内力"
+  },
+  "common_helmet": {
+    "id": "common_helmet",
+    "name": "布帽",
+    "description": "简单的布制帽子，提供基本保护。",
+    "tier": "common",
+    "type": "armor",
+    "slot": "head",
+    "required_level": 1,
+    "required_realm": 0,
+    "attributes": {
+      "base": {
+        "constitution": 1
+      },
+      "combat": {
+        "defense": 5
+      }
+    },
+    "element": "none",
+    "durability": 80,
+    "value_gold": 30,
+    "weight": 0.5,
+    "icon": "res://assets/icons/items/common_helmet.png"
+  },
+  "rare_helmet": {
+    "id": "rare_helmet",
+    "name": "铁盔",
+    "description": "坚固的铁制头盔，防护性能良好。",
+    "tier": "rare",
+    "type": "armor",
+    "slot": "head",
+    "required_level": 10,
+    "required_realm": 1,
+    "attributes": {
+      "base": {
+        "constitution": 3,
+        "willpower": 2
+      },
+      "combat": {
+        "defense": 15,
+        "max_health": 50
+      }
+    },
+    "element": "metal",
+    "durability": 120,
+    "value_gold": 150,
+    "weight": 1,
+    "icon": "res://assets/icons/items/rare_helmet.png"
+  },
+  "epic_helmet": {
+    "id": "epic_helmet",
+    "name": "龙鳞盔",
+    "description": "用龙鳞打造的头盔，坚不可摧。",
+    "tier": "epic",
+    "type": "armor",
+    "slot": "head",
+    "required_level": 30,
+    "required_realm": 3,
+    "attributes": {
+      "base": {
+        "constitution": 8,
+        "willpower": 5,
+        "intelligence": 3
+      },
+      "combat": {
+        "defense": 40,
+        "max_health": 200,
+        "evasion": 0.05
+      },
+      "resistances": {
+        "burn": 0.3,
+        "freeze": 0.3
+      }
+    },
+    "element": "fire",
+    "durability": 180,
+    "value_gold": 600,
+    "weight": 0.8,
+    "icon": "res://assets/icons/items/epic_helmet.png",
+    "special_effects": [
+      "受到火属性攻击时，50%伤害转化为生命值"
+    ]
+  },
+  "legendary_helmet": {
+    "id": "legendary_helmet",
+    "name": "九天玄女冠",
+    "description": "仙家至宝，佩戴者可获得神明庇护。",
+    "tier": "legendary",
+    "type": "armor",
+    "slot": "head",
+    "required_level": 70,
+    "required_realm": 7,
+    "attributes": {
+      "base": {
+        "constitution": 15,
+        "willpower": 12,
+        "intelligence": 10,
+        "luck": 5
+      },
+      "combat": {
+        "defense": 80,
+        "max_health": 500,
+        "evasion": 0.15,
+        "internal_energy_regen": 0.1
+      },
+      "resistances": {
+        "poison": 1.0,
+        "stun": 1.0,
+        "freeze": 1.0,
+        "burn": 1.0
+      }
+    },
+    "element": "none",
+    "durability": 999,
+    "value_gold": 4000,
+    "weight": 0.3,
+    "icon": "res://assets/icons/items/legendary_helmet.png",
+    "special_effects": [
+      "完全免疫所有负面状态效果",
+      "内力回复速度提升100%"
+    ],
+    "unique_effect": "每10秒自动清除所有负面状态并恢复10%最大生命值"
+  },
+  "common_ring": {
+    "id": "common_ring",
+    "name": "铜戒",
+    "description": "普通的铜制戒指。",
+    "tier": "common",
+    "type": "accessory",
+    "slot": "ring",
+    "required_level": 1,
+    "required_realm": 0,
+    "attributes": {
+      "base": {
+        "luck": 1
+      }
+    },
+    "element": "none",
+    "durability": 200,
+    "value_gold": 20,
+    "weight": 0.1,
+    "icon": "res://assets/icons/items/common_ring.png"
+  },
+  "rare_ring": {
+    "id": "rare_ring",
+    "name": "银戒",
+    "description": "精致的银制戒指，镶嵌着小宝石。",
+    "tier": "rare",
+    "type": "accessory",
+    "slot": "ring",
+    "required_level": 10,
+    "required_realm": 1,
+    "attributes": {
+      "base": {
+        "luck": 3,
+        "intelligence": 2
+      },
+      "combat": {
+        "critical_rate": 0.03
+      }
+    },
+    "element": "none",
+    "durability": 200,
+    "value_gold": 100,
+    "weight": 0.1,
+    "icon": "res://assets/icons/items/rare_ring.png"
+  },
+  "epic_ring": {
+    "id": "epic_ring",
+    "name": "火焰戒指",
+    "description": "蕴含火元素力量的魔法戒指。",
+    "tier": "epic",
+    "type": "accessory",
+    "slot": "ring",
+    "required_level": 30,
+    "required_realm": 3,
+    "attributes": {
+      "base": {
+        "luck": 5,
+        "intelligence": 8
+      },
+      "combat": {
+        "critical_rate": 0.08,
+        "critical_damage": 0.15
+      },
+      "elemental": {
+        "fire": 30
+      }
+    },
+    "element": "fire",
+    "durability": 200,
+    "value_gold": 500,
+    "weight": 0.1,
+    "icon": "res://assets/icons/items/epic_ring.png",
+    "special_effects": [
+      "所有火属性技能伤害提升20%"
+    ]
+  },
+  "legendary_ring": {
+    "id": "legendary_ring",
+    "name": "五行轮回戒",
+    "description": "传说中的神器，能够操控五行之力。",
+    "tier": "legendary",
+    "type": "accessory",
+    "slot": "ring",
+    "required_level": 70,
+    "required_realm": 7,
+    "attributes": {
+      "base": {
+        "luck": 10,
+        "intelligence": 15,
+        "strength": 10,
+        "agility": 10,
+        "constitution": 10,
+        "willpower": 10
+      },
+      "combat": {
+        "critical_rate": 0.15,
+        "critical_damage": 0.3,
+        "hit_rate": 0.1,
+        "evasion": 0.1
+      },
+      "elemental": {
+        "fire": 100,
+        "water": 100,
+        "earth": 100,
+        "metal": 100,
+        "wood": 100
+      }
+    },
+    "element": "none",
+    "durability": 999,
+    "value_gold": 3000,
+    "weight": 0.1,
+    "icon": "res://assets/icons/items/legendary_ring.png",
+    "special_effects": [
+      "所有元素属性伤害提升50%",
+      "免疫所有元素属性弱点"
+    ],
+    "unique_effect": "每次攻击随机触发一种元素效果，对敌人造成额外元素伤害"
+  },
+  "breakthrough_pill": {
+    "id": "breakthrough_pill",
+    "name": "筑基丹",
+    "description": "用于突破境界的珍贵丹药。",
+    "tier": "rare",
+    "type": "consumable",
+    "slot": "inventory",
+    "required_level": 10,
+    "required_realm": 0,
+    "consumable_effect": {
+      "type": "breakthrough",
+      "target_realm": 1
+    },
+    "stackable": true,
+    "max_stack": 99,
+    "value_gold": 500,
+    "weight": 0.01,
+    "icon": "res://assets/icons/items/breakthrough_pill.png"
+  },
+  "wash_marrow_pill": {
+    "id": "wash_marrow_pill",
+    "name": "洗髓丹",
+    "description": "可以重置所有已分配属性点的神奇丹药。",
+    "tier": "epic",
+    "type": "consumable",
+    "slot": "inventory",
+    "required_level": 1,
+    "required_realm": 0,
+    "consumable_effect": {
+      "type": "reset_attributes",
+      "reset_count": 1
+    },
+    "stackable": true,
+    "max_stack": 10,
+    "value_gold": 1000,
+    "weight": 0.01,
+    "icon": "res://assets/icons/items/wash_marrow_pill.png"
+  }
+}

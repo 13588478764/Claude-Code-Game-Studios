@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://h1o3r7bv2a9u4"]
+
+[ext_resource type="Script" path="res://scripts/ui/ui_manager.gd" id="1_h1o3r7bv2a9u4"]
+[ext_resource type="Script" path="res://scripts/character/character_system.gd" id="2_h1o3r7bv2a9u4"]
+[ext_resource type="Script" path="res://scripts/equipment/equipment_system.gd" id="3_h1o3r7bv2a9u4"]
+[ext_resource type="Script" path="res://scripts/combat/combat_system.gd" id="4_h1o3r7bv2a9u4"]
+
+[node name="UITest" type="Node2D"]
+
+[node name="UIManager" type="Node" parent="."]
+script = ExtResource("1_h1o3r7bv2a9u4")
+
+[node name="CharacterSystem" type="Node" parent="."]
+script = ExtResource("2_h1o3r7bv2a9u4")
+
+[node name="EquipmentSystem" type="Node" parent="."]
+script = ExtResource("3_h1o3r7bv2a9u4")
+
+[node name="CombatSystem" type="Node" parent="."]
+script = ExtResource("4_h1o3r7bv2a9u4")
+
+[node name="TestCharacterPanelButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -250.0
+offset_right = -50.0
+offset_bottom = -200.0
+text = "测试角色面板"
+focus_mode = 2
+
+[node name="TestEquipmentPanelButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -200.0
+offset_right = -50.0
+offset_bottom = -150.0
+text = "测试装备界面"
+focus_mode = 2
+
+[node name="TestCombatInterfaceButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -150.0
+offset_right = -50.0
+offset_bottom = -100.0
+text = "测试战斗界面"
+focus_mode = 2
+
+[node name="TestUIColorsButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+text = "测试品阶颜色"
+focus_mode = 2
+
+[node name="DebugLabel" type="Label" parent="."]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 200.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+text = "点击按钮测试UI系统功能"
+
+[connection signal="pressed" from="TestCharacterPanelButton" to="UIManager" method="_on_test_character_panel_pressed"]
+[connection signal="pressed" from="TestEquipmentPanelButton" to="UIManager" method="_on_test_equipment_panel_pressed"]
+[connection signal="pressed" from="TestCombatInterfaceButton" to="UIManager" method="_on_test_combat_interface_pressed"]
+[connection signal="pressed" from="TestUIColorsButton" to="UIManager" method="_on_test_ui_colors_pressed"]

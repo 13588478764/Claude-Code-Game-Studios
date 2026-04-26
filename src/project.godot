@@ -1,0 +1,47 @@
+[application]
+
+config/name="武侠奇遇录"
+config/description="一款深度武侠RPG游戏"
+config/icon="res://assets/icons/icon.png"
+config/main_scene="res://scenes/main_menu.tscn"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/always_on_top=false
+window/size/borderless=false
+window/size/fullscreen=false
+window/size/resizable=true
+window/size/stretch_mode="2d"
+window/size/stretch_aspect="keep"
+
+[rendering]
+
+quality/driver/driver_name="GLES3"
+quality/intended_usage/framebuffer_allocation="2d"
+quality/filters/msaa=2
+
+[physics]
+
+common/physics_ticks_per_second=60
+
+[input]
+
+ui_accept=[Object(InputEventKey,"keycode:16777221,physical_keycode:16777221"), Object(InputEventKey,"keycode:32,physical_keycode:32"), Object(InputEventJoypadButton,"button_index:0")]
+ui_cancel=[Object(InputEventKey,"keycode:16777217,physical_keycode:16777217"), Object(InputEventJoypadButton,"button_index:1")]
+ui_up=[Object(InputEventKey,"keycode:16777232,physical_keycode:16777232"), Object(InputEventJoypadButton,"button_index:14")]
+ui_down=[Object(InputEventKey,"keycode:16777233,physical_keycode:16777233"), Object(InputEventJoypadButton,"button_index:15")]
+ui_left=[Object(InputEventKey,"keycode:16777234,physical_keycode:16777234"), Object(InputEventJoypadButton,"button_index:16")]
+ui_right=[Object(InputEventKey,"keycode:16777235,physical_keycode:16777235"), Object(InputEventJoypadButton,"button_index:17")]
+
+[autoload]
+
+GameData="res://scripts/core/game_data.gd"
+DatabaseManager="res://scripts/database/database_manager.gd"
+CombatSystem="res://scripts/combat/combat_system.gd"
+CharacterSystem="res://scripts/character/character_system.gd"
+ExperienceSystem="res://scripts/experience/experience_system.gd"
+EquipmentSystem="res://scripts/equipment/equipment_system.gd"
+EncounterSystem="res://scripts/encounter/encounter_system.gd"
+UIManager="res://scripts/ui/ui_manager.gd"

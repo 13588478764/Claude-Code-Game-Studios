@@ -1,0 +1,217 @@
+{
+  "wise_master_guidance": {
+    "id": "wise_master_guidance",
+    "name": "高人指点",
+    "description": "遇到一位隐居的武林前辈，获得他的指点。",
+    "type": "guidance",
+    "trigger_conditions": {
+      "min_luck": 0,
+      "required_locations": ["mountain", "forest", "temple"],
+      "cooldown": 3600  // 1小时冷却
+    },
+    "rewards": {
+      "attribute_points": {"min": 2, "max": 5},
+      "talent_points": {"min": 1, "max": 2},
+      "martial_arts_proficiency": {"min": 50, "max": 100}
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/wise_master.png",
+      "music": "res://audio/music/peaceful_temple.ogg"
+    }
+  },
+  "secret_realm_discovery": {
+    "id": "secret_realm_discovery",
+    "name": "秘境发现",
+    "description": "发现一处隐藏的秘境，里面可能有强大的敌人和珍贵的宝物。",
+    "type": "dungeon",
+    "trigger_conditions": {
+      "min_luck": 20,
+      "required_locations": ["ancient_forest", "mountain_cave", "dragon_lair"],
+      "cooldown": 7200  // 2小时冷却
+    },
+    "rewards": {
+      "exp_bonus": {"min": 500, "max": 2000},
+      "rare_items": ["epic_sword", "epic_helmet", "legendary_ring"]
+    },
+    "combat_encounter": {
+      "enemies": ["elite_guard", "cultist", "ice_spirit"],
+      "boss": "golden_dragon"
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/secret_realm.png",
+      "music": "res://audio/music/mysterious_cave.ogg"
+    }
+  },
+  "heavenly_treasure": {
+    "id": "heavenly_treasure",
+    "name": "天材地宝",
+    "description": "在野外发现珍贵的天材地宝，可以用来炼制丹药或突破境界。",
+    "type": "treasure",
+    "trigger_conditions": {
+      "min_luck": 15,
+      "required_locations": ["herb_garden", "mineral_vein", "sacred_grove"],
+      "cooldown": 1800  // 30分钟冷却
+    },
+    "rewards": {
+      "consumables": [
+        {"item_id": "breakthrough_pill", "chance": 0.3, "quantity": 1},
+        {"item_id": "wash_marrow_pill", "chance": 0.2, "quantity": 1},
+        {"item_id": "healing_potion", "chance": 0.8, "quantity": 3}
+      ]
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/heavenly_treasure.png",
+      "music": "res://audio/music/nature_ambient.ogg"
+    }
+  },
+  "lost_martial_scroll": {
+    "id": "lost_martial_scroll",
+    "name": "失传秘籍",
+    "description": "在古墓或废墟中发现失传已久的武学秘籍。",
+    "type": "martial_art",
+    "trigger_conditions": {
+      "min_luck": 25,
+      "required_locations": ["abandoned_temple", "ancient_tomb", "ruins"],
+      "cooldown": 10800  // 3小时冷却
+    },
+    "rewards": {
+      "martial_arts": ["fire_palm", "water_sword", "wood_staff", "earth_fist", "metal_claw"],
+      "martial_art_fragments": {"min": 1, "max": 3}
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/lost_scroll.png",
+      "music": "res://audio/music/ancient_mystery.ogg"
+    }
+  },
+  "jianghu_rumor": {
+    "id": "jianghu_rumor",
+    "name": "江湖传闻",
+    "description": "听到江湖中的最新传闻，可能包含宝藏线索或任务信息。",
+    "type": "rumor",
+    "trigger_conditions": {
+      "min_luck": 10,
+      "required_locations": ["tavern", "market", "city_center"],
+      "cooldown": 900  // 15分钟冷却
+    },
+    "rewards": {
+      "gold": {"min": 100, "max": 500},
+      "quest_hints": ["bandit_hideout", "cultist_temple", "dragon_lair"]
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/tavern_rumor.png",
+      "music": "res://audio/music/tavern_ambient.ogg"
+    }
+  },
+  "divine_beast_encounter": {
+    "id": "divine_beast_encounter",
+    "name": "神兽相遇",
+    "description": "偶遇传说中的神兽，可以选择战斗、驯服或结为伙伴。",
+    "type": "beast",
+    "trigger_conditions": {
+      "min_luck": 40,
+      "min_level": 25,
+      "required_locations": ["sacred_mountain", "heavenly_lake", "ancient_forest"],
+      "cooldown": 21600  // 6小时冷却
+    },
+    "rewards": {
+      "beast_companion": ["golden_dragon", "thunder_beast"],
+      "unique_items": ["legendary_sword", "legendary_helmet", "legendary_ring"]
+    },
+    "choices": [
+      {"text": "挑战神兽", "outcome": "combat"},
+      {"text": "尝试驯服", "outcome": "tame", "required_stats": {"luck": 50}},
+      {"text": "恭敬离开", "outcome": "peaceful"}
+    ],
+    "visual": {
+      "background": "res://assets/backgrounds/divine_beast.png",
+      "music": "res://audio/music/epic_encounter.ogg"
+    }
+  },
+  "martial_arts_breakthrough": {
+    "id": "martial_arts_breakthrough",
+    "name": "武学顿悟",
+    "description": "在修炼中突然顿悟，武学境界大幅提升。",
+    "type": "breakthrough",
+    "trigger_conditions": {
+      "min_luck": 30,
+      "min_martial_arts_proficiency": 50,
+      "required_action": "meditation",
+      "cooldown": 14400  // 4小时冷却
+    },
+    "rewards": {
+      "martial_arts_level_up": true,
+      "attribute_points": {"min": 3, "max": 8},
+      "talent_points": {"min": 2, "max": 3}
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/meditation_breakthrough.png",
+      "music": "res://audio/music/enlightenment.ogg"
+    }
+  },
+  "mysterious_merchant": {
+    "id": "mysterious_merchant",
+    "name": "神秘商人",
+    "description": "遇到一位神秘的商人，出售稀有物品但价格昂贵。",
+    "type": "merchant",
+    "trigger_conditions": {
+      "min_luck": 20,
+      "min_gold": 1000,
+      "required_locations": ["crossroads", "desert_oasis", "hidden_village"],
+      "cooldown": 5400  // 1.5小时冷却
+    },
+    "rewards": {
+      "special_shop": ["legendary_sword", "legendary_helmet", "legendary_ring", "wash_marrow_pill"]
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/mysterious_merchant.png",
+      "music": "res://audio/music/market_exotic.ogg"
+    }
+  },
+  "celestial_phenomenon": {
+    "id": "celestial_phenomenon",
+    "name": "天象异变",
+    "description": "天空出现奇异天象，可能预示着重大事件或机遇。",
+    "type": "phenomenon",
+    "trigger_conditions": {
+      "min_luck": 35,
+      "time_of_day": "night",
+      "weather": "clear",
+      "cooldown": 28800  // 8小时冷却
+    },
+    "rewards": {
+      "blessing": {"duration": 3600, "effects": ["exp_bonus_2x", "drop_rate_bonus_2x"]},
+      "prophecy": ["dragon_awakening", "cultist_invasion", "heavenly_treasure_appearance"]
+    },
+    "visual": {
+      "background": "res://assets/backgrounds/celestial_phenomenon.png",
+      "music": "res://audio/music/cosmic_wonder.ogg"
+    }
+  },
+  "ancient_trial": {
+    "id": "ancient_trial",
+    "name": "上古试炼",
+    "description": "触发上古遗迹的试炼，通过考验可以获得强大的力量。",
+    "type": "trial",
+    "trigger_conditions": {
+      "min_luck": 45,
+      "min_level": 30,
+      "required_items": ["ancient_key", "dragon_scale"],
+      "required_locations": ["ancient_ruins", "dragon_lair", "celestial_temple"],
+      "cooldown": 43200  // 12小时冷却
+    },
+    "rewards": {
+      "realm_breakthrough": true,
+      "legendary_items": ["legendary_sword", "legendary_helmet", "legendary_ring"],
+      "unique_abilities": ["dragon_form", "celestial_blessing"]
+    },
+    "challenges": [
+      {"type": "combat", "difficulty": "hard", "enemies": ["golden_dragon", "shadow_assassin"]},
+      {"type": "puzzle", "difficulty": "medium", "required_stats": {"intelligence": 50}},
+      {"type": "endurance", "difficulty": "hard", "required_stats": {"constitution": 60}}
+    ],
+    "visual": {
+      "background": "res://assets/backgrounds/ancient_trial.png",
+      "music": "res://audio/music/ancient_trial.ogg"
+    }
+  }
+}

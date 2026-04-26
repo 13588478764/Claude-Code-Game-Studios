@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://f9m1p5zt0y7s2"]
+
+[ext_resource type="Script" path="res://scripts/database/database_manager.gd" id="1_f9m1p5zt0y7s2"]
+[ext_resource type="Script" path="res://scripts/equipment/equipment_system.gd" id="2_f9m1p5zt0y7s2"]
+[ext_resource type="Script" path="res://scripts/character/character_system.gd" id="3_f9m1p5zt0y7s2"]
+
+[node name="EquipmentTest" type="Node2D"]
+
+[node name="DatabaseManager" type="Node" parent="."]
+script = ExtResource("1_f9m1p5zt0y7s2")
+
+[node name="EquipmentSystem" type="Node" parent="."]
+script = ExtResource("2_f9m1p5zt0y7s2")
+
+[node name="CharacterSystem" type="Node" parent="."]
+script = ExtResource("3_f9m1p5zt0y7s2")
+
+[node name="TestEquipItemButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -200.0
+offset_right = -50.0
+offset_bottom = -150.0
+text = "测试装备物品"
+focus_mode = 2
+
+[node name="TestSlotUnlockButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -150.0
+offset_right = -50.0
+offset_bottom = -100.0
+text = "测试槽位解锁"
+focus_mode = 2
+
+[node name="TestEnhancementButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+text = "测试装备强化"
+focus_mode = 2
+
+[node name="DebugLabel" type="Label" parent="."]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 200.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+text = "点击按钮测试装备系统功能"
+
+[connection signal="pressed" from="TestEquipItemButton" to="EquipmentSystem" method="_on_test_equip_item_pressed"]
+[connection signal="pressed" from="TestSlotUnlockButton" to="EquipmentSystem" method="_on_test_slot_unlock_pressed"]
+[connection signal="pressed" from="TestEnhancementButton" to="EquipmentSystem" method="_on_test_enhancement_pressed"]

@@ -1,0 +1,268 @@
+{
+  "basic_punch": {
+    "id": "basic_punch",
+    "name": "基础拳法",
+    "description": "最基础的拳法，每个武者都会的基本技能。",
+    "type": "physical",
+    "element": "none",
+    "damage_type": "physical",
+    "base_multiplier": 1.0,
+    "stat_scaling": {
+      "primary": "strength",
+      "secondary": null
+    },
+    "cost": {
+      "qi": 5,
+      "poise": 2
+    },
+    "cooldown": 0,
+    "tags": ["basic", "melee"],
+    "proficiency_max": 100,
+    "unlock_level": 1,
+    "animation": "res://animations/martial_arts/basic_punch.tres"
+  },
+  "basic_sword": {
+    "id": "basic_sword",
+    "name": "基础剑法",
+    "description": "基础的剑术技巧，攻守兼备。",
+    "type": "physical",
+    "element": "metal",
+    "damage_type": "physical",
+    "base_multiplier": 1.2,
+    "stat_scaling": {
+      "primary": "strength",
+      "secondary": "agility"
+    },
+    "cost": {
+      "qi": 8,
+      "poise": 3
+    },
+    "cooldown": 1,
+    "tags": ["basic", "sword", "melee"],
+    "proficiency_max": 100,
+    "unlock_level": 1,
+    "animation": "res://animations/martial_arts/basic_sword.tres"
+  },
+  "fire_palm": {
+    "id": "fire_palm",
+    "name": "烈焰掌",
+    "description": "蕴含火属性内力的掌法，能造成持续灼烧伤害。",
+    "type": "energy",
+    "element": "fire",
+    "damage_type": "energy",
+    "base_multiplier": 1.5,
+    "stat_scaling": {
+      "primary": "intelligence",
+      "secondary": "willpower"
+    },
+    "cost": {
+      "qi": 15,
+      "poise": 5
+    },
+    "cooldown": 2,
+    "tags": ["fire", "palm", "energy", "dot"],
+    "proficiency_max": 100,
+    "unlock_level": 5,
+    "animation": "res://animations/martial_arts/fire_palm.tres",
+    "status_effects": [
+      {
+        "type": "burn",
+        "duration": 3,
+        "damage_per_turn": 10
+      }
+    ]
+  },
+  "water_sword": {
+    "id": "water_sword",
+    "name": "寒冰剑气",
+    "description": "蕴含水属性内力的剑气，能冻结敌人行动。",
+    "type": "energy",
+    "element": "water",
+    "damage_type": "energy",
+    "base_multiplier": 1.4,
+    "stat_scaling": {
+      "primary": "intelligence",
+      "secondary": "agility"
+    },
+    "cost": {
+      "qi": 18,
+      "poise": 6
+    },
+    "cooldown": 3,
+    "tags": ["water", "sword", "energy", "control"],
+    "proficiency_max": 100,
+    "unlock_level": 8,
+    "animation": "res://animations/martial_arts/water_sword.tres",
+    "status_effects": [
+      {
+        "type": "freeze",
+        "duration": 1,
+        "chance": 0.3
+      }
+    ]
+  },
+  "wood_staff": {
+    "id": "wood_staff",
+    "name": "青木杖法",
+    "description": "以木属性内力催动的杖法，具有治疗效果。",
+    "type": "energy",
+    "element": "wood",
+    "damage_type": "energy",
+    "base_multiplier": 1.3,
+    "stat_scaling": {
+      "primary": "intelligence",
+      "secondary": "constitution"
+    },
+    "cost": {
+      "qi": 12,
+      "poise": 4
+    },
+    "cooldown": 2,
+    "tags": ["wood", "staff", "energy", "heal"],
+    "proficiency_max": 100,
+    "unlock_level": 6,
+    "animation": "res://animations/martial_arts/wood_staff.tres",
+    "healing": {
+      "amount": 20,
+      "scaling": 0.5
+    }
+  },
+  "earth_fist": {
+    "id": "earth_fist",
+    "name": "大地拳",
+    "description": "蕴含土属性内力的拳法，防御力极强。",
+    "type": "energy",
+    "element": "earth",
+    "damage_type": "energy",
+    "base_multiplier": 1.6,
+    "stat_scaling": {
+      "primary": "intelligence",
+      "secondary": "constitution"
+    },
+    "cost": {
+      "qi": 20,
+      "poise": 8
+    },
+    "cooldown": 4,
+    "tags": ["earth", "fist", "energy", "defense"],
+    "proficiency_max": 100,
+    "unlock_level": 10,
+    "animation": "res://animations/martial_arts/earth_fist.tres",
+    "buffs": [
+      {
+        "type": "defense_up",
+        "amount": 0.2,
+        "duration": 2
+      }
+    ]
+  },
+  "metal_claw": {
+    "id": "metal_claw",
+    "name": "金爪功",
+    "description": "蕴含金属性内力的爪功，破防能力极强。",
+    "type": "energy",
+    "element": "metal",
+    "damage_type": "energy",
+    "base_multiplier": 1.7,
+    "stat_scaling": {
+      "primary": "intelligence",
+      "secondary": "strength"
+    },
+    "cost": {
+      "qi": 22,
+      "poise": 7
+    },
+    "cooldown": 3,
+    "tags": ["metal", "claw", "energy", "armor_break"],
+    "proficiency_max": 100,
+    "unlock_level": 12,
+    "animation": "res://animations/martial_arts/metal_claw.tres",
+    "armor_break": 0.3
+  },
+  "lightning_strike": {
+    "id": "lightning_strike",
+    "name": "雷霆一击",
+    "description": "高阶雷属性武学，瞬间爆发巨大伤害。",
+    "type": "energy",
+    "element": "fire",
+    "damage_type": "energy",
+    "base_multiplier": 2.5,
+    "stat_scaling": {
+      "primary": "intelligence",
+      "secondary": null
+    },
+    "cost": {
+      "qi": 30,
+      "poise": 10
+    },
+    "cooldown": 5,
+    "tags": ["fire", "lightning", "energy", "burst"],
+    "proficiency_max": 100,
+    "unlock_level": 15,
+    "animation": "res://animations/martial_arts/lightning_strike.tres",
+    "crit_bonus": 0.2
+  },
+  "shadow_step": {
+    "id": "shadow_step",
+    "name": "影步",
+    "description": "轻功身法，提升闪避率和先攻值。",
+    "type": "utility",
+    "element": "none",
+    "damage_type": "none",
+    "base_multiplier": 0.0,
+    "stat_scaling": {
+      "primary": "agility",
+      "secondary": null
+    },
+    "cost": {
+      "qi": 10,
+      "poise": 0
+    },
+    "cooldown": 3,
+    "tags": ["utility", "movement", "evasion"],
+    "proficiency_max": 100,
+    "unlock_level": 3,
+    "animation": "res://animations/martial_arts/shadow_step.tres",
+    "buffs": [
+      {
+        "type": "evasion_up",
+        "amount": 0.3,
+        "duration": 2
+      },
+      {
+        "type": "initiative_up",
+        "amount": 0.2,
+        "duration": 2
+      }
+    ]
+  },
+  "iron_clothes": {
+    "id": "iron_clothes",
+    "name": "铁布衫",
+    "description": "硬气功护体，大幅提升物理防御力。",
+    "type": "utility",
+    "element": "earth",
+    "damage_type": "none",
+    "base_multiplier": 0.0,
+    "stat_scaling": {
+      "primary": "constitution",
+      "secondary": "willpower"
+    },
+    "cost": {
+      "qi": 15,
+      "poise": 0
+    },
+    "cooldown": 4,
+    "tags": ["utility", "defense", "earth"],
+    "proficiency_max": 100,
+    "unlock_level": 7,
+    "animation": "res://animations/martial_arts/iron_clothes.tres",
+    "buffs": [
+      {
+        "type": "physical_defense_up",
+        "amount": 0.4,
+        "duration": 3
+      }
+    ]
+  }
+}

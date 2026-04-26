@@ -1,0 +1,72 @@
+[gd_scene load_steps=4 format=3 uid="uid://g0n2q6au1z8t3"]
+
+[ext_resource type="Script" path="res://scripts/database/database_manager.gd" id="1_g0n2q6au1z8t3"]
+[ext_resource type="Script" path="res://scripts/encounter/encounter_system.gd" id="2_g0n2q6au1z8t3"]
+[ext_resource type="Script" path="res://scripts/character/character_system.gd" id="3_g0n2q6au1z8t3"]
+
+[node name="EncounterTest" type="Node2D"]
+
+[node name="DatabaseManager" type="Node" parent="."]
+script = ExtResource("1_g0n2q6au1z8t3")
+
+[node name="EncounterSystem" type="Node" parent="."]
+script = ExtResource("2_g0n2q6au1z8t3")
+
+[node name="CharacterSystem" type="Node" parent="."]
+script = ExtResource("3_g0n2q6au1z8t3")
+
+[node name="TestTriggerProbabilityButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -250.0
+offset_right = -50.0
+offset_bottom = -200.0
+text = "测试触发概率"
+focus_mode = 2
+
+[node name="TestEncounterSelectionButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -200.0
+offset_right = -50.0
+offset_bottom = -150.0
+text = "测试奇遇选择"
+focus_mode = 2
+
+[node name="TestRewardExecutionButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -150.0
+offset_right = -50.0
+offset_bottom = -100.0
+text = "测试奖励执行"
+focus_mode = 2
+
+[node name="TestGuaranteedTriggerButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -100.0
+offset_right = -50.0
+offset_bottom = -50.0
+text = "测试保底触发"
+focus_mode = 2
+
+[node name="DebugLabel" type="Label" parent="."]
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 200.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+text = "点击按钮测试奇遇系统功能"
+
+[connection signal="pressed" from="TestTriggerProbabilityButton" to="EncounterSystem" method="_on_test_trigger_probability_pressed"]
+[connection signal="pressed" from="TestEncounterSelectionButton" to="EncounterSystem" method="_on_test_encounter_selection_pressed"]
+[connection signal="pressed" from="TestRewardExecutionButton" to="EncounterSystem" method="_on_test_reward_execution_pressed"]
+[connection signal="pressed" from="TestGuaranteedTriggerButton" to="EncounterSystem" method="_on_test_guaranteed_trigger_pressed"]
