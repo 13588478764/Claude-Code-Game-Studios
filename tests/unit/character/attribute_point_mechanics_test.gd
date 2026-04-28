@@ -3,11 +3,14 @@ extends "res://addons/gut/test.gd"
 # 属性点机制单元测试
 # 测试AttributePointManager的核心功能
 
-var attribute_manager: Node
+var attribute_manager: AttributePointManager
+var signal_received: bool = false
+var received_attribute: String = ""
+var received_value: int = 0
 
 func before_all():
 	# 创建AttributePointManager实例用于测试
-	attribute_manager = preload("res://src/scripts/character/attribute_point_manager.gd").new()
+	attribute_manager = AttributePointManager.new()
 	add_child(attribute_manager)
 
 func after_all():
