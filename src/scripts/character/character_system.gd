@@ -306,69 +306,6 @@ func consume_wash_marrow_pill():
 		push_warning("物品管理器未找到，无法消耗洗髓丹")
 		return false
 
-func get_final_attributes():
-	"""获取最终属性（包含境界加成）"""
-	var final_attrs = CharacterAttributes.new()
-	final_attrs.strength = int(attributes.strength * realm_bonus)
-	final_attrs.agility = int(attributes.agility * realm_bonus)
-	final_attrs.constitution = int(attributes.constitution * realm_bonus)
-	final_attrs.intelligence = int(attributes.intelligence * realm_bonus)
-	final_attrs.willpower = int(attributes.willpower * realm_bonus)
-	final_attrs.luck = int(attributes.luck * realm_bonus)
-	return final_attrs
-
-func get_combat_stats():
-	"""获取战斗属性"""
-	var final_attrs = get_final_attributes()
-	var combat_stats = {
-		"physical_attack": final_attrs.strength * 2,
-		"magical_attack": final_attrs.intelligence * 2,
-		"max_health": final_attrs.constitution * 10,
-		"defense": final_attrs.constitution + final_attrs.willpower,
-		"evasion": final_attrs.agility / 10.0,
-		"critical_rate": final_attrs.intelligence / 20.0,
-		"hit_rate": final_attrs.willpower / 15.0,
-		"internal_energy_max": final_attrs.constitution * 5 + final_attrs.intelligence * 3,
-		"internal_energy_regen": 0.05,  # 基础5%内力回复率
-		"drop_rate_bonus": final_attrs.luck / 5.0
-	}
-	return combat_stats
-
-# 调试函数
-func debug_print_character_info():
-	"""打印角色信息用于调试"""
-	print("=== 角色信息 ===")
-	print("等级: %d" % level)
-	print("境界: %s" % get_current_realm()["name"])
-	print("经验值: %d / %d" % [experience, get_exp_required_for_level(level + 1)])
-	print("属性点: %d / %d" % [allocated_attribute_points, total_attribute_points])
-	print("天赋点: %d / %d" % [allocated_talent_points, total_talent_points])
-	print("免费重置次数: %d" % free_reset_count)
-	print("境界加成: %.1f%%" % ((realm_bonus - 1.0) * 100))
-	
-	var final_attrs = get_final_attributes()
-	print("最终属性:")
-	print("  力道: %d" % final_attrs.strength)
-	print("  身法: %d" % final_attrs.agility)
-	print("  根骨: %d" % final_attrs.constitution)
-	print("  悟性: %d" % final_attrs.intelligence)
-	print("  定力: %d" % final_attrs.willpower)
-	print("  福缘: %d" % final_attrs.luck)
-	
-	var combat_stats = get_combat_stats()
-	print("战斗属性:")
-	print("  物理攻击: %d" % combat_stats["physical_attack"])
-	print("  内功攻击: %d" % combat_stats["magical_attack"])
-	print("  最大生命: %d" % combat_stats["max_health"])
-	print("  防御力: %d" % combat_stats["defense"])
-	print("  闪避率: %.1f%%" % (combat_stats["evasion"] * 100))
-	print("  暴击率: %.1f%%" % (combat_stats["critical_rate"] * 100))
-	print("  命中率: %.1f%%" % (combat_stats["hit_rate"] * 100))
-	print("  内力上限: %d" % combat_stats["internal_energy_max"])
-	print("  内力回复: %.1f%%" % (combat_stats["internal_energy_regen"] * 100))
-	print("  掉落加成: %.1f%%" % (combat_stats["drop_rate_bonus"] * 100))
-	print("================")
-
 # 天赋网格系统功能
 
 func unlock_talent(row, col):
