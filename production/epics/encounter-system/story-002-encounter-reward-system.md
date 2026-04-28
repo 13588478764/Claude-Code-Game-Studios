@@ -1,7 +1,7 @@
 # Story 002: 奇遇奖励系统
 
 > **Epic**: 奇遇系统
-> **Status**: Complete
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

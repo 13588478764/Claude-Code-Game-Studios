@@ -1,7 +1,7 @@
 # Story 001: 武功组合机制
 
 > **Epic**: 武学组合/连招系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/martial-arts-combo-system.md`, scoped to this story:*
 
-- [ ] 标签协同机制正常工作，支持[破防]+[刚]、[湿]+[雷]、[浮空]+[坠击]等组合
-- [ ] 系统正确识别技能标签并匹配协同效果
-- [ ] 协同效果遵循公式：`协同伤害 = 基础伤害 × 协同倍率`
-- [ ] 条件连招正常工作，基于敌人状态或环境触发额外效果
+- [x] 标签协同机制正常工作，支持[破防]+[刚]、[湿]+[雷]、[浮空]+[坠击]等组合
+- [x] 系统正确识别技能标签并匹配协同效果
+- [x] 协同效果遵循公式：`协同伤害 = 基础伤害 × 协同倍率`
+- [x] 条件连招正常工作，基于敌人状态或环境触发额外效果
 
 ---
 
@@ -94,7 +94,7 @@
 **Required evidence**:
 - Logic: `tests/unit/martial_arts_combo/martial_arts_combo_mechanics_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

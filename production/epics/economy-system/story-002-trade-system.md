@@ -1,7 +1,7 @@
 # Story 002: 交易系统
 
 > **Epic**: 经济系统
-> **Status**: Complete
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26

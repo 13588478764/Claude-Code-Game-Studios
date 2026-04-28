@@ -1,7 +1,7 @@
 # Story 003: 任务奖励发放
 
 > **Epic**: 任务系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/quest-system.md`, scoped to this story:*
 
-- [ ] 任务奖励系统支持不同类型的任务（主线、支线、悬赏、奇遇）和相应奖励
-- [ ] 奖励发放遵循公式（如主线任务：经验值=玩家等级×100，银两=玩家等级×50）
-- [ ] 奖励发放时检查玩家背包容量，背包满时使用临时储物箱
-- [ ] 奖励发放后正确更新玩家属性和资源
+- [x] 任务奖励系统支持不同类型的任务（主线、支线、悬赏、奇遇）和相应奖励
+- [x] 奖励发放遵循公式（如主线任务：经验值=玩家等级×100，银两=玩家等级×50）
+- [x] 奖励发放时检查玩家背包容量，背包满时使用临时储物箱
+- [x] 奖励发放后正确更新玩家属性和资源
 
 ---
 
@@ -94,7 +94,7 @@
 **Required evidence**:
 - Integration: `tests/integration/quest/quest_reward_distribution_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

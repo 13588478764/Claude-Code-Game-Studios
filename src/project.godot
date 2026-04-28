@@ -31,3 +31,7 @@ WorldSystem="res://scripts/world/world_system.gd"
 EconomySystem="res://scripts/economy/economy_system.gd"
 GameData="res://scripts/core/game_data.gd"
 DatabaseManager="res://scripts/database/database_manager.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")

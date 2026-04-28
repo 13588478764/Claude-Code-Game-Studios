@@ -3,8 +3,11 @@
 > **Layer**: Core
 > **GDD**: design/gdd/open-world-exploration-system.md
 > **Architecture Module**: World Management
-> **Status**: Ready
-> **Stories**: Not yet created — run `/create-stories open-world-exploration-system`
+> **Status**: Complete
+> **Stories**: 
+> - [story-001-seamless-world-exploration.md](story-001-seamless-world-exploration.md)
+> - [story-002-player-movement-system.md](story-002-player-movement-system.md)
+> - [story-003-exploration-feedback-mechanism.md](story-003-exploration-feedback-mechanism.md)
 
 ## Overview
 
@@ -32,6 +35,14 @@ This epic is complete when:
 - All Logic and Integration stories have passing test files in `tests/`
 - All Visual/Feel and UI stories have evidence docs with sign-off in `production/qa/evidence/`
 
+## Stories
+
+| ID | Title | Status | Type | Layer |
+|----|-------|--------|------|-------|
+| [Story 001](story-001-seamless-world-exploration.md) | 无缝世界探索 | Complete | Integration | Core |
+| [Story 002](story-002-player-movement-system.md) | 玩家移动系统 | Complete | Logic | Core |
+| [Story 003](story-003-exploration-feedback-mechanism.md) | 探索反馈机制 | Complete | Logic | Core |
+
 ## Next Step
 
-Run `/create-stories open-world-exploration-system` to break this epic into implementable stories.
+所有故事已完成实现。

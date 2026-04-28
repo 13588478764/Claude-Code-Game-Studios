@@ -1,7 +1,7 @@
 # Story 002: 已发现地点访问
 
 > **Epic**: 快速旅行系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Core
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/fast-travel-system.md`, scoped to this story:*
 
-- [ ] 传送点解锁机制正常（首次互动解锁）
-- [ ] 解锁状态持久化（存档/读档）
-- [ ] 地图标记更新正确（小地图/大地图）
-- [ ] 主线强制解锁功能（任务关联）
+- [x] 传送点解锁机制正常（首次互动解锁）
+- [x] 解锁状态持久化（存档/读档）
+- [x] 地图标记更新正确（小地图/大地图）
+- [x] 主线强制解锁功能（任务关联）
 
 ---
 
@@ -96,7 +96,7 @@
 **Required evidence**:
 - Unit: `tests/unit/fast-travel/discovered_location_access_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

@@ -1,7 +1,7 @@
 # Story 003: 价格平衡机制
 
 > **Epic**: 经济系统
-> **Status**: Complete
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

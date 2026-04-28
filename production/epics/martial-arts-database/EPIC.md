@@ -3,8 +3,19 @@
 > **Layer**: Foundation
 > **GDD**: design/gdd/martial-arts-database.md
 > **Architecture Module**: Data Management
-> **Status**: Ready
-> **Stories**: Not yet created — run `/create-stories martial-arts-database`
+> **Status**: Complete
+> **Stories**: 
+> - [story-001-martial-arts-data-structure-definition.md](story-001-martial-arts-data-structure-definition.md)
+> - [story-002-martial-arts-attribute-storage.md](story-002-martial-arts-attribute-storage.md)
+> - [story-003-data-access-interface.md](story-003-data-access-interface.md)
+
+## Stories
+
+| ID | Title | Status | Type | Layer |
+|----|-------|--------|------|-------|
+| [Story 001](story-001-martial-arts-data-structure-definition.md) | 武学数据结构定义 | Complete | Logic | Foundation |
+| [Story 002](story-002-martial-arts-attribute-storage.md) | 武学属性存储 | Complete | Logic | Foundation |
+| [Story 003](story-003-data-access-interface.md) | 数据访问接口 | Complete | Logic | Foundation |
 
 ## Overview
 
@@ -34,4 +45,4 @@ This epic is complete when:
 
 ## Next Step
 
-Run `/create-stories martial-arts-database` to break this epic into implementable stories.
+所有故事已完成实现。

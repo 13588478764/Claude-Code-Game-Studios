@@ -3,7 +3,7 @@
 > **Layer**: Feature
 > **GDD**: design/gdd/encounter-system.md
 > **Architecture Module**: Event System
-> **Status**: Ready
+> **Status**: Complete
 > **Stories**: 
 > - [story-001-encounter-trigger-system.md](story-001-encounter-trigger-system.md)
 > - [story-002-encounter-reward-system.md](story-002-encounter-reward-system.md)

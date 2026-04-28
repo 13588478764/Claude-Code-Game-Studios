@@ -1,7 +1,7 @@
 # Story 006: 奇遇事件UI
 
 > **Epic**: 角色成长系统
-> **Status**: Complete
+> **Status**: Pending Test
 > **Layer**: Presentation
 > **Type**: Visual/Feel
 > **Manifest Version**: 2026-04-26

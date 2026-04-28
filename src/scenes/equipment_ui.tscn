@@ -1,0 +1,66 @@
+[gd_scene load_steps=2 format=3 uid="uid://-x1j8y80k0n0"]
+
+[sub_resource type="Theme" id="theme_1"]
+theme_items = {
+"style": {
+"panel": [Object(1)]
+}
+}
+
+[sub_resource type="StyleBoxFlat" id="1"]
+bg_color = Color(0.15, 0.15, 0.15, 0.9)
+border_width_left = 2
+border_width_right = 2
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.3, 0.3, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_left = 5
+corner_radius_bottom_right = 5
+
+[node name="EquipmentUI" type="Control" script=ResourcePath("res://src/scripts/ui/equipment_ui.gd")]
+size = Vector2(1200, 800)
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = SubResource("theme_1")
+
+[node name="VBoxContainer" parent="." type="VBoxContainer"]
+size_flags_vertical = Control.SIZE_EXPAND_FILL
+custom_minimum_size = Vector2(0, 800)
+
+[node name="Header" parent="VBoxContainer" type="Label"]
+text = "装备界面"
+horizontal_alignment = Label.HORIZONTAL_ALIGNMENT_CENTER
+size_flags_horizontal = Control.SIZE_EXPAND_FILL
+theme_override_colors = {"font_color": Color(0.9, 0.9, 0.9, 1)}
+theme_override_constants = {"outline_size": 1}
+
+[node name="CharacterPanel" parent="VBoxContainer" type="Panel"]
+custom_minimum_size = Vector2(0, 150)
+size_flags_vertical = Control.SIZE_SHRINK_END
+size_flags_horizontal = Control.SIZE_EXPAND_FILL
+theme_override_colors = {"bg_color": Color(0.2, 0.2, 0.2, 0.7)}
+
+[node name="EquipmentSlotsContainer" parent="VBoxContainer" type="Panel"]
+custom_minimum_size = Vector2(0, 300)
+size_flags_vertical = Control.SIZE_SHRINK_END
+size_flags_horizontal = Control.SIZE_EXPAND_FILL
+theme_override_colors = {"bg_color": Color(0.18, 0.18, 0.18, 0.7)}
+
+[node name="BackpackPanel" parent="VBoxContainer" type="Panel"]
+custom_minimum_size = Vector2(0, 200)
+size_flags_vertical = Control.SIZE_SHRINK_END
+size_flags_horizontal = Control.SIZE_EXPAND_FILL
+theme_override_colors = {"bg_color": Color(0.2, 0.2, 0.2, 0.7)}
+
+[node name="AttributeComparisonPanel" parent="VBoxContainer" type="Panel"]
+custom_minimum_size = Vector2(0, 100)
+size_flags_vertical = Control.SIZE_SHRINK_END
+size_flags_horizontal = Control.SIZE_EXPAND_FILL
+theme_override_colors = {"bg_color": Color(0.18, 0.18, 0.18, 0.7)}
+
+[node name="CloseButton" parent="VBoxContainer" type="Button"]
+text = "关闭"
+size_flags_horizontal = Control.SIZE_SHRINK_END
+size_flags_horizontal = Control.SIZE_SHRINK_CENTER

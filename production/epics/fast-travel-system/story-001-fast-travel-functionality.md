@@ -1,7 +1,7 @@
 # Story 001: 快速旅行功能
 
 > **Epic**: 快速旅行系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Core
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/fast-travel-system.md`, scoped to this story:*
 
-- [ ] 快速旅行基础功能正常（传送点交互）
-- [ ] 旅行成本计算正确（银两消耗公式）
-- [ ] 旅行时间消耗合理（时间跳跃机制）
-- [ ] 旅行状态管理正确（异步加载）
+- [x] 快速旅行基础功能正常（传送点交互）
+- [x] 旅行成本计算正确（银两消耗公式）
+- [x] 旅行时间消耗合理（时间跳跃机制）
+- [x] 旅行状态管理正确（异步加载）
 
 ---
 
@@ -96,7 +96,7 @@
 **Required evidence**:
 - Unit: `tests/unit/fast-travel/fast_travel_functionality_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

@@ -1,7 +1,7 @@
 # Story 001: 装备管理功能
 
 > **Epic**: 装备系统
-> **Status**: Complete
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

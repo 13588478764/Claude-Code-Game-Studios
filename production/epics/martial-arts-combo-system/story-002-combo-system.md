@@ -1,7 +1,7 @@
 # Story 002: 连招系统
 
 > **Epic**: 武学组合/连招系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/martial-arts-combo-system.md`, scoped to this story:*
 
-- [ ] 连招系统支持菜单指令链，玩家可以在战术暂停模式下规划连招
-- [ ] 连携指令系统正常工作，支持主角行动结束后的队友追加攻击
-- [ ] 连招状态机正常工作（准备→协同→完成→中断）
-- [ ] 连招系统正确管理连携槽，支持资源积累和消耗
+- [x] 连招系统支持菜单指令链，玩家可以在战术暂停模式下规划连招
+- [x] 连携指令系统正常工作，支持主角行动结束后的队友追加攻击
+- [x] 连招状态机正常工作（准备→协同→完成→中断）
+- [x] 连招系统正确管理连携槽，支持资源积累和消耗
 
 ---
 
@@ -94,7 +94,7 @@
 **Required evidence**:
 - Integration: `tests/integration/martial_arts_combo/combo_system_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

@@ -1,7 +1,7 @@
 # Story 001: 任务状态管理
 
 > **Epic**: 任务系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/quest-system.md`, scoped to this story:*
 
-- [ ] 任务状态机正常工作，支持LOCKED、AVAILABLE、ACTIVE、COMPLETED、FINISHED五种状态
-- [ ] 系统正确处理任务状态转换（接取、激活、完成、结束）
-- [ ] 任务状态数据正确保存和加载，不会丢失
-- [ ] 前置条件检查正常工作，确保任务按顺序解锁
+- [x] 任务状态机正常工作，支持LOCKED、AVAILABLE、ACTIVE、COMPLETED、FINISHED五种状态
+- [x] 系统正确处理任务状态转换（接取、激活、完成、结束）
+- [x] 任务状态数据正确保存和加载，不会丢失
+- [x] 前置条件检查正常工作，确保任务按顺序解锁
 
 ---
 
@@ -94,7 +94,7 @@
 **Required evidence**:
 - Logic: `tests/unit/quest/quest_state_management_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

@@ -37,7 +37,7 @@
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
-last_updated: ""
+last_updated: "2026-04-28"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -48,7 +48,114 @@ last_updated: ""
 # Attribute fields: any key stats that could appear in another GDD
 #   (health, damage, drops, faction, etc.)
 
-entities: []
+entities:
+  - name: Realm_Early_Qi_Refining
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [1, 11]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Late_Qi_Refining
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [12, 22]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Early_Foundation_Building
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [23, 33]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Late_Foundation_Building
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [34, 44]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Early_Golden_Core
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [45, 55]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Late_Golden_Core
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [56, 66]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Early_Nascent_Soul
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [67, 77]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Late_Nascent_Soul
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [78, 88]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Realm_Spirit_Transformation
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+    level_range: [89, 99]
+    bonus: 0.10
+    added: "2026-04-28"
+    revised: ""
 
 # Example (remove when first real entry is added):
 #
@@ -77,7 +184,113 @@ entities: []
 # Attribute fields: value_gold, weight, stackable, category, and any stat
 #   modifiers that another system (e.g., economy, crafting) might reference.
 
-items: []
+items:
+  # Attributes (treated as special items for cross-system tracking)
+  - name: Strength
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/combat-system.md
+      - design/gdd/equipment-system.md
+      - docs/architecture/control-manifest.md
+    abbreviation: STR
+    effects:
+      physical_damage: 2
+      carry_weight: 5
+      armor_penetration: 1
+    unit: per_point
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Agility
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/combat-system.md
+      - design/gdd/health-defense-system.md
+      - docs/architecture/control-manifest.md
+    abbreviation: AGI
+    effects:
+      evasion: 0.5
+      action_speed: 1.0
+      movement_speed: 0.5
+      crit_rate: 0.3
+    unit: percentage_per_point
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Constitution
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/health-defense-system.md
+      - docs/architecture/control-manifest.md
+    abbreviation: CON
+    effects:
+      max_hp: 20
+      physical_defense: 1
+      status_resistance: 0.5
+      hp_regen: 0.5
+    unit: per_point
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Wisdom
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/combat-system.md
+      - design/gdd/martial-arts-system.md
+      - docs/architecture/control-manifest.md
+    abbreviation: WIS
+    effects:
+      max_qi: 15
+      qi_regen: 0.3
+      skill_proficiency: 1.0
+      crit_damage: 1.0
+    unit: per_point
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Willpower
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/health-defense-system.md
+      - design/gdd/combat-system.md
+      - docs/architecture/control-manifest.md
+    abbreviation: WILL
+    effects:
+      max_poise: 10
+      block_success: 0.5
+      control_resistance: 0.5
+      mental_defense: 1
+    unit: per_point
+    added: "2026-04-28"
+    revised: ""
+
+  - name: Luck
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/encounter-system.md
+      - design/gdd/reward-distribution-system.md
+      - docs/architecture/control-manifest.md
+    abbreviation: LUK
+    effects:
+      encounter_rate: 0.3
+      rare_drop: 0.5
+      crafting_success: 0.5
+      crit_rate: 0.2
+    unit: percentage_per_point
+    added: "2026-04-28"
+    revised: ""
 
 # Example:
 #
@@ -106,7 +319,79 @@ items: []
 #   output_range[min, max], added
 # Optional: expression (the actual formula), notes
 
-formulas: []
+formulas:
+  - name: final_damage_formula
+    status: active
+    source: design/gdd/combat-system.md
+    referenced_by:
+      - design/gdd/combat-system.md
+      - design/gdd/damage-calculation-system.md
+      - design/gdd/martial-arts-system.md
+    variables:
+      - base_damage
+      - crit_multiplier
+      - combo_multiplier
+      - weakness_multiplier
+      - break_multiplier
+      - status_multiplier
+      - random_variance
+      - element_multiplier
+    output_range: [5, 3000]
+    expression: "base_damage × crit_multiplier × combo_multiplier × weakness_multiplier × break_multiplier × status_multiplier × random_variance × element_multiplier"
+    notes: "Complete damage calculation formula including all multipliers. Element multiplier is 1.5× for counter elements, 1.0× otherwise."
+    added: "2026-04-28"
+    revised: ""
+
+  - name: max_hp_formula
+    status: active
+    source: design/gdd/health-defense-system.md
+    referenced_by:
+      - design/gdd/health-defense-system.md
+      - design/gdd/character-progression-system.md
+    variables:
+      - base_hp
+      - con_stat
+      - hp_coefficient
+      - equipment_bonus
+    output_range: [100, 2000]
+    expression: "base_hp + (con_stat × hp_coefficient) + equipment_bonus"
+    notes: "Maximum health points calculation. CON attribute provides +20 HP per point."
+    added: "2026-04-28"
+    revised: ""
+
+  - name: max_poise_formula
+    status: active
+    source: design/gdd/health-defense-system.md
+    referenced_by:
+      - design/gdd/health-defense-system.md
+      - design/gdd/combat-system.md
+      - design/gdd/character-progression-system.md
+    variables:
+      - base_poise
+      - will_stat
+      - poise_coefficient
+      - equipment_bonus
+    output_range: [50, 800]
+    expression: "base_poise + (will_stat × poise_coefficient) + equipment_bonus"
+    notes: "Maximum poise/stance calculation. WILL attribute provides +10 poise per point."
+    added: "2026-04-28"
+    revised: ""
+
+  - name: exp_to_level_formula
+    status: active
+    source: design/gdd/experience-system.md
+    referenced_by:
+      - design/gdd/experience-system.md
+      - design/gdd/level-up-mechanism.md
+    variables:
+      - base_value
+      - level
+      - exponent_coefficient
+    output_range: [100, 50000]
+    expression: "base_value × (level ^ exponent_coefficient)"
+    notes: "Experience required to level up. Uses segmented exponent: early=1.0, mid=1.5, late=2.5"
+    added: "2026-04-28"
+    revised: ""
 
 # Example:
 #
@@ -139,7 +424,187 @@ formulas: []
 #
 # Required fields: name, status, source, referenced_by, value, unit, added
 
-constants: []
+constants:
+  - name: MAX_LEVEL
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+      - docs/architecture/control-manifest.md
+    value: 99
+    unit: levels
+    added: "2026-04-28"
+    revised: ""
+
+  - name: ATTRIBUTE_POINTS_PER_LEVEL
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - docs/architecture/control-manifest.md
+    value: 5
+    unit: points
+    added: "2026-04-28"
+    revised: ""
+
+  - name: TOTAL_ATTRIBUTE_POINTS
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - docs/architecture/control-manifest.md
+    value: 495
+    unit: points
+    notes: "99 levels × 5 points/level = 495 total attribute points"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: REALM_COUNT
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - design/gdd/experience-system.md
+      - docs/architecture/control-manifest.md
+    value: 9
+    unit: realms
+    added: "2026-04-28"
+    revised: ""
+
+  - name: REALM_BREAKTHROUGH_BONUS
+    status: active
+    source: design/gdd/character-progression-system.md
+    referenced_by:
+      - design/gdd/character-progression-system.md
+      - design/gdd/level-up-mechanism.md
+      - docs/architecture/control-manifest.md
+    value: 0.10
+    unit: percentage
+    notes: "+10% to all attributes per realm breakthrough"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: ELEMENT_COUNTER_MULTIPLIER
+    status: active
+    source: design/gdd/combat-system.md
+    referenced_by:
+      - design/gdd/combat-system.md
+      - design/gdd/damage-calculation-system.md
+      - design/gdd/martial-arts-system.md
+      - docs/architecture/control-manifest.md
+    value: 1.5
+    unit: multiplier
+    notes: "Damage multiplier when using counter element (Five Elements system)"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: QI_RECOVERY_RATE_MIN
+    status: active
+    source: design/gdd/combat-system.md
+    referenced_by:
+      - design/gdd/combat-system.md
+      - design/gdd/internal-energy-management-system.md
+      - docs/architecture/control-manifest.md
+    value: 0.05
+    unit: percentage
+    notes: "Minimum Qi recovery rate per turn (5%)"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: QI_RECOVERY_RATE_MAX
+    status: active
+    source: design/gdd/combat-system.md
+    referenced_by:
+      - design/gdd/combat-system.md
+      - design/gdd/internal-energy-management-system.md
+      - docs/architecture/control-manifest.md
+    value: 0.10
+    unit: percentage
+    notes: "Maximum Qi recovery rate per turn (10%)"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: WORLD_CHUNK_SIZE
+    status: active
+    source: design/gdd/world-streaming-system.md
+    referenced_by:
+      - design/gdd/world-streaming-system.md
+      - design/gdd/lod-system.md
+      - design/gdd/minimap-system.md
+      - docs/architecture/control-manifest.md
+    value: 2048
+    unit: pixels
+    notes: "Standard world chunk size (2048×2048 pixels)"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: LOAD_DISTANCE_MULTIPLIER
+    status: active
+    source: design/gdd/world-streaming-system.md
+    referenced_by:
+      - design/gdd/world-streaming-system.md
+      - design/gdd/lod-system.md
+      - docs/architecture/control-manifest.md
+    value: 1.5
+    unit: screen_width
+    notes: "Preload chunks at 1.5× screen width distance"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: UNLOAD_DISTANCE_MULTIPLIER
+    status: active
+    source: design/gdd/world-streaming-system.md
+    referenced_by:
+      - design/gdd/world-streaming-system.md
+      - design/gdd/lod-system.md
+      - docs/architecture/control-manifest.md
+    value: 4.5
+    unit: screen_width
+    notes: "Unload chunks beyond 4.5× screen width distance"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: MAX_LOADED_CHUNKS
+    status: active
+    source: design/gdd/world-streaming-system.md
+    referenced_by:
+      - design/gdd/world-streaming-system.md
+      - design/gdd/lod-system.md
+      - docs/architecture/control-manifest.md
+    value: 16
+    unit: chunks
+    notes: "Maximum simultaneous loaded chunks on PC platform"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: MEMORY_BUDGET
+    status: active
+    source: docs/architecture/control-manifest.md
+    referenced_by:
+      - docs/architecture/control-manifest.md
+      - design/gdd/martial-arts-database.md
+      - design/gdd/item-database.md
+    value: 1024
+    unit: MB
+    notes: "Total game memory budget for PC platform (<1GB)"
+    added: "2026-04-28"
+    revised: ""
+
+  - name: TARGET_FPS
+    status: active
+    source: docs/architecture/control-manifest.md
+    referenced_by:
+      - docs/architecture/control-manifest.md
+    value: 60
+    unit: fps
+    notes: "Target frame rate for PC platform"
+    added: "2026-04-28"
+    revised: ""
 
 # Example:
 #

@@ -3,8 +3,11 @@
 > **Layer**: Core
 > **GDD**: design/gdd/point-of-interest-tracking-system.md
 > **Architecture Module**: World Management
-> **Status**: Ready
-> **Stories**: Not yet created — run `/create-stories point-of-interest-tracking-system`
+> **Status**: Complete
+> **Stories**: 
+> - [story-001-poi-marking-system.md](story-001-poi-marking-system.md)
+> - [story-002-poi-tracking-functionality.md](story-002-poi-tracking-functionality.md)
+> - [story-003-poi-discovery-feedback.md](story-003-poi-discovery-feedback.md)
 
 ## Overview
 
@@ -32,6 +35,14 @@ This epic is complete when:
 - All Logic and Integration stories have passing test files in `tests/`
 - All Visual/Feel and UI stories have evidence docs with sign-off in `production/qa/evidence/`
 
+## Stories
+
+| ID | Title | Status | Type | Layer |
+|----|-------|--------|------|-------|
+| [Story 001](story-001-poi-marking-system.md) | 兴趣点标记系统 | Complete | UI | Core |
+| [Story 002](story-002-poi-tracking-functionality.md) | 兴趣点追踪功能 | Complete | Logic | Core |
+| [Story 003](story-003-poi-discovery-feedback.md) | 兴趣点发现反馈 | Complete | Logic | Core |
+
 ## Next Step
 
-Run `/create-stories point-of-interest-tracking-system` to break this epic into implementable stories.
+所有故事已完成实现。

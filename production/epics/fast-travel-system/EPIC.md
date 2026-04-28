@@ -2,8 +2,8 @@
 
 > **Layer**: Core
 > **GDD**: design/gdd/fast-travel-system.md
-> **Architecture Module**: World Management
-> **Status**: Ready
+> **Architecture Module**: World
+> **Status**: Complete
 > **Stories**: 
 > - [story-001-fast-travel-functionality.md](story-001-fast-travel-functionality.md)
 > - [story-002-discovered-location-access.md](story-002-discovered-location-access.md)
@@ -13,13 +13,13 @@
 
 | ID | Title | Status | Type | Layer |
 |----|-------|--------|------|-------|
-| [Story 001](story-001-fast-travel-functionality.md) | 快速旅行功能 | Ready | Logic | Core |
-| [Story 002](story-002-discovered-location-access.md) | 已发现地点访问 | Ready | Logic | Core |
-| [Story 003](story-003-travel-cost-mechanism.md) | 旅行成本机制 | Ready | Logic | Core |
+| [Story 001](story-001-fast-travel-functionality.md) | 快速旅行功能 | Complete | Logic | Core |
+| [Story 002](story-002-discovered-location-access.md) | 已发现地点访问 | Complete | Logic | Core |
+| [Story 003](story-003-travel-cost-mechanism.md) | 旅行成本机制 | Complete | Logic | Core |
 
 ## Overview
 
-快速旅行系统允许玩家在已发现的地点间快速移动，为玩家提供便利的交通方式，节省重复行走的时间，让玩家能够专注于探索和冒险。
+快速旅行系统实现了一个完整的旅行机制，包括基础旅行功能、地点发现与解锁、以及经济成本管理。系统采用"距离+区域"的费用计算模型，确保玩家在游戏世界中的旅行既便捷又具有经济意义。
 
 ## Governing ADRs
 
@@ -45,4 +45,4 @@ This epic is complete when:
 
 ## Next Step
 
-Run `/dev-story [story-path]` to begin implementation of individual stories.
+所有故事已完成实现。

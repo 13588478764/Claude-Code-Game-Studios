@@ -1,0 +1,78 @@
+[gd_scene load_steps=5 format=3 uid="uid://status_ui_test_scene"]
+
+[ext_resource type="Script" path="res://scenes/status_ui_test_controller.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/status_effect_manager.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/ui/status_icon_bar.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/ui/status_visual_feedback.gd" id="4"]
+
+[node name="StatusUITest" type="Node2D"]
+script = ExtResource("1")
+
+[node name="StatusEffectManager" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="StatusIconBar" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 60.0
+script = ExtResource("3")
+
+[node name="TestCharacter" type="Node2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="StatusVisualFeedback" type="Node" parent="TestCharacter"]
+script = ExtResource("4")
+
+[node name="TestControls" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 20.0
+offset_top = 100.0
+offset_right = 300.0
+offset_bottom = 500.0
+
+[node name="Label" type="Label" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "状态UI测试控制面板"
+horizontal_alignment = 1
+
+[node name="ApplyBurnButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "施加燃烧状态"
+
+[node name="ApplyPoisonButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "施加中毒状态"
+
+[node name="ApplyRegenButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "施加再生状态"
+
+[node name="ApplyShieldButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "施加护盾状态"
+
+[node name="RemoveAllButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "移除所有状态"
+
+[node name="ToggleLowMemoryButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "切换低内存模式"
+
+[node name="ResolutionLabel" type="Label" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "分辨率切换:"
+
+[node name="Res1080pButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "1920x1080"
+
+[node name="Res1440pButton" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "2560x1440"
+
+[node name="Res21_9Button" type="Button" parent="CanvasLayer/TestControls"]
+layout_mode = 2
+text = "3440x1440 (21:9)"

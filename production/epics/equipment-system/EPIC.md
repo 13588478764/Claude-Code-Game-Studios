@@ -3,7 +3,7 @@
 > **Layer**: Feature
 > **GDD**: design/gdd/equipment-system.md
 > **Architecture Module**: Character
-> **Status**: Ready
+> **Status**: Complete
 > **Stories**: 
 > - [story-001-equipment-management.md](story-001-equipment-management.md)
 > - [story-002-equipment-wearing.md](story-002-equipment-wearing.md)

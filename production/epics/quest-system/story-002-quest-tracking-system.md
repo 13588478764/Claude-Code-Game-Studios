@@ -1,7 +1,7 @@
 # Story 002: 任务追踪系统
 
 > **Epic**: 任务系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/quest-system.md`, scoped to this story:*
 
-- [ ] 任务追踪系统在小地图上正确显示任务目标位置
-- [ ] 任务追踪系统在UI上正确显示当前激活任务的目标和进度
-- [ ] 任务追踪系统支持不同类型的任务目标（对话、击杀、收集、到达位置）
-- [ ] 任务追踪系统正确更新目标进度（如击杀敌人数量、收集物品数量）
+- [x] 任务追踪系统在小地图上正确显示任务目标位置
+- [x] 任务追踪系统在UI上正确显示当前激活任务的目标和进度
+- [x] 任务追踪系统支持不同类型的任务目标（对话、击杀、收集、到达位置）
+- [x] 任务追踪系统正确更新目标进度（如击杀敌人数量、收集物品数量）
 
 ---
 
@@ -94,7 +94,7 @@
 **Required evidence**:
 - Integration: `tests/integration/quest/quest_tracking_system_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

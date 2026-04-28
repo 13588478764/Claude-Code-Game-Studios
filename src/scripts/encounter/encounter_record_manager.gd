@@ -1,61 +1,46 @@
-# 武侠奇遇录 - 奇遇记录管理系统
-# 实现奇遇完成状态记录、连续失败计数器和历史记录管理
-
 extends Node
 
+# 奇遇记录管理器
+# 负责管理奇遇完成状态、连续失败计数器和历史记录
+
 # 信号定义
-signal record_updated(record_type, encounter_id)
-signal save_data_requested
-signal load_data_requested
+signal record_updated(record_type: String, data: Dictionary)
 
-# 奇遇类型枚举（与触发系统保持一致）
-enum EncounterType {
-	JIANGHU_RUMOR,      # 江湖传闻
-	TIANCAI_DIBAO,      # 天材地宝
-	GAOREN_ZHIDIAN,     # 高人指点
-	SHICHUAN_MIJI,      # 失传秘籍
-	MIJING_CHALLENGE    # 秘境挑战
-}
+# 常量定义
+const SAVE_FILE_PATH = "user://encounter_records.json"
 
-# 奇遇记录结构定义
-class EncounterRecord:
-	var encounter_id: String
-	var encounter_type: EncounterType
-	var timestamp: int
-	var rewards_received: Array
-	var luck_stat: int
-	var is_completed: bool
-	
-	func _init(id: String, type: EncounterType, time: int, rewards: Array, luck: int):
-		encounter_id = id
-		encounter_type = type
-		timestamp = time
-		rewards_received = rewards
-		luck_stat = luck
-		is_completed = true
+# 变量定义
+var completed_encounters: Array[String] = []
+var consecutive_failures: int = 0
+var max_consecutive_failures: int = 20
+var encounter_history: Array[Dictionary] = []
+var save_data_version: String = "1.0"
 
-# 状态变量
-var completed_encounters: Dictionary = {}  # 存储已完成的奇遇ID
-var encounter_history: Array[EncounterRecord] = []  # 奇遇历史记录
-var consecutive_failures: int = 0  # 连续失败计数器
-var max_history_size: int = 50  # 最大历史记录数量
-
+# 初始化
 func _ready():
-	print("奇遇记录管理系统初始化完成")
-
-# 标记奇遇为已完成
-func mark_encounter_completed(encounter_id: String) -> bool:
-	if completed_encounters.has(encounter_id):
-		print("警告: 奇遇ID %s 已经被标记为完成" % encounter_id)
-		return false
+	print("奇遇记录管理器已初始化")
 	
-	completed_encounters[encounter_id] = OS.get_ticks_msec()
-	emit_signal("record_updated", "completed", encounter_id)
-	return true
+	# 尝试从存档加载数据
+	load_records()
 
-# 检查奇遇是否已完成
-func is_encounter_completed(encounter_id: String) -> bool:
-	return completed_encounters.has(encounter_id)
+# 标记奇遇已完成
+func mark_encounter_completed(encounter_id: String) -> void:
+	if not completed_encounters.has(encounter_id):
+		completed_encounters.append(encounter_id)
+		
+		# 添加到历史记录
+		var history_entry = {
+			"id": encounter_id,
+			"timestamp": Time.get_unix_time_from_system(),
+			"type": extract_encounter_type_from_id(encounter_id),
+			"status": "completed"
+		}
+		encounter_history.append(history_entry)
+		
+		# 发出更新信号
+		emit_signal("record_updated", "completed_encounter", {"id": encounter_id, "history_entry": history_entry})
+		
+		print("奇遇 '%s' 已标记为完成" % encounter_id)
 
 # 更新失败计数器
 func update_failure_counter(success: bool) -> void:
@@ -63,146 +48,207 @@ func update_failure_counter(success: bool) -> void:
 		consecutive_failures = 0
 	else:
 		consecutive_failures += 1
+		
+		# 检查是否达到保底触发条件
+		if consecutive_failures >= max_consecutive_failures:
+			print("达到保底触发条件，下次触发概率为100%")
+			consecutive_failures = max_consecutive_failures - 1  # 保持在触发状态
 	
-	emit_signal("record_updated", "failure_counter", consecutive_failures)
-
-# 获取连续失败次数
-func get_consecutive_failures() -> int:
-	return consecutive_failures
-
-# 重置失败计数器
-func reset_failure_counter() -> void:
-	consecutive_failures = 0
-	emit_signal("record_updated", "failure_counter", 0)
-
-# 添加奇遇历史记录
-func add_encounter_to_history(encounter_id: String, encounter_type: EncounterType, rewards: Array, luck_stat: int) -> void:
-	var new_record = EncounterRecord.new(encounter_id, encounter_type, OS.get_ticks_msec(), rewards, luck_stat)
-	encounter_history.append(new_record)
-	
-	# 限制历史记录大小
-	if encounter_history.size() > max_history_size:
-		encounter_history.pop_front()  # 移除最旧的记录
-	
-	emit_signal("record_updated", "history", encounter_id)
+	emit_signal("record_updated", "failure_counter", {"count": consecutive_failures, "success": success})
 
 # 获取奇遇历史记录
-func get_encounter_history() -> Array[EncounterRecord]:
+func get_encounter_history() -> Array[Dictionary]:
 	return encounter_history.duplicate()
 
-# 获取特定类型的奇遇历史
-func get_encounters_by_type(encounter_type: EncounterType) -> Array[EncounterRecord]:
-	var filtered_history = []
-	for record in encounter_history:
-		if record.encounter_type == encounter_type:
-			filtered_history.append(record)
-	return filtered_history
+# 获取特定类型的历史记录
+func get_encounters_by_type(encounter_type: String) -> Array[Dictionary]:
+	var result = []
+	for entry in encounter_history:
+		if entry.type == encounter_type:
+			result.append(entry)
+	return result
 
-# 获取已完成的奇遇数量
-func get_completed_encounter_count() -> int:
-	return completed_encounters.size()
+# 检查奇遇是否已完成
+func is_encounter_completed(encounter_id: String) -> bool:
+	return completed_encounters.has(encounter_id)
 
-# 获取指定时间段内的历史记录
-func get_encounters_in_time_range(start_time: int, end_time: int) -> Array[EncounterRecord]:
-	var filtered_history = []
-	for record in encounter_history:
-		if record.timestamp >= start_time and record.timestamp <= end_time:
-			filtered_history.append(record)
-	return filtered_history
-
-# 清除所有记录（谨慎使用）
-func clear_all_records() -> void:
-	completed_encounters.clear()
-	encounter_history.clear()
-	consecutive_failures = 0
-	print("所有奇遇记录已被清除")
-
-# 保存记录数据
-func save_records() -> Dictionary:
+# 保存记录到存档
+func save_records() -> bool:
 	var save_data = {
+		"version": save_data_version,
+		"timestamp": Time.get_unix_time_from_system(),
 		"completed_encounters": completed_encounters,
 		"consecutive_failures": consecutive_failures,
-		"encounter_history": []
+		"encounter_history": encounter_history
 	}
 	
-	# 序列化历史记录
-	for record in encounter_history:
-		var serialized_record = {
-			"encounter_id": record.encounter_id,
-			"encounter_type": record.encounter_type,
-			"timestamp": record.timestamp,
-			"rewards_received": record.rewards_received,
-			"luck_stat": record.luck_stat,
-			"is_completed": record.is_completed
-		}
-		save_data.encounter_history.append(serialized_record)
+	var json_string = JSON.stringify(save_data)
 	
-	emit_signal("save_data_requested")
-	return save_data
+	var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
+	if file == null:
+		print("错误：无法打开文件进行写入: %s" % SAVE_FILE_PATH)
+		return false
+	
+	file.store_string(json_string)
+	file.close()
+	
+	print("奇遇记录已保存到: %s" % SAVE_FILE_PATH)
+	return true
 
-# 加载记录数据
-func load_records(save_data: Dictionary) -> void:
+# 从存档加载记录
+func load_records() -> bool:
+	if not FileAccess.file_exists(SAVE_FILE_PATH):
+		print("存档文件不存在: %s，将使用默认数据" % SAVE_FILE_PATH)
+		return false
+	
+	var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
+	if file == null:
+		print("错误：无法打开文件进行读取: %s" % SAVE_FILE_PATH)
+		return false
+	
+	var file_content = file.get_as_text()
+	file.close()
+	
+	var json = JSON.new()
+	var parse_result = json.parse(file_content)
+	if parse_result != OK:
+		print("错误：无法解析存档数据")
+		return false
+	
+	var save_data = json.data
+	
+	# 验证版本
+	if not save_data.has("version"):
+		print("错误：存档数据缺少版本信息")
+		return false
+	
+	# 加载数据
 	if save_data.has("completed_encounters"):
 		completed_encounters = save_data.completed_encounters
 	if save_data.has("consecutive_failures"):
 		consecutive_failures = save_data.consecutive_failures
 	if save_data.has("encounter_history"):
-		encounter_history.clear()
-		for serialized_record in save_data.encounter_history:
-			var record = EncounterRecord.new(
-				serialized_record.encounter_id,
-				serialized_record.encounter_type,
-				serialized_record.timestamp,
-				serialized_record.rewards_received,
-				serialized_record.luck_stat
-			)
-			record.is_completed = serialized_record.is_completed
-			encounter_history.append(record)
+		encounter_history = save_data.encounter_history
 	
-	emit_signal("load_data_requested")
-	print("奇遇记录数据已加载")
+	print("从 %s 加载了 %d 个完成的奇遇记录和 %d 条历史记录" % [
+		SAVE_FILE_PATH, 
+		completed_encounters.size(), 
+		encounter_history.size()
+	])
+	
+	return true
 
-# 获取状态信息
+# 重置所有记录
+func reset_all_records() -> void:
+	completed_encounters.clear()
+	encounter_history.clear()
+	consecutive_failures = 0
+	
+	print("所有奇遇记录已重置")
+
+# 获取当前状态信息
 func get_status_info() -> Dictionary:
 	return {
 		"completed_count": completed_encounters.size(),
-		"history_count": encounter_history.size(),
 		"consecutive_failures": consecutive_failures,
-		"max_history_size": max_history_size
+		"history_count": encounter_history.size(),
+		"completed_encounters": completed_encounters.duplicate(),
+		"encounter_history": encounter_history.duplicate()
 	}
 
-# 导出记录为JSON字符串
-func export_records_to_json() -> String:
-	var data_to_export = save_records()
-	return JSON.stringify(data_to_export)
-
-# 从JSON字符串导入记录
-func import_records_from_json(json_string: String) -> bool:
-	var json_conv = JSON.new()
-	var parse_result = json_conv.parse(json_string)
-	
-	if parse_result == OK:
-		load_records(json_conv.data)
-		return true
+# 从ID提取奇遇类型
+func extract_encounter_type_from_id(encounter_id: String) -> String:
+	# ID格式通常是 "type_timestamp"，例如 "JiangHuRumor_1234567890"
+	var parts = encounter_id.split("_")
+	if parts.size() > 0:
+		return parts[0]
 	else:
-		print("错误: 无法解析JSON数据 - %s" % json_conv.error_message)
-		return false
+		return "Unknown"
 
-# 获取特定奇遇类型的完成次数
-func get_encounter_type_completion_count(encounter_type: EncounterType) -> int:
+# 获取统计信息
+func get_statistics() -> Dictionary:
+	var stats = {
+		"total_completed": completed_encounters.size(),
+		"consecutive_failures": consecutive_failures,
+		"total_history": encounter_history.size(),
+		"type_distribution": {}
+	}
+	
+	# 计算各类型分布
+	for entry in encounter_history:
+		var encounter_type = entry.get("type", "Unknown")
+		if not stats.type_distribution.has(encounter_type):
+			stats.type_distribution[encounter_type] = 0
+		stats.type_distribution[encounter_type] += 1
+	
+	return stats
+
+# 清除特定类型的记录
+func clear_encounters_by_type(encounter_type: String) -> int:
 	var count = 0
-	for record in encounter_history:
-		if record.encounter_type == encounter_type and record.is_completed:
+	var i = 0
+	while i < completed_encounters.size():
+		if extract_encounter_type_from_id(completed_encounters[i]) == encounter_type:
+			completed_encounters.remove_at(i)
 			count += 1
+		else:
+			i += 1
+	
+	# 同样清除历史记录中的对应条目
+	i = 0
+	while i < encounter_history.size():
+		if encounter_history[i].get("type", "") == encounter_type:
+			encounter_history.remove_at(i)
+		else:
+			i += 1
+	
 	return count
 
-# 检查是否在指定时间内完成过特定类型的奇遇
-func has_completed_encounter_type_recently(encounter_type: EncounterType, minutes: int) -> bool:
-	var current_time = OS.get_ticks_msec()
-	var time_threshold = minutes * 60 * 1000  # 转换为毫秒
+# 测试函数
+func test_record_system():
+	print("开始测试奇遇记录系统...")
 	
-	for record in encounter_history:
-		if record.encounter_type == encounter_type and record.is_completed:
-			if current_time - record.timestamp <= time_threshold:
-				return true
-	return false
+	# 测试标记完成
+	mark_encounter_completed("JiangHuRumor_1234567890")
+	mark_encounter_completed("TianCaiDiBao_1234567891")
+	
+	# 测试检查完成状态
+	var is_completed = is_encounter_completed("JiangHuRumor_1234567890")
+	print("检查奇遇完成状态: %s" % is_completed)
+	
+	# 测试更新失败计数器
+	update_failure_counter(false)  # 模拟失败
+	update_failure_counter(false)  # 模拟失败
+	update_failure_counter(true)  # 模拟成功
+	print("当前失败计数: %d" % consecutive_failures)
+	
+	# 测试获取历史记录
+	var history = get_encounter_history()
+	print("历史记录数量: %d" % history.size())
+	
+	# 测试统计信息
+	var stats = get_statistics()
+	print("统计信息: %s" % str(stats))
+	
+	# 测试保存和加载
+	save_records()
+	
+	# 重置并重新加载
+	reset_all_records()
+	load_records()
+	
+	print("奇遇记录系统测试完成")
+
+# 获取最近的奇遇记录
+func get_recent_encounters(count: int) -> Array[Dictionary]:
+	var recent = encounter_history.duplicate()
+	recent.reverse()  # 最新的在前
+	
+	if recent.size() > count:
+		recent.resize(count)
+	
+	return recent
+
+# 检查是否达到保底触发条件
+func is_guaranteed_trigger() -> bool:
+	return consecutive_failures >= max_consecutive_failures - 1

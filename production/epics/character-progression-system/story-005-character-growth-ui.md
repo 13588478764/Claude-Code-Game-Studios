@@ -1,7 +1,7 @@
 # Story 005: 角色成长UI
 
 > **Epic**: 角色成长系统
-> **Status**: Complete
+> **Status**: Pending Test
 > **Layer**: Presentation
 > **Type**: UI
 > **Manifest Version**: 2026-04-26

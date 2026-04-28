@@ -25,7 +25,7 @@
 # STATUS VALUES: active | deprecated | superseded-by: TR-[system]-NNN
 
 version: 1
-last_updated: "2026-04-26"
+last_updated: "2026-04-28"
 
 requirements:
   # 角色成长系统
@@ -215,5 +215,528 @@ requirements:
     gdd: design/gdd/fast-travel-system.md
     requirement: "旅行成本机制 - 实现银两消耗公式、时间跳跃公式、余额验证和货币回收功能"
     created: "2026-04-26"
+    revised: ""
+    status: active
+
+  # 战斗UI系统
+  - id: TR-combat-ui-001
+    system: combat-ui
+    gdd: design/gdd/combat-ui.md
+    requirement: "战斗HUD显示 - 常驻HUD元素正常显示（角色状态栏、行动队列），状态效果图标栏正确显示，伤害/状态飘字正常显示，UI元素位置适配不同分辨率"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-combat-ui-002
+    system: combat-ui
+    gdd: design/gdd/combat-ui.md
+    requirement: "战斗菜单交互 - 武学指令菜单正常显示（技能列表、消耗、冷却），目标选择光标正确工作（高亮、切换、确认），键盘快捷键正常（WASD移动、Enter确认、Esc取消），鼠标交互正常（悬停预览、点击选择）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-combat-ui-003
+    system: combat-ui
+    gdd: design/gdd/combat-ui.md
+    requirement: "战斗反馈系统 - 伤害数字颜色正确（不同伤害类型对应不同颜色），战斗特效正常播放（命中、暴击、特殊技能），音频反馈正常（UI操作、战斗事件），状态效果视觉反馈（Buff/Debuff图标动画）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 一致性检查报告系统
+  - id: TR-consistency-check-001
+    system: consistency-check-report
+    gdd: design/gdd/consistency-check-report.md
+    requirement: "文档一致性分析 - 识别所有严重矛盾（系统核心数值冲突），识别所有数值不一致（伤害与战斗系统公式冲突），识别所有状态效果数值不一致，识别所有分类与命名体系不一致"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-consistency-check-002
+    system: consistency-check-report
+    gdd: design/gdd/consistency-check-report.md
+    requirement: "冲突解决方案规划 - 制定严重矛盾解决方案（系统核心数值冲突），制定数值不一致解决方案（伤害与战斗系统公式冲突），制定状态效果数值不一致解决方案，制定分类与命名体系不一致解决方案"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-consistency-check-003
+    system: consistency-check-report
+    gdd: design/gdd/consistency-check-report.md
+    requirement: "文档对齐实施 - 实施严重矛盾解决方案（系统核心数值冲突），实施数值不一致解决方案（伤害与战斗系统公式冲突），实施状态效果数值不一致解决方案，实施分类与命名体系不一致解决方案"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 伤害计算系统
+  - id: TR-dmg-calc-001
+    system: damage-calculation
+    gdd: design/gdd/damage-calculation-system.md
+    requirement: "伤害类型与公式 - 三种伤害类型正确实现（外功、内功、真实伤害），基础伤害计算公式正确（减法公式），攻防属性正确应用（力道/悟性 vs 根骨/内力抗性），最小伤害限制正常（不低于1点）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-dmg-calc-002
+    system: damage-calculation
+    gdd: design/gdd/damage-calculation-system.md
+    requirement: "伤害倍率与修正 - 暴击倍率正确应用（1.5-2.0倍），连击倍率正确计算（最高+30%），弱点克制修正正常（1.5倍），状态效果修正正确（易伤、破防等）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-dmg-calc-003
+    system: damage-calculation
+    gdd: design/gdd/damage-calculation-system.md
+    requirement: "伤害可视化与反馈 - 伤害数字颜色正确（白色=外功，蓝色=内功，金色=暴击，红色=真实），伤害飘字动画正常，暴击特效正常，弱点打击反馈明显"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 奇遇条件检查系统
+  - id: TR-enc-cond-check-001
+    system: encounter-condition-check
+    gdd: design/gdd/encounter-condition-check-system.md
+    requirement: "条件类型与评估 - 四大类条件类型正确实现（时空环境、角色状态、进度历史、随机概率），条件评估逻辑正确（AND/OR逻辑组合），福缘修正系数正确应用（影响触发概率），条件评估结果准确（true/false）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-enc-cond-check-002
+    system: encounter-condition-check
+    gdd: design/gdd/encounter-condition-check-system.md
+    requirement: "触发机制与事件 - 区域触发器正确实现（Area2D），事件钩子正确监听（on_rest_started, on_battle_won等），条件检查时机准确（进入区域、事件触发），触发器管理高效（避免性能问题）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-enc-cond-check-003
+    system: encounter-condition-check
+    gdd: design/gdd/encounter-condition-check-system.md
+    requirement: "逻辑树与权重 - 嵌套逻辑树正确解析（AND/OR/嵌套），权重分配算法正确（影响触发优先级），互斥组管理正常（避免重复触发），条件组合灵活（支持复杂条件）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 属性点分配系统
+  - id: TR-attr-point-alloc-001
+    system: attribute-point-allocation
+    gdd: design/gdd/attribute-point-allocation-system.md
+    requirement: "属性点获取机制 - 每升1级获得5点自由属性点，99级总计495点属性点，境界突破不额外给予属性点"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-attr-point-alloc-002
+    system: attribute-point-allocation
+    gdd: design/gdd/attribute-point-allocation-system.md
+    requirement: "属性点分配界面 - 六维属性（力道、身法、根骨、悟性、定力、福缘）分配界面，支持实时效果预览，提供智能推荐分配方案"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-attr-point-alloc-003
+    system: attribute-point-allocation
+    gdd: design/gdd/attribute-point-allocation-system.md
+    requirement: "属性点验证规则 - 防止超出可用点数，支持使用洗髓丹重置，单个属性上限99点，境界突破后可免费重置一次"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 敌人AI系统
+  - id: TR-enemy-ai-001
+    system: enemy-ai
+    gdd: design/gdd/enemy-ai-system.md
+    requirement: "AI行为类型 - 实现五种核心战术意识行为（基础攻击、弱点利用、状态管理、生存本能、连携配合）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-ai-002
+    system: enemy-ai
+    gdd: design/gdd/enemy-ai-system.md
+    requirement: "AI难度等级 - 实现三种难度等级（简单、普通、困难）及对应的AI行为特征"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-ai-003
+    system: enemy-ai
+    gdd: design/gdd/enemy-ai-system.md
+    requirement: "AI决策机制 - 实现优先级评分表方法，包含候选动作生成、评分计算和最佳动作选择"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 装备属性计算系统
+  - id: TR-equip-attr-calc-001
+    system: equipment-attribute-calc
+    gdd: design/gdd/equipment-attribute-calculation.md
+    requirement: "属性计算机制 - 实现六维基础属性和战斗属性的计算，包括属性转换公式和品阶差异"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-equip-attr-calc-002
+    system: equipment-attribute-calc
+    gdd: design/gdd/equipment-attribute-calculation.md
+    requirement: "装备加成应用 - 实现装备特殊效果、状态抗性和属性叠加逻辑的正确应用"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-equip-attr-calc-003
+    system: equipment-attribute-calc
+    gdd: design/gdd/equipment-attribute-calculation.md
+    requirement: "元素属性计算 - 实现五行克制体系和元素伤害计算"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 装备槽位系统
+  - id: TR-equip-slot-001
+    system: equipment-slot
+    gdd: design/gdd/equipment-slot-system.md
+    requirement: "槽位类型与定义 - 实现15个装备槽位的定义和管理（武器、防具、饰品、特殊槽位）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-equip-slot-002
+    system: equipment-slot
+    gdd: design/gdd/equipment-slot-system.md
+    requirement: "境界解锁机制 - 实现根据角色境界解锁相应装备槽位的机制"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-equip-slot-003
+    system: equipment-slot
+    gdd: design/gdd/equipment-slot-system.md
+    requirement: "装备规则与验证 - 实现装备品阶、职业和性别限制的验证机制"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 装备UI系统
+  - id: TR-equip-ui-001
+    system: equipment-ui
+    gdd: design/gdd/equipment-ui.md
+    requirement: "装备界面布局 - 实现角色面板、装备槽位区域、背包区域和属性对比面板的布局设计"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-equip-ui-002
+    system: equipment-ui
+    gdd: design/gdd/equipment-ui.md
+    requirement: "装备交互功能 - 实现装备操作、属性查看、筛选和排序功能"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-equip-ui-003
+    system: equipment-ui
+    gdd: design/gdd/equipment-ui.md
+    requirement: "视觉反馈与特效 - 实现品阶颜色编码、状态指示和动画效果"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 经验值系统
+  - id: TR-exp-sys-001
+    system: experience-system
+    gdd: design/gdd/experience-system.md
+    requirement: "EXP获取机制 - 实现战斗收益（击败敌人、完美胜利、连携奖励）、探索与奇遇（首次探索、完成奇遇、收集图鉴）、任务进度（主线、支线、日常任务）三大类来源的EXP获取"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-exp-sys-002
+    system: experience-system
+    gdd: design/gdd/experience-system.md
+    requirement: "EXP计算与分配 - 实现基础经验值公式（敌人基础值 × (敌人等级 / 玩家等级)^缩放因子）、等级缩放修正、队伍EXP分配公式"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-exp-sys-003
+    system: experience-system
+    gdd: design/gdd/experience-system.md
+    requirement: "升级与境界突破 - 实现分段指数升级曲线（初期线性、中期温和指数、后期陡峭指数）、境界突破机制（每10级大境界门槛）、属性点分配机制"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 任务系统
+  - id: TR-quest-001
+    system: quest
+    gdd: design/gdd/quest-system.md
+    requirement: "任务状态管理 - 实现任务状态机（LOCKED、AVAILABLE、ACTIVE、COMPLETED、FINISHED），支持任务注册、状态转换、进度更新和数据保存/加载"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-quest-002
+    system: quest
+    gdd: design/gdd/quest-system.md
+    requirement: "任务追踪系统 - 实现任务目标追踪、进度监控、小地图标记、UI显示和外部事件处理"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-quest-003
+    system: quest
+    gdd: design/gdd/quest-system.md
+    requirement: "任务奖励发放 - 实现基于任务类型的奖励计算、物品/经验/银两发放、背包满处理和特殊奖励发放"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 随机事件生成器
+  - id: TR-random-event-001
+    system: random-event-generator
+    gdd: design/gdd/random-event-generator.md
+    requirement: "随机事件生成算法 - 实现基于区域的权重池算法，支持4类事件（战斗遭遇、奇遇/叙事事件、资源/宝藏事件、环境/状态事件），使用伪随机数生成器（种子=区域ID×1000000+日期×1000+玩家ID），实现权重调整机制（最终权重=基础权重×(1+(福缘属性×福缘系数))×区域倍数），实现事件冷却机制（同类型事件5分钟内不重复触发）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-random-event-002
+    system: random-event-generator
+    gdd: design/gdd/random-event-generator.md
+    requirement: "随机事件触发条件 - 实现基于移动距离的触发机制（每移动100个格子进行一次触发判定），实现基于时间的触发机制（每5分钟进行一次触发判定），实现安全区检测（城镇、驿站等区域禁止触发事件），实现预警机制（事件触发前2-3秒提供视觉/音频提示），触发概率公式=基础概率+(福缘属性×概率加成)-(连续战斗次数×惩罚系数)"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  - id: TR-random-event-003
+    system: random-event-generator
+    gdd: design/gdd/random-event-generator.md
+    requirement: "随机事件结果处理 - 实现战斗遭遇事件处理（触发战斗场景并应用战斗结果），实现奇遇/叙事事件处理（提供选项界面并根据选择应用结果），实现资源/宝藏事件处理（正确发放物品奖励），实现环境/状态事件处理（施加临时Buff/Debuff效果），实现异步事件预加载（后台线程提前加载事件资源），实现数据驱动配置（事件类型、权重、前置条件、奖励均配置在JSON/CSV文件中）"
+    created: "2026-04-27"
+    revised: ""
+    status: active
+
+  # 奖励分配系统
+  - id: TR-reward-dist-001
+    system: reward-distribution
+    gdd: design/gdd/reward-distribution-system.md
+    requirement: "奖励类型与分类 - 实现四大类奖励类型（物质资源、成长资源、装备物品、叙事状态），支持银两、材料、EXP、属性点、装备、消耗品、声望等具体奖励类型"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-reward-dist-002
+    system: reward-distribution
+    gdd: design/gdd/reward-distribution-system.md
+    requirement: "分配机制 - 实现固定基础奖励、权重化随机池、层级掉落表和唯一性限制的混合分配机制，支持福缘属性对稀有物品权重的修正"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-reward-dist-003
+    system: reward-distribution
+    gdd: design/gdd/reward-distribution-system.md
+    requirement: "平衡与缩放 - 实现等级/境界挂钩的数值缩放、通胀控制和背包容量管理，确保奖励系统长期平衡"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  # 技能树/学习路径系统
+  - id: TR-skill-tree-001
+    system: skill-tree-learning-path
+    gdd: design/gdd/skill-tree-learning-path-system.md
+    requirement: "学习路径类型 - 实现线性主干、分支专精和网状关联的混合结构，支持模块化武学图谱"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-skill-tree-002
+    system: skill-tree-learning-path
+    gdd: design/gdd/skill-tree-learning-path-system.md
+    requirement: "解锁机制 - 实现前置武学熟练度、境界门槛、物品/秘籍消耗和奇遇/事件解锁的多维条件验证"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-skill-tree-003
+    system: skill-tree-learning-path
+    gdd: design/gdd/skill-tree-learning-path-system.md
+    requirement: "可视化与交互 - 实现水墨卷轴风格的技能树界面，支持节点悬停、点击解锁和分支选择交互"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  # 系统索引系统
+  - id: TR-sys-index-001
+    system: systems-index
+    gdd: design/gdd/systems-index.md
+    requirement: "系统枚举：完整列出所有游戏系统，包括基础层、核心层和功能层系统；系统分类：按类别（技术、数据、游戏机制、UI、AI）对所有系统进行正确分类；系统描述：为每个系统提供清晰简洁的描述；系统状态：标记每个系统的当前状态（Approved/Not Started）"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-sys-index-002
+    system: systems-index
+    gdd: design/gdd/systems-index.md
+    requirement: "基础层依赖：定义基础层系统（无依赖）的完整列表；核心层依赖：定义核心层系统对基础层系统的依赖关系；功能层依赖：定义功能层系统对核心层和基础层系统的依赖关系；依赖关系图：创建清晰的依赖关系图，显示各层系统间的依赖流向"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-sys-index-003
+    system: systems-index
+    gdd: design/gdd/systems-index.md
+    requirement: "MVP优先级：定义3-4个月MVP开发的系统实现顺序（11个核心系统）；完整愿景优先级：定义12-18个月完整愿景的系统实现顺序；高风险系统识别：识别并标记高风险系统及其风险原因；进度跟踪机制：建立系统开发状态跟踪机制"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  # 状态效果系统
+  - id: TR-status-eff-001
+    system: status-effect
+    gdd: design/gdd/status-effect-system.md
+    requirement: "状态效果类型 - 实现四大类状态效果（持续伤害/恢复、属性修正、控制效果、特殊机制），包括燃烧、中毒、流血、再生、增益、减益、眩晕、定身、沉默、冻结、破防、标记等具体状态"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-status-eff-002
+    system: status-effect
+    gdd: design/gdd/status-effect-system.md
+    requirement: "状态机制 - 实现回合计数持续时间、层数堆叠、刷新机制、互斥机制和驱散机制，支持回合开始/结束触发、即时生效等多种触发时机"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-status-eff-003
+    system: status-effect
+    gdd: design/gdd/status-effect-system.md
+    requirement: "状态来源与交互 - 实现武学技能、装备特效、环境因素、道具等多种状态来源，以及与战斗系统、伤害计算系统、生命值/防御系统、命中检测系统、装备系统的交互"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-status-eff-004
+    system: status-effect
+    gdd: design/gdd/status-effect-system.md
+    requirement: "状态UI与视觉反馈 - 实现状态图标栏、悬停提示、粒子特效、音频反馈等视觉和音频表现，确保UI适配不同分辨率并符合水墨武侠风格"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  # 世界状态持久化系统
+  - id: TR-world-persist-001
+    system: world-state-persistence
+    gdd: design/gdd/world-state-persistence-system.md
+    requirement: "世界状态保存 - 实现四类关键数据的持久化：玩家核心状态、世界探索状态、任务与叙事进度、环境与实体状态；采用结构化JSON格式本地存储；支持Base64或XOR加密防止作弊"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-world-persist-002
+    system: world-state-persistence
+    gdd: design/gdd/world-state-persistence-system.md
+    requirement: "世界状态加载 - 实现存档文件的读取和解析；支持JSON格式验证和损坏检测；提供最近3个备份文件恢复机制；处理存档版本兼容性问题"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-world-persist-003
+    system: world-state-persistence
+    gdd: design/gdd/world-state-persistence-system.md
+    requirement: "玩家进度管理 - 实现自动保存、手动保存和关键事件强制保存三种模式；集成Steam Cloud API实现云端同步；提供云冲突检测和解决机制；显示保存状态和云同步状态UI"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  # 世界流式加载系统
+  - id: TR-world-streaming-001
+    system: world-streaming
+    gdd: design/gdd/world-streaming-system.md
+    requirement: "动态加载和卸载世界区域 - 实现2048x2048像素区块的动态加载和卸载；当玩家距离区块边界1.5个屏幕宽度时开始预加载；当玩家距离已加载区块超过3个屏幕宽度时卸载资源；支持最多16个同时加载的区块"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-world-streaming-002
+    system: world-streaming
+    gdd: design/gdd/world-streaming-system.md
+    requirement: "基于玩家位置的区域加载 - 实现基于玩家当前位置的智能加载策略；优先加载玩家周围区块；支持快速移动时的跳过加载优化；实施防抖机制避免频繁加载/卸载同一区块"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-world-streaming-003
+    system: world-streaming
+    gdd: design/gdd/world-streaming-system.md
+    requirement: "内存优化和性能预算 - 实现资源优先级加载（背景地形>建筑物>NPC>特效）；实施LOD细节层次系统；使用对象池重用资源；确保帧率下降不超过10%；支持不同PC硬件的动态调整"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  # 敌人缩放系统
+  - id: TR-enemy-scaling-001
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "三段式缩放曲线 - 实现初期线性(Lv 1-33)、中期温和指数(Lv 34-66)、后期陡峭指数(Lv 67-99)的敌人属性缩放，确保与玩家成长曲线匹配"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-scaling-002
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "境界对齐系统 - 实现9个境界等级(炼气→筑基→金丹→元婴→化神→返虚→合道→大乘→渡劫)，每个境界+10%全属性加成，与玩家境界一一对应"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-scaling-003
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "区域难度分级 - 实现5个难度等级(新手区0.8x、普通区1.0x、困难区1.3x、精英区1.6x、终局区2.0x)，确保开放世界探索的层次感"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-scaling-004
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "敌人类型系数 - 实现三种敌人类型的属性倍率(普通1.0x、精英2.0x HP/1.5x攻击、Boss 4.0x HP/2.0x攻击)，确保不同类型敌人的挑战度差异"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-scaling-005
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "动态难度平衡 - 实现基于玩家表现的动态难度调整(连续失败降低30%，连续碾压提升15%)，支持配置文件驱动和实时调整"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-scaling-006
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "边缘情况处理 - 实现等级差距过大的保护机制(>20级差距时调整缩放策略)，战斗中升级不影响当前战斗，数据异常时使用默认值并记录日志"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-scaling-007
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "配置文件系统 - 实现通过JSON配置文件暴露所有缩放参数(等级系数、境界系数、区域倍率、类型倍率、动态调整参数)，无需修改代码即可调整平衡"
+    created: "2026-04-28"
+    revised: ""
+    status: active
+
+  - id: TR-enemy-scaling-008
+    system: enemy-scaling
+    gdd: design/gdd/enemy-scaling-system.md
+    requirement: "调试可视化工具 - 实现开发模式下的缩放参数显示、属性对比面板和难度曲线图表，支持实时调试和平衡调整"
+    created: "2026-04-28"
     revised: ""
     status: active

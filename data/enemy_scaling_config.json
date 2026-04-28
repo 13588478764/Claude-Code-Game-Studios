@@ -1,0 +1,141 @@
+{
+  "version": "1.0",
+  "description": "敌人缩放系统配置文件",
+  "last_updated": "2026-04-28",
+  
+  "level_scaling": {
+    "description": "等级缩放系数配置",
+    "early_stage": {
+      "description": "初期线性段 (Lv 1-33)",
+      "min_level": 1,
+      "max_level": 33,
+      "base_coefficient": 1.0,
+      "linear_coefficient": 0.15
+    },
+    "mid_stage": {
+      "description": "中期温和指数段 (Lv 34-66)",
+      "min_level": 34,
+      "max_level": 66,
+      "base_coefficient": 5.8,
+      "exponent": 1.2737
+    },
+    "late_stage": {
+      "description": "后期陡峭指数段 (Lv 67-99)",
+      "min_level": 67,
+      "max_level": 99,
+      "base_coefficient": 13.5,
+      "exponent": 2.0
+    }
+  },
+  
+  "realm_scaling": {
+    "description": "境界缩放系数配置",
+    "realm_count": 9,
+    "base_coefficient": 1.0,
+    "per_realm_bonus": 0.1,
+    "min_coefficient": 1.1,
+    "max_coefficient": 1.9
+  },
+  
+  "region_multipliers": {
+    "description": "区域难度倍率配置",
+    "beginner": {
+      "id": 0,
+      "name": "新手区",
+      "multiplier": 0.8,
+      "recommended_level_min": 1,
+      "recommended_level_max": 20
+    },
+    "normal": {
+      "id": 1,
+      "name": "普通区",
+      "multiplier": 1.0,
+      "recommended_level_min": 15,
+      "recommended_level_max": 35
+    },
+    "hard": {
+      "id": 2,
+      "name": "困难区",
+      "multiplier": 1.3,
+      "recommended_level_min": 30,
+      "recommended_level_max": 50
+    },
+    "elite": {
+      "id": 3,
+      "name": "精英区",
+      "multiplier": 1.6,
+      "recommended_level_min": 45,
+      "recommended_level_max": 65
+    },
+    "final": {
+      "id": 4,
+      "name": "终局区",
+      "multiplier": 2.0,
+      "recommended_level_min": 60,
+      "recommended_level_max": 99
+    }
+  },
+  
+  "enemy_type_multipliers": {
+    "description": "敌人类型倍率配置",
+    "normal": {
+      "id": 0,
+      "name": "普通敌人",
+      "hp_multiplier": 1.0,
+      "attack_multiplier": 1.0
+    },
+    "elite": {
+      "id": 1,
+      "name": "精英敌人",
+      "hp_multiplier": 2.0,
+      "attack_multiplier": 1.5
+    },
+    "boss": {
+      "id": 2,
+      "name": "Boss",
+      "hp_multiplier": 4.0,
+      "attack_multiplier": 2.0
+    }
+  },
+  
+  "dynamic_difficulty": {
+    "description": "动态难度调整配置",
+    "failure_penalty": {
+      "base_coefficient": 1.0,
+      "per_failure_reduction": 0.1,
+      "max_failures_counted": 3,
+      "min_coefficient": 0.7
+    },
+    "perfect_win_bonus": {
+      "base_coefficient": 1.0,
+      "per_win_bonus": 0.05,
+      "max_wins_counted": 3,
+      "max_coefficient": 1.15
+    }
+  },
+  
+  "edge_cases": {
+    "description": "边缘情况处理配置",
+    "level_difference_threshold": 20,
+    "too_easy_multiplier": 0.5,
+    "default_base_hp": 100,
+    "default_base_attack": 20,
+    "default_region_multiplier": 1.0
+  },
+  
+  "validation": {
+    "description": "参数验证范围",
+    "level_range": {
+      "min": 1,
+      "max": 99
+    },
+    "coefficient_range": {
+      "min": 0.1,
+      "max": 10.0
+    },
+    "multiplier_range": {
+      "min": 0.1,
+      "max": 5.0
+    }
+  }
+}

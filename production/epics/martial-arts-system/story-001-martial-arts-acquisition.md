@@ -1,7 +1,7 @@
 # Story 001: 武学获取机制
 
 > **Epic**: 武学系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/martial-arts-system.md`, scoped to this story:*
 
-- [ ] 玩家可以通过多种方式获取武学（残页合成、奇遇奖励、黑市购买等）
-- [ ] 武学残页系统正常工作，玩家可以收集同名残页
-- [ ] 残页合成机制正常工作（3张同名残页 + 1本空白秘籍 = 完整武学）
-- [ ] 合成后的武学正确添加到玩家武学图鉴中
+- [x] 玩家可以通过多种方式获取武学（残页合成、奇遇奖励、黑市购买等）
+- [x] 武学残页系统正常工作，玩家可以收集同名残页
+- [x] 残页合成机制正常工作（3张同名残页 + 1本空白秘籍 = 完整武学）
+- [x] 合成后的武学正确添加到玩家武学图鉴中
 
 ---
 
@@ -94,7 +94,7 @@
 **Required evidence**:
 - Logic: `tests/unit/martial_arts/martial_arts_acquisition_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

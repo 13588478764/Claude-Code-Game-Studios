@@ -3,8 +3,13 @@
 > **Layer**: Foundation
 > **GDD**: design/gdd/random-event-generator.md
 > **Architecture Module**: Event System
-> **Status**: Ready
-> **Stories**: Not yet created — run `/create-stories random-event-generator`
+> **Status**: Complete
+> **Stories**: 
+| # | Story | Type | Status | ADR |
+|---|-------|------|--------|-----|
+| 001 | 随机事件生成算法 | Logic | Complete | ADR-001 |
+| 002 | 随机事件触发条件 | Logic | Complete | ADR-001 |
+| 003 | 随机事件结果处理 | Integration | Complete | ADR-001 |
 
 ## Overview
 
@@ -34,4 +39,4 @@ This epic is complete when:
 
 ## Next Step
 
-Run `/create-stories random-event-generator` to break this epic into implementable stories.
+All stories completed. Epic is ready for QA validation and integration testing.

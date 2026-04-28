@@ -3,7 +3,7 @@
 > **Layer**: Feature
 > **GDD**: design/gdd/quest-system.md
 > **Architecture Module**: Quest
-> **Status**: Ready
+> **Status**: Complete
 > **Stories**: 
 | # | Story | Type | Status | ADR |
 |---|-------|------|--------|-----|

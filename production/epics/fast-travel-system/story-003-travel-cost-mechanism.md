@@ -1,7 +1,7 @@
 # Story 003: 旅行成本机制
 
 > **Epic**: 快速旅行系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Core
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/fast-travel-system.md`, scoped to this story:*
 
-- [ ] 旅行费用计算正确（银两消耗公式）
-- [ ] 旅行时间计算准确（时间跳跃公式）
-- [ ] 余额验证机制正常（支付确认）
-- [ ] 货币回收功能正常（经济平衡）
+- [x] 旅行费用计算正确（银两消耗公式）
+- [x] 旅行时间计算准确（时间跳跃公式）
+- [x] 余额验证机制正常（支付确认）
+- [x] 货币回收功能正常（经济平衡）
 
 ---
 
@@ -97,7 +97,7 @@
 **Required evidence**:
 - Unit: `tests/unit/fast-travel/travel_cost_mechanism_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

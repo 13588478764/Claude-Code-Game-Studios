@@ -1,373 +1,253 @@
-# 武侠奇遇录 - 装备穿戴系统
-# 实现6+3槽位结构的装备穿戴、兼容性验证和外观渲染
+# 装备穿戴器
+# 负责管理装备穿戴、卸下、兼容性验证和外观渲染
 
 extends Node
 
-# 信号定义
-signal equipment_equipped(equipment_id, slot_type)
-signal equipment_unequipped(equipment_id, slot_type)
-signal compatibility_validated(equipment_id, is_compatible)
-signal visuals_rendered
-
-# 装备品阶枚举（与装备管理器保持一致）
-enum EquipmentRarity {
-	COMMON,      # 普通(白)
-	UNCOMMON,    # 稀有(蓝)
-	RARE,        # 史诗(紫)
-	LEGENDARY    # 传说(金)
-}
-
-# 装备类型枚举（与装备管理器保持一致）
-enum EquipmentType {
-	WEAPON_MAIN_HAND,    # 主手武器
-	WEAPON_OFF_HAND,     # 副手/离手
-	HELMET,              # 头饰
-	ARMOR,               # 衣袍
-	GLOVES,              # 护手
-	BOOTS,               # 靴子
-	NECKLACE,            # 项链
-	RING_LEFT,           # 左戒指
-	RING_RIGHT,          # 右戒指
-	WAIST,               # 腰带
-	COSMETIC_HEAD,       # 头部外观
-	COSMETIC_BODY,       # 身体外观
-	COSMETIC_WEAPON      # 武器外观
-}
-
 # 装备槽位枚举
 enum EquipmentSlot {
-	MAIN_HAND,
-	OFF_HAND,
+	WEAPON_MAIN,
+	WEAPON_OFFHAND,
 	HEAD,
 	BODY,
 	HANDS,
 	FEET,
 	NECKLACE,
-	RING_LEFT,
-	RING_RIGHT,
-	WAIST
+	RING_1,
+	RING_2,
+	BELT
 }
 
-# 装备数据结构（简化版，只包含穿戴系统需要的信息）
+# 装备数据结构（引用自EquipmentManager）
 class EquipmentData:
 	var id: String
 	var name: String
-	var type: EquipmentType
-	var slot: EquipmentSlot
-	var level_requirement: int
-	var martial_art_compatibility: Array  # 兼容的武学类型
-	var model_path: String  # 3D模型路径
-	var texture_path: String  # 材质路径
+	var type: String  # weapon, armor, accessory
+	var slot: String  # weapon_main, weapon_offhand, head, body, hands, feet, necklace, ring_1, ring_2, belt
+	var tier: int  # 1=普通, 2=稀有, 3=史诗, 4=传说
+	var base_attributes: Dictionary
+	var enhancement_level: int
+	var gems: Array
+	var is_bound: bool
+	var acquisition_source: String  # drop, craft, quest, shop
 	
-	func _init(p_id: String, p_name: String, p_type: EquipmentType, p_slot: EquipmentSlot):
+	func _init(p_id: String, p_name: String, p_type: String, p_slot: String):
 		id = p_id
 		name = p_name
 		type = p_type
 		slot = p_slot
-		level_requirement = 1
-		martial_art_compatibility = []
-		model_path = ""
-		texture_path = ""
+		tier = 1
+		base_attributes = {}
+		enhancement_level = 0
+		gems = []
+		is_bound = false
+		acquisition_source = "unknown"
 
-# 依赖的其他系统
-var equipment_manager = null
-var character_model = null
-var battle_manager = null
-var martial_arts_manager = null
+# 当前装备槽位状态
+var equipped_items: Dictionary = {
+	"weapon_main": null,
+	"weapon_offhand": null,
+	"head": null,
+	"body": null,
+	"hands": null,
+	"feet": null,
+	"necklace": null,
+	"ring_1": null,
+	"ring_2": null,
+	"belt": null
+}
 
-# 已装备的装备
-var equipped_items: Dictionary = {}
+# 信号定义
+signal equipment_equipped(equipment_id: String, slot_type: String)
+signal equipment_unequipped(slot_type: String)
+signal compatibility_validated(equipment_id: String, is_compatible: bool)
+signal equipment_visuals_rendered(equipment_id: String)
 
+# 初始化
 func _ready():
-	print("装备穿戴系统初始化完成")
-	initialize_equipped_slots()
-
-# 初始化装备槽位
-func initialize_equipped_slots():
-	for slot in EquipmentSlot:
-		equipped_items[slot] = null
-
-# 设置依赖系统
-func set_dependencies(equip_mgr, char_model, battle_mgr, martial_arts_mgr):
-	equipment_manager = equip_mgr
-	character_model = char_model
-	battle_manager = battle_mgr
-	martial_arts_manager = martial_arts_mgr
-	print("装备穿戴系统已连接到其他管理系统")
+	print("装备穿戴器已初始化")
 
 # 穿戴装备
-func equip_item(equipment_id: String, target_slot: EquipmentSlot = -1) -> Dictionary:
-	var result = {
-		"success": false,
-		"message": "",
-		"previous_item": null
-	}
-	
-	# 从装备管理器获取装备数据
+func equip_item(equipment_id: String, slot_type: String) -> bool:
+	# 获取装备数据
+	var equipment_manager = get_equipment_manager()
 	if not equipment_manager:
-		result.message = "装备管理器未设置"
-		return result
+		print("错误：无法获取装备管理器")
+		return false
 	
-	var equipment_data = equipment_manager.find_equipment_by_id(equipment_id)
-	if not equipment_data:
-		result.message = "未找到ID为 %s 的装备" % equipment_id
-		return result
-	
-	# 确定目标槽位
-	var slot_to_use = target_slot
-	if slot_to_use == -1:
-		slot_to_use = get_slot_for_equipment_type(equipment_data.type)
-	
-	# 检查槽位是否有效
-	if not is_valid_slot_for_equipment(equipment_data.type, slot_to_use):
-		result.message = "装备类型 %s 不能装备到槽位 %s" % [equipment_data.type, slot_to_use]
-		return result
+	var equipment = equipment_manager.get_equipment_by_id(equipment_id)
+	if not equipment:
+		print("错误：装备不存在 - ", equipment_id)
+		return false
 	
 	# 验证兼容性
-	var compatibility_result = validate_compatibility(equipment_id, slot_to_use)
-	if not compatibility_result.compatible:
-		result.message = "装备不兼容: %s" % compatibility_result.reason
-		return result
+	if not validate_compatibility(equipment_id, slot_type):
+		print("错误：装备与槽位不兼容")
+		return false
 	
-	# 检查角色等级是否满足要求
-	if character_model and character_model.get_level() < equipment_data.level_requirement:
-		result.message = "角色等级不足，需要等级 %d" % equipment_data.level_requirement
-		return result
+	# 检查槽位是否已占用
+	if equipped_items.has(slot_type) and equipped_items[slot_type] != null:
+		# 先卸下当前装备
+		unequip_item(slot_type)
 	
-	# 如果槽位已有装备，则先卸下
-	var previous_item = null
-	if equipped_items[slot_to_use] != null:
-		var unequip_result = unequip_item(slot_to_use)
-		if unequip_result.success:
-			previous_item = unequip_result.item
-		else:
-			result.message = "无法卸下当前装备: %s" % unequip_result.message
-			return result
+	# 将装备添加到对应槽位
+	equipped_items[slot_type] = equipment
 	
-	# 从背包中移除装备（实际游戏中可能是移动而不是移除）
-	if equipment_manager.remove_equipment(equipment_id):
-		# 将装备添加到对应槽位
-		var new_equipment = create_equipment_from_data(equipment_data)
-		equipped_items[slot_to_use] = new_equipment
-		
-		# 更新角色模型外观
-		update_character_appearance(new_equipment, slot_to_use)
-		
-		# 发送信号
-		emit_signal("equipment_equipped", equipment_id, slot_to_use)
-		
-		result.success = true
-		result.previous_item = previous_item
-		result.message = "成功装备 %s 到槽位 %s" % [new_equipment.name, slot_to_use]
-	else:
-		result.message = "无法从背包中移除装备"
-		# 如果失败，需要恢复之前的装备
-		if previous_item:
-			equipped_items[slot_to_use] = previous_item
-			update_character_appearance(previous_item, slot_to_use)
+	# 从背包中移除装备（如果是从背包穿戴的）
+	equipment_manager.remove_equipment(equipment_id)
 	
-	return result
+	emit_signal("equipment_equipped", equipment_id, slot_type)
+	
+	# 渲染装备外观
+	render_equipment_visuals()
+	
+	return true
 
 # 卸下装备
-func unequip_item(slot_type: EquipmentSlot) -> Dictionary:
-	var result = {
-		"success": false,
-		"item": null,
-		"message": ""
-	}
-	
-	if not equipped_items.has(slot_type) or equipped_items[slot_type] == null:
-		result.message = "槽位 %s 没有装备" % slot_type
-		return result
+func unequip_item(slot_type: String) -> bool:
+	if not equipped_items.has(slot_type):
+		print("错误：无效的槽位类型 - ", slot_type)
+		return false
 	
 	var equipment = equipped_items[slot_type]
+	if not equipment:
+		print("错误：槽位为空 - ", slot_type)
+		return false
 	
-	# 从当前槽位移除
+	# 获取装备管理器并添加装备回背包
+	var equipment_manager = get_equipment_manager()
+	if equipment_manager:
+		equipment_manager.add_equipment(equipment)
+	
+	# 清空槽位
 	equipped_items[slot_type] = null
 	
-	# 更新角色模型外观
-	update_character_appearance(null, slot_type)
+	emit_signal("equipment_unequipped", slot_type)
 	
-	# 尝试将装备添加回背包
-	if equipment_manager:
-		# 创建一个原始装备数据的副本用于返回背包
-		var original_equipment = equipment_manager.EquipmentData.new(
-			equipment.id,
-			equipment.name,
-			equipment.type,
-			equipment.rarity if equipment.has_method("_get_rarity") else equipment_manager.EquipmentRarity.COMMON
-		)
-		original_equipment.level_requirement = equipment.level_requirement
-		original_equipment.attributes = equipment.attributes if equipment.has_method("_get_attributes") else {}
-		
-		if equipment_manager.add_equipment(original_equipment):
-			result.success = true
-			result.item = equipment
-			result.message = "成功卸下装备 %s 从槽位 %s，并添加到背包" % [equipment.name, slot_type]
-		else:
-			result.message = "无法将装备添加回背包，可能背包已满"
-			# 如果无法添加回背包，需要恢复装备
-			equipped_items[slot_type] = equipment
-			update_character_appearance(equipment, slot_type)
-	else:
-		result.message = "装备管理器未设置，无法添加装备回背包"
+	# 重新渲染装备外观
+	render_equipment_visuals()
 	
-	if result.success:
-		emit_signal("equipment_unequipped", equipment.id, slot_type)
-	
-	return result
+	return true
 
-# 验证装备兼容性
-func validate_compatibility(equipment_id: String, slot_type: EquipmentSlot) -> Dictionary:
-	var result = {
-		"compatible": false,
-		"reason": ""
-	}
-	
+# 验证兼容性
+func validate_compatibility(equipment_id: String, slot_type: String) -> bool:
+	var equipment_manager = get_equipment_manager()
 	if not equipment_manager:
-		result.reason = "装备管理器未设置"
-		return result
+		return false
 	
-	var equipment_data = equipment_manager.find_equipment_by_id(equipment_id)
-	if not equipment_data:
-		result.reason = "未找到装备"
-		return result
+	var equipment = equipment_manager.get_equipment_by_id(equipment_id)
+	if not equipment:
+		return false
 	
-	# 检查槽位兼容性
-	var expected_slot = get_slot_for_equipment_type(equipment_data.type)
-	if expected_slot != slot_type:
-		result.reason = "装备类型与槽位不匹配"
-		return result
+	# 检查装备槽位是否匹配
+	if equipment.slot != slot_type:
+		emit_signal("compatibility_validated", equipment_id, false)
+		return false
 	
-	# 检查武学兼容性
-	if martial_arts_manager and equipment_data.martial_art_compatibility.size() > 0:
-		var current_martial_art = martial_arts_manager.get_current_martial_art()
-		if current_martial_art not in equipment_data.martial_art_compatibility:
-			result.reason = "武学类型不兼容"
-			return result
+	# 检查角色等级限制（如果有的话）
+	# 这里可以添加角色等级检查逻辑
 	
-	# 检查等级要求
-	if character_model and character_model.get_level() < equipment_data.level_requirement:
-		result.reason = "角色等级不足"
-		return result
+	# 检查武学流派兼容性（武器类型）
+	if equipment.type == "weapon":
+		if not validate_weapon_school_compatibility(equipment, slot_type):
+			emit_signal("compatibility_validated", equipment_id, false)
+			return false
 	
-	result.compatible = true
-	result.reason = "兼容"
-	return result
+	emit_signal("compatibility_validated", equipment_id, true)
+	return true
 
-# 更新角色外观
-func update_character_appearance(equipment: EquipmentData, slot_type: EquipmentSlot):
-	if not character_model:
-		print("警告: 角色模型未设置，无法更新外观")
-		return
+# 验证武器与武学流派兼容性
+func validate_weapon_school_compatibility(equipment: EquipmentData, slot_type: String) -> bool:
+	# 这里可以实现具体的武器与武学流派兼容性检查
+	# 例如：剑类武器只能装备在剑法流派下
+	if equipment.name.find("剑") != -1:
+		# 检查当前是否为剑法流派
+		# 这里简化为总是返回true，实际实现需要检查当前武学流派
+		return true
 	
-	# 根据槽位更新角色模型的不同部分
-	match slot_type:
-		EquipmentSlot.MAIN_HAND:
-			if equipment and equipment.model_path:
-				character_model.update_weapon_model(equipment.model_path, equipment.texture_path)
-			else:
-				character_model.reset_weapon_model()
-		EquipmentSlot.HEAD:
-			if equipment and equipment.model_path:
-				character_model.update_head_model(equipment.model_path, equipment.texture_path)
-			else:
-				character_model.reset_head_model()
-		EquipmentSlot.BODY:
-			if equipment and equipment.model_path:
-				character_model.update_body_model(equipment.model_path, equipment.texture_path)
-			else:
-				character_model.reset_body_model()
-		EquipmentSlot.HANDS:
-			if equipment and equipment.model_path:
-				character_model.update_hand_model(equipment.model_path, equipment.texture_path)
-			else:
-				character_model.reset_hand_model()
-		EquipmentSlot.FEET:
-			if equipment and equipment.model_path:
-				character_model.update_feet_model(equipment.model_path, equipment.texture_path)
-			else:
-				character_model.reset_feet_model()
-		_:
-			# 其他槽位可能不需要直接的3D模型更新
-			pass
-	
-	emit_signal("visuals_rendered")
+	return true
 
-# 获取装备类型的对应槽位
-func get_slot_for_equipment_type(equipment_type: EquipmentType) -> EquipmentSlot:
-	match equipment_type:
-		EquipmentType.WEAPON_MAIN_HAND: return EquipmentSlot.MAIN_HAND
-		EquipmentType.WEAPON_OFF_HAND: return EquipmentSlot.OFF_HAND
-		EquipmentType.HELMET: return EquipmentSlot.HEAD
-		EquipmentType.ARMOR: return EquipmentSlot.BODY
-		EquipmentType.GLOVES: return EquipmentSlot.HANDS
-		EquipmentType.BOOTS: return EquipmentSlot.FEET
-		EquipmentType.NECKLACE: return EquipmentSlot.NECKLACE
-		EquipmentType.RING_LEFT: return EquipmentSlot.RING_LEFT
-		EquipmentType.RING_RIGHT: return EquipmentSlot.RING_RIGHT
-		EquipmentType.WAIST: return EquipmentSlot.WAIST
-		_: return EquipmentSlot.MAIN_HAND  # 默认返回主手
-
-# 检查装备类型是否适用于特定槽位
-func is_valid_slot_for_equipment(equipment_type: EquipmentType, slot_type: EquipmentSlot) -> bool:
-	var valid_slot = get_slot_for_equipment_type(equipment_type)
-	return valid_slot == slot_type
-
-# 获取指定槽位的已装备物品
-func get_equipped_item_in_slot(slot_type: EquipmentSlot) -> EquipmentData:
+# 获取当前已装备的装备
+func get_equipped_item(slot_type: String) -> EquipmentData:
 	return equipped_items.get(slot_type, null)
 
-# 获取所有已装备的物品
+# 获取所有已装备的装备
 func get_all_equipped_items() -> Dictionary:
 	return equipped_items.duplicate()
 
-# 快速装备一套装备
-func equip_set(equipment_ids: Array) -> Dictionary:
-	var result = {
-		"success_count": 0,
-		"fail_count": 0,
-		"messages": []
+# 获取装备管理器引用
+func get_equipment_manager():
+	# 尝试获取场景中的EquipmentManager节点
+	var equipment_manager = get_tree().get_first_node_in_group("equipment_manager")
+	if equipment_manager:
+		return equipment_manager
+	
+	# 如果没有找到，尝试通过其他方式获取
+	# 这里可以实现其他获取方式
+	return null
+
+# 处理装备外观渲染
+func render_equipment_visuals():
+	# 这里应该处理3D模型的挂载和渲染
+	# 由于这是一个脚本文件，我们只模拟这个过程
+	print("渲染装备外观...")
+	
+	for slot, equipment in equipped_items:
+		if equipment:
+			print("  - 槽位: ", slot, ", 装备: ", equipment.name)
+	
+	emit_signal("equipment_visuals_rendered", "all_equipment")
+
+# 获取装备槽位管理
+func get_equipment_slots() -> Dictionary:
+	return equipped_items
+
+# 检查指定槽位是否已装备
+func is_slot_occupied(slot_type: String) -> bool:
+	return equipped_items.has(slot_type) and equipped_items[slot_type] != null
+
+# 批量穿戴装备
+func equip_multiple_items(equipment_list: Array) -> Array:
+	var results = []
+	
+	for item in equipment_list:
+		var equipment_id = item.get("id", "")
+		var slot_type = item.get("slot", "")
+		var result = equip_item(equipment_id, slot_type)
+		results.append({"id": equipment_id, "slot": slot_type, "success": result})
+	
+	return results
+
+# 批量卸下装备
+func unequip_multiple_items(slot_list: Array) -> Array:
+	var results = []
+	
+	for slot_type in slot_list:
+		var result = unequip_item(slot_type)
+		results.append({"slot": slot_type, "success": result})
+	
+	return results
+
+# 获取装备统计信息
+func get_equipment_stats() -> Dictionary:
+	var stats = {
+		"total_equipped": 0,
+		"by_tier": {1: 0, 2: 0, 3: 0, 4: 0},
+		"by_type": {"weapon": 0, "armor": 0, "accessory": 0}
 	}
 	
-	for equipment_id in equipment_ids:
-		var equip_result = equip_item(equipment_id)
-		if equip_result.success:
-			result.success_count += 1
-		else:
-			result.fail_count += 1
-			result.messages.append("装备 %s 失败: %s" % [equipment_id, equip_result.message])
+	for slot, equipment in equipped_items:
+		if equipment:
+			stats.total_equipped += 1
+			stats.by_tier[equipment.tier] += 1
+			stats.by_type[equipment.type] += 1
 	
-	return result
+	return stats
 
-# 检查是否有武器装备
-func has_main_hand_weapon() -> bool:
-	return equipped_items[EquipmentSlot.MAIN_HAND] != null
-
-# 获取主手武器信息
-func get_main_hand_weapon() -> EquipmentData:
-	return equipped_items[EquipmentSlot.MAIN_HAND]
-
-# 创建装备数据实例
-func create_equipment_from_data(data) -> EquipmentData:
-	var equipment = EquipmentData.new(data.id, data.name, data.type, get_slot_for_equipment_type(data.type))
-	equipment.level_requirement = data.level_requirement
-	if data.has_method("get_martial_art_compatibility"):
-		equipment.martial_art_compatibility = data.get_martial_art_compatibility()
-	if data.has_method("get_model_path"):
-		equipment.model_path = data.get_model_path()
-	if data.has_method("get_texture_path"):
-		equipment.texture_path = data.get_texture_path()
-	return equipment
-
-# 获取装备槽位信息
-func get_equipment_slot_info() -> Dictionary:
-	var slot_info = {}
-	for slot in EquipmentSlot:
-		var equipment = equipped_items[slot]
-		slot_info[slot] = {
-			"occupied": equipment != null,
-			"equipment_id": equipment.id if equipment else "",
-			"equipment_name": equipment.name if equipment else ""
-		}
-	return slot_info
+# 测试函数
+func test_equipment_wearing():
+	print("开始测试装备穿戴系统...")
+	
+	# 这里可以添加测试代码
+	# 由于需要与其他系统交互，实际测试可能需要在游戏环境中运行
+	
+	print("装备穿戴系统测试完成")

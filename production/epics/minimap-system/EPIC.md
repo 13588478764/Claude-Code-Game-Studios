@@ -3,8 +3,19 @@
 > **Layer**: Core
 > **GDD**: design/gdd/minimap-system.md
 > **Architecture Module**: UI
-> **Status**: Ready
-> **Stories**: Not yet created — run `/create-stories minimap-system`
+> **Status**: Complete
+> **Stories**: 
+> - [story-001-player-position-display.md](story-001-player-position-display.md)
+> - [story-002-explored-area-marking.md](story-002-explored-area-marking.md)
+> - [story-003-navigation-marking-system.md](story-003-navigation-marking-system.md)
+
+## Stories
+
+| ID | Title | Status | Type | Layer |
+|----|-------|--------|------|-------|
+| [Story 001](story-001-player-position-display.md) | 玩家位置显示 | Complete | UI | Core |
+| [Story 002](story-002-explored-area-marking.md) | 已探索区域标记 | Complete | Logic | Core |
+| [Story 003](story-003-navigation-marking-system.md) | 导航标记系统 | Complete | UI | Core |
 
 ## Overview
 
@@ -34,4 +45,4 @@ This epic is complete when:
 
 ## Next Step
 
-Run `/create-stories minimap-system` to break this epic into implementable stories.
+所有故事已完成实现。

@@ -3,14 +3,21 @@
 > **Layer**: Feature
 > **GDD**: design/gdd/martial-arts-system.md
 > **Architecture Module**: Combat
-> **Status**: Ready
+> **Status**: Complete
 > **Stories**: 
-| # | Story | Type | Status | ADR |
-|---|-------|------|--------|-----|
-| 001 | 武学获取机制 | Logic | Ready | ADR-001 |
-| 002 | 武学熟练度系统 | Logic | Ready | ADR-001 |
-| 003 | 武学装备和使用 | Integration | Ready | ADR-001 |
-| 004 | 武学组合系统 | Logic | Ready | ADR-001 |
+> - [story-001-martial-arts-acquisition.md](story-001-martial-arts-acquisition.md)
+> - [story-002-martial-arts-proficiency.md](story-002-martial-arts-proficiency.md)
+> - [story-003-martial-arts-usage.md](story-003-martial-arts-usage.md)
+> - [story-004-martial-arts-combo.md](story-004-martial-arts-combo.md)
+
+## Stories
+
+| ID | Title | Status | Type | Layer |
+|----|-------|--------|------|-------|
+| [Story 001](story-001-martial-arts-acquisition.md) | 武学获取机制 | Complete | Logic | Feature |
+| [Story 002](story-002-martial-arts-proficiency.md) | 武学熟练度系统 | Complete | Logic | Feature |
+| [Story 003](story-003-martial-arts-usage.md) | 武学装备和使用 | Complete | Integration | Feature |
+| [Story 004](story-004-martial-arts-combo.md) | 武学组合系统 | Complete | Logic | Feature |
 
 ## Overview
 
@@ -40,4 +47,4 @@ This epic is complete when:
 
 ## Next Step
 
-Run `/create-stories martial-arts-system` to break this epic into implementable stories.
+所有故事已完成实现。

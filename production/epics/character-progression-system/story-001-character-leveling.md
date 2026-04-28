@@ -1,7 +1,7 @@
 # Story 001: 角色等级和境界突破
 
 > **Epic**: 角色成长系统
-> **Status**: Complete
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

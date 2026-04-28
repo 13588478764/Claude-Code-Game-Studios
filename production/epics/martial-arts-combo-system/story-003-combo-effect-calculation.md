@@ -1,7 +1,7 @@
 # Story 003: 连招效果计算
 
 > **Epic**: 武学组合/连招系统
-> **Status**: Ready
+> **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
@@ -28,10 +28,10 @@
 
 *From GDD `design/gdd/martial-arts-combo-system.md`, scoped to this story:*
 
-- [ ] 连招效果计算遵循公式：`协同伤害 = 基础伤害 × 协同倍率`
-- [ ] 内力回流机制正常工作，遵循公式：`返还内力 = 消耗内力 × 回流比例`
-- [ ] 连携槽积累机制正常工作，遵循公式：`连携槽增加 = 基础增量 × 连招等级系数`
-- [ ] 状态升级持续时间计算正常工作，遵循公式：`升级持续时间 = 基础持续时间 × 升级倍率`
+- [x] 连招效果计算遵循公式：`协同伤害 = 基础伤害 × 协同倍率`
+- [x] 内力回流机制正常工作，遵循公式：`返还内力 = 消耗内力 × 回流比例`
+- [x] 连携槽积累机制正常工作，遵循公式：`连携槽增加 = 基础增量 × 连招等级系数`
+- [x] 状态升级持续时间计算正常工作，遵循公式：`升级持续时间 = 基础持续时间 × 升级倍率`
 
 ---
 
@@ -94,7 +94,7 @@
 **Required evidence**:
 - Logic: `tests/unit/martial_arts_combo/combo_effect_calculation_test.gd` — must exist and pass
 
-**Status**: [ ] Not yet created
+**Status**: [x] Created and verified
 
 ---
 

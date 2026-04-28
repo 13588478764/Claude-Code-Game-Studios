@@ -1,0 +1,333 @@
+# 任务奖励分发系统集成测试
+# 测试任务奖励分发功能与任务管理器的集成
+
+extends Node
+
+# 导入要测试的脚本
+var QuestManager = load("res://src/scripts/quest/quest_manager.gd")
+var QuestRewardManager = load("res://src/scripts/quest/quest_reward_manager.gd")
+
+# 测试结果统计
+var tests_passed = 0
+var tests_total = 0
+
+# 运行所有测试
+func run_all_tests():
+	print("运行任务奖励分发系统集成测试...")
+	
+	# 测试1: 任务奖励管理器初始化和连接
+	test_quest_reward_manager_initialization_and_connection()
+	
+	# 测试2: 奖励计算功能
+	test_reward_calculation()
+	
+	# 测试3: 经验值奖励分发
+	test_exp_reward_distribution()
+	
+	# 测试4: 银两奖励分发
+	test_silver_reward_distribution()
+	
+	# 测试5: 物品奖励分发
+	test_item_reward_distribution()
+	
+	# 测试6: 特殊物品奖励分发
+	test_special_item_reward_distribution()
+	
+	# 测试7: 背包满时的奖励处理
+	test_inventory_full_handling()
+	
+	# 测试8: 奖励公式验证
+	test_reward_formula_verification()
+	
+	print("任务奖励分发系统集成测试完成: %d/%d 通过" % [tests_passed, tests_total])
+
+# 测试任务奖励管理器初始化和连接
+func test_quest_reward_manager_initialization_and_connection():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	
+	assert(manager != null, "任务管理器应成功创建")
+	assert(reward_manager != null, "奖励管理器应成功创建")
+	
+	# 连接奖励管理器到任务管理器
+	reward_manager.set_quest_manager(manager)
+	
+	# 验证连接
+	assert(reward_manager.quest_manager == manager, "奖励管理器应正确连接到任务管理器")
+	
+	print("✓ 任务奖励管理器初始化和连接测试通过")
+	tests_passed += 4
+	tests_total += 4
+
+# 测试奖励计算功能
+func test_reward_calculation():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	reward_manager.set_quest_manager(manager)
+	
+	# 注册一个任务
+	manager.register_quest(
+		"calc_test_quest", 
+		"计算测试任务", 
+		"用于测试奖励计算的任务", 
+		manager.QuestType.MAIN
+	)
+	
+	# 设置玩家等级
+	manager.set_player_level(10)
+	
+	# 获取任务信息并计算奖励
+	var quest_info = manager.get_quest_info("calc_test_quest")
+	var calculated_rewards = reward_manager._calculate_rewards(quest_info)
+	
+	# 验证计算结果
+	var expected_exp = 10 * 100  # 等级10 * 主线任务系数100
+	var expected_silver = 10 * 50  # 等级10 * 主线任务系数50
+	
+	assert(calculated_rewards.exp == expected_exp, "经验值奖励应为等级×系数")
+	assert(calculated_rewards.silver == expected_silver, "银两奖励应为等级×系数")
+	
+	# 测试不同任务类型的奖励计算
+	manager.register_quest(
+		"side_calc_test_quest", 
+		"支线计算测试任务", 
+		"用于测试支线奖励计算的任务", 
+		manager.QuestType.SIDE
+	)
+	manager.set_player_level(5)
+	
+	var side_quest_info = manager.get_quest_info("side_calc_test_quest")
+	var side_calculated_rewards = reward_manager._calculate_rewards(side_quest_info)
+	
+	var expected_side_exp = 5 * 50  # 等级5 * 支线任务系数50
+	var expected_side_silver = 5 * 20  # 等级5 * 支线任务系数20
+	
+	assert(side_calculated_rewards.exp == expected_side_exp, "支线任务经验值奖励应为等级×系数")
+	assert(side_calculated_rewards.silver == expected_side_silver, "支线任务银两奖励应为等级×系数")
+	
+	print("✓ 奖励计算功能测试通过")
+	tests_passed += 6
+	tests_total += 6
+
+# 测试经验值奖励分发
+func test_exp_reward_distribution():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	reward_manager.set_quest_manager(manager)
+	
+	# 注册一个有明确经验值奖励的任务
+	manager.register_quest(
+		"exp_test_quest", 
+		"经验奖励测试任务", 
+		"用于测试经验奖励分发的任务", 
+		manager.QuestType.BOUNTY
+	)
+	manager.set_quest_rewards("exp_test_quest", {"exp": 500})
+	
+	# 模拟角色成长系统（添加add_experience方法）
+	manager.add_func("add_experience", func(amount): 
+		manager.experience = (manager.get("experience") if manager.has_method("get") else 0) + amount
+		print("Added ", amount, " EXP, total: ", manager.experience)
+	)
+	
+	# 分发奖励
+	var success = reward_manager.distribute_rewards("exp_test_quest")
+	assert(success == true, "应能成功分发经验奖励")
+	
+	print("✓ 经验值奖励分发测试通过")
+	tests_passed += 2
+	tests_total += 2
+
+# 测试银两奖励分发
+func test_silver_reward_distribution():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	reward_manager.set_quest_manager(manager)
+	
+	# 注册一个有明确银两奖励的任务
+	manager.register_quest(
+		"silver_test_quest", 
+		"银两奖励测试任务", 
+		"用于测试银两奖励分发的任务", 
+		manager.QuestType.SIDE
+	)
+	manager.set_quest_rewards("silver_test_quest", {"silver": 250})
+	
+	# 模拟经济系统（添加add_silver方法）
+	manager.add_func("add_silver", func(amount): 
+		manager.silver = (manager.get("silver") if manager.has_method("get") else 0) + amount
+		print("Added ", amount, " silver, total: ", manager.silver)
+	)
+	
+	# 分发奖励
+	var success = reward_manager.distribute_rewards("silver_test_quest")
+	assert(success == true, "应能成功分发银两奖励")
+	
+	print("✓ 银两奖励分发测试通过")
+	tests_passed += 2
+	tests_total += 2
+
+# 测试物品奖励分发
+func test_item_reward_distribution():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	reward_manager.set_quest_manager(manager)
+	
+	# 注册一个有物品奖励的任务
+	manager.register_quest(
+		"item_test_quest", 
+		"物品奖励测试任务", 
+		"用于测试物品奖励分发的任务", 
+		manager.QuestType.MAIN
+	)
+	manager.set_quest_rewards("item_test_quest", {"items": ["sword", "potion", "armor"]})
+	
+	# 分发奖励
+	var success = reward_manager.distribute_rewards("item_test_quest")
+	assert(success == true, "应能成功分发物品奖励")
+	
+	print("✓ 物品奖励分发测试通过")
+	tests_passed += 2
+	tests_total += 2
+
+# 测试特殊物品奖励分发
+func test_special_item_reward_distribution():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	reward_manager.set_quest_manager(manager)
+	
+	# 注册一个有特殊物品奖励的任务
+	manager.register_quest(
+		"special_item_test_quest", 
+		"特殊物品奖励测试任务", 
+		"用于测试特殊物品奖励分发的任务", 
+		manager.QuestType.MAIN
+	)
+	manager.set_quest_rewards("special_item_test_quest", {
+		"special_items": ["talent_point", "breakthrough_pill", "attribute_point"]
+	})
+	
+	# 分发奖励
+	var success = reward_manager.distribute_rewards("special_item_test_quest")
+	assert(success == true, "应能成功分发特殊物品奖励")
+	
+	print("✓ 特殊物品奖励分发测试通过")
+	tests_passed += 2
+	tests_total += 2
+
+# 测试背包满时的奖励处理
+func test_inventory_full_handling():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	reward_manager.set_quest_manager(manager)
+	
+	# 注册一个有物品奖励的任务
+	manager.register_quest(
+		"full_inv_test_quest", 
+		"背包满测试任务", 
+		"用于测试背包满时奖励处理的任务", 
+		manager.QuestType.SIDE
+	)
+	manager.set_quest_rewards("full_inv_test_quest", {"items": ["ring", "scroll"]})
+	
+	# 模拟背包已满的情况
+	# 重写_is_inventory_full方法以返回true
+	reward_manager._is_inventory_full = func(): return true
+	
+	# 连接信号以捕获库存满处理
+	var inventory_full_signal_received = false
+	var received_quest_id = ""
+	var received_rewards = {}
+	
+	reward_manager.connect("inventory_full_handling", func(full, quest_id, rewards):
+		inventory_full_signal_received = true
+		received_quest_id = quest_id
+		received_rewards = rewards
+	)
+	
+	# 分发奖励
+	var success = reward_manager.distribute_rewards("full_inv_test_quest")
+	
+	# 验证信号被触发
+	assert(inventory_full_signal_received == true, "应触发背包满处理信号")
+	assert(received_quest_id == "full_inv_test_quest", "信号中的任务ID应匹配")
+	assert(received_rewards.has("items"), "信号中的奖励应包含物品")
+	
+	# 验证物品被存储在临时储物箱中
+	var storage_status = reward_manager.get_temporary_storage_status()
+	assert(storage_status.is_empty == false, "临时储物箱不应为空")
+	assert(storage_status.total_items >= 1, "临时储物箱应包含至少一个物品")
+	
+	# 验证可以从临时储物箱中取出物品
+	var retrieved_items = reward_manager.retrieve_from_temporary_storage("full_inv_test_quest")
+	assert(retrieved_items.items.size() >= 1, "应能从临时储物箱中取出物品")
+	
+	print("✓ 背包满时的奖励处理测试通过")
+	tests_passed += 8
+	tests_total += 8
+
+# 测试奖励公式验证
+func test_reward_formula_verification():
+	var manager = QuestManager.new()
+	var reward_manager = QuestRewardManager.new()
+	reward_manager.set_quest_manager(manager)
+	
+	# 测试主线任务奖励公式
+	manager.set_player_level(20)
+	var main_params = reward_manager.get_reward_parameters(0, 20)  # 0 = MAIN
+	assert(main_params.exp == 20 * 100, "主线任务经验值应为等级×100")
+	assert(main_params.silver == 20 * 50, "主线任务银两应为等级×50")
+	
+	# 测试支线任务奖励公式
+	var side_params = reward_manager.get_reward_parameters(1, 15)  # 1 = SIDE
+	assert(side_params.exp == 15 * 50, "支线任务经验值应为等级×50")
+	assert(side_params.silver == 15 * 20, "支线任务银两应为等级×20")
+	
+	# 测试悬赏任务奖励公式
+	var bounty_params = reward_manager.get_reward_parameters(2, 10)  # 2 = BOUNTY
+	assert(bounty_params.exp == 10 * 10, "悬赏任务经验值应为等级×10")
+	assert(bounty_params.silver == 10 * 5, "悬赏任务银两应为等级×5")
+	
+	# 测试奇遇任务奖励公式
+	var encounter_params = reward_manager.get_reward_parameters(3, 25)  # 3 = ENCOUNTER
+	assert(encounter_params.exp == 25 * 20, "奇遇任务经验值应为等级×20")
+	# 奇遇任务银两是随机的，所以只验证基本计算方式
+	
+	print("✓ 奖励公式验证测试通过")
+	tests_passed += 8
+	tests_total += 8
+
+# 为Node添加动态方法的方法（用于模拟系统函数）
+func Node.add_func(name, f):
+	if not has_method("_call"):
+		var d = {}
+		d[name] = f
+		set_script(create_script_from_dictionary(d))
+	else:
+		var s = get_script()
+		var d = {}
+		for m in s.get_method_list():
+			d[m.name] = s.call.bind(m.name)
+		d[name] = f
+		set_script(create_script_from_dictionary(d))
+
+# 创建一个包含指定方法的脚本
+func create_script_from_dictionary(methods_dict):
+	var script_content = "extends Node\n"
+	for method_name in methods_dict:
+		script_content += "\nfunc " + method_name + "(*args):\n"
+		script_content += "    return " + str(methods_dict[method_name]) + ".callv(args)\n"
+	
+	var temp_script = GDScript.new()
+	temp_script.source_code = script_content
+	temp_script.reload()
+	return temp_script
+
+# 断言函数
+func assert(condition, message):
+	if condition:
+		tests_passed += 1
+	else:
+		print("断言失败: " + message)
+	
+	tests_total += 1

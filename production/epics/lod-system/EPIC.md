@@ -3,8 +3,19 @@
 > **Layer**: Foundation
 > **GDD**: design/gdd/lod-system.md
 > **Architecture Module**: Rendering
-> **Status**: Ready
-> **Stories**: Not yet created — run `/create-stories lod-system`
+> **Status**: Complete
+> **Stories**: 
+> - [story-001-distance-based-model-detail-adjustment.md](story-001-distance-based-model-detail-adjustment.md)
+> - [story-002-texture-detail-varies-with-distance.md](story-002-texture-detail-varies-with-distance.md)
+> - [story-003-performance-optimization-and-frame-rate-guarantee.md](story-003-performance-optimization-and-frame-rate-guarantee.md)
+
+## Stories
+
+| ID | Title | Status | Type | Layer |
+|----|-------|--------|------|-------|
+| [Story 001](story-001-distance-based-model-detail-adjustment.md) | 基于距离的模型细节调整 | Complete | Logic | Foundation |
+| [Story 002](story-002-texture-detail-varies-with-distance.md) | 纹理细节随距离变化 | Complete | Logic | Foundation |
+| [Story 003](story-003-performance-optimization-and-frame-rate-guarantee.md) | 性能优化和帧率保障 | Complete | Logic | Foundation |
 
 ## Overview
 
@@ -34,4 +45,4 @@ This epic is complete when:
 
 ## Next Step
 
-Run `/create-stories lod-system` to break this epic into implementable stories.
+所有故事已完成实现。
