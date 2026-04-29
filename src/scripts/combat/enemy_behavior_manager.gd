@@ -1,19 +1,28 @@
 ## EnemyBehaviorManager
-## enemy behavior manager
+## 敌人行为管理器
 ##
-## 战斗系统模块
+## 实现敌人AI的五种核心战术意识行为：基础攻击、弱点利用、状态管理、生存本能、连携配合。
+##
+## 功能：
+## - 基础攻击评估（伤害期望值、威胁度）
+## - 弱点利用（破防优先、属性克制）
+## - 状态管理（施加Debuff、解除Buff、控制链）
+## - 生存本能（撤退防御、集火威胁）
+## - 连携配合（组合技触发、保护盟友）
+##
+## 依赖系统：
+## - CombatSystem（战斗系统）
+## - StatusEffectSystem（状态效果系统）
+## - MartialArtsSystem（武学系统）
 
 extends Node
 class_name EnemyBehaviorManager
-
-# 敌人AI行为管理器
-# 实现五种核心战术意识行为：基础攻击、弱点利用、状态管理、生存本能、连携配合
 
 # ============================================================================
 # 常量定义
 # ============================================================================
 
-const BEHAVIOR_TYPES = {
+const BEHAVIOR_TYPES: Dictionary = {
 	"BASIC_ATTACK": "基础攻击",
 	"WEAKNESS_EXPLOITATION": "弱点利用", 
 	"STATUS_MANAGEMENT": "状态管理",
@@ -21,10 +30,35 @@ const BEHAVIOR_TYPES = {
 	"COORDINATION": "连携配合"
 }
 
-# 变量定义
-var combat_system = null
-var status_effect_system = null
-var martial_arts_system = null
+const DAMAGE_WEIGHT: float = 10.0  # 伤害权重
+const THREAT_WEIGHT: float = 5.0  # 威胁权重
+const BREAK_BONUS: int = 100  # 破防奖励
+const WEAKNESS_WEIGHT: float = 50.0  # 弱点权重
+const DEBUFF_BONUS: int = 30  # 施加Debuff奖励
+const DISPEL_BONUS: int = 80  # 解除Buff奖励
+const CONTROL_CHAIN_BONUS: int = 20  # 控制链奖励
+const DEFENSE_BONUS: int = 40  # 防御奖励
+const THREAT_MULTIPLIER: float = 10.0  # 威胁倍数
+const COMBO_WEIGHT: float = 20.0  # 连携权重
+const PROTECTION_WEIGHT: float = 15.0  # 保护权重
+
+const HP_THRESHOLD_HEALTHY: float = 0.7  # 健康血量阈值
+const HP_THRESHOLD_CRITICAL: float = 0.3  # 濒死血量阈值
+
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+signal behavior_evaluated(behavior_type: String, scores: Dictionary)
+signal action_selected(behavior_type: String, target_id: String, score: int)
+
+# ============================================================================
+# 属性定义
+# ============================================================================
+
+var combat_system: Node = null
+var status_effect_system: Node = null
+var martial_arts_system: Node = null
 
 # 初始化
 func _ready():

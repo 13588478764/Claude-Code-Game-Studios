@@ -1,46 +1,75 @@
 ## DefenseMitigationManager
-## defense mitigation manager
+## 防御减伤管理器
 ##
-## 战斗系统模块
-
-# DefenseMitigationManager
-# 管理各种防御类型的系统，实现护甲减伤、内力抗性、闪避和格挡机制
+## 管理各种防御类型的系统，实现护甲减伤、内力抗性、闪避和格挡机制。
+## 
+## 功能：
+## - 护甲减伤（外功防御）
+## - 内力抗性（内功/元素防御）
+## - 闪避机制（基于身法）
+## - 格挡机制（普通格挡和完美格挡）
+##
+## 依赖系统：
+## - EquipmentSystem（装备系统）
+## - CharacterProgressionSystem（角色成长系统）
 
 extends Node
 class_name DefenseMitigationManager
 
 # ============================================================================
+# 常量定义
+# ============================================================================
+
+const DEFAULT_CON_STAT: int = 10  # 默认根骨
+const DEFAULT_WIS_STAT: int = 10  # 默认悟性
+const DEFAULT_AGI_STAT: int = 10  # 默认身法
+
+const ARMOR_PER_CON: int = 1  # 每点根骨提供的护甲值
+const RESISTANCE_PER_WIS: float = 0.01  # 每点悟性提供的抗性（1%）
+const DODGE_PER_AGI: float = 0.02  # 每点身法提供的闪避率（2%）
+
+const MIN_RESISTANCE: float = 0.0  # 最小抗性
+const MAX_RESISTANCE: float = 0.8  # 最大抗性（80%）
+const MIN_DODGE_RATE: float = 0.0  # 最小闪避率
+const MAX_DODGE_RATE: float = 0.5  # 最大闪避率（50%）
+
+const DEFAULT_BLOCK_REDUCTION: float = 0.5  # 普通格挡减伤比例（50%）
+const PERFECT_BLOCK_REDUCTION: float = 1.0  # 完美格挡减伤比例（100%）
+
+# ============================================================================
 # 信号定义
 # ============================================================================
+
 signal defense_applied(defense_type: String, reduction_amount: int)
 signal dodge_triggered()
 signal block_triggered()
+signal defense_values_updated(armor: int, resistance: float, dodge: float)
+
+# ============================================================================
+# 属性定义
+# ============================================================================
 
 # 角色属性
-var con_stat: int = 10  # 根骨
-var wis_stat: int = 10  # 悟性
-var agi_stat: int = 10  # 身法
+var con_stat: int = DEFAULT_CON_STAT  # 根骨
+var wis_stat: int = DEFAULT_WIS_STAT  # 悟性
+var agi_stat: int = DEFAULT_AGI_STAT  # 身法
 
 # 装备加成
 var equipment_armor_bonus: int = 0
 var equipment_resistance_bonus: float = 0.0
 
-# 护甲值（外功减伤）
-var armor_value: int = 0
-
-# 内力抗性（内功/元素减伤）
-var qi_resistance: float = 0.0
-
-# 闪避率
-var dodge_rate: float = 0.0
+# 防御值（计算结果）
+var armor_value: int = 0  # 护甲值（外功减伤）
+var qi_resistance: float = 0.0  # 内力抗性（内功/元素减伤）
+var dodge_rate: float = 0.0  # 闪避率
 
 # 格挡效果
-var block_reduction: float = 0.5  # 格挡时减少50%伤害
-var perfect_block_multiplier: float = 0.0  # 完美格挡时的反击架势伤害
+var block_reduction: float = DEFAULT_BLOCK_REDUCTION  # 格挡时减少的伤害比例
+var perfect_block_multiplier: float = PERFECT_BLOCK_REDUCTION  # 完美格挡时的伤害减免
 
 # 系统引用
-var equipment_system = null
-var character_progression_system = null
+var equipment_system: Node = null
+var character_progression_system: Node = null
 
 # 初始化
 func _ready():

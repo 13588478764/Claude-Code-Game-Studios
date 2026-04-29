@@ -1,19 +1,43 @@
 ## LinkSystem
-## link system
+## 连携系统
 ##
-## 战斗系统模块
-
-# 武侠奇遇录 - 连携系统
-# 实现连携槽系统、连击系统、连携攻击和连携条件判定
-#
-# 设计原则（来自 ADR-001）：
-# - 使用节点系统和信号系统
-# - 依赖注入模式传递系统引用
-# - 业务逻辑与 UI 分离
-# - 使用信号驱动系统间通信
+## 实现连携槽系统、连击系统、连携攻击和连携条件判定。
+##
+## 功能：
+## - 连携槽系统（队友间共享、积累、消耗）
+## - 连击系统（连击计数、伤害倍率、目标追踪）
+## - 连携攻击（追击、合体技、条件判定）
+## - 连携条件判定（槽值、连击数、队友数）
+##
+## 设计原则（来自 ADR-001）：
+## - 使用节点系统和信号系统
+## - 依赖注入模式传递系统引用
+## - 业务逻辑与 UI 分离
+## - 使用信号驱动系统间通信
+##
+## 依赖系统：
+## - CombatSystem（战斗系统）
 
 extends Node
 class_name LinkSystem
+
+# ============================================================================
+# 常量定义
+# ============================================================================
+
+const DEFAULT_LINK_GAUGE_MAX: float = 100.0  # 默认连携槽最大值
+const DEFAULT_MAX_COMBO: int = 10  # 默认最大连击数
+const COMBO_DAMAGE_INCREMENT: float = 0.1  # 每次连击伤害增加比例（10%）
+const LINK_GAUGE_ACCUMULATE_PER_HIT: float = 10.0  # 每次命中积累的连携槽
+
+const FOLLOW_UP_GAUGE_COST: float = 50.0  # 追击消耗的连携槽
+const FOLLOW_UP_DAMAGE_MULTIPLIER: float = 1.5  # 追击伤害倍率
+const FOLLOW_UP_REQUIRED_COMBO: int = 3  # 追击所需连击数
+
+const DUAL_TECH_GAUGE_COST: float = 100.0  # 合体技消耗的连携槽
+const DUAL_TECH_DAMAGE_MULTIPLIER: float = 2.5  # 合体技伤害倍率
+const DUAL_TECH_REQUIRED_COMBO: int = 5  # 合体技所需连击数
+const DUAL_TECH_REQUIRED_TEAMMATES: int = 2  # 合体技所需队友数
 
 ## 连携攻击类型
 enum LinkAttackType {

@@ -1,47 +1,80 @@
 ## HealthPoiseManager
-## health poise manager
+## 生命值与架势值管理器
 ##
-## 战斗系统模块
-
-# HealthPoiseManager
-# 管理生命值和架势值的系统，实现生命值和架势值机制
+## 管理生命值和架势值的系统，实现生命值和架势值机制。
+##
+## 功能：
+## - 生命值管理（当前值、最大值、濒死状态）
+## - 架势值管理（当前值、最大值、破防状态）
+## - 破防机制（破防状态、伤害加成、持续时间）
+## - 状态管理（正常、防御、破防、濒死、死亡）
+##
+## 依赖系统：
+## - EquipmentSystem（装备系统）
+## - CharacterProgressionSystem（角色成长系统）
 
 extends Node
 class_name HealthPoiseManager
 
 # ============================================================================
+# 常量定义
+# ============================================================================
+
+const STATUS_NORMAL: String = "normal"
+const STATUS_DEFENDING: String = "defending"
+const STATUS_BREAK: String = "break"
+const STATUS_CRITICAL: String = "critical"
+const STATUS_DEAD: String = "dead"
+
+const DEFAULT_CON_STAT: int = 10  # 默认根骨
+const DEFAULT_WIL_STAT: int = 10  # 默认定力
+const DEFAULT_AGI_STAT: int = 10  # 默认身法
+
+const BASE_HP: int = 100  # 基础生命值
+const BASE_POISE: int = 50  # 基础架势值
+
+const HP_PER_CON: float = 2.0  # 每点根骨提供的生命值
+const POISE_PER_WIL: float = 1.5  # 每点定力提供的架势值
+
+const MIN_HP: int = 100  # 最小生命值
+const MAX_HP: int = 2000  # 最大生命值
+const MIN_POISE: int = 50  # 最小架势值
+const MAX_POISE: int = 800  # 最大架势值
+
+const BREAK_DURATION: int = 1  # 破防持续回合数
+const BREAK_MULTIPLIER: float = 1.5  # 破防伤害加成系数
+const CRITICAL_HP_THRESHOLD: float = 0.1  # 濒死血量阈值（10%）
+const POISE_RECOVERY_RATIO: float = 0.2  # 回合结束时架势值恢复比例（20%）
+const DEFEND_POISE_RECOVERY_RATIO: float = 0.5  # 防御时架势值恢复比例（50%）
+const HEAVY_ATTACK_POISE_MULTIPLIER: float = 1.5  # 重攻击对架势值的倍数
+
+# ============================================================================
 # 信号定义
 # ============================================================================
+
 signal hp_changed(current: int, max: int)
 signal poise_changed(current: int, max: int)
 signal break_triggered()
 signal death_triggered()
 signal status_changed(new_status: String)
+signal critical_hp_reached()
 
 # ============================================================================
-# 常量定义
+# 属性定义
 # ============================================================================
-
-const STATUS_NORMAL = "normal"
-const STATUS_DEFENDING = "defending"
-const STATUS_BREAK = "break"
-const STATUS_CRITICAL = "critical"
-const STATUS_DEAD = "dead"
 
 # 生命值相关属性
-var current_hp: int
-var max_hp: int
-var base_hp: int = 100
+var current_hp: int = 0
+var max_hp: int = 0
 
 # 架势值相关属性
-var current_poise: int
-var max_poise: int
-var base_poise: int = 50
+var current_poise: int = 0
+var max_poise: int = 0
 
 # 角色属性
-var con_stat: int = 10  # 根骨
-var wil_stat: int = 10  # 定力
-var agi_stat: int = 10  # 身法
+var con_stat: int = DEFAULT_CON_STAT  # 根骨
+var wil_stat: int = DEFAULT_WIL_STAT  # 定力
+var agi_stat: int = DEFAULT_AGI_STAT  # 身法
 
 # 装备加成
 var equipment_hp_bonus: int = 0
@@ -49,16 +82,12 @@ var equipment_poise_bonus: int = 0
 
 # 状态相关
 var status: String = STATUS_NORMAL
-var break_duration: int = 1  # 破防持续回合数
 var break_timer: int = 0
 var is_in_combat: bool = false
 
 # 系统引用
-var equipment_system = null
-var character_progression_system = null
-
-# 破防伤害加成系数
-var break_multiplier: float = 1.5
+var equipment_system: Node = null
+var character_progression_system: Node = null
 
 # 初始化
 func _ready():

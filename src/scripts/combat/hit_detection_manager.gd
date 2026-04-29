@@ -1,38 +1,61 @@
 ## HitDetectionManager
-## hit detection manager
+## 命中检测管理器
 ##
-## 战斗系统模块
-
-# HitDetectionManager
-# 管理命中检测逻辑的系统，实现命中率计算、随机判定、强制命中检查和结果反馈
+## 管理命中检测逻辑的系统，实现命中率计算、随机判定、强制命中检查和结果反馈。
+##
+## 功能：
+## - 命中率计算（基础命中率、身法修正、状态修正）
+## - 强制命中检查（破防、眩晕、冻结、Sure_Hit标签）
+## - 命中判定（随机判定、信号反馈）
+## - 命中结果反馈（命中、未命中、强制命中）
+##
+## 依赖系统：
+## - CombatSystem（战斗系统）
+## - DamageCalculationSystem（伤害计算系统）
+## - HealthDefenseSystem（生命防御系统）
+## - EquipmentSystem（装备系统）
+## - CharacterProgressionSystem（角色成长系统）
 
 extends Node
 class_name HitDetectionManager
 
 # ============================================================================
-# 信号定义
-# ============================================================================
-signal hit_detected(attacker_id: String, target_id: String, hit_success: bool)
-signal guaranteed_hit_detected(attacker_id: String, target_id: String)
-signal miss_detected(attacker_id: String, target_id: String)
-
-# ============================================================================
 # 常量定义
 # ============================================================================
 
-const MIN_HIT_CHANCE = 0.05  # 最小命中率 5%
-const MAX_HIT_CHANCE = 0.95  # 最大命中率 95%
-const AGI_FACTOR = 0.005      # 身法系数
+const MIN_HIT_CHANCE: float = 0.05  # 最小命中率 5%
+const MAX_HIT_CHANCE: float = 0.95  # 最大命中率 95%
+const AGI_FACTOR: float = 0.005  # 身法系数（每点身法影响命中率）
+
+const DEFAULT_BASE_HIT_CHANCE: float = 0.9  # 默认基础命中率 90%
+
+const FOCUS_BONUS: float = 0.2  # 专注状态命中率加成 20%
+const EAGLE_EYE_BONUS: float = 0.15  # 鹰眼状态命中率加成 15%
+const BLIND_PENALTY: float = 0.3  # 失明状态命中率加成 30%（目标难以闪避）
+const SLOWED_PENALTY: float = 0.15  # 迟缓状态命中率加成 15%（目标闪避率降低）
+
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+signal hit_detected(attacker_id: String, target_id: String, hit_success: bool)
+signal guaranteed_hit_detected(attacker_id: String, target_id: String)
+signal miss_detected(attacker_id: String, target_id: String)
+signal hit_chance_calculated(attacker_id: String, target_id: String, hit_chance: float)
+
+# ============================================================================
+# 属性定义
+# ============================================================================
 
 # 系统引用
-var combat_system = null
-var damage_calculation_system = null
-var health_defense_system = null
-var equipment_system = null
-var character_progression_system = null
+var combat_system: Node = null
+var damage_calculation_system: Node = null
+var health_defense_system: Node = null
+var equipment_system: Node = null
+var character_progression_system: Node = null
 
 # 基础命中率
-var base_hit_chance: float = 0.9  # 默认90%基础命中率
+var base_hit_chance: float = DEFAULT_BASE_HIT_CHANCE  # 默认90%基础命中率
 
 # 初始化
 func _ready():
