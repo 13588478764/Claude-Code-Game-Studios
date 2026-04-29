@@ -144,7 +144,7 @@ func add_multiple_currencies(currency_dict: Dictionary) -> bool:
 		if new_amount > max_limit:
 			new_amount = max_limit
 		
-		temp_changes[CurrencyType(currency_type)] = new_amount
+		temp_changes[currency_type] = new_amount
 	
 	# 应用所有更改
 	for currency_type in temp_changes:
@@ -165,7 +165,7 @@ func spend_multiple_currencies(currency_dict: Dictionary) -> bool:
 		if amount_to_spend <= 0:
 			continue
 		
-		if not has_enough_currency(CurrencyType(currency_type), amount_to_spend):
+		if not has_enough_currency(currency_type, amount_to_spend):
 			emit_signal("transaction_failed", "货币类型 %d 数量不足" % currency_type)
 			return false
 	
@@ -223,5 +223,5 @@ func load_currency_data(save_data: Dictionary):
 		var currency_type = int(currency_type_str)
 		var amount = save_data[currency_type_str]
 		if currencies.has(currency_type):
-			currencies[CurrencyType(currency_type)] = amount
+			currencies[currency_type] = amount
 			emit_signal("currency_changed", currency_type, 0, amount)

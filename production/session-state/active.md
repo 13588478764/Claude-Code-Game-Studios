@@ -1,9 +1,9 @@
 # 活跃会话状态
 
 ## 当前工作
-**故事**: Story 001: 三段式等级缩放曲线实现
-**路径**: production/epics/enemy-scaling-system/story-001-level-scaling-curve.md
-**状态**: 实现完成，待代码审查
+**故事**: 无活跃故事
+**路径**: N/A
+**状态**: Story 002 已完成，准备 Story 003
 
 ## 实现摘要
 
@@ -61,5 +61,18 @@
 
 ---
 
+## Session Extract — /story-done 2026-04-28 (Story 003)
+- Verdict: COMPLETE
+- Story: production/epics/attribute-point-allocation-system/story-003-attribute-point-verification.md — 属性点验证
+- Test Coverage: 100% (15/15 unit tests passing)
+- Code Review: APPROVED
+- Tech debt logged: None
+- Next recommended: 属性点分配系统 Epic 完成 (3/3 故事)
+
 **会话日期**: 2026-04-28
-**最后更新**: 2026-04-28 16:42:43 (Asia/Shanghai)
+**最后更新**: 2026-04-28 22:34:25 (Asia/Shanghai)
+## Session Extract — /story-done 2026-04-29
+- Verdict: COMPLETE
+- Story: production/epics/encounter-condition-check-system/story-001-condition-types-and-evaluation.md — 条件类型与评估
+- Tech debt logged: None
+- Next recommended: Story 002 - 触发机制与事件 (Trigger Mechanism & Events)

@@ -17,10 +17,18 @@
 **Engine**: Godot 4.6 | **Risk**: LOW
 **Engine Notes**: 使用Godot节点系统实现连携机制，利用信号系统处理连携事件
 
+**Estimate**: 12 hours (Large)
+
 **Control Manifest Rules (this layer)**:
 - Required: 连携系统必须支持队友间协作
 - Forbidden: 禁止在连携系统中直接操作UI
 - Guardrail: 连携计算性能不应影响游戏帧率
+
+**Performance Budget**:
+- 连携槽积累计算应在 0.5ms 内完成
+- 连击数计算应在 0.5ms 内完成
+- 连携条件判定应在 1ms 内完成
+- 不应导致帧率下降超过 5%
 
 ---
 
@@ -93,7 +101,23 @@
 
 **Story Type**: Logic
 **Required evidence**:
-- Unit: `tests/unit/combat/combat_link_system_test.gd` — must exist and pass
+- Unit test file: `tests/unit/combat/combat_link_system_test.gd` — must exist and pass
+
+**Test Coverage Requirements**:
+- AC-1 (连携槽系统): Test link gauge accumulation and sharing
+  - Test cases: normal accumulation, gauge full, teammate leave, multi-turn
+  - Assertions: verify correct gauge values and sharing
+- AC-2 (连击系统): Test combo tracking and damage multiplier
+  - Test cases: consecutive hits, dodge reset, target switch, max combo
+  - Assertions: verify combo count and damage multiplier
+- AC-3 (连携攻击): Test link attack execution
+  - Test cases: follow-up attack, dual tech, insufficient gauge, dead teammate
+  - Assertions: verify attack execution and gauge consumption
+- AC-4 (连携条件): Test link condition checking
+  - Test cases: multiple conditions, dynamic changes, special states
+  - Assertions: verify condition evaluation
+
+**Minimum Code Coverage**: 80% of link system implementation files
 
 **Status**: [x] Created and verified
 

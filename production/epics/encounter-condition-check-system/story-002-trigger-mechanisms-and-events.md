@@ -1,7 +1,7 @@
 # Story 002: 触发机制与事件
 
 > **Epic**: 奇遇条件检查系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27
@@ -105,3 +105,37 @@
 
 - Depends on: Story 001 (条件类型与评估)
 - Unlocks: Story 003 (逻辑树与权重)
+
+---
+
+## Completion Notes
+
+**Completed**: 2026-04-29
+**Criteria**: 4/4 passing (all acceptance criteria verified)
+**Test Evidence**: ✅ Unit test file at `tests/unit/encounter/trigger_mechanisms_and_events_test.gd` — all 4 tests passing
+**Deviations**: None — implementation fully complies with GDD and ADR-001
+**Code Review**: Pending (recommend running `/code-review` before final closure)
+
+### Test Results Summary
+- ✅ test_area_triggers_correctly_implemented — Area2D triggers registered correctly
+- ✅ test_key_event_hooks_working — Rest, battle, and weather event hooks registered
+- ✅ test_trigger_timing_accurate — Zone entry triggers execute without errors
+- ✅ test_event_listening_mechanism_normal — Global event signals emit and are captured correctly
+
+### Implementation Verification
+- ✅ TriggerMechanismManager class fully implemented with all required methods
+- ✅ Zone trigger registration and management working correctly
+- ✅ Event hook system (rest, battle, weather) properly integrated
+- ✅ Global event signal system functional
+- ✅ Condition evaluation integration with ConditionEvaluator working
+- ✅ No hardcoded values or performance issues detected
+- ✅ Follows GDD requirement: uses Area2D triggers, not frame-by-frame polling
+- ✅ Follows ADR-001: uses Godot 4.6, GDScript, Scene-Node architecture, signal system
+
+### Files Modified
+- `src/scripts/encounter/trigger_mechanism_manager.gd` — TriggerMechanismManager implementation (17.7 KB)
+- `tests/unit/encounter/trigger_mechanisms_and_events_test.gd` — Unit tests (updated to use GutTest framework)
+
+### Next Steps
+1. Run `/code-review` for architectural and quality review
+2. Proceed to Story 003 (逻辑树与权重) implementation

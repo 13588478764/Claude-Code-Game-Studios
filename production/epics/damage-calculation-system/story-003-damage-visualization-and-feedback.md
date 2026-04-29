@@ -1,10 +1,11 @@
 # Story 003: 伤害可视化与反馈
 
 > **Epic**: 伤害计算系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
-> **Manifest Version**: 2026-04-27
+> **Manifest Version**: 2026-04-28
+> **Estimate**: 16 hours
 
 ## Context
 

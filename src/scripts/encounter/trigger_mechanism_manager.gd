@@ -255,17 +255,130 @@ func evaluate_single_condition(condition_type: String, parameters: Dictionary, p
 	# 根据条件类型调用评估器的相应方法
 	match condition_type:
 		"TEMPORAL_ENVIRONMENT":
-			return condition_evaluator.evaluate_temporal_environment_conditions(player_data)
+			# 将 PlayerData 对象转换为字典
+			var player_dict = _player_data_to_dict(player_data)
+			return condition_evaluator.evaluate_temporal_environment_conditions(player_dict)
 		"CHARACTER_STATE":
-			return condition_evaluator.evaluate_character_state_conditions(player_data)
+			# 将 PlayerData 对象转换为字典
+			var player_dict = _player_data_to_dict(player_data)
+			return condition_evaluator.evaluate_character_state_conditions(player_dict)
 		"PROGRESS_HISTORY":
-			return condition_evaluator.evaluate_progress_history_conditions(progress_data)
+			# 将 ProgressData 对象转换为字典
+			var progress_dict = _progress_data_to_dict(progress_data)
+			return condition_evaluator.evaluate_progress_history_conditions(progress_dict)
 		"RANDOM_PROBABILITY":
 			var base_prob = parameters.get("base_probability", 0.05)
-			return condition_evaluator.evaluate_random_probability_conditions(player_data.luck, base_prob)
+			# 获取福缘值
+			var luck = 50.0
+			if player_data is Dictionary:
+				luck = player_data.get("luck", 50.0)
+			else:
+				# 尝试访问对象的 luck 属性
+				if player_data and player_data.has_method("get"):
+					luck = player_data.get("luck", 50.0)
+				elif player_data:
+					luck = player_data.luck if "luck" in player_data else 50.0
+			return condition_evaluator.evaluate_random_probability_conditions(luck, base_prob)
 		_:
 			print("未知的条件类型: %s" % condition_type)
 			return false
+
+# 将 PlayerData 对象转换为字典
+func _player_data_to_dict(player_data) -> Dictionary:
+	var result = {}
+	
+	# 检查是否是 PlayerData 对象（通过检查属性）
+	if player_data is Object and player_data.has_method("get_class") == false:
+		# 尝试访问 PlayerData 的属性
+		if player_data.has_meta("position") or (player_data is Object and "position" in player_data):
+			result["position"] = player_data.position if player_data.has_meta("position") else Vector2.ZERO
+			result["time"] = player_data.time if player_data.has_meta("time") else 0.0
+			result["weather"] = player_data.weather if player_data.has_meta("weather") else ""
+			result["luck"] = player_data.luck if player_data.has_meta("luck") else 50.0
+			result["wisdom"] = player_data.wisdom if player_data.has_meta("wisdom") else 60.0
+			result["health"] = player_data.health if player_data.has_meta("health") else 0.8
+			result["max_health"] = 1.0
+			result["qi"] = player_data.qi if player_data.has_meta("qi") else 0.7
+			result["attributes"] = player_data.attributes if player_data.has_meta("attributes") else {}
+			result["inventory"] = player_data.inventory if player_data.has_meta("inventory") else []
+			result["skills"] = player_data.skills if player_data.has_meta("skills") else []
+			result["realm"] = player_data.realm if player_data.has_meta("realm") else ""
+			result["location"] = "default_location"
+			result["time_of_day"] = "day"
+			result["status_effects"] = []
+		else:
+			# 如果不是 PlayerData 对象，尝试直接访问属性
+			result["position"] = player_data.position if "position" in player_data else Vector2.ZERO
+			result["time"] = player_data.time if "time" in player_data else 0.0
+			result["weather"] = player_data.weather if "weather" in player_data else ""
+			result["luck"] = player_data.luck if "luck" in player_data else 50.0
+			result["wisdom"] = player_data.wisdom if "wisdom" in player_data else 60.0
+			result["health"] = player_data.health if "health" in player_data else 0.8
+			result["max_health"] = 1.0
+			result["qi"] = player_data.qi if "qi" in player_data else 0.7
+			result["attributes"] = player_data.attributes if "attributes" in player_data else {}
+			result["inventory"] = player_data.inventory if "inventory" in player_data else []
+			result["skills"] = player_data.skills if "skills" in player_data else []
+			result["realm"] = player_data.realm if "realm" in player_data else ""
+			result["location"] = "default_location"
+			result["time_of_day"] = "day"
+			result["status_effects"] = []
+	elif player_data is Dictionary:
+		result = player_data
+	else:
+		# 默认值
+		result["position"] = Vector2.ZERO
+		result["time"] = 0.0
+		result["weather"] = ""
+		result["luck"] = 50.0
+		result["wisdom"] = 60.0
+		result["health"] = 0.8
+		result["max_health"] = 1.0
+		result["qi"] = 0.7
+		result["attributes"] = {}
+		result["inventory"] = []
+		result["skills"] = []
+		result["realm"] = ""
+		result["location"] = "default_location"
+		result["time_of_day"] = "day"
+		result["status_effects"] = []
+	
+	return result
+
+# 将 ProgressData 对象转换为字典
+func _progress_data_to_dict(progress_data) -> Dictionary:
+	var result = {}
+	
+	# 检查是否是 ProgressData 对象（通过检查属性）
+	if progress_data is Object and progress_data.has_method("get_class") == false:
+		# 尝试访问 ProgressData 的属性
+		if progress_data.has_meta("quest_status") or (progress_data is Object and "quest_status" in progress_data):
+			result["quest_status"] = progress_data.quest_status if progress_data.has_meta("quest_status") else {}
+			result["explored_areas"] = progress_data.explored_areas if progress_data.has_meta("explored_areas") else []
+			result["encounter_history"] = progress_data.encounter_history if progress_data.has_meta("encounter_history") else []
+			result["behavior_history"] = progress_data.behavior_history if progress_data.has_meta("behavior_history") else {}
+			result["encounters_completed"] = progress_data.encounter_history if progress_data.has_meta("encounter_history") else []
+			result["level"] = 1
+		else:
+			# 如果不是 ProgressData 对象，尝试直接访问属性
+			result["quest_status"] = progress_data.quest_status if "quest_status" in progress_data else {}
+			result["explored_areas"] = progress_data.explored_areas if "explored_areas" in progress_data else []
+			result["encounter_history"] = progress_data.encounter_history if "encounter_history" in progress_data else []
+			result["behavior_history"] = progress_data.behavior_history if "behavior_history" in progress_data else {}
+			result["encounters_completed"] = progress_data.encounter_history if "encounter_history" in progress_data else []
+			result["level"] = 1
+	elif progress_data is Dictionary:
+		result = progress_data
+	else:
+		# 默认值
+		result["quest_status"] = {}
+		result["explored_areas"] = []
+		result["encounter_history"] = []
+		result["behavior_history"] = {}
+		result["encounters_completed"] = []
+		result["level"] = 1
+	
+	return result
 
 # 获取玩家数据（模拟）
 func get_player_data() -> Object:

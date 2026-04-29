@@ -17,10 +17,17 @@
 **Engine**: Godot 4.6 | **Risk**: LOW
 **Engine Notes**: 使用Godot节点系统实现弱点检测，利用信号系统处理弱点打击事件
 
+**Estimate**: 8 hours (Medium)
+
 **Control Manifest Rules (this layer)**:
 - Required: 弱点检测必须基于属性克制关系
 - Forbidden: 禁止在弱点系统中直接操作UI
 - Guardrail: 弱点计算性能不应影响游戏帧率
+
+**Performance Budget**:
+- 弱点检测应在 1ms 内完成
+- 属性克制计算应在 0.5ms 内完成
+- 不应导致帧率下降超过 5%
 
 ---
 
@@ -93,7 +100,23 @@
 
 **Story Type**: Logic
 **Required evidence**:
-- Unit: `tests/unit/combat/weakness_system_test.gd` — must exist and pass
+- Unit test file: `tests/unit/combat/weakness_system_test.gd` — must exist and pass
+
+**Test Coverage Requirements**:
+- AC-1 (属性克制): Test elemental weakness with all 5 elements (金/木/水/火/土)
+  - Test cases: normal element weakness, same element, no weakness, multiple elements
+  - Assertions: verify correct damage multiplier (1.5x for weakness, 1.0x for normal)
+- AC-2 (弱点打击): Test weakness hit detection and damage calculation
+  - Test cases: weakness hit, non-weakness hit, exposed weakness, defended weakness
+  - Assertions: verify weakness hit effect and damage calculation
+- AC-3 (击倒机制): Test down state and vulnerability effects
+  - Test cases: down state trigger, down state duration, vulnerability damage bonus
+  - Assertions: verify down state and +50% damage effect
+- AC-4 (总攻击): Test all-out attack trigger conditions
+  - Test cases: all enemies down, partial enemies down, boss immunity
+  - Assertions: verify all-out attack availability and trigger conditions
+
+**Minimum Code Coverage**: 80% of weakness system implementation files
 
 **Status**: [x] Created and verified
 

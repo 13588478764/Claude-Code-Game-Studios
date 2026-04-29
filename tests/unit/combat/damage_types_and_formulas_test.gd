@@ -1,231 +1,316 @@
-# 伤害类型与公式单元测试
-# 验证三种伤害类型、基础公式和最小伤害限制
+# 伤害类型与公式 - 单元测试
+#
+# 测试 DamageCalculator 的所有功能:
+# - AC-1: 三种伤害类型正确实现
+# - AC-2: 基础伤害计算公式正确
+# - AC-3: 攻防属性正确应用
+# - AC-4: 最小伤害限制正常
 
-extends Node
+extends GutTest
 
-# 测试结果结构
-class TestResult:
-	var passed: bool
-	var test_name: String
-	var message: String
+# 导入实现文件
+const DamageCalculator = preload("res://src/scripts/combat/damage_calculator.gd")
 
-# 测试所有功能
-func test_all() -> Array:
-	var results = []
-	
-	results.append(test_damage_types_correctly_implemented())
-	results.append(test_base_damage_formula_correct())
-	results.append(test_defense_attributes_correctly_applied())
-	results.append(test_minimum_damage_limit_normal())
-	
-	return results
+var damage_calculator: DamageCalculator
+var attacker: Node
+var defender: Node
 
-# 测试1: 三种伤害类型正确实现
-func test_damage_types_correctly_implemented() -> TestResult:
-	var result = TestResult.new()
-	result.test_name = "三种伤害类型正确实现"
-	
-	# 创建伤害计算器实例
-	var damage_calculator = load("res://src/scripts/combat/damage_calculator.gd").new()
-	
-	# 测试外功伤害
-	var dummy_attacker = {
-		"STR": 100,
-		"WIS": 80,
-		"get_attribute": func(attr): return attr == "STR" and 100 or 80,
-		"get_weapon_attack": func(): return 50,
-		"get_internal_energy": func(): return 60
-	}
-	
-	var dummy_defender = {
-		"CON": 50,
-		"WIS": 70,
-		"get_attribute": func(attr): return attr == "CON" and 50 or 70,
-		"get_armor_value": func(): return 30,
-		"get_internal_resist": func(): return 20
-	}
-	
-	# 测试外功伤害
-	var result_waigong = damage_calculator.calculate_damage(dummy_attacker, dummy_defender, damage_calculator.DamageType.WAI_GONG)
-	var expected_waigong = max(1, (100 + 50) - (50 + 30))  # max(1, 150 - 80) = 70
-	var actual_waigong = result_waigong.final_damage
-	
-	# 测试内功伤害
-	var result_neigong = damage_calculator.calculate_damage(dummy_attacker, dummy_defender, damage_calculator.DamageType.NEI_GONG)
-	var expected_neigong = max(1, (80 + 60) - (70 + 20))  # max(1, 140 - 90) = 50
-	var actual_neigong = result_neigong.final_damage
-	
-	# 测试真实伤害
-	var result_zhenshi = damage_calculator.calculate_damage(dummy_attacker, dummy_defender, damage_calculator.DamageType.ZHEN_SHI)
-	var expected_zhenshi = max(1, (80 + 60) - 0)  # max(1, 140) = 140 (真实伤害无视防御)
-	var actual_zhenshi = result_zhenshi.final_damage
-	
-	# 验证结果
-	if actual_waigong == expected_waigong and actual_neigong == expected_neigong and actual_zhenshi == expected_zhenshi:
-		result.passed = true
-		result.message = "外功伤害: %d (期望 %d), 内功伤害: %d (期望 %d), 真实伤害: %d (期望 %d)" % [actual_waigong, expected_waigong, actual_neigong, expected_neigong, actual_zhenshi, expected_zhenshi]
-	else:
-		result.passed = false
-		result.message = "伤害类型计算错误 - 外功: %d (期望 %d), 内功: %d (期望 %d), 真实伤害: %d (期望 %d)" % [actual_waigong, expected_waigong, actual_neigong, expected_neigong, actual_zhenshi, expected_zhenshi]
-	
-	return result
+# ============================================================================
+# 测试设置和清理
+# ============================================================================
 
-# 测试2: 基础伤害计算公式正确
-func test_base_damage_formula_correct() -> TestResult:
-	var result = TestResult.new()
-	result.test_name = "基础伤害计算公式正确"
+func before_each():
+	damage_calculator = DamageCalculator.new()
+	add_child(damage_calculator)
 	
-	# 创建伤害计算器实例
-	var damage_calculator = load("res://src/scripts/combat/damage_calculator.gd").new()
-	
-	# 创建测试角色
-	var attacker = {
-		"STR": 150,
-		"get_attribute": func(attr): return 150,
-		"get_weapon_attack": func(): return 0,
-		"get_internal_energy": func(): return 0
-	}
-	
-	var defender = {
-		"CON": 80,
-		"get_attribute": func(attr): return 80,
-		"get_armor_value": func(): return 0,
-		"get_internal_resist": func(): return 0
-	}
-	
-	# 计算伤害 (攻击力150 - 防御力80 = 70)
-	var damage_result = damage_calculator.calculate_damage(attacker, defender, damage_calculator.DamageType.WAI_GONG)
-	var expected_damage = 70
-	var actual_damage = damage_result.final_damage
-	
-	if actual_damage == expected_damage:
-		result.passed = true
-		result.message = "基础伤害计算正确: %d - %d = %d" % [150, 80, actual_damage]
-	else:
-		result.passed = false
-		result.message = "基础伤害计算错误: 期望 %d, 实际 %d" % [expected_damage, actual_damage]
-	
-	return result
+	attacker = Node.new()
+	defender = Node.new()
+	add_child(attacker)
+	add_child(defender)
 
-# 测试3: 攻防属性正确应用
-func test_defense_attributes_correctly_applied() -> TestResult:
-	var result = TestResult.new()
-	result.test_name = "攻防属性正确应用"
-	
-	# 创建伤害计算器实例
-	var damage_calculator = load("res://src/scripts/combat/damage_calculator.gd").new()
-	
-	# 测试外功: 力道 vs 根骨
-	var attacker = {
-		"STR": 100,
-		"WIS": 80,
-		"get_attribute": func(attr): return attr == "STR" and 100 or 80,
-		"get_weapon_attack": func(): return 0,
-		"get_internal_energy": func(): return 0
-	}
-	
-	var defender = {
-		"CON": 50,
-		"WIS": 90,
-		"get_attribute": func(attr): return attr == "CON" and 50 or 90,
-		"get_armor_value": func(): return 0,
-		"get_internal_resist": func(): return 0
-	}
-	
-	# 计算外功伤害 (力道 vs 根骨)
-	var result_waigong = damage_calculator.calculate_damage(attacker, defender, damage_calculator.DamageType.WAI_GONG)
-	var expected_waigong = max(1, 100 - 50)  # 50点伤害
-	var actual_waigong = result_waigong.final_damage
-	
-	# 测试内功: 悟性 vs 悟性/内力抗性
-	var attacker_neigong = {
-		"STR": 80,
-		"WIS": 120,
-		"get_attribute": func(attr): return attr == "WIS" and 120 or 80,
-		"get_weapon_attack": func(): return 0,
-		"get_internal_energy": func(): return 30
-	}
-	
-	var defender_neigong = {
-		"CON": 70,
-		"WIS": 100,
-		"get_attribute": func(attr): return attr == "WIS" and 100 or 70,
-		"get_armor_value": func(): return 0,
-		"get_internal_resist": func(): return 10
-	}
-	
-	var result_neigong = damage_calculator.calculate_damage(attacker_neigong, defender_neigong, damage_calculator.DamageType.NEI_GONG)
-	var expected_neigong = max(1, (120 + 30) - (100 + 10))  # max(1, 150 - 110) = 40
-	var actual_neigong = result_neigong.final_damage
-	
-	if actual_waigong == expected_waigong and actual_neigong == expected_neigong:
-		result.passed = true
-		result.message = "外功: 力道(100) vs 根骨(50) = %d, 内功: 悟性(150) vs 悟性/抗性(110) = %d" % [actual_waigong, actual_neigong]
-	else:
-		result.passed = false
-		result.message = "攻防属性应用错误 - 外功: 期望 %d 实际 %d, 内功: 期望 %d 实际 %d" % [expected_waigong, actual_waigong, expected_neigong, actual_neigong]
-	
-	return result
 
-# 测试4: 最小伤害限制正常
-func test_minimum_damage_limit_normal() -> TestResult:
-	var result = TestResult.new()
-	result.test_name = "最小伤害限制正常"
-	
-	# 创建伤害计算器实例
-	var damage_calculator = load("res://src/scripts/combat/damage_calculator.gd").new()
-	
-	# 创建攻击力很低但防御力很高的角色
-	var low_attacker = {
-		"STR": 10,
-		"get_attribute": func(attr): return 10,
-		"get_weapon_attack": func(): return 5,
-		"get_internal_energy": func(): return 0
-	}
-	
-	var high_defender = {
-		"CON": 50,
-		"get_attribute": func(attr): return 50,
-		"get_armor_value": func(): return 60,
-		"get_internal_resist": func(): return 0
-	}
-	
-	# 计算伤害 (攻击力15 - 防御力110 = -95, 但最小伤害限制为1)
-	var damage_result = damage_calculator.calculate_damage(low_attacker, high_defender, damage_calculator.DamageType.WAI_GONG)
-	var expected_damage = 1  # 最小伤害限制
-	var actual_damage = damage_result.final_damage
-	
-	if actual_damage == expected_damage:
-		result.passed = true
-		result.message = "最小伤害限制正常: 期望 %d, 实际 %d" % [expected_damage, actual_damage]
-	else:
-		result.passed = false
-		result.message = "最小伤害限制错误: 期望 %d, 实际 %d" % [expected_damage, actual_damage]
-	
-	return result
+func after_each():
+	if damage_calculator:
+		damage_calculator.queue_free()
+	if attacker:
+		attacker.queue_free()
+	if defender:
+		defender.queue_free()
 
-# 运行测试并输出结果
-func run_tests():
-	var test_results = test_all()
-	var passed_count = 0
-	var total_count = test_results.size()
+
+# ============================================================================
+# AC-1: 三种伤害类型正确实现
+# ============================================================================
+
+func test_physical_damage_type_uses_str_and_weapon_attack():
+	attacker.set_meta("strength", 100)
+	attacker.set_meta("weapon_attack", 50)
+	defender.set_meta("constitution", 30)
+	defender.set_meta("armor", 20)
 	
-	print("开始运行伤害类型与公式测试...")
-	print("================================")
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
 	
-	for result in test_results:
-		if result.passed:
-			print("✅ %s: %s" % [result.test_name, result.message])
-			passed_count += 1
-		else:
-			print("❌ %s: %s" % [result.test_name, result.message])
+	assert_eq(damage, 100, "外功伤害应该正确计算")
+
+
+func test_energy_damage_type_uses_wis_and_qi_power():
+	attacker.set_meta("wisdom", 80)
+	attacker.set_meta("qi_power", 40)
+	defender.set_meta("wisdom", 50)
+	defender.set_meta("qi_resistance", 15)
 	
-	print("================================")
-	print("测试结果: %d/%d 项测试通过" % [passed_count, total_count])
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.ENERGY
+	)
 	
-	if passed_count == total_count:
-		print("🎉 所有测试都通过了！")
-	else:
-		print("⚠️  有 %d 项测试失败" % [total_count - passed_count])
+	assert_eq(damage, 55, "内功伤害应该正确计算")
+
+
+func test_true_damage_ignores_defense():
+	attacker.set_meta("strength", 100)
+	defender.set_meta("constitution", 200)
+	defender.set_meta("armor", 100)
 	
-	return passed_count == total_count
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.TRUE_DAMAGE
+	)
+	
+	assert_eq(damage, 100, "真实伤害应该无视防御")
+
+
+# ============================================================================
+# AC-2: 基础伤害计算公式正确
+# ============================================================================
+
+func test_base_damage_formula_150_minus_80_equals_70():
+	attacker.set_meta("strength", 150)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 80)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 70, "基础伤害公式应该正确")
+
+
+func test_high_attack_power():
+	attacker.set_meta("strength", 1000)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 100)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 900, "高攻击力应该正确计算")
+
+
+func test_high_defense_power():
+	attacker.set_meta("strength", 100)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 500)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 1, "高防御力应该被限制为最小伤害1")
+
+
+func test_equal_attack_and_defense():
+	attacker.set_meta("strength", 100)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 100)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 1, "攻防相等时伤害应该被限制为1")
+
+
+# ============================================================================
+# AC-3: 攻防属性正确应用
+# ============================================================================
+
+func test_physical_damage_uses_str_vs_con():
+	attacker.set_meta("strength", 100)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 50)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 50, "外功伤害应该使用力道vs根骨")
+
+
+func test_energy_damage_uses_wis_vs_wis():
+	attacker.set_meta("wisdom", 80)
+	attacker.set_meta("qi_power", 0)
+	defender.set_meta("wisdom", 40)
+	defender.set_meta("qi_resistance", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.ENERGY
+	)
+	
+	assert_eq(damage, 40, "内功伤害应该使用悟性vs悟性")
+
+
+func test_equipment_defense_bonus():
+	attacker.set_meta("strength", 100)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 50)
+	defender.set_meta("armor", 30)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 20, "装备防御加成应该正确应用")
+
+
+# ============================================================================
+# AC-4: 最小伤害限制正常
+# ============================================================================
+
+func test_minimum_damage_limit_negative_damage():
+	attacker.set_meta("strength", 10)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 50)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 1, "负数伤害应该被限制为1")
+
+
+func test_minimum_damage_limit_zero_damage():
+	attacker.set_meta("strength", 50)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 50)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 1, "0伤害应该被限制为1")
+
+
+func test_minimum_damage_limit_very_low_damage():
+	attacker.set_meta("strength", 0)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 200)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 1, "极低伤害应该被限制为1")
+
+
+func test_minimum_damage_does_not_affect_positive_damage():
+	attacker.set_meta("strength", 100)
+	attacker.set_meta("weapon_attack", 0)
+	defender.set_meta("constitution", 50)
+	defender.set_meta("armor", 0)
+	
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 50, "正数伤害不应该被最小伤害限制影响")
+
+
+# ============================================================================
+# 边界情况测试
+# ============================================================================
+
+func test_missing_attributes_default_to_zero():
+	var damage = damage_calculator.calculate_base_damage(
+		attacker, 
+		defender, 
+		DamageCalculator.DamageType.PHYSICAL
+	)
+	
+	assert_eq(damage, 1, "缺失属性应该默认为0")
+
+
+func test_apply_damage_type_rules_physical():
+	var result = damage_calculator.apply_damage_type_rules(
+		DamageCalculator.DamageType.PHYSICAL,
+		100
+	)
+	assert_eq(result, 100, "外功伤害规则应该返回原值")
+
+
+func test_apply_damage_type_rules_energy():
+	var result = damage_calculator.apply_damage_type_rules(
+		DamageCalculator.DamageType.ENERGY,
+		100
+	)
+	assert_eq(result, 100, "内功伤害规则应该返回原值")
+
+
+func test_apply_damage_type_rules_true_damage():
+	var result = damage_calculator.apply_damage_type_rules(
+		DamageCalculator.DamageType.TRUE_DAMAGE,
+		100
+	)
+	assert_eq(result, 100, "真实伤害规则应该返回原值")
+
+
+func test_enforce_minimum_damage_positive():
+	var result = damage_calculator.enforce_minimum_damage(50)
+	assert_eq(result, 50, "正数伤害应该保持不变")
+
+
+func test_enforce_minimum_damage_zero():
+	var result = damage_calculator.enforce_minimum_damage(0)
+	assert_eq(result, 1, "0伤害应该被限制为1")
+
+
+func test_enforce_minimum_damage_negative():
+	var result = damage_calculator.enforce_minimum_damage(-50)
+	assert_eq(result, 1, "负数伤害应该被限制为1")

@@ -1,100 +1,159 @@
+# LogicTreeManager - 逻辑树与权重管理系统
+#
+# 负责管理奇遇的逻辑树结构、权重分配、互斥组处理和加权随机选择
+# 与 ConditionEvaluator 和 TriggerMechanismManager 集成
+#
+# 信号:
+#   - logic_tree_processed(tree_root, selected_encounter)
+
 extends Node
 
-# 逻辑树与权重管理器
-# 实现嵌套逻辑树结构、权重分配机制、互斥组处理和权重重分配算法
+class_name LogicTreeManager
 
-# 逻辑操作枚举（与ConditionEvaluator保持一致）
+# 逻辑操作符枚举
 enum LogicOp {
-	AND,  # 与操作
-	OR,   # 或操作
-	XOR   # 异或操作
-	NOT   # 非操作
+	AND,                     # 逻辑与
+	OR                       # 逻辑或
 }
 
-# 条件节点结构
-class ConditionNode:
-	var id: String
-	var type: String  # 条件类型
-	var parameters: Dictionary
-	var is_negated: bool = false  # 是否取反
+# 信号定义
+signal logic_tree_processed(tree_root: Object, selected_encounter: String)
 
-# 逻辑树节点结构
+# ============================================================================
+# 内部类定义
+# ============================================================================
+
+## 逻辑树节点类
 class LogicTreeNode:
 	var id: String
-	var logic_op: LogicOp  # 逻辑操作
-	var condition_nodes: Array[ConditionNode] = []  # 条件节点
-	var child_nodes: Array[LogicTreeNode] = []  # 子节点
-	var is_leaf: bool = false  # 是否为叶子节点
+	var logic_op: int                    # AND 或 OR
+	var condition_nodes: Array           # 条件节点数组
+	var child_nodes: Array               # 子树节点数组
+	var parent_node: Object              # 父节点引用
+	
+	func _init():
+		id = ""
+		logic_op = 0
+		condition_nodes = []
+		child_nodes = []
+		parent_node = null
 
-# 权重数据结构
+## 条件节点类
+class ConditionNode:
+	var id: String
+	var type: String
+	var parameters: Dictionary
+	var is_met: bool
+	
+	func _init():
+		id = ""
+		type = ""
+		parameters = {}
+		is_met = false
+
+## 权重数据类
 class WeightData:
-	var base_weight: int = 1
-	var weight_modifier: float = 1.0
-	var adjusted_weight: float = 1.0
 	var encounter_id: String
+	var base_weight: float
+	var weight_modifier: float
+	var adjusted_weight: float
+	
+	func _init():
+		encounter_id = ""
+		base_weight = 0.0
+		weight_modifier = 1.0
+		adjusted_weight = 0.0
 
-# 互斥组数据结构
+## 互斥组类
 class MutexGroup:
 	var group_id: String
-	var encounter_ids: Array[String]
-	var active_encounter: String = ""  # 当前激活的奇遇ID
-
-# 信号定义
-signal logic_tree_processed(result_data)
-
-# 存储数据
-var logic_trees: Dictionary = {}
-var mutex_groups: Dictionary = {}
-var weights: Dictionary = {}
-
-# 构建逻辑树结构
-func build_logic_tree(condition_data: Dictionary) -> LogicTreeNode:
-	var root_node = LogicTreeNode.new()
-	root_node.id = condition_data.get("id", "root")
-	root_node.logic_op = get_logic_op_from_string(condition_data.get("logic_op", "AND"))
+	var encounter_ids: Array
+	var triggered_encounter: String      # 已触发的奇遇ID
+	var is_locked: bool
 	
-	# 处理条件节点
-	if condition_data.has("conditions"):
-		for condition in condition_data.conditions:
-			var condition_node = ConditionNode.new()
-			condition_node.id = condition.get("id", "")
-			condition_node.type = condition.get("type", "")
-			condition_node.parameters = condition.get("parameters", {})
-			condition_node.is_negated = condition.get("is_negated", false)
-			root_node.condition_nodes.append(condition_node)
-	
-	# 处理子节点（嵌套逻辑）
-	if condition_data.has("children"):
-		for child_data in condition_data.children:
-			var child_node = build_logic_tree(child_data)
-			root_node.child_nodes.append(child_node)
-	
-	# 如果没有子节点和条件节点，则为叶子节点
-	root_node.is_leaf = (root_node.condition_nodes.is_empty() and root_node.child_nodes.is_empty())
-	
-	return root_node
+	func _init():
+		group_id = ""
+		encounter_ids = []
+		triggered_encounter = ""
+		is_locked = false
 
-# 从字符串获取逻辑操作
-func get_logic_op_from_string(op_string: String) -> LogicOp:
-	match op_string.to_upper():
-		"AND": return LogicOp.AND
-		"OR": return LogicOp.OR
-		"XOR": return LogicOp.XOR
-		"NOT": return LogicOp.NOT
-		_: return LogicOp.AND
+# ============================================================================
+# 成员变量
+# ============================================================================
 
-# 评估逻辑树
-func evaluate_logic_tree(tree_root: LogicTreeNode, player_data, progress_data) -> bool:
+var condition_evaluator: Node = null
+var mutex_groups: Dictionary = {}      # 互斥组字典
+var logic_trees: Dictionary = {}        # 逻辑树字典
+var encounter_weights: Dictionary = {}  # 奇遇权重字典
+
+# ============================================================================
+# 初始化
+# ============================================================================
+
+func _ready():
+	# 获取条件评估器实例
+	condition_evaluator = load("res://src/scripts/encounter/condition_evaluator.gd").new()
+
+# ============================================================================
+# 公共方法
+# ============================================================================
+
+## 构建逻辑树结构
+## 参数:
+##   - condition_data: 逻辑树数据字典
+##     - id: 树的ID
+##     - logic_op: 逻辑操作符 ("AND" 或 "OR")
+##     - conditions: 条件数组
+##     - children: 子树数组
+## 返回: 逻辑树根节点
+func build_logic_tree(condition_data: Dictionary) -> Object:
+	var tree_root = LogicTreeNode.new()
+	tree_root.id = condition_data.get("id", "root")
+	
+	# 设置逻辑操作符
+	var logic_op_str = condition_data.get("logic_op", "AND")
+	tree_root.logic_op = LogicOp.AND if logic_op_str == "AND" else LogicOp.OR
+	
+	# 构建条件节点
+	var conditions = condition_data.get("conditions", [])
+	for condition in conditions:
+		var condition_node = ConditionNode.new()
+		condition_node.id = condition.get("id", "")
+		condition_node.type = condition.get("type", "")
+		condition_node.parameters = condition.get("parameters", {})
+		tree_root.condition_nodes.append(condition_node)
+	
+	# 递归构建子树
+	var children = condition_data.get("children", [])
+	for child_data in children:
+		var child_node = build_logic_tree(child_data)
+		child_node.parent_node = tree_root
+		tree_root.child_nodes.append(child_node)
+	
+	# 保存逻辑树
+	logic_trees[tree_root.id] = tree_root
+	
+	return tree_root
+
+
+## 评估逻辑树
+## 参数:
+##   - tree_root: 逻辑树根节点
+##   - player_data: 玩家数据对象
+##   - progress_data: 进度数据对象
+## 返回: 逻辑树评估结果
+func evaluate_logic_tree(tree_root: Object, player_data: Object = null, progress_data: Object = null) -> bool:
+	if tree_root == null:
+		return false
+	
 	# 评估条件节点
-	var condition_results: Array[bool] = []
+	var condition_results = []
 	for condition_node in tree_root.condition_nodes:
-		var result = evaluate_condition_node(condition_node, player_data, progress_data)
-		if condition_node.is_negated:
-			result = not result
+		var result = _evaluate_condition_node(condition_node, player_data, progress_data)
 		condition_results.append(result)
 	
-	# 评估子节点
-	var child_results: Array[bool] = []
+	# 评估子树
+	var child_results = []
 	for child_node in tree_root.child_nodes:
 		var result = evaluate_logic_tree(child_node, player_data, progress_data)
 		child_results.append(result)
@@ -102,280 +161,278 @@ func evaluate_logic_tree(tree_root: LogicTreeNode, player_data, progress_data) -
 	# 合并所有结果
 	var all_results = condition_results + child_results
 	
-	# 根据逻辑操作符处理结果
+	# 根据逻辑操作符组合结果
+	if all_results.is_empty():
+		return false
+	
 	match tree_root.logic_op:
 		LogicOp.AND:
+			# AND 逻辑: 所有条件都为 true 才返回 true
 			for result in all_results:
 				if not result:
 					return false
 			return true
+		
 		LogicOp.OR:
+			# OR 逻辑: 至少一个条件为 true 就返回 true
 			for result in all_results:
 				if result:
 					return true
 			return false
-		LogicOp.XOR:
-			var true_count = 0
-			for result in all_results:
-				if result:
-					true_count += 1
-			return true_count % 2 == 1
-		LogicOp.NOT:
-			# NOT操作通常只对单个条件有效
-			if all_results.size() > 0:
-				return not all_results[0]
-			else:
-				return true
-		_:
-			return false
-
-# 评估条件节点
-func evaluate_condition_node(condition_node: ConditionNode, player_data, progress_data) -> bool:
-	# 这里需要引用ConditionEvaluator来评估条件
-	var evaluator = load("res://src/scripts/encounter/condition_evaluator.gd").new()
 	
-	# 根据条件类型调用评估器的相应方法
-	match condition_node.type:
-		"TEMPORAL_ENVIRONMENT":
-			return evaluator.evaluate_temporal_environment_conditions(player_data)
-		"CHARACTER_STATE":
-			return evaluator.evaluate_character_state_conditions(player_data)
-		"PROGRESS_HISTORY":
-			return evaluator.evaluate_progress_history_conditions(progress_data)
-		"RANDOM_PROBABILITY":
-			var base_prob = condition_node.parameters.get("base_probability", 0.05)
-			return evaluator.evaluate_random_probability_conditions(player_data.luck, base_prob)
-		_:
-			print("未知的条件类型: %s" % condition_node.type)
-			return false
+	return false
 
-# 计算调整后权重
-func calculate_adjusted_weights(encounters: Array) -> Array[WeightData]:
-	var weight_data_list: Array[WeightData] = []
+
+## 计算调整后权重
+## 参数:
+##   - encounters: 奇遇数组
+##     - id: 奇遇ID
+##     - base_weight: 基础权重
+##     - weight_modifier: 权重修正系数
+## 返回: 权重数据数组
+func calculate_adjusted_weights(encounters: Array) -> Array:
+	var weighted_results = []
 	
 	for encounter in encounters:
 		var weight_data = WeightData.new()
 		weight_data.encounter_id = encounter.get("id", "")
-		weight_data.base_weight = encounter.get("base_weight", 1)
+		weight_data.base_weight = encounter.get("base_weight", 1.0)
 		weight_data.weight_modifier = encounter.get("weight_modifier", 1.0)
-		weight_data.adjusted_weight = float(weight_data.base_weight) * weight_data.weight_modifier
 		
-		weight_data_list.append(weight_data)
+		# 计算调整后权重 = 基础权重 × 修正系数
+		weight_data.adjusted_weight = weight_data.base_weight * weight_data.weight_modifier
+		
+		weighted_results.append(weight_data)
+		
+		# 保存权重数据
+		encounter_weights[weight_data.encounter_id] = weight_data
 	
-	return weight_data_list
+	return weighted_results
 
-# 处理互斥组
+
+## 处理互斥组
+## 参数:
+##   - mutex_data: 互斥组数据数组
+##     - group_id: 组ID
+##     - encounter_ids: 组内奇遇ID数组
+## 返回: 无
 func handle_mutex_groups(mutex_data: Array) -> void:
 	for group_data in mutex_data:
 		var mutex_group = MutexGroup.new()
 		mutex_group.group_id = group_data.get("group_id", "")
 		mutex_group.encounter_ids = group_data.get("encounter_ids", [])
-		mutex_group.active_encounter = ""
+		mutex_group.is_locked = false
 		
 		mutex_groups[mutex_group.group_id] = mutex_group
-	
-	print("处理了 %d 个互斥组" % mutex_groups.size())
 
-# 检查互斥组冲突
-func check_mutex_conflicts(encounter_id: String, mutex_group_id: String = "") -> bool:
-	if mutex_group_id == "":
+
+## 检查互斥冲突
+## 参数:
+##   - encounter_id: 奇遇ID
+##   - group_id: 互斥组ID
+## 返回: 是否存在冲突
+func check_mutex_conflicts(encounter_id: String, group_id: String) -> bool:
+	if not mutex_groups.has(group_id):
 		return false
 	
-	if not mutex_groups.has(mutex_group_id):
-		return false
+	var mutex_group = mutex_groups[group_id]
 	
-	var mutex_group = mutex_groups[mutex_group_id]
-	if mutex_group.active_encounter != "" and mutex_group.active_encounter != encounter_id:
-		# 同组中已有其他奇遇被激活
-		return true
+	# 如果组已锁定，检查是否是同组的其他奇遇
+	if mutex_group.is_locked:
+		# 如果是同组的其他奇遇，则存在冲突
+		if encounter_id in mutex_group.encounter_ids and encounter_id != mutex_group.triggered_encounter:
+			return true
 	
 	return false
 
-# 更新互斥组状态
-func update_mutex_group_status(encounter_id: String, mutex_group_id: String = "") -> void:
-	if mutex_group_id == "":
-		return
-	
-	if not mutex_groups.has(mutex_group_id):
-		return
-	
-	var mutex_group = mutex_groups[mutex_group_id]
-	mutex_group.active_encounter = encounter_id
 
-# 加权随机选择
-func weighted_random_selection(weighted_encounters: Array[WeightData]) -> String:
+## 更新互斥组状态
+## 参数:
+##   - encounter_id: 奇遇ID
+##   - group_id: 互斥组ID
+## 返回: 无
+func update_mutex_group_status(encounter_id: String, group_id: String) -> void:
+	if not mutex_groups.has(group_id):
+		return
+	
+	var mutex_group = mutex_groups[group_id]
+	
+	# 检查奇遇是否属于该组
+	if encounter_id in mutex_group.encounter_ids:
+		mutex_group.triggered_encounter = encounter_id
+		mutex_group.is_locked = true
+
+
+## 执行加权随机选择
+## 参数:
+##   - weighted_encounters: 权重数据数组
+## 返回: 选中的奇遇ID
+func weighted_random_selection(weighted_encounters: Array) -> String:
 	if weighted_encounters.is_empty():
 		return ""
 	
 	# 计算总权重
-	var total_weight: float = 0.0
+	var total_weight = 0.0
 	for weight_data in weighted_encounters:
 		total_weight += weight_data.adjusted_weight
 	
-	if total_weight <= 0:
+	if total_weight <= 0.0:
 		return ""
 	
-	# 生成随机值
+	# 生成随机数
 	var random_value = randf() * total_weight
 	
-	# 选择奇遇
-	var current_weight: float = 0.0
+	# 根据权重进行选择
+	var accumulated_weight = 0.0
 	for weight_data in weighted_encounters:
-		current_weight += weight_data.adjusted_weight
-		if random_value <= current_weight:
+		accumulated_weight += weight_data.adjusted_weight
+		if random_value <= accumulated_weight:
 			return weight_data.encounter_id
 	
-	# 如果没有找到（理论上不应该发生），返回最后一个
-	return weighted_encounters[-1].encounter_id
-
-# 处理多个满足条件的奇遇
-func process_multiple_encounters(encounters: Array, player_data, progress_data) -> Dictionary:
-	var valid_encounters: Array = []
+	# 如果没有选中任何奇遇，返回最后一个
+	if weighted_encounters.size() > 0:
+		return weighted_encounters[-1].encounter_id
 	
-	# 过滤出满足条件的奇遇
-	for encounter in encounters:
-		var tree_data = encounter.get("logic_tree", {})
-		if not tree_data.is_empty():
-			var tree_root = build_logic_tree(tree_data)
-			var is_met = evaluate_logic_tree(tree_root, player_data, progress_data)
-			
-			if is_met:
-				# 检查互斥组冲突
-				var mutex_group_id = encounter.get("mutex_group", "")
-				if not check_mutex_conflicts(encounter.get("id", ""), mutex_group_id):
-					valid_encounters.append(encounter)
+	return ""
+
+
+## 处理逻辑树并选择奇遇
+## 参数:
+##   - tree_root: 逻辑树根节点
+##   - encounters: 奇遇数组
+##   - player_data: 玩家数据对象
+##   - progress_data: 进度数据对象
+## 返回: 选中的奇遇ID
+func process_logic_tree_and_select_encounter(tree_root: Object, encounters: Array, player_data: Object = null, progress_data: Object = null) -> String:
+	# 评估逻辑树
+	var tree_result = evaluate_logic_tree(tree_root, player_data, progress_data)
+	
+	if not tree_result:
+		return ""
 	
 	# 计算权重
-	var weighted_encounters = calculate_adjusted_weights(valid_encounters)
+	var weighted_results = calculate_adjusted_weights(encounters)
 	
 	# 执行加权随机选择
-	var selected_encounter_id = weighted_random_selection(weighted_encounters)
+	var selected_encounter = weighted_random_selection(weighted_results)
 	
-	# 更新互斥组状态
-	if selected_encounter_id != "":
-		for encounter in valid_encounters:
-			if encounter.get("id", "") == selected_encounter_id:
-				var mutex_group_id = encounter.get("mutex_group", "")
-				update_mutex_group_status(selected_encounter_id, mutex_group_id)
-				break
+	# 发送信号
+	logic_tree_processed.emit(tree_root, selected_encounter)
 	
-	# 返回结果
-	var result = {
-		"selected_encounter": selected_encounter_id,
-		"valid_encounters": valid_encounters,
-		"weighted_encounters": weighted_encounters,
-		"total_valid": valid_encounters.size()
-	}
+	return selected_encounter
+
+
+# ============================================================================
+# 私有方法
+# ============================================================================
+
+## 评估条件节点
+## 参数:
+##   - condition_node: 条件节点
+##   - player_data: 玩家数据对象
+##   - progress_data: 进度数据对象
+## 返回: 条件评估结果
+func _evaluate_condition_node(condition_node: Object, player_data: Object = null, progress_data: Object = null) -> bool:
+	if condition_evaluator == null:
+		condition_evaluator = load("res://src/scripts/encounter/condition_evaluator.gd").new()
 	
-	emit_signal("logic_tree_processed", result)
+	# 如果条件节点有 is_met 参数，直接使用它
+	if condition_node.parameters.has("is_met"):
+		return condition_node.parameters["is_met"]
+	
+	# 根据条件类型进行评估
+	match condition_node.type:
+		"TEMPORAL_ENVIRONMENT":
+			var player_dict = _player_data_to_dict(player_data)
+			return condition_evaluator.evaluate_temporal_environment_conditions(player_dict)
+		
+		"CHARACTER_STATE":
+			var player_dict = _player_data_to_dict(player_data)
+			return condition_evaluator.evaluate_character_state_conditions(player_dict)
+		
+		"PROGRESS_HISTORY":
+			var progress_dict = _progress_data_to_dict(progress_data)
+			return condition_evaluator.evaluate_progress_history_conditions(progress_dict)
+		
+		"RANDOM_PROBABILITY":
+			var luck = 50.0
+			if player_data and player_data is Object:
+				if "luck" in player_data:
+					luck = player_data.luck
+			var base_prob = condition_node.parameters.get("base_probability", 0.05)
+			return condition_evaluator.evaluate_random_probability_conditions(luck, base_prob)
+		
+		_:
+			return false
+
+
+## 将 PlayerData 对象转换为字典
+## 参数:
+##   - player_data: PlayerData 对象
+## 返回: 转换后的字典
+func _player_data_to_dict(player_data: Object) -> Dictionary:
+	var result = {}
+	
+	if player_data == null:
+		# 返回默认值
+		result["position"] = Vector2.ZERO
+		result["time"] = 0.0
+		result["weather"] = ""
+		result["luck"] = 50.0
+		result["wisdom"] = 60.0
+		result["health"] = 0.8
+		result["max_health"] = 1.0
+		result["qi"] = 0.7
+		result["attributes"] = {}
+		result["inventory"] = []
+		result["skills"] = []
+		result["realm"] = ""
+		result["location"] = "default_location"
+		result["time_of_day"] = "day"
+		result["status_effects"] = []
+	else:
+		# 尝试访问对象的属性
+		result["position"] = player_data.position if "position" in player_data else Vector2.ZERO
+		result["time"] = player_data.time if "time" in player_data else 0.0
+		result["weather"] = player_data.weather if "weather" in player_data else ""
+		result["luck"] = player_data.luck if "luck" in player_data else 50.0
+		result["wisdom"] = player_data.wisdom if "wisdom" in player_data else 60.0
+		result["health"] = player_data.health if "health" in player_data else 0.8
+		result["max_health"] = 1.0
+		result["qi"] = player_data.qi if "qi" in player_data else 0.7
+		result["attributes"] = player_data.attributes if "attributes" in player_data else {}
+		result["inventory"] = player_data.inventory if "inventory" in player_data else []
+		result["skills"] = player_data.skills if "skills" in player_data else []
+		result["realm"] = player_data.realm if "realm" in player_data else ""
+		result["location"] = "default_location"
+		result["time_of_day"] = "day"
+		result["status_effects"] = []
 	
 	return result
 
-# 测试函数
-func test_logic_tree_and_weighting():
-	print("开始测试逻辑树与权重...")
+
+## 将 ProgressData 对象转换为字典
+## 参数:
+##   - progress_data: ProgressData 对象
+## 返回: 转换后的字典
+func _progress_data_to_dict(progress_data: Object) -> Dictionary:
+	var result = {}
 	
-	# 测试逻辑树构建和评估
-	var test_tree_data = {
-		"id": "test_tree_1",
-		"logic_op": "AND",
-		"conditions": [
-			{
-				"id": "cond_1",
-				"type": "CHARACTER_STATE",
-				"parameters": {"luck": ">20"}
-			},
-			{
-				"id": "cond_2",
-				"type": "TEMPORAL_ENVIRONMENT",
-				"parameters": {"time_of_day": "night"}
-			}
-		],
-		"children": [
-			{
-				"id": "child_tree_1",
-				"logic_op": "OR",
-				"conditions": [
-					{
-						"id": "cond_3",
-						"type": "PROGRESS_HISTORY",
-						"parameters": {"quest_completed": true}
-					},
-					{
-						"id": "cond_4",
-						"type": "CHARACTER_STATE",
-						"parameters": {"health": "<0.5"}
-					}
-				]
-			}
-		]
-	}
+	if progress_data == null:
+		# 返回默认值
+		result["quest_status"] = {}
+		result["explored_areas"] = []
+		result["encounter_history"] = []
+		result["behavior_history"] = {}
+		result["encounters_completed"] = []
+		result["level"] = 1
+	else:
+		# 尝试访问对象的属性
+		result["quest_status"] = progress_data.quest_status if "quest_status" in progress_data else {}
+		result["explored_areas"] = progress_data.explored_areas if "explored_areas" in progress_data else []
+		result["encounter_history"] = progress_data.encounter_history if "encounter_history" in progress_data else []
+		result["behavior_history"] = progress_data.behavior_history if "behavior_history" in progress_data else {}
+		result["encounters_completed"] = progress_data.encounter_history if "encounter_history" in progress_data else []
+		result["level"] = 1
 	
-	var tree_root = build_logic_tree(test_tree_data)
-	print("逻辑树构建完成，根节点ID: %s" % tree_root.id)
-	
-	# 创建测试数据
-	var evaluator = load("res://src/scripts/encounter/condition_evaluator.gd").new()
-	var player_data = evaluator.PlayerData.new()
-	player_data.luck = 50.0
-	player_data.time = 22.5  # 晚上10:30
-	player_data.weather = "rain"
-	player_data.health = 0.3  # 30%
-	player_data.qi = 0.7
-	player_data.position = Vector2(100, 100)
-	player_data.attributes = {"luck": 50, "wisdom": 60, "health": 80}
-	player_data.inventory = ["mysterious_jade"]
-	player_data.skills = ["taijiquan"]
-	player_data.realm = "ZhuJi"
-	
-	var progress_data = evaluator.ProgressData.new()
-	progress_data.quest_status = {"main_chapter": 3, "side_quest_completed": true}
-	progress_data.explored_areas = ["Qingyun_Mountain", "Black_Wind_Fortress"]
-	progress_data.encounter_history = ["encounter_001", "encounter_002"]
-	progress_data.behavior_history = {"bandits_killed": 55, "npc_helped": 12}
-	
-	# 评估逻辑树
-	var result = evaluate_logic_tree(tree_root, player_data, progress_data)
-	print("逻辑树评估结果: %s" % result)
-	
-	# 测试权重计算
-	var test_encounters = [
-		{"id": "encounter_1", "base_weight": 10, "weight_modifier": 1.5},
-		{"id": "encounter_2", "base_weight": 5, "weight_modifier": 2.0},
-		{"id": "encounter_3", "base_weight": 15, "weight_modifier": 1.0}
-	]
-	
-	var weighted_results = calculate_adjusted_weights(test_encounters)
-	print("权重计算结果:")
-	for weight_data in weighted_results:
-		print("  奇遇ID: %s, 基础权重: %d, 修正系数: %.2f, 调整后权重: %.2f" % [
-			weight_data.encounter_id, 
-			weight_data.base_weight, 
-			weight_data.weight_modifier, 
-			weight_data.adjusted_weight
-		])
-	
-	# 测试加权随机选择
-	var selected = weighted_random_selection(weighted_results)
-	print("加权随机选择结果: %s" % selected)
-	
-	# 测试互斥组处理
-	var test_mutex_data = [
-		{
-			"group_id": "group_1",
-			"encounter_ids": ["encounter_1", "encounter_2"]
-		},
-		{
-			"group_id": "group_2", 
-			"encounter_ids": ["encounter_3", "encounter_4", "encounter_5"]
-		}
-	]
-	
-	handle_mutex_groups(test_mutex_data)
-	print("互斥组处理完成")
-	
-	# 测试互斥组冲突检查
-	var has_conflict = check_mutex_conflicts("encounter_2", "group_1")
-	print("互斥组冲突检查结果: %s" % has_conflict)
-	
-	print("逻辑树与权重测试完成")
+	return result

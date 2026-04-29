@@ -1,7 +1,7 @@
 # Story 004: 奇遇触发和奖励系统
 
 > **Epic**: 角色成长系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26

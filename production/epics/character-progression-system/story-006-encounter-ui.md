@@ -1,7 +1,7 @@
 # Story 006: 奇遇事件UI
 
 > **Epic**: 角色成长系统
-> **Status**: Pending Test
+> **Status**: Blocked - Requires Manual Fix
 > **Layer**: Presentation
 > **Type**: Visual/Feel
 > **Manifest Version**: 2026-04-26
@@ -90,7 +90,62 @@
 **Required evidence**:
 - Visual/Feel: `production/qa/evidence/encounter-ui-evidence.md` + sign-off
 
-**Status**: [x] Created and verified
+**Status**: ⚠️ **BLOCKED** - Scene file corrupted, requires manual fix in Godot Editor
+
+---
+
+## ⚠️ BLOCKING ISSUES (Added 2026-04-29)
+
+**Status**: BLOCKED - Scene file corrupted, requires manual fix
+
+**Problem Description**:
+The UI scene file `src/scenes/ui/encounter_ui.tscn` contains invalid placeholder UIDs and cannot be loaded by Godot Engine.
+
+**Error Message**:
+```
+ERROR: res://src/scenes/ui/encounter_ui.tscn:3 - Parse Error: Missing 'id' in external resource tag.
+ERROR: Failed loading resource: res://src/scenes/ui/encounter_ui.tscn.
+```
+
+**Root Cause**:
+- Scene file uses placeholder UIDs (e.g., `uid://-jz0q00000001`)
+- External resource references are invalid
+- File appears to be a template/placeholder, not a real Godot scene
+
+**Impact**:
+- ❌ UI cannot be loaded in game
+- ❌ Cannot verify any acceptance criteria
+- ⚠️ Manual test evidence document exists but doesn't match actual implementation
+
+**Required Fix**:
+1. Open Godot Editor
+2. Create new Control scene from scratch
+3. Add all required UI elements:
+   - Panel node for encounter card
+   - TextureRect for dynamic background
+   - Label nodes for title and description
+   - TextureRect for lucky star icon
+   - Button nodes (Accept, Decline, Try)
+   - AnimationPlayer for entrance animation
+4. Attach script: `res://src/scripts/ui/encounter_ui_script.gd`
+5. Create entrance animation:
+   - Scale: 0.8 → 1.0
+   - Modulate alpha: 0 → 1
+   - Duration: ~0.5 seconds
+6. Save as: `res://src/scenes/ui/encounter_ui.tscn`
+7. Test in game to verify animations and interactions
+8. Update manual test evidence if needed
+9. Run `/story-done` again to complete verification
+
+**Files Affected**:
+- `src/scenes/ui/encounter_ui.tscn` - CORRUPTED, needs recreation
+- `src/scripts/ui/encounter_ui_script.gd` - OK, script is complete
+- `production/qa/evidence/encounter-ui-evidence.md` - Needs re-verification
+
+**Next Steps**:
+1. Recreate scene file in Godot Editor
+2. Test animations and interactions manually
+3. Re-run `/story-done production/epics/character-progression-system/story-006-encounter-ui.md`
 
 ---
 

@@ -4,7 +4,7 @@
 extends Node
 
 # 信号定义
-signal level_up(new_level: int, attribute_points: int, talent_points: int)
+signal level_up_event(new_level: int, attribute_points: int, talent_points: int)
 signal realm_breakthrough(new_realm: String, realm_bonus: float, realm_index: int)
 signal experience_gained(amount: int, current_exp: int, required_exp: int)
 signal attribute_points_allocated(attribute_name: String, points: int, new_value: int)
@@ -164,7 +164,7 @@ func level_up():
 	total_talent_points += 1
 	
 	# 发射升级信号
-	level_up.emit(level, total_attribute_points, total_talent_points)
+	level_up_event.emit(level, total_attribute_points, total_talent_points)
 	
 	# 检查境界突破
 	check_realm_breakthrough()

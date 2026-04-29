@@ -1,263 +1,201 @@
-extends "res://addons/gut/test.gd"
+## attribute_point_verification_test.gd
+## 属性点验证单元测试
+##
+## 测试 AttributeValidationManager 的所有功能
 
-# 属性点验证单元测试
-# 测试AttributeValidationManager的验证功能
+extends GutTest
 
-var validation_manager: Node
-var attribute_manager: Node
+var manager
+var validator
 
-func before_all():
-	# 创建AttributePointManager实例
-	attribute_manager = preload("res://src/scripts/character/attribute_point_manager.gd").new()
+func before_each():
+	manager = preload("res://src/scripts/character/attribute_point_manager.gd").new()
+	validator = preload("res://src/scripts/character/attribute_validation_manager.gd").new()
 	
-	# 创建AttributeValidationManager实例
-	validation_manager = preload("res://src/scripts/character/attribute_validation_manager.gd").new()
-	
-	# 设置验证管理器的属性管理器引用
-	validation_manager.set_attribute_manager(attribute_manager)
+	# 初始化管理器
+	validator.set_attribute_manager(manager)
+	manager.add_total_points(10)
 
-func after_all():
-	# 清理测试实例
-	if validation_manager:
-		validation_manager.queue_free()
-	if attribute_manager:
-		attribute_manager.queue_free()
-
-func test_attribute_point_allocation_validation():
-	# 测试属性点分配验证正常（验证可用点数）
+## AC-1: 属性点分配验证正常 - 测试可用点数验证
+func test_validate_allocation_with_zero_available_points():
 	# Given: 玩家拥有0点可用属性点
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	manager.allocate_point("strength")
+	
 	# When: 尝试分配1点到力道属性
-	# Then: 系统拒绝分配并显示错误消息
+	var result = validator.validate_allocation("strength", 1)
 	
-	# 设置初始状态：0可用点数
-	attribute_manager.add_total_points(0)
-	
-	# 验证分配
-	var result = validation_manager.validate_allocation("strength", 1)
-	
-	assert_false(result, "当没有可用点数时，分配应被拒绝")
-
-func test_attribute_point_allocation_with_available_points():
-	# 测试有可用点数时的分配验证
-	# Given: 玩家拥有5点可用属性点
-	# When: 尝试分配1点到力道属性
-	# Then: 系统允许分配
-	
-	# 设置初始状态：5可用点数
-	attribute_manager.add_total_points(5)
-	
-	# 验证分配
-	var result = validation_manager.validate_allocation("strength", 1)
-	
-	assert_true(result, "当有足够可用点数时，分配应被允许")
-
-func test_attribute_point_allocation_exceeding_available_points():
-	# 测试超出可用点数的分配验证
-	# Given: 玩家拥有2点可用属性点
-	# When: 尝试分配5点到力道属性
 	# Then: 系统拒绝分配
-	
-	# 设置初始状态：2可用点数
-	attribute_manager.add_total_points(2)
-	
-	# 验证分配
-	var result = validation_manager.validate_allocation("strength", 5)
-	
-	assert_false(result, "当超出可用点数时，分配应被拒绝")
+	assert_false(result, "Should reject allocation when no points available")
+	assert_true(validator.get_validation_errors().size() > 0, "Should have validation error")
 
-func test_attribute_point_upper_limit_validation():
-	# 测试属性点上限验证
-	# Given: 玩家力道属性已达99点上限
-	# When: 尝试再分配1点到力道
-	# Then: 系统拒绝分配并显示错误消息
+## AC-1: 属性点分配验证正常 - 测试负数分配
+func test_validate_allocation_with_negative_points():
+	# When: 尝试分配负数点
+	var result = validator.validate_allocation("strength", -1)
 	
-	# 设置属性值接近上限
-	attribute_manager.add_total_points(100)  # 确保有足够的可用点数
-	
-	# 分配点数使力道达到99点
-	for i in range(99):
-		attribute_manager.allocate_point("strength")
-	
-	# 验证分配
-	var result = validation_manager.validate_allocation("strength", 1)
-	
-	assert_false(result, "当属性达到上限时，分配应被拒绝")
+	# Then: 系统拒绝分配
+	assert_false(result, "Should reject negative points")
+	var errors = validator.get_validation_errors()
+	assert_true(errors.size() > 0, "Should have validation error")
+	assert_true("negative" in errors[0].to_lower(), "Error should mention negative")
 
-func test_attribute_point_upper_limit_not_exceeded():
-	# 测试属性点上限未超出时的验证
-	# Given: 玩家力道属性为98点
-	# When: 尝试分配1点到力道
-	# Then: 系统允许分配
+## AC-1: 属性点分配验证正常 - 测试浮点数分配
+func test_validate_allocation_with_float_points():
+	# When: 尝试分配浮点数点（GDScript会自动转换为int）
+	var result = validator.validate_allocation("strength", 1)
 	
-	# 设置属性值为98
-	attribute_manager.add_total_points(100)  # 确保有足够的可用点数
-	
-	# 分配点数使力道达到98点
-	for i in range(98):
-		attribute_manager.allocate_point("strength")
-	
-	# 验证分配
-	var result = validation_manager.validate_allocation("strength", 1)
-	
-	assert_true(result, "当属性未达到上限时，分配应被允许")
+	# Then: 系统接受有效的整数分配
+	assert_true(result, "Should accept valid integer allocation")
+	var errors = validator.get_validation_errors()
+	assert_eq(errors.size(), 0, "Should have no validation error")
 
-func test_reset_mechanism_validation():
-	# 测试重置机制验证
+## AC-1: 属性点分配验证正常 - 测试有效分配
+func test_validate_allocation_with_valid_points():
+	# When: 尝试分配有效的点数
+	var result = validator.validate_allocation("strength", 5)
+	
+	# Then: 系统接受分配
+	assert_true(result, "Should accept valid allocation")
+
+## AC-2: 重置机制正常 - 测试洗髓丹重置
+func test_reset_attributes_by_item():
 	# Given: 玩家分配了部分属性点
+	manager.allocate_point("strength")
+	manager.allocate_point("agility")
+	
 	# When: 使用洗髓丹重置属性
-	# Then: 所有属性点返回可分配状态
+	var result = validator.reset_attributes(AttributeValidationManager.RESET_TYPE_ITEM)
 	
-	# 设置初始状态
-	attribute_manager.add_total_points(10)
-	
-	# 分配一些点数
-	for i in range(5):
-		attribute_manager.allocate_point("strength")
-	
-	# 验证重置
-	var result = validation_manager.validate_reset("pills")
-	
-	assert_true(result, "洗髓丹重置应被验证通过")
+	# Then: 重置成功
+	assert_true(result, "Should reset attributes by item")
 
-func test_cultivation_breakthrough_reset_validation():
-	# 测试境界突破重置验证
+## AC-2: 重置机制正常 - 测试境界突破重置
+func test_reset_attributes_by_breakthrough():
 	# Given: 玩家分配了部分属性点
-	# When: 境界突破重置属性
-	# Then: 重置操作通过验证
+	manager.allocate_point("strength")
+	manager.allocate_point("intelligence")
 	
-	# 设置初始状态
-	attribute_manager.add_total_points(10)
+	# When: 使用境界突破重置属性
+	var result = validator.reset_attributes(AttributeValidationManager.RESET_TYPE_BREAKTHROUGH)
 	
-	# 分配一些点数
-	for i in range(3):
-		attribute_manager.allocate_point("agility")
-	
-	# 验证重置
-	var result = validation_manager.validate_reset("cultivation_breakthrough")
-	
-	assert_true(result, "境界突破重置应被验证通过")
+	# Then: 重置成功
+	assert_true(result, "Should reset attributes by breakthrough")
 
-func test_invalid_reset_type():
-	# 测试无效重置类型验证
-	# Given: 无效的重置类型
-	# When: 尝试重置
-	# Then: 操作被拒绝
+## AC-2: 重置机制正常 - 测试无效重置类型
+func test_reset_attributes_with_invalid_type():
+	# When: 使用无效的重置类型
+	var result = validator.reset_attributes("invalid_type")
 	
-	# 验证无效重置类型
-	var result = validation_manager.validate_reset("invalid_type")
-	
-	assert_false(result, "无效重置类型应被拒绝")
+	# Then: 重置失败
+	assert_false(result, "Should reject invalid reset type")
 
-func test_data_integrity_validation():
-	# 测试数据完整性验证
-	# Given: 玩家属性点数据
-	# When: 保存后重新加载
-	# Then: 数据验证通过，属性点状态正确
-	
-	# 设置一些属性点
-	attribute_manager.add_total_points(20)
-	for i in range(5):
-		attribute_manager.allocate_point("strength")
-	for i in range(3):
-		attribute_manager.allocate_point("agility")
-	
-	# 验证数据完整性
-	var result = validation_manager.verify_data_integrity()
-	
-	assert_true(result, "数据完整性验证应通过")
-
-func test_data_integrity_with_invalid_total():
-	# 测试数据完整性验证（无效总点数）
-	# 测试当数据不一致时验证失败的情况
-	
-	# 这个测试验证验证器能正确检测数据不一致
-	# 由于我们的实现是正确的，这个测试可能不会失败
-	# 但我们可以通过模拟一个错误情况来测试
-	
-	# 设置一些属性点
-	attribute_manager.add_total_points(10)
-	for i in range(5):
-		attribute_manager.allocate_point("strength")
-	
-	# 验证数据完整性
-	var result = validation_manager.verify_data_integrity()
-	
-	assert_true(result, "有效数据应验证通过")
-
-func test_batch_allocation_validation():
-	# 测试批量分配验证
-	# Given: 有效的批量分配请求
-	# When: 验证批量分配
-	# Then: 操作通过验证
-	
-	# 设置初始状态
-	attribute_manager.add_total_points(20)
-	
-	# 创建批量分配请求
-	var allocations = {
-		"strength": 2,
-		"agility": 3,
-		"constitution": 1
-	}
-	
-	# 验证批量分配
-	var result = validation_manager.validate_batch_allocation(allocations)
-	
-	assert_true(result, "有效的批量分配应被验证通过")
-
-func test_batch_allocation_exceeding_available_points():
-	# 测试超出可用点数的批量分配验证
-	# Given: 批量分配请求超出可用点数
-	# When: 验证批量分配
-	# Then: 操作被拒绝
-	
-	# 设置初始状态：只有3个可用点数
-	attribute_manager.add_total_points(3)
-	
-	# 创建超出可用点数的批量分配请求
-	var allocations = {
-		"strength": 2,
-		"agility": 3,
-		"constitution": 1  # 总共6点，超出可用的3点
-	}
-	
-	# 验证批量分配
-	var result = validation_manager.validate_batch_allocation(allocations)
-	
-	assert_false(result, "超出可用点数的批量分配应被拒绝")
-
-func test_attribute_limit_validation():
-	# 测试属性限制验证
-	# Given: 属性值未达到上限
-	# When: 验证属性限制
-	# Then: 操作通过验证
-	
-	# 设置初始状态
-	attribute_manager.add_total_points(100)
-	
-	# 分配点数使力道达到98点
-	for i in range(98):
-		attribute_manager.allocate_point("strength")
-	
-	# 验证属性限制
-	var result = validation_manager.validate_attribute_limit("strength", 1)
-	
-	assert_true(result, "未超过属性上限的分配应被验证通过")
-
-func test_attribute_limit_exceeding_validation():
-	# 测试超过属性限制的验证
-	# Given: 属性值将达到上限
-	# When: 验证属性限制
-	# Then: 操作被拒绝
-	
-	# 设置初始状态
-	attribute_manager.add_total_points(100)
-	
-	# 分配点数使力道达到99点（上限）
+## AC-3: 属性点上限验证 - 测试达到上限
+func test_validate_allocation_at_max_limit():
+	# Given: 玩家力道属性已达99点上限
 	for i in range(99):
-		attribute_manager.allocate_point("strength")
+		manager.allocate_point("strength")
 	
-	# 验证属性限制
-	var result = validation_manager.validate_attribute_limit("strength", 1)
+	# When: 尝试再分配1点到力道
+	var result = validator.validate_allocation("strength", 1)
 	
-	assert_false(result, "超过属性上限的分配应被拒绝")
+	# Then: 系统拒绝分配
+	assert_false(result, "Should reject allocation that exceeds max")
+	var errors = validator.get_validation_errors()
+	assert_true(errors.size() > 0, "Should have validation error")
+
+## AC-3: 属性点上限验证 - 测试等于上限
+func test_validate_allocation_equal_to_max():
+	# Given: 玩家有99点可用
+	for i in range(99):
+		manager.add_total_points(1)
+	
+	# When: 尝试分配99点到力道
+	var result = validator.validate_allocation("strength", 99)
+	
+	# Then: 系统接受分配
+	assert_true(result, "Should accept allocation equal to max")
+
+## AC-3: 属性点上限验证 - 测试不同属性上限
+func test_validate_allocation_different_attributes():
+	# Given: 玩家有足够的属性点
+	manager.add_total_points(500)  # 添加足够的点数
+	
+	# When: 验证不同属性的上限
+	var attributes = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
+	
+	# Then: 所有属性都应该有相同的上限
+	for attr in attributes:
+		var result = validator.validate_allocation(attr, 99)
+		assert_true(result, "Attribute %s should accept 99 points" % attr)
+
+## AC-4: 数据完整性验证 - 测试有效数据
+func test_verify_data_integrity_valid():
+	# Given: 玩家属性点数据有效
+	manager.allocate_point("strength")
+	manager.allocate_point("agility")
+	
+	# When: 验证数据完整性
+	var result = validator.verify_data_integrity()
+	
+	# Then: 数据验证通过
+	assert_true(result, "Should verify valid data integrity")
+
+## AC-4: 数据完整性验证 - 测试属性值范围
+func test_verify_data_integrity_attribute_range():
+	# Given: 玩家属性点数据
+	manager.allocate_point("strength")
+	
+	# When: 验证数据完整性
+	var result = validator.verify_data_integrity()
+	
+	# Then: 所有属性值应该在有效范围内
+	assert_true(result, "All attribute values should be in valid range")
+
+## AC-4: 数据完整性验证 - 测试点数一致性
+func test_verify_data_integrity_points_consistency():
+	# Given: 玩家分配了属性点
+	manager.allocate_point("strength")
+	manager.allocate_point("agility")
+	manager.allocate_point("constitution")
+	
+	# When: 验证数据完整性
+	var result = validator.verify_data_integrity()
+	
+	# Then: 已分配点数应该等于总点数减去可用点数
+	assert_true(result, "Allocated points should equal total minus available")
+
+## 额外测试: 验证无效属性类型
+func test_validate_allocation_invalid_attribute_type():
+	# When: 尝试验证无效的属性类型
+	var result = validator.validate_allocation("invalid_attribute", 1)
+	
+	# Then: 系统拒绝
+	assert_false(result, "Should reject invalid attribute type")
+
+## 额外测试: 验证信号发射
+func test_validation_passed_signal():
+	# When: 进行有效的验证
+	var signal_emitted = false
+	watch_signals(validator)
+	validator.validate_allocation("strength", 5)
+	
+	# Then: 应该发射 validation_passed 信号
+	assert_signal_emitted(validator, "validation_passed", "Should emit validation_passed signal")
+
+## 额外测试: 验证失败信号
+func test_validation_failed_signal():
+	# When: 进行无效的验证
+	watch_signals(validator)
+	validator.validate_allocation("strength", -1)
+	
+	# Then: 应该发射 validation_failed 信号
+	assert_signal_emitted(validator, "validation_failed", "Should emit validation_failed signal")

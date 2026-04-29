@@ -1,7 +1,7 @@
 # Story 003: 逻辑树与权重
 
 > **Epic**: 奇遇条件检查系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27

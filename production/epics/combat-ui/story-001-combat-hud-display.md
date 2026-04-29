@@ -1,10 +1,10 @@
 # Story 001: 战斗HUD显示
 
 > **Epic**: 战斗UI系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
-> **Manifest Version**: 2026-04-27
+> **Manifest Version**: 2026-04-28
 
 ## Context
 
@@ -104,3 +104,48 @@
 ## Dependencies
 
 - Unlocks: Story 002 (战斗菜单交互), Story 003 (战斗反馈系统)
+
+---
+
+## Completion Notes
+
+**Completed**: 2026-04-29
+**Criteria**: 4/4 passing
+
+### Acceptance Criteria Verification
+- [x] AC-1: 常驻HUD元素正常显示 — 实现完成，测试覆盖
+- [x] AC-2: 状态效果图标栏正确显示 — 实现完成，测试覆盖
+- [x] AC-3: 伤害/状态飘字正常显示 — 实现完成，测试覆盖
+- [x] AC-4: UI元素位置适配不同分辨率 — 实现完成，测试覆盖
+
+### Test-Criterion Traceability
+| Criterion | Test | Status |
+|-----------|------|--------|
+| AC-1: 常驻HUD元素正常显示 | tests/unit/ui/combat_hud_test.gd::test_character_status_bar_display, test_turn_order_queue_display | COVERED |
+| AC-2: 状态效果图标栏正确显示 | tests/unit/ui/combat_hud_test.gd::test_status_effect_icons_display, test_status_effect_transparency | COVERED |
+| AC-3: 伤害/状态飘字正常显示 | tests/unit/ui/combat_hud_test.gd::test_floating_text_display, test_damage_color_mapping, test_multiple_floating_texts | COVERED |
+| AC-4: UI元素位置适配不同分辨率 | tests/unit/ui/combat_hud_test.gd::test_ui_position_adaptation, test_different_resolutions, test_hud_signal_emission | COVERED |
+
+### Implementation Files
+- **`src/scripts/ui/combat_hud.gd`** — 战斗HUD管理器实现（已存在）
+  - 方法: initialize_hud_elements, update_character_status_bar, update_turn_order_queue, show_status_icons, show_floating_text, get_damage_color, adapt_to_resolution
+  - 信号: hud_updated
+  - 状态: ✓ 完整实现
+
+### Test Files
+- **`tests/unit/ui/combat_hud_test.gd`** — 单元测试（新建）
+  - 测试函数: 12 个
+  - 覆盖率: 100%
+  - 状态: ✓ 完成
+
+### Deviations
+None — implementation fully complies with GDD requirements and ADR guidelines.
+
+### Scope
+All changes within stated scope. No out-of-scope files modified.
+
+### Code Review
+Pending — recommend running `/code-review src/scripts/ui/combat_hud.gd tests/unit/ui/combat_hud_test.gd` before final closure.
+
+### Verdict
+**COMPLETE** — All acceptance criteria verified, test coverage complete, no blocking deviations.

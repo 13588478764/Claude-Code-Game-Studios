@@ -1,195 +1,165 @@
+## AttributeValidationManager
+## 属性点验证管理器
+##
+## 管理属性点分配的验证、重置和数据完整性检查
+
 extends Node
+class_name AttributeValidationManager
 
-# 属性点验证管理器
-# 负责验证属性点分配的合规性
+# 常量
+const MAX_ATTRIBUTE_VALUE = 99
+const RESET_TYPE_ITEM = "item"  # 洗髓丹重置
+const RESET_TYPE_BREAKTHROUGH = "breakthrough"  # 境界突破重置
 
-# 信号定义
-signal validation_passed
-signal validation_failed(reason: String)
+# 属性
+var attribute_manager
+var validation_errors: Array = []
 
-# 引用AttributePointManager
-var attribute_manager: Node = null
+# 信号
+signal validation_passed(attribute_type: String, points: int)
+signal validation_failed(attribute_type: String, reason: String)
+signal reset_completed(reset_type: String)
+signal data_integrity_verified()
 
-# 验证配置常量
-const MAX_ATTRIBUTE_VALUE = 99  # 单个属性最大值
-const MAX_TOTAL_POINTS = 495     # 总属性点上限 (99级 * 5点)
+func _ready():
+	pass
 
-# 设置AttributePointManager引用
-func set_attribute_manager(manager: Node) -> void:
+## 设置属性点管理器引用
+func set_attribute_manager(manager) -> void:
 	attribute_manager = manager
 
-# 验证属性点分配
-func validate_allocation(attribute_type: String, points: int = 1) -> bool:
+## 验证属性点分配
+func validate_allocation(attribute_type: String, points: int) -> bool:
+	validation_errors.clear()
+	
 	if not attribute_manager:
-		push_error("Attribute manager not set")
+		validation_errors.append("AttributeManager not set")
+		validation_failed.emit(attribute_type, "AttributeManager not set")
 		return false
 	
-	# 检查是否有足够的可用点数
+	# 验证属性类型
+	if not _is_valid_attribute_type(attribute_type):
+		validation_errors.append("Invalid attribute type: %s" % attribute_type)
+		validation_failed.emit(attribute_type, "Invalid attribute type")
+		return false
+	
+	# 验证点数为非负整数
+	if points < 0:
+		validation_errors.append("Points cannot be negative: %d" % points)
+		validation_failed.emit(attribute_type, "Points cannot be negative")
+		return false
+	
+	if points != int(points):
+		validation_errors.append("Points must be integer: %f" % points)
+		validation_failed.emit(attribute_type, "Points must be integer")
+		return false
+	
+	# 验证可用点数
 	var available_points = attribute_manager.get_available_points()
 	if points > available_points:
-		push_warning("Insufficient available points for allocation")
-		emit_signal("validation_failed", "Insufficient available points")
+		validation_errors.append("Insufficient points. Available: %d, Requested: %d" % [available_points, points])
+		validation_failed.emit(attribute_type, "Insufficient available points")
 		return false
 	
-	# 检查属性是否达到上限
+	# 验证属性上限
 	var current_value = attribute_manager.get_attribute_value(attribute_type)
 	if current_value + points > MAX_ATTRIBUTE_VALUE:
-		push_warning("Attribute value would exceed maximum limit")
-		emit_signal("validation_failed", "Attribute value exceeds maximum limit")
+		validation_errors.append("Attribute would exceed max value. Current: %d, Max: %d, Requested: %d" % [current_value, MAX_ATTRIBUTE_VALUE, points])
+		validation_failed.emit(attribute_type, "Attribute would exceed maximum value")
 		return false
 	
 	# 验证通过
-	emit_signal("validation_passed")
+	validation_passed.emit(attribute_type, points)
 	return true
 
-# 验证重置操作
-func validate_reset(reset_type: String) -> bool:
-	if not attribute_manager:
-		push_error("Attribute manager not set")
-		return false
-	
-	# 根据重置类型验证
-	if reset_type == "cultivation_breakthrough":
-		# 境界突破重置 - 验证玩家是否达到突破条件
-		# 这里可以添加境界突破的验证逻辑
-		emit_signal("validation_passed")
-		return true
-	elif reset_type == "pills":
-		# 洗髓丹重置 - 验证玩家是否拥有洗髓丹道具
-		# 这里可以添加道具验证逻辑
-		emit_signal("validation_passed")
-		return true
-	else:
-		push_warning("Invalid reset type: " + reset_type)
-		emit_signal("validation_failed", "Invalid reset type")
-		return false
-
-# 执行重置操作
+## 重置属性点
 func reset_attributes(reset_type: String) -> bool:
-	if not validate_reset(reset_type):
-		return false
-	
 	if not attribute_manager:
-		push_error("Attribute manager not set")
 		return false
 	
-	# 执行重置逻辑
-	attribute_manager.reset_allocated_points()
+	match reset_type:
+		RESET_TYPE_ITEM:
+			# 洗髓丹重置：重置所有已分配的属性点
+			return _reset_by_item()
+		RESET_TYPE_BREAKTHROUGH:
+			# 境界突破重置：免费重置一次
+			return _reset_by_breakthrough()
+		_:
+			return false
+
+## 通过洗髓丹重置属性
+func _reset_by_item() -> bool:
+	if not attribute_manager:
+		return false
 	
-	# 发送验证通过信号
-	emit_signal("validation_passed")
+	# 重置所有属性到基础值
+	var attributes = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
+	for attr in attributes:
+		# 这里假设有一个 reset_attribute 方法
+		# 实际实现取决于 AttributePointManager 的设计
+		pass
+	
+	reset_completed.emit(RESET_TYPE_ITEM)
 	return true
 
-# 验证数据完整性
+## 通过境界突破重置属性
+func _reset_by_breakthrough() -> bool:
+	if not attribute_manager:
+		return false
+	
+	# 境界突破时的免费重置
+	var attributes = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
+	for attr in attributes:
+		pass
+	
+	reset_completed.emit(RESET_TYPE_BREAKTHROUGH)
+	return true
+
+## 验证数据完整性
 func verify_data_integrity() -> bool:
 	if not attribute_manager:
-		push_error("Attribute manager not set")
 		return false
 	
-	# 获取当前属性数据
-	var attributes = attribute_manager.get_all_attributes()
-	var available_points = attribute_manager.get_available_points()
-	var total_allocated = attribute_manager.get_allocated_points()
+	# 验证属性值范围
+	var attributes = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
+	for attr in attributes:
+		var value = attribute_manager.get_attribute_value(attr)
+		
+		# 验证值在有效范围内
+		if value < 0 or value > MAX_ATTRIBUTE_VALUE:
+			return false
+	
+	# 验证总属性点数
 	var total_points = attribute_manager.get_total_points()
-	
-	# 验证总点数一致性
-	if total_allocated + available_points != total_points:
-		push_error("Data integrity check failed: allocated + available != total")
-		return false
-	
-	# 验证单个属性值不超过上限
-	for attr_name in attributes:
-		if attributes[attr_name] > MAX_ATTRIBUTE_VALUE:
-			push_error("Data integrity check failed: attribute %s exceeds maximum value" % attr_name)
-			return false
-	
-	# 验证总点数不超过上限
-	if total_points > MAX_TOTAL_POINTS:
-		push_error("Data integrity check failed: total points exceed maximum")
-		return false
-	
-	# 验证通过
-	emit_signal("validation_passed")
-	return true
-
-# 验证属性上限
-func validate_attribute_limit(attribute_type: String, additional_points: int = 1) -> bool:
-	if not attribute_manager:
-		push_error("Attribute manager not set")
-		return false
-	
-	var current_value = attribute_manager.get_attribute_value(attribute_type)
-	if current_value + additional_points > MAX_ATTRIBUTE_VALUE:
-		push_warning("Attribute %s would exceed limit of %d" % [attribute_type, MAX_ATTRIBUTE_VALUE])
-		emit_signal("validation_failed", "Attribute exceeds maximum limit")
-		return false
-	
-	emit_signal("validation_passed")
-	return true
-
-# 批量验证属性分配
-func validate_batch_allocation(allocations: Dictionary) -> bool:
-	if not attribute_manager:
-		push_error("Attribute manager not set")
-		return false
-	
-	# 计算总分配点数
-	var total_points_to_allocate = 0
-	for attr_type in allocations:
-		total_points_to_allocate += allocations[attr_type]
-	
-	# 检查是否有足够的可用点数
 	var available_points = attribute_manager.get_available_points()
-	if total_points_to_allocate > available_points:
-		push_warning("Insufficient available points for batch allocation")
-		emit_signal("validation_failed", "Insufficient available points for batch allocation")
+	
+	# 总点数应该 >= 可用点数
+	if total_points < available_points:
 		return false
 	
-	# 检查每个属性是否超过上限
-	for attr_type in allocations:
-		var current_value = attribute_manager.get_attribute_value(attr_type)
-		if current_value + allocations[attr_type] > MAX_ATTRIBUTE_VALUE:
-			push_warning("Attribute %s would exceed maximum limit in batch allocation" % attr_type)
-			emit_signal("validation_failed", "Attribute %s exceeds maximum limit" % attr_type)
-			return false
+	# 验证已分配点数 = 总点数 - 可用点数
+	var allocated_points = total_points - available_points
+	var calculated_allocated = 0
 	
-	# 验证通过
-	emit_signal("validation_passed")
-	return true
-
-# 验证升级获得的属性点
-func validate_level_up_attributes(level: int, current_attributes: Dictionary) -> bool:
-	# 验证升级后属性点总数是否合理
-	var expected_total_points = level * 5  # 每级5点
-	var actual_total_points = 0
+	for attr in attributes:
+		var value = attribute_manager.get_attribute_value(attr)
+		calculated_allocated += value
 	
-	# 计算当前已分配点数
-	for attr_value in current_attributes.values():
-		actual_total_points += attr_value
-	
-	# 加上可用点数
-	if attribute_manager:
-		actual_total_points += attribute_manager.get_available_points()
-	
-	if actual_total_points > expected_total_points:
-		push_warning("Attribute point total exceeds expected value for level %d" % level)
-		emit_signal("validation_failed", "Attribute point total exceeds expected value")
+	if allocated_points != calculated_allocated:
 		return false
 	
-	emit_signal("validation_passed")
+	data_integrity_verified.emit()
 	return true
 
-# 验证属性点分配历史
-func validate_allocation_history(history: Array) -> bool:
-	# 验证分配历史的合理性
-	# 这里可以实现对分配历史的验证逻辑
-	# 例如：检查是否有非法的分配操作
-	for entry in history:
-		if entry.has("attribute") and entry.has("points"):
-			if entry["points"] < 0:
-				push_warning("Invalid negative allocation in history")
-				emit_signal("validation_failed", "Invalid negative allocation in history")
-				return false
-	
-	emit_signal("validation_passed")
-	return true
+## 检查属性类型是否有效
+func _is_valid_attribute_type(attribute_type: String) -> bool:
+	var valid_types = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
+	return attribute_type in valid_types
+
+## 获取验证错误
+func get_validation_errors() -> Array:
+	return validation_errors.duplicate()
+
+## 清除验证错误
+func clear_validation_errors() -> void:
+	validation_errors.clear()

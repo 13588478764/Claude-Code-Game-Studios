@@ -1,7 +1,7 @@
 # Story 005: 角色成长UI
 
 > **Epic**: 角色成长系统
-> **Status**: Pending Test
+> **Status**: Blocked - Requires Manual Fix
 > **Layer**: Presentation
 > **Type**: UI
 > **Manifest Version**: 2026-04-26
@@ -90,7 +90,59 @@
 **Required evidence**:
 - UI: `production/qa/evidence/character-growth-ui-evidence.md` — manual walkthrough doc
 
-**Status**: [x] Created and verified
+**Status**: ⚠️ **BLOCKED** - Scene file corrupted, requires manual fix in Godot Editor
+
+---
+
+## ⚠️ BLOCKING ISSUES (Added 2026-04-29)
+
+**Status**: BLOCKED - Scene file corrupted, requires manual fix
+
+**Problem Description**:
+The UI scene file `src/scenes/ui/character_growth_ui.tscn` contains invalid placeholder UIDs and cannot be loaded by Godot Engine.
+
+**Error Message**:
+```
+ERROR: res://src/scenes/ui/character_growth_ui.tscn:3 - Parse Error: Missing 'id' in external resource tag.
+ERROR: Failed loading resource: res://src/scenes/ui/character_growth_ui.tscn.
+```
+
+**Root Cause**:
+- Scene file uses placeholder UIDs (e.g., `uid://-jz0q00000001`)
+- External resource references are invalid
+- File appears to be a template/placeholder, not a real Godot scene
+
+**Impact**:
+- ❌ UI cannot be loaded in game
+- ❌ All automated tests fail (15/15 failures)
+- ❌ Cannot verify any acceptance criteria
+- ⚠️ Manual test evidence document exists but doesn't match actual implementation
+
+**Required Fix**:
+1. Open Godot Editor
+2. Create new Control scene from scratch
+3. Add all required UI elements:
+   - TabContainer with 3 tabs (角色面板、属性分配、天赋网格)
+   - Labels for level, realm, attributes
+   - HSliders for attribute allocation
+   - GridContainer with 16 TextureButtons for talent grid
+4. Attach script: `res://src/scripts/ui/character_growth_ui_script.gd`
+5. Save as: `res://src/scenes/ui/character_growth_ui.tscn`
+6. Re-run automated tests: `godot --headless --path . -s addons/gut/gut_cmdln.gd -gtest=tests/unit/ui/character_growth_ui_test.gd -gexit`
+7. Verify all tests pass
+8. Update manual test evidence if needed
+9. Run `/story-done` again to complete verification
+
+**Files Affected**:
+- `src/scenes/ui/character_growth_ui.tscn` - CORRUPTED, needs recreation
+- `src/scripts/ui/character_growth_ui_script.gd` - OK, script is complete
+- `tests/unit/ui/character_growth_ui_test.gd` - OK, tests are ready
+- `production/qa/evidence/character-growth-ui-evidence.md` - Needs re-verification
+
+**Next Steps**:
+1. Recreate scene file in Godot Editor
+2. Run automated tests to verify
+3. Re-run `/story-done production/epics/character-progression-system/story-005-character-growth-ui.md`
 
 ---
 

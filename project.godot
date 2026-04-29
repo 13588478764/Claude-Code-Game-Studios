@@ -1,0 +1,29 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="武侠奇遇录"
+config/description="一款深度武侠RPG游戏"
+run/main_scene="res://test_attribute_manager.tscn"
+config/features=PackedStringArray("4.6")
+config/main_scene="res://scenes/main_game_ui.tscn"
+
+[autoload]
+
+CharacterSystem="res://src/scripts/character/character_system.gd"
+CombatSystem="res://src/scripts/combat/combat_manager.gd"
+EncounterSystem="res://src/scripts/encounter/encounter_trigger_manager.gd"
+AudioSystem="res://src/scripts/audio/audio_system.gd"
+QuestSystem="res://src/scripts/quest/quest_manager.gd"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gut/plugin.cfg")

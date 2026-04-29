@@ -1,206 +1,316 @@
-extends CanvasLayer
+extends Control
+## 战斗菜单管理器 - 管理战斗菜单交互
+## 处理武学指令菜单、目标选择和用户输入
 
-# 战斗菜单交互管理器
-# 处理武学指令菜单、目标选择、键盘和鼠标交互
+class_name CombatMenuManager
 
 # 信号定义
-signal menu_interaction_completed(action_data)
+signal menu_interaction_completed(action_data: Dictionary)
+signal menu_opened
+signal menu_closed
+signal target_selected(target_id: String)
+
+# 菜单状态枚举
+enum MenuState {
+	CLOSED,
+	MARTIAL_ARTS_MENU,
+	TARGET_SELECTION,
+	SKILL_PREVIEW
+}
+
+# 当前菜单状态
+var current_state: MenuState = MenuState.CLOSED
 
 # UI元素引用
-@onready var martial_arts_menu = $CombatMenu/MartialArtsMenu
-@onready var target_selection_cursor = $CombatMenu/TargetSelectionCursor
-@onready var skill_tooltip = $CombatMenu/SkillTooltip
+@onready var martial_arts_container = $CombatMenu/MartialArtsContainer
+@onready var target_selector = $CombatMenu/TargetSelector
+@onready var skill_preview = $CombatMenu/SkillPreview
 
-# 状态变量
-var is_target_selection_active = false
-var is_menu_visible = false
-var current_selected_skill = null
-var current_target_index = 0
-var available_targets = []
+# 菜单数据
+var available_skills: Array[Dictionary] = []
+var available_targets: Array[String] = []
+var current_selected_skill: Dictionary = {}
+var current_selected_target: String = ""
+var current_selected_index: int = 0
 
-# 初始化
-func _ready():
-	# 初始化菜单状态
-	hide_martial_arts_menu()
-	hide_target_selection()
-	hide_skill_tooltip()
+# 输入处理
+var input_enabled: bool = true
+var input_delay: float = 0.0
+var input_delay_threshold: float = 0.1  # 100ms延迟限制
+
+# 悬停预览
+var hover_timer: float = 0.0
+var hover_threshold: float = 0.5  # 0.5秒悬停显示预览
+
+func _ready() -> void:
+	# 初始化菜单
+	close_menu()
 	
 	# 连接信号
-	martial_arts_menu.connect("skill_selected", _on_skill_selected)
-	martial_arts_menu.connect("menu_closed", _on_menu_closed)
+	get_tree().root.gui_focus_changed.connect(_on_gui_focus_changed)
 
-# 显示武学指令菜单
-func show_martial_arts_menu(skill_data):
-	# 更新技能数据
-	martial_arts_menu.update_skills(skill_data)
+func _process(delta: float) -> void:
+	# 处理输入延迟
+	if input_delay > 0:
+		input_delay -= delta
 	
-	# 显示菜单
-	martial_arts_menu.show()
-	is_menu_visible = true
-	
-	# 重置选择
-	current_selected_skill = null
+	# 处理悬停预览
+	if current_state == MenuState.MARTIAL_ARTS_MENU:
+		hover_timer += delta
+		if hover_timer >= hover_threshold:
+			_show_skill_preview()
+			hover_timer = 0.0
 
-# 隐藏武学指令菜单
-func hide_martial_arts_menu():
-	martial_arts_menu.hide()
-	is_menu_visible = false
-
-# 处理目标选择
-func handle_target_selection(target_data):
-	# 存储可用目标
-	available_targets = target_data
-	current_target_index = 0
-	
-	# 激活目标选择模式
-	is_target_selection_active = true
-	
-	# 显示目标选择光标
-	show_target_selection()
-
-# 显示目标选择光标
-func show_target_selection():
-	if available_targets.size() > 0:
-		# 高亮当前目标
-		highlight_target(available_targets[current_target_index])
-
-# 隐藏目标选择
-func hide_target_selection():
-	# 移除所有目标高亮
-	for target in available_targets:
-		remove_target_highlight(target)
-
-# 高亮目标
-func highlight_target(target):
-	# 在目标上显示高亮效果
-	if target.has_method("highlight"):
-		target.highlight()
-
-# 移除目标高亮
-func remove_target_highlight(target):
-	# 移除目标的高亮效果
-	if target.has_method("remove_highlight"):
-		target.remove_highlight()
-
-# 切换目标
-func switch_target(direction):
-	if available_targets.size() == 0:
+func _input(event: InputEvent) -> void:
+	if not input_enabled or input_delay > 0:
 		return
 	
-	# 移除当前目标高亮
-	remove_target_highlight(available_targets[current_target_index])
-	
-	# 更新目标索引
-	if direction > 0:
-		current_target_index = (current_target_index + 1) % available_targets.size()
-	else:
-		current_target_index = (current_target_index - 1 + available_targets.size()) % available_targets.size()
-	
-	# 高亮新目标
-	highlight_target(available_targets[current_target_index])
+	match current_state:
+		MenuState.MARTIAL_ARTS_MENU:
+			_handle_martial_arts_input(event)
+		MenuState.TARGET_SELECTION:
+			_handle_target_selection_input(event)
 
-# 确认目标选择
-func confirm_target_selection():
-	if available_targets.size() > 0:
-		var selected_target = available_targets[current_target_index]
+## 显示武学指令菜单
+func show_martial_arts_menu(skill_data: Array[Dictionary]) -> void:
+	available_skills = skill_data
+	current_state = MenuState.MARTIAL_ARTS_MENU
+	current_selected_index = 0
+	
+	# 清除现有菜单项
+	for child in martial_arts_container.get_children():
+		child.queue_free()
+	
+	# 创建菜单项
+	for i in range(available_skills.size()):
+		var skill = available_skills[i]
+		var menu_item = _create_skill_menu_item(skill, i)
+		martial_arts_container.add_child(menu_item)
+	
+	# 显示菜单
+	martial_arts_container.visible = true
+	menu_opened.emit()
+
+## 处理目标选择
+func handle_target_selection(target_data: Array[String]) -> void:
+	available_targets = target_data
+	current_state = MenuState.TARGET_SELECTION
+	current_selected_index = 0
+	
+	# 清除现有目标
+	for child in target_selector.get_children():
+		child.queue_free()
+	
+	# 创建目标项
+	for i in range(available_targets.size()):
+		var target_id = available_targets[i]
+		var target_item = _create_target_item(target_id, i)
+		target_selector.add_child(target_item)
+	
+	# 显示目标选择器
+	target_selector.visible = true
+	_highlight_current_target()
+
+## 处理用户输入
+func process_input(input_event: InputEvent) -> void:
+	if not input_enabled:
+		return
+	
+	_input(input_event)
+
+## 关闭菜单
+func close_menu() -> void:
+	current_state = MenuState.CLOSED
+	martial_arts_container.visible = false
+	target_selector.visible = false
+	skill_preview.visible = false
+	menu_closed.emit()
+
+## 内部方法：处理武学菜单输入
+func _handle_martial_arts_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_W, KEY_UP:
+				_move_selection(-1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_S, KEY_DOWN:
+				_move_selection(1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_A, KEY_LEFT:
+				_move_selection(-1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_D, KEY_RIGHT:
+				_move_selection(1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_ENTER, KEY_SPACE:
+				_confirm_skill_selection()
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_ESCAPE:
+				close_menu()
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+
+## 内部方法：处理目标选择输入
+func _handle_target_selection_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_W, KEY_UP:
+				_move_target_selection(-1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_S, KEY_DOWN:
+				_move_target_selection(1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_A, KEY_LEFT:
+				_move_target_selection(-1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_D, KEY_RIGHT:
+				_move_target_selection(1)
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_ENTER, KEY_SPACE:
+				_confirm_target_selection()
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+			
+			KEY_ESCAPE:
+				current_state = MenuState.MARTIAL_ARTS_MENU
+				target_selector.visible = false
+				input_delay = input_delay_threshold
+				get_tree().root.set_input_as_handled()
+
+## 内部方法：移动菜单选择
+func _move_selection(direction: int) -> void:
+	current_selected_index += direction
+	current_selected_index = clamp(current_selected_index, 0, available_skills.size() - 1)
+	_highlight_current_skill()
+	hover_timer = 0.0  # 重置悬停计时器
+
+## 内部方法：移动目标选择
+func _move_target_selection(direction: int) -> void:
+	current_selected_index += direction
+	current_selected_index = clamp(current_selected_index, 0, available_targets.size() - 1)
+	_highlight_current_target()
+
+## 内部方法：确认技能选择
+func _confirm_skill_selection() -> void:
+	if current_selected_index < available_skills.size():
+		current_selected_skill = available_skills[current_selected_index]
+		current_state = MenuState.TARGET_SELECTION
+		target_selector.visible = true
+		current_selected_index = 0
+		_highlight_current_target()
+
+## 内部方法：确认目标选择
+func _confirm_target_selection() -> void:
+	if current_selected_index < available_targets.size():
+		current_selected_target = available_targets[current_selected_index]
 		
-		# 构建行动数据
+		# 发送菜单交互完成信号
 		var action_data = {
 			"skill": current_selected_skill,
-			"target": selected_target,
-			"action_type": "skill_use"
+			"target": current_selected_target
 		}
+		menu_interaction_completed.emit(action_data)
+		target_selected.emit(current_selected_target)
 		
-		# 发送行动完成信号
-		emit_signal("menu_interaction_completed", action_data)
+		close_menu()
+
+## 内部方法：高亮当前技能
+func _highlight_current_skill() -> void:
+	var children = martial_arts_container.get_children()
+	for i in range(children.size()):
+		if i == current_selected_index:
+			children[i].modulate = Color.YELLOW
+		else:
+			children[i].modulate = Color.WHITE
+
+## 内部方法：高亮当前目标
+func _highlight_current_target() -> void:
+	var children = target_selector.get_children()
+	for i in range(children.size()):
+		if i == current_selected_index:
+			children[i].modulate = Color.YELLOW
+		else:
+			children[i].modulate = Color.WHITE
+
+## 内部方法：显示技能预览
+func _show_skill_preview() -> void:
+	if current_selected_index < available_skills.size():
+		var skill = available_skills[current_selected_index]
+		skill_preview.visible = true
 		
-		# 重置状态
-		is_target_selection_active = false
-		hide_target_selection()
-		
-		return true
+		# 更新预览内容
+		if skill_preview.has_method("update_preview"):
+			skill_preview.update_preview(skill)
+
+## 内部方法：创建技能菜单项
+func _create_skill_menu_item(skill: Dictionary, index: int) -> Control:
+	var item = Control.new()
+	item.custom_minimum_size = Vector2(200, 40)
 	
-	return false
-
-# 处理输入事件
-func process_input(event):
-	if event is InputEventKey and event.pressed:
-		if is_target_selection_active:
-			# 处理目标选择模式下的键盘输入
-			if event.key_label == KEY_W || event.key_label == KEY_UP:
-				switch_target(-1)
-			elif event.key_label == KEY_S || event.key_label == KEY_DOWN:
-				switch_target(1)
-			elif event.key_label == KEY_A || event.key_label == KEY_LEFT:
-				switch_target(-1)
-			elif event.key_label == KEY_D || event.key_label == KEY_RIGHT:
-				switch_target(1)
-			elif event.key_label == KEY_ENTER:
-				confirm_target_selection()
-			elif event.key_label == KEY_ESCAPE:
-				cancel_target_selection()
-		elif is_menu_visible:
-			# 处理菜单模式下的键盘输入
-			if event.key_label == KEY_ESCAPE:
-				hide_martial_arts_menu()
-				emit_signal("menu_interaction_completed", {"action_type": "cancel"})
-
-# 取消目标选择
-func cancel_target_selection():
-	is_target_selection_active = false
-	hide_target_selection()
+	# 创建标签显示技能信息
+	var label = Label.new()
+	var skill_text = "%s (消耗: %d, 冷却: %d)" % [
+		skill.get("name", "未知技能"),
+		skill.get("cost", 0),
+		skill.get("cooldown", 0)
+	]
+	label.text = skill_text
+	item.add_child(label)
 	
-	# 重新显示菜单
-	show_martial_arts_menu([])
+	return item
 
-# 显示技能工具提示
-func show_skill_tooltip(skill_data, position):
-	skill_tooltip.text = format_skill_tooltip(skill_data)
-	skill_tooltip.position = position
-	skill_tooltip.show()
-
-# 隐藏技能工具提示
-func hide_skill_tooltip():
-	skill_tooltip.hide()
-
-# 格式化技能工具提示
-func format_skill_tooltip(skill_data):
-	var tooltip_text = skill_data.name + "\n"
-	tooltip_text += "消耗: " + str(skill_data.cost) + " " + skill_data.cost_type + "\n"
-	tooltip_text += "冷却: " + str(skill_data.cooldown) + " 回合\n"
-	tooltip_text += "描述: " + skill_data.description
+## 内部方法：创建目标项
+func _create_target_item(target_id: String, index: int) -> Control:
+	var item = Control.new()
+	item.custom_minimum_size = Vector2(150, 40)
 	
-	return tooltip_text
-
-# 处理技能选择
-func _on_skill_selected(skill):
-	current_selected_skill = skill
+	# 创建标签显示目标信息
+	var label = Label.new()
+	label.text = target_id
+	item.add_child(label)
 	
-	# 如果技能需要目标，则激活目标选择
-	if skill.requires_target:
-		handle_target_selection(skill.potential_targets)
-	else:
-		# 如果技能不需要目标，直接完成
-		var action_data = {
-			"skill": skill,
-			"action_type": "skill_use",
-			"target": null
-		}
-		emit_signal("menu_interaction_completed", action_data)
+	return item
 
-# 处理菜单关闭
-func _on_menu_closed():
-	hide_martial_arts_menu()
-	emit_signal("menu_interaction_completed", {"action_type": "cancel"})
+## 内部方法：GUI焦点改变回调
+func _on_gui_focus_changed(control: Control) -> void:
+	# 处理鼠标悬停预览
+	if control and control.is_inside_tree():
+		hover_timer = 0.0
 
-# 处理鼠标悬停
-func _on_skill_mouse_hovered(skill, mouse_position):
-	show_skill_tooltip(skill, mouse_position)
+## 获取当前菜单状态
+func get_menu_state() -> MenuState:
+	return current_state
 
-# 处理鼠标离开
-func _on_skill_mouse_exited():
-	hide_skill_tooltip()
+## 检查菜单是否打开
+func is_menu_open() -> bool:
+	return current_state != MenuState.CLOSED
 
-# 处理鼠标点击
-func _on_skill_mouse_clicked(skill):
-	_on_skill_selected(skill)
+## 启用/禁用输入
+func set_input_enabled(enabled: bool) -> void:
+	input_enabled = enabled
+
+## 获取当前选中的技能
+func get_selected_skill() -> Dictionary:
+	return current_selected_skill
+
+## 获取当前选中的目标
+func get_selected_target() -> String:
+	return current_selected_target

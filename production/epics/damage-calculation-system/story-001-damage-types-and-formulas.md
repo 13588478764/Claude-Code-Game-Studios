@@ -1,10 +1,11 @@
 # Story 001: 伤害类型与公式
 
 > **Epic**: 伤害计算系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27
+> **Estimate**: 8 hours
 
 ## Context
 

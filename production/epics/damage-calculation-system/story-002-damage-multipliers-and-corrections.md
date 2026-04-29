@@ -1,10 +1,11 @@
 # Story 002: 伤害倍率与修正
 
 > **Epic**: 伤害计算系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
-> **Manifest Version**: 2026-04-27
+> **Manifest Version**: 2026-04-28
+> **Estimate**: 13 hours
 
 ## Context
 

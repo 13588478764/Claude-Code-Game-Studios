@@ -1,41 +1,43 @@
+# ConditionEvaluator - 奇遇条件检查系统
+#
+# 负责评估所有奇遇触发条件，包括时空环境、角色状态、进度历史和随机概率
+# 遵循 GDD 中定义的四种条件类型
+#
+# 信号:
+#   - condition_evaluated(condition_type, result)
+
 extends Node
 
-# 条件评估器
-# 实现四大类条件类型（时空环境、角色状态、进度历史、随机概率）的评估逻辑
+class_name ConditionEvaluator
 
 # 条件类型枚举
 enum ConditionType {
-	TEMPORAL_ENVIRONMENT,  # 时空环境条件
-	CHARACTER_STATE,       # 角色状态条件
-	PROGRESS_HISTORY,      # 进度历史条件
-	RANDOM_PROBABILITY     # 随机概率条件
+	TEMPORAL_ENVIRONMENT,    # 时空环境条件
+	CHARACTER_STATE,         # 角色状态条件
+	PROGRESS_HISTORY,        # 进度历史条件
+	RANDOM_PROBABILITY       # 随机概率条件
 }
 
-# 逻辑操作枚举
+# 逻辑操作符枚举
+enum LogicOperator {
+	AND,                     # 逻辑与
+	OR                       # 逻辑或
+}
+
+# 兼容性别名
 enum LogicOp {
-	AND,  # 与操作
-	OR,   # 或操作
-	XOR   # 异或操作
+	AND,                     # 逻辑与
+	OR                       # 逻辑或
 }
 
-# 条件结构
-class Condition:
-	var type: ConditionType
-	var parameters: Dictionary
-	var is_negated: bool = false  # 是否取反
+# 信号定义
+signal condition_evaluated(condition_type: int, result: bool)
 
-# 条件组合结构
-class ConditionGroup:
-	var logic_op: LogicOp
-	var conditions: Array[Condition]
-	var sub_groups: Array
+# ============================================================================
+# 内部类定义
+# ============================================================================
 
-# 评估结果结构
-class EvaluationResult:
-	var is_met: bool
-	var details: Dictionary
-
-# 评估玩家数据结构
+## 玩家数据类
 class PlayerData:
 	var position: Vector2
 	var time: float
@@ -48,279 +50,334 @@ class PlayerData:
 	var inventory: Array
 	var skills: Array
 	var realm: String
+	
+	func _init():
+		position = Vector2.ZERO
+		time = 0.0
+		weather = ""
+		luck = 0.0
+		wisdom = 0.0
+		health = 1.0
+		qi = 1.0
+		attributes = {}
+		inventory = []
+		skills = []
+		realm = ""
 
-# 评估进度数据结构
+## 进度数据类
 class ProgressData:
 	var quest_status: Dictionary
 	var explored_areas: Array
 	var encounter_history: Array
 	var behavior_history: Dictionary
+	
+	func _init():
+		quest_status = {}
+		explored_areas = []
+		encounter_history = []
+		behavior_history = {}
 
-# 评估时空环境条件
-func evaluate_temporal_environment_conditions(player_data: PlayerData) -> bool:
-	# 检查位置条件
-	if has_position_condition():
-		var pos_result = check_position(player_data.position)
-		if not pos_result:
-			return false
+## 条件类
+class Condition:
+	var type: int
+	var parameters: Dictionary
 	
-	# 检查时间条件
-	if has_time_condition():
-		var time_result = check_time(player_data.time)
-		if not time_result:
-			return false
-	
-	# 检查天气条件
-	if has_weather_condition():
-		var weather_result = check_weather(player_data.weather)
-		if not weather_result:
-			return false
-	
-	return true
+	func _init():
+		type = 0
+		parameters = {}
 
-# 评估角色状态条件
-func evaluate_character_state_conditions(player_data: PlayerData) -> bool:
-	# 检查属性阈值
-	if has_attribute_threshold_condition():
-		var attr_result = check_attribute_thresholds(player_data.attributes)
-		if not attr_result:
-			return false
+## 条件组类
+class ConditionGroup:
+	var logic_op: int
+	var conditions: Array
 	
-	# 检查资源状态
-	if has_resource_condition():
-		var resource_result = check_resource_status(player_data.health, player_data.qi)
-		if not resource_result:
-			return false
-	
-	# 检查武学/境界
-	if has_skill_realm_condition():
-		var skill_result = check_skills_and_realm(player_data.skills, player_data.realm)
-		if not skill_result:
-			return false
-	
-	return true
+	func _init():
+		logic_op = 0
+		conditions = []
 
-# 评估进度历史条件
-func evaluate_progress_history_conditions(progress_data: ProgressData) -> bool:
-	# 检查任务状态
-	if has_quest_condition():
-		var quest_result = check_quest_status(progress_data.quest_status)
-		if not quest_result:
-			return false
-	
-	# 检查探索记录
-	if has_exploration_condition():
-		var explore_result = check_exploration(progress_data.explored_areas)
-		if not explore_result:
-			return false
-	
-	# 检查行为历史
-	if has_behavior_condition():
-		var behavior_result = check_behavior_history(progress_data.behavior_history)
-		if not behavior_result:
-			return false
-	
-	return true
+# ============================================================================
+# 公共方法
+# ============================================================================
 
-# 评估随机概率条件
+## 评估时空环境条件
+## 参数:
+##   - player_data: 玩家数据字典
+##     - location: 当前位置
+##     - time_of_day: 时间 (morning/afternoon/evening/night)
+##     - weather: 天气 (sunny/rainy/snowy/stormy)
+## 返回: 条件是否满足
+func evaluate_temporal_environment_conditions(player_data: Dictionary) -> bool:
+	# 验证必需字段
+	if not player_data.has("location") or not player_data.has("time_of_day") or not player_data.has("weather"):
+		return false
+	
+	var location: String = player_data["location"]
+	var time_of_day: String = player_data["time_of_day"]
+	var weather: String = player_data["weather"]
+	
+	# 这里可以添加具体的时空环境条件评估逻辑
+	# 例如: 特定位置 + 特定时间 + 特定天气
+	
+	# 示例: 破庙 + 深夜 + 雨天
+	var is_temple: bool = location == "破庙"
+	var is_night: bool = time_of_day == "night"
+	var is_rainy: bool = weather == "rainy" or weather == "stormy"
+	
+	var result: bool = is_temple and is_night and is_rainy
+	condition_evaluated.emit(ConditionType.TEMPORAL_ENVIRONMENT, result)
+	
+	return result
+
+
+## 评估角色状态条件
+## 参数:
+##   - player_data: 玩家数据字典
+##     - health: 当前生命值
+##     - max_health: 最大生命值
+##     - status_effects: 状态效果数组
+## 返回: 条件是否满足
+func evaluate_character_state_conditions(player_data: Dictionary) -> bool:
+	# 验证必需字段
+	if not player_data.has("health") or not player_data.has("max_health"):
+		return false
+	
+	var health: int = player_data["health"]
+	var max_health: int = player_data["max_health"]
+	var status_effects: Array = player_data.get("status_effects", [])
+	
+	# 计算生命值百分比
+	var health_percentage: float = float(health) / float(max_health)
+	
+	# 示例: 生命值低于 20%
+	var is_low_health: bool = health_percentage < 0.2
+	
+	# 示例: 没有特定的负面状态
+	var has_negative_status: bool = false
+	for effect in status_effects:
+		if effect in ["中毒", "燃烧", "冻结"]:
+			has_negative_status = true
+			break
+	
+	var result: bool = is_low_health and not has_negative_status
+	condition_evaluated.emit(ConditionType.CHARACTER_STATE, result)
+	
+	return result
+
+
+## 评估进度历史条件
+## 参数:
+##   - progress_data: 进度数据字典
+##     - encounters_completed: 完成的奇遇数组
+##     - quests_completed: 完成的任务数组
+##     - level: 当前等级
+## 返回: 条件是否满足
+func evaluate_progress_history_conditions(progress_data: Dictionary) -> bool:
+	# 验证必需字段
+	if not progress_data.has("encounters_completed") or not progress_data.has("level"):
+		return false
+	
+	var encounters_completed: Array = progress_data["encounters_completed"]
+	var level: int = progress_data["level"]
+	
+	# 示例: 已完成特定奇遇且等级达到要求
+	var has_prerequisite_encounter: bool = "避雨遇高僧" in encounters_completed
+	var level_requirement_met: bool = level >= 10
+	
+	var result: bool = has_prerequisite_encounter and level_requirement_met
+	condition_evaluated.emit(ConditionType.PROGRESS_HISTORY, result)
+	
+	return result
+
+
+## 评估随机概率条件
+## 参数:
+##   - luck_value: 福缘值 (0-100)
+##   - base_probability: 基础概率 (0.0-1.0)
+## 返回: 条件是否满足
 func evaluate_random_probability_conditions(luck_value: float, base_probability: float = 0.05) -> bool:
-	# 计算最终触发概率
-	var final_probability = calculate_trigger_probability(base_probability, luck_value)
+	# 验证参数范围
+	luck_value = clamp(luck_value, 0.0, 100.0)
+	base_probability = clamp(base_probability, 0.0, 1.0)
 	
-	# 生成随机数并比较
-	var random_value = randf()
-	return random_value <= final_probability
-
-# 计算触发概率（考虑福缘修正）
-func calculate_trigger_probability(base_probability: float, luck_value: float) -> float:
-	# 福缘修正系数：每10点福缘+10%概率
-	var luck_bonus = luck_value / 100.0  # 每10点福缘提供0.1倍修正
+	# 计算福缘修正系数
+	# 福缘值 50 时修正系数为 1.0（无修正）
+	# 福缘值 100 时修正系数为 1.5（增加 50%）
+	# 福缘值 0 时修正系数为 0.5（减少 50%）
+	var luck_modifier: float = 0.5 + (luck_value / 100.0)
 	
 	# 计算最终概率
-	var final_probability = base_probability * (1.0 + luck_bonus)
+	var final_probability: float = base_probability * luck_modifier
 	
-	# 限制概率上限为20%
-	return min(final_probability, 0.20)
-
-# 检查位置
-func check_position(position: Vector2) -> bool:
-	# 这里会根据具体奇遇的触发区域进行检查
-	# 例如：检查玩家是否在破庙区域
-	return true  # 简化实现
-
-# 检查时间
-func check_time(time: float) -> bool:
-	# 这里会检查游戏内时间是否符合要求
-	# 例如：检查是否为子时（23:00-1:00）
-	return true  # 简化实现
-
-# 检查天气
-func check_weather(weather: String) -> bool:
-	# 这里会检查当前天气是否符合要求
-	# 例如：检查是否为雨天
-	return true  # 简化实现
-
-# 检查属性阈值
-func check_attribute_thresholds(attributes: Dictionary) -> bool:
-	# 检查各种属性是否满足阈值
-	# 例如：福缘 > 80, 悟性 > 50
-	return true  # 简化实现
-
-# 检查资源状态
-func check_resource_status(health: float, qi: float) -> bool:
-	# 检查生命值、内力等资源状态
-	# 例如：生命值 < 20%, 内力 < 10%
-	return true  # 简化实现
-
-# 检查技能和境界
-func check_skills_and_realm(skills: Array, realm: String) -> bool:
-	# 检查是否已学会特定武学或达到特定境界
-	# 例如：已学会《太极拳》、处于筑基期
-	return true  # 简化实现
-
-# 检查任务状态
-func check_quest_status(quest_status: Dictionary) -> bool:
-	# 检查任务完成状态
-	# 例如：主线任务完成至第3章
-	return true  # 简化实现
-
-# 检查探索记录
-func check_exploration(explored_areas: Array) -> bool:
-	# 检查已探索区域
-	# 例如：已解锁"青云山"地图
-	return true  # 简化实现
-
-# 检查行为历史
-func check_behavior_history(behavior_history: Dictionary) -> bool:
-	# 检查行为历史
-	# 例如：累计击杀强盗超过50人
-	return true  # 简化实现
-
-# 检查是否有位置条件
-func has_position_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有时间条件
-func has_time_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有天气条件
-func has_weather_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有属性阈值条件
-func has_attribute_threshold_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有资源条件
-func has_resource_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有技能境界条件
-func has_skill_realm_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有任务条件
-func has_quest_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有探索条件
-func has_exploration_condition() -> bool:
-	return true  # 简化实现
-
-# 检查是否有行为条件
-func has_behavior_condition() -> bool:
-	return true  # 简化实现
-
-# 评估复合条件组
-func evaluate_condition_group(group: ConditionGroup, player_data: PlayerData, progress_data: ProgressData) -> bool:
-	var results: Array[bool] = []
+	# 限制最终概率在 0.0-1.0 之间
+	final_probability = clamp(final_probability, 0.0, 1.0)
 	
-	# 评估单个条件
-	for condition in group.conditions:
-		var result = evaluate_single_condition(condition, player_data, progress_data)
-		if condition.is_negated:
-			result = not result
-		results.append(result)
+	# 生成随机数进行判断
+	var random_value: float = randf()
+	var result: bool = random_value < final_probability
 	
-	# 评估子组
-	for sub_group in group.sub_groups:
-		var sub_result = evaluate_condition_group(sub_group, player_data, progress_data)
-		results.append(sub_result)
+	condition_evaluated.emit(ConditionType.RANDOM_PROBABILITY, result)
 	
-	# 根据逻辑操作符组合结果
-	match group.logic_op:
-		LogicOp.AND:
-			for result in results:
-				if not result:
+	return result
+
+
+## 评估复合条件（使用逻辑操作符组合多个条件）
+## 参数:
+##   - conditions: 条件结果数组 (布尔值)
+##   - operator: 逻辑操作符 (AND 或 OR)
+## 返回: 复合条件结果
+func evaluate_composite_conditions(conditions: Array, operator: int = LogicOperator.AND) -> bool:
+	if conditions.is_empty():
+		return false
+	
+	match operator:
+		LogicOperator.AND:
+			# AND 逻辑: 所有条件都为 true 才返回 true
+			for condition in conditions:
+				if not condition:
 					return false
 			return true
-		LogicOp.OR:
-			for result in results:
-				if result:
+		
+		LogicOperator.OR:
+			# OR 逻辑: 至少一个条件为 true 就返回 true
+			for condition in conditions:
+				if condition:
 					return true
 			return false
-		LogicOp.XOR:
-			var true_count = 0
-			for result in results:
-				if result:
-					true_count += 1
-			return true_count % 2 == 1
-		_:
-			return false
+	
+	return false
 
-# 评估单个条件
-func evaluate_single_condition(condition: Condition, player_data: PlayerData, progress_data: ProgressData) -> bool:
-	match condition.type:
-		ConditionType.TEMPORAL_ENVIRONMENT:
-			return evaluate_temporal_environment_conditions(player_data)
-		ConditionType.CHARACTER_STATE:
-			return evaluate_character_state_conditions(player_data)
-		ConditionType.PROGRESS_HISTORY:
-			return evaluate_progress_history_conditions(progress_data)
-		ConditionType.RANDOM_PROBABILITY:
-			return evaluate_random_probability_conditions(player_data.luck)
-		_:
-			return false
 
-# 测试函数
-func test_condition_evaluation():
-	print("开始测试条件评估...")
+## 评估条件组
+## 参数:
+##   - condition_group: 条件组对象
+##   - player_data: 玩家数据对象
+##   - progress_data: 进度数据对象
+## 返回: 条件组评估结果
+func evaluate_condition_group(condition_group: ConditionGroup, player_data: Object, progress_data: Object) -> bool:
+	if condition_group.conditions.is_empty():
+		return false
 	
-	# 创建测试数据
-	var test_player_data = PlayerData.new()
-	test_player_data.luck = 50.0
-	test_player_data.position = Vector2(100, 200)
-	test_player_data.time = 22.5  # 晚上10:30
-	test_player_data.weather = "rain"
-	test_player_data.health = 0.15  # 15%
-	test_player_data.qi = 0.05    # 5%
-	test_player_data.attributes = {"luck": 50, "wisdom": 60}
-	test_player_data.inventory = ["mysterious_jade"]
-	test_player_data.skills = ["taijiquan"]
-	test_player_data.realm = "ZhuJi"  # 筑基期
+	var results: Array = []
 	
-	var test_progress_data = ProgressData.new()
-	test_progress_data.quest_status = {"main_chapter": 3}
-	test_progress_data.explored_areas = ["Qingyun_Mountain", "Black_Wind_Fortress"]
-	test_progress_data.encounter_history = ["encounter_001", "encounter_002"]
-	test_progress_data.behavior_history = {"bandits_killed": 55, "npc_helped": 12}
+	# 评估每个条件
+	for condition in condition_group.conditions:
+		var result: bool = false
+		
+		# 如果条件有 is_met 参数，直接使用它
+		if condition.parameters.has("is_met"):
+			result = condition.parameters["is_met"]
+		else:
+			# 否则根据条件类型进行评估
+			match condition.type:
+				ConditionType.TEMPORAL_ENVIRONMENT:
+					# 将 PlayerData 对象转换为字典
+					var player_dict = _player_data_to_dict(player_data)
+					result = evaluate_temporal_environment_conditions(player_dict)
+				
+				ConditionType.CHARACTER_STATE:
+					# 将 PlayerData 对象转换为字典
+					var player_dict = _player_data_to_dict(player_data)
+					result = evaluate_character_state_conditions(player_dict)
+				
+				ConditionType.PROGRESS_HISTORY:
+					# 将 ProgressData 对象转换为字典
+					var progress_dict = _progress_data_to_dict(progress_data)
+					result = evaluate_progress_history_conditions(progress_dict)
+				
+				ConditionType.RANDOM_PROBABILITY:
+					var luck = player_data.luck if player_data.has_method("get") or player_data is Object else 50.0
+					result = evaluate_random_probability_conditions(luck)
+		
+		results.append(result)
 	
-	# 测试各类条件
-	var temporal_result = evaluate_temporal_environment_conditions(test_player_data)
-	print("时空环境条件评估结果: ", temporal_result)
+	# 根据逻辑操作符组合结果
+	return evaluate_composite_conditions(results, condition_group.logic_op)
+
+
+## 计算触发概率
+## 参数:
+##   - base_probability: 基础概率 (0.0-1.0)
+##   - luck_value: 福缘值 (0-150+，支持超过100的福缘值)
+## 返回: 修正后的触发概率
+func calculate_trigger_probability(base_probability: float, luck_value: float) -> float:
+	# 验证参数范围
+	base_probability = clamp(base_probability, 0.0, 1.0)
+	luck_value = max(luck_value, 0.0)  # 只限制下限，不限制上限
 	
-	var character_result = evaluate_character_state_conditions(test_player_data)
-	print("角色状态条件评估结果: ", character_result)
+	# 计算福缘修正系数（分段计算）
+	# 福缘值 0 时修正系数为 0.0（无修正）
+	# 福缘值 50 时修正系数为 0.5（增加 50%）
+	# 福缘值 100 时修正系数为 1.0（增加 100%）
+	# 福缘值 150 时修正系数为 3.0（增加 300%）
+	var luck_modifier: float
+	if luck_value <= 100.0:
+		luck_modifier = luck_value / 100.0
+	else:
+		# 当福缘值超过 100 时，修正系数增长加快
+		luck_modifier = 1.0 + (luck_value - 100.0) / 25.0
 	
-	var progress_result = evaluate_progress_history_conditions(test_progress_data)
-	print("进度历史条件评估结果: ", progress_result)
+	# 计算最终概率
+	var final_probability: float = base_probability * (1.0 + luck_modifier)
 	
-	var random_result = evaluate_random_probability_conditions(test_player_data.luck)
-	print("随机概率条件评估结果: ", random_result)
+	# 限制最终概率在 0.0-0.2 之间（上限20%）
+	final_probability = clamp(final_probability, 0.0, 0.2)
 	
-	# 计算最终触发概率
-	var trigger_prob = calculate_trigger_probability(0.05, test_player_data.luck)
-	print("福缘50时的触发概率: ", trigger_prob)
+	return final_probability
+
+
+# ============================================================================
+# 私有方法
+# ============================================================================
+
+## 验证玩家数据完整性
+## 参数:
+##   - player_data: 玩家数据字典
+##   - required_fields: 必需字段数组
+## 返回: 数据是否完整
+func _validate_player_data(player_data: Dictionary, required_fields: Array) -> bool:
+	for field in required_fields:
+		if not player_data.has(field):
+			return false
+	return true
+
+
+## 将 PlayerData 对象转换为字典
+## 参数:
+##   - player_data: PlayerData 对象
+## 返回: 转换后的字典
+func _player_data_to_dict(player_data: Object) -> Dictionary:
+	var result = {}
 	
-	print("条件评估测试完成")
+	if player_data is PlayerData:
+		result["position"] = player_data.position
+		result["time"] = player_data.time
+		result["weather"] = player_data.weather
+		result["luck"] = player_data.luck
+		result["wisdom"] = player_data.wisdom
+		result["health"] = player_data.health
+		result["max_health"] = 1.0
+		result["qi"] = player_data.qi
+		result["attributes"] = player_data.attributes
+		result["inventory"] = player_data.inventory
+		result["skills"] = player_data.skills
+		result["realm"] = player_data.realm
+	
+	return result
+
+
+## 将 ProgressData 对象转换为字典
+## 参数:
+##   - progress_data: ProgressData 对象
+## 返回: 转换后的字典
+func _progress_data_to_dict(progress_data: Object) -> Dictionary:
+	var result = {}
+	
+	if progress_data is ProgressData:
+		result["quest_status"] = progress_data.quest_status
+		result["explored_areas"] = progress_data.explored_areas
+		result["encounter_history"] = progress_data.encounter_history
+		result["behavior_history"] = progress_data.behavior_history
+		result["encounters_completed"] = progress_data.encounter_history
+		result["level"] = 1
+	
+	return result

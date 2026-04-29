@@ -1,10 +1,11 @@
 # Story 003: 价格平衡机制
 
 > **Epic**: 经济系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26
+> **Test Status**: All 4 unit tests PASSED ✓
 
 ## Context
 

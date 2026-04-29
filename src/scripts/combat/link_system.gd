@@ -1,323 +1,344 @@
 # 武侠奇遇录 - 连携系统
-# 实现连携槽、连击、连携攻击和连携条件判定等功能
+# 实现连携槽系统、连击系统、连携攻击和连携条件判定
+#
+# 设计原则（来自 ADR-001）：
+# - 使用节点系统和信号系统
+# - 依赖注入模式传递系统引用
+# - 业务逻辑与 UI 分离
+# - 使用信号驱动系统间通信
 
 extends Node
 
-# 信号定义
-signal link_gauge_changed(character_id, gauge_value)
-signal combo_increased(character_id, combo_count)
-signal link_attack_executed(attacker_id, target_id, attack_type)
-signal link_condition_met(character_id, condition_type)
-
-# 连携系统配置
-var max_link_gauge = 100  # 最大连携槽值
-var max_combo_count = 10  # 最大连击数
-var link_gauge_per_hit = 10  # 每次攻击增加的连携槽
-var link_gauge_per_block = 15  # 每次完美格挡增加的连携槽
-var link_gauge_per_weakness = 20  # 每次弱点打击增加的连携槽
-var combo_damage_multiplier = 0.1  # 连击伤害加成系数
-
-# 连携攻击类型枚举
+## 连携攻击类型
 enum LinkAttackType {
-	FOLLOW_UP = 0,  # 追击
-	DUAL_TECH = 1   # 合体技
+	FOLLOW_UP,    # 追击
+	DUAL_TECH     # 合体技
 }
 
-# 战斗角色数据结构
-class BattleCharacter:
-	var character_id: String
-	var link_gauge: int = 0
-	var combo_count: int = 0
-	var last_target_id: String = ""  # 上次攻击的目标
-	var is_player: bool = false
-	var teammates: Array[String] = []  # 队友ID列表
+## 连携槽信息类
+class LinkGauge:
+	var current: float = 0.0
+	var max_value: float = 100.0
 	
-	func _init(id: String, player: bool, team_ids: Array):
-		character_id = id
-		is_player = player
-		teammates = team_ids
+	func _init(max_val: float = 100.0):
+		max_value = max_val
+		current = 0.0
+	
+	func accumulate(amount: float):
+		current = min(current + amount, max_value)
+	
+	func consume(amount: float) -> bool:
+		if current >= amount:
+			current -= amount
+			return true
+		return false
+	
+	func is_full() -> bool:
+		return current >= max_value
+	
+	func reset():
+		current = 0.0
 
-# 存储战斗角色信息
-var battle_characters: Dictionary = {}
+## 连击追踪类
+class ComboTracker:
+	var count: int = 0
+	var max_combo: int = 10
+	var damage_multiplier: float = 1.0
+	var current_target = null
+	
+	func _init(max_c: int = 10):
+		max_combo = max_c
+		count = 0
+		damage_multiplier = 1.0
+	
+	func hit_target(target) -> float:
+		if target != current_target:
+			reset()
+			current_target = target
+		
+		count = min(count + 1, max_combo)
+		damage_multiplier = 1.0 + (count - 1) * 0.1  # 每次连击增加 10% 伤害
+		return damage_multiplier
+	
+	func reset():
+		count = 0
+		damage_multiplier = 1.0
+		current_target = null
+	
+	func get_combo_count() -> int:
+		return count
+	
+	func get_damage_multiplier() -> float:
+		return damage_multiplier
+
+## 连携条件类
+class LinkCondition:
+	var required_gauge: float = 100.0
+	var required_combo: int = 0
+	var required_teammates: int = 1
+	
+	func _init(gauge: float = 100.0, combo: int = 0, teammates: int = 1):
+		required_gauge = gauge
+		required_combo = combo
+		required_teammates = teammates
+	
+	func check(gauge_value: float, combo_count: int, alive_teammates: int) -> bool:
+		return (gauge_value >= required_gauge and 
+				combo_count >= required_combo and 
+				alive_teammates >= required_teammates)
+
+## 连携攻击类
+class LinkAttack:
+	var attack_type: int
+	var name: String
+	var gauge_cost: float
+	var damage_multiplier: float
+	var condition: LinkCondition
+	
+	func _init(type: int, attack_name: String, cost: float, dmg_mult: float, cond: LinkCondition):
+		attack_type = type
+		name = attack_name
+		gauge_cost = cost
+		damage_multiplier = dmg_mult
+		condition = cond
+
+# 信号定义
+signal link_gauge_changed(current: float, max_value: float)
+signal combo_count_changed(count: int, multiplier: float)
+signal link_attack_executed(attack_name: String, damage_multiplier: float)
+signal link_condition_changed(available: bool)
+
+# 连携系统数据
+var combat_system: Node = null
+var participants: Array = []
+var link_gauge: LinkGauge = null
+var combo_tracker: ComboTracker = null
+var available_link_attacks: Array = []
+var current_link_condition: LinkCondition = null
 
 func _ready():
-	print("连携系统初始化完成")
+	pass
 
-# 初始化连携系统
-func initialize(characters: Array):
-	"""初始化连携系统，传入战斗角色列表"""
-	battle_characters.clear()
+## 初始化连携系统
+func initialize(combat_sys: Node):
+	"""
+	初始化连携系统。
 	
-	for char_data in characters:
-		var char = BattleCharacter.new(
-			char_data.id,
-			char_data.is_player,
-			char_data.teammates
-		)
-		battle_characters[char_data.id] = char
+	参数:
+	- combat_sys: 战斗系统引用
+	"""
+	combat_system = combat_sys
+	participants = combat_sys.participants if combat_sys else []
 	
-	print("连携系统已初始化，角色数量: %d" % battle_characters.size())
+	# 初始化连携槽（队友间共享）
+	link_gauge = LinkGauge.new(100.0)
+	
+	# 初始化连击追踪
+	combo_tracker = ComboTracker.new(10)
+	
+	# 初始化可用的连携攻击
+	available_link_attacks.clear()
+	_setup_default_link_attacks()
 
-# 增加连携槽
-func increase_link_gauge(character_id: String, amount: int, source: String = "normal") -> bool:
-	"""增加指定角色的连携槽"""
-	if not battle_characters.has(character_id):
-		return false
+## AC-1: 连携槽系统正常工作
+func accumulate_link_gauge(amount: float):
+	"""
+	积累连携槽。队友间共享。
 	
-	var character = battle_characters[character_id]
-	var old_gauge = character.link_gauge
+	参数:
+	- amount: 积累量
+	"""
+	if link_gauge == null:
+		return
 	
-	# 增加连携槽
-	character.link_gauge = min(max_link_gauge, character.link_gauge + amount)
-	
-	# 如果连携槽发生变化，发送信号
-	if character.link_gauge != old_gauge:
-		emit_signal("link_gauge_changed", character_id, character.link_gauge)
-		return true
-	
-	return false
-
-# 增加连击数
-func increase_combo(character_id: String, target_id: String = "") -> bool:
-	"""增加指定角色的连击数"""
-	if not battle_characters.has(character_id):
-		return false
-	
-	var character = battle_characters[character_id]
-	
-	# 如果攻击了不同目标，重置连击数
-	if target_id != "" and character.last_target_id != "" and target_id != character.last_target_id:
-		character.combo_count = 0
-	else:
-		# 连续攻击同一目标，增加连击数
-		character.combo_count = min(max_combo_count, character.combo_count + 1)
-	
-	# 更新最后攻击目标
-	if target_id != "":
-		character.last_target_id = target_id
-	
-	# 发送连击增加信号
-	emit_signal("combo_increased", character_id, character.combo_count)
-	return true
-
-# 重置连击数
-func reset_combo(character_id: String) -> bool:
-	"""重置指定角色的连击数"""
-	if not battle_characters.has(character_id):
-		return false
-	
-	var character = battle_characters[character_id]
-	if character.combo_count > 0:
-		character.combo_count = 0
-		emit_signal("combo_increased", character_id, 0)
-		return true
-	
-	return false
-
-# 处理攻击事件
-func on_attack_event(attacker_id: String, target_id: String, is_weakness_hit: bool = false) -> Dictionary:
-	"""处理攻击事件，更新连携槽和连击数"""
-	var result = {
-		"success": false,
-		"link_gauge_increased": 0,
-		"combo_increased": false,
-		"message": ""
-	}
-	
-	if not battle_characters.has(attacker_id):
-		result.message = "攻击者不存在"
-		return result
-	
-	# 增加连击数
-	increase_combo(attacker_id, target_id)
-	result.combo_increased = true
-	
-	# 增加连携槽
-	var gauge_increase = link_gauge_per_hit
-	if is_weakness_hit:
-		gauge_increase = link_gauge_per_weakness
-	
-	increase_link_gauge(attacker_id, gauge_increase, "attack")
-	result.link_gauge_increased = gauge_increase
-	result.success = true
-	result.message = "攻击事件处理完成"
-	
-	# 同时增加队友的连携槽（共享机制）
-	for teammate_id in battle_characters[attacker_id].teammates:
-		if battle_characters.has(teammate_id):
-			increase_link_gauge(teammate_id, int(gauge_increase * 0.5), "shared")  # 队友获得一半的连携槽
-	
-	return result
-
-# 处理格挡事件
-func on_block_event(defender_id: String, is_perfect_block: bool = false) -> Dictionary:
-	"""处理格挡事件，如果是完美格挡则增加连携槽"""
-	var result = {
-		"success": false,
-		"link_gauge_increased": 0,
-		"message": ""
-	}
-	
-	if not is_perfect_block:
-		result.message = "非完美格挡，不增加连携槽"
-		return result
-	
-	if not battle_characters.has(defender_id):
-		result.message = "防御者不存在"
-		return result
-	
-	# 增加连携槽
-	var gauge_increase = link_gauge_per_block
-	increase_link_gauge(defender_id, gauge_increase, "block")
-	result.link_gauge_increased = gauge_increase
-	result.success = true
-	result.message = "完美格挡，连携槽增加"
-	
-	# 同时增加队友的连携槽
-	for teammate_id in battle_characters[defender_id].teammates:
-		if battle_characters.has(teammate_id):
-			increase_link_gauge(teammate_id, int(gauge_increase * 0.5), "shared")
-	
-	return result
-
-# 检查连携条件
-func check_link_condition(character_id: String, attack_type: LinkAttackType) -> Dictionary:
-	"""检查连携条件是否满足"""
-	var result = {
-		"can_execute": false,
-		"required_gauge": 0,
-		"current_gauge": 0,
-		"message": ""
-	}
-	
-	if not battle_characters.has(character_id):
-		result.message = "角色不存在"
-		return result
-	
-	var character = battle_characters[character_id]
-	result.current_gauge = character.link_gauge
-	
-	# 不同连携攻击类型需要不同的连携槽
-	match attack_type:
-		LinkAttackType.FOLLOW_UP:
-			result.required_gauge = 20  # 追击需要20点连携槽
-		LinkAttackType.DUAL_TECH:
-			result.required_gauge = 50  # 合体技需要50点连携槽
-		_:
-			result.message = "未知的连携攻击类型"
-			return result
-	
-	# 检查是否有足够的连携槽
-	if character.link_gauge >= result.required_gauge:
-		result.can_execute = true
-		result.message = "连携条件满足"
-	else:
-		result.message = "连携槽不足"
-	
-	# 检查是否有队友可用（对于合体技）
-	if attack_type == LinkAttackType.DUAL_TECH and character.teammates.size() == 0:
-		result.can_execute = false
-		result.message = "没有可用队友发动合体技"
-	
-	return result
-
-# 执行连携攻击
-func execute_link_attack(attacker_id: String, target_id: String, attack_type: LinkAttackType) -> Dictionary:
-	"""执行连携攻击"""
-	var result = {
-		"success": false,
-		"damage_multiplier": 1.0,
-		"gauge_consumed": 0,
-		"message": ""
-	}
+	link_gauge.accumulate(amount)
+	link_gauge_changed.emit(link_gauge.current, link_gauge.max_value)
 	
 	# 检查连携条件
-	var condition_check = check_link_condition(attacker_id, attack_type)
-	if not condition_check.can_execute:
-		result.message = "连携条件不满足: " + condition_check.message
-		return result
-	
-	if not battle_characters.has(attacker_id) or not battle_characters.has(target_id):
-		result.message = "攻击者或目标不存在"
-		return result
-	
-	var attacker = battle_characters[attacker_id]
-	
-	# 消耗连携槽
-	var gauge_to_consume = condition_check.required_gauge
-	attacker.link_gauge = max(0, attacker.link_gauge - gauge_to_consume)
-	emit_signal("link_gauge_changed", attacker_id, attacker.link_gauge)
-	result.gauge_consumed = gauge_to_consume
-	
-	# 根据连携攻击类型计算伤害倍率
-	match attack_type:
-		LinkAttackType.FOLLOW_UP:
-			result.damage_multiplier = 1.3  # 追击造成1.3倍伤害
-			result.message = "追击发动成功"
-		LinkAttackType.DUAL_TECH:
-			# 寻找可用队友参与合体技
-			var available_teammate = find_available_teammate(attacker_id)
-			if available_teammate != "":
-				result.damage_multiplier = 2.0  # 合体技造成2.0倍伤害
-				result.message = "合体技发动成功，队友%s参与" % available_teammate
-			else:
-				result.damage_multiplier = 1.5  # 没有队友时降低伤害
-				result.message = "合体技发动但没有队友参与"
-	
-	result.success = true
-	
-	# 发送连携攻击执行信号
-	emit_signal("link_attack_executed", attacker_id, target_id, attack_type)
-	
-	return result
+	_check_link_conditions()
 
-# 查找可用队友
-func find_available_teammate(character_id: String) -> String:
-	"""查找可用的队友"""
-	if not battle_characters.has(character_id):
-		return ""
-	
-	var character = battle_characters[character_id]
-	
-	for teammate_id in character.teammates:
-		if battle_characters.has(teammate_id):
-			var teammate = battle_characters[teammate_id]
-			# 检查队友是否存活（HP > 0）
-			if teammate.get("current_hp", 1) > 0:
-				return teammate_id
-	
-	return ""
+## 获取连携槽当前值
+func get_link_gauge_current() -> float:
+	"""获取连携槽当前值。"""
+	return link_gauge.current if link_gauge else 0.0
 
-# 获取角色连携信息
-func get_character_link_info(character_id: String) -> Dictionary:
-	"""获取角色的连携相关信息"""
-	if not battle_characters.has(character_id):
-		return {}
+## 获取连携槽最大值
+func get_link_gauge_max() -> float:
+	"""获取连携槽最大值。"""
+	return link_gauge.max_value if link_gauge else 100.0
+
+## 检查连携槽是否满
+func is_link_gauge_full() -> bool:
+	"""检查连携槽是否满。"""
+	return link_gauge.is_full() if link_gauge else false
+
+## AC-2: 连击系统正常
+func record_hit(target) -> float:
+	"""
+	记录一次命中，更新连击数和伤害倍率。
 	
-	var character = battle_characters[character_id]
-	return {
-		"link_gauge": character.link_gauge,
-		"combo_count": character.combo_count,
-		"max_link_gauge": max_link_gauge,
-		"max_combo_count": max_combo_count,
-		"teammates": character.teammates
-	}
-
-# 重置战斗状态
-func reset_battle_state():
-	"""重置战斗状态，清空所有连携槽和连击数"""
-	for id in battle_characters.keys():
-		var character = battle_characters[id]
-		character.link_gauge = 0
-		character.combo_count = 0
-		emit_signal("link_gauge_changed", id, 0)
-		emit_signal("combo_increased", id, 0)
-
-# 计算连击伤害加成
-func calculate_combo_damage_bonus(character_id: String) -> float:
-	"""计算连击伤害加成"""
-	if not battle_characters.has(character_id):
+	参数:
+	- target: 被击中的目标
+	
+	返回: 伤害倍率
+	"""
+	if combo_tracker == null:
 		return 1.0
 	
-	var character = battle_characters[character_id]
-	return 1.0 + (character.combo_count * combo_damage_multiplier)
+	var multiplier = combo_tracker.hit_target(target)
+	combo_count_changed.emit(combo_tracker.count, multiplier)
+	
+	# 积累连携槽（每次命中积累 10 点）
+	accumulate_link_gauge(10.0)
+	
+	return multiplier
+
+## 重置连击
+func reset_combo():
+	"""重置连击计数。"""
+	if combo_tracker:
+		combo_tracker.reset()
+		combo_count_changed.emit(0, 1.0)
+
+## 获取连击数
+func get_combo_count() -> int:
+	"""获取当前连击数。"""
+	return combo_tracker.count if combo_tracker else 0
+
+## 获取连击伤害倍率
+func get_combo_damage_multiplier() -> float:
+	"""获取连击伤害倍率。"""
+	return combo_tracker.damage_multiplier if combo_tracker else 1.0
+
+## AC-3: 连携攻击实现
+func execute_link_attack(attack_name: String) -> bool:
+	"""
+	执行连携攻击。
+	
+	参数:
+	- attack_name: 连携攻击名称
+	
+	返回: 是否成功执行
+	"""
+	if link_gauge == null or combo_tracker == null:
+		return false
+	
+	# 查找攻击
+	var attack = null
+	for link_attack in available_link_attacks:
+		if link_attack.name == attack_name:
+			attack = link_attack
+			break
+	
+	if attack == null:
+		return false
+	
+	# 检查条件
+	var alive_teammates = _count_alive_teammates()
+	if not attack.condition.check(link_gauge.current, combo_tracker.count, alive_teammates):
+		return false
+	
+	# 消耗连携槽
+	if not link_gauge.consume(attack.gauge_cost):
+		return false
+	
+	# 发射信号
+	link_attack_executed.emit(attack.name, attack.damage_multiplier)
+	link_gauge_changed.emit(link_gauge.current, link_gauge.max_value)
+	
+	# 重置连击
+	reset_combo()
+	
+	# 检查连携条件
+	_check_link_conditions()
+	
+	return true
+
+## 获取可用的连携攻击列表
+func get_available_link_attacks() -> Array:
+	"""获取当前可用的连携攻击列表。"""
+	var available = []
+	var alive_teammates = _count_alive_teammates()
+	
+	if link_gauge == null or combo_tracker == null:
+		return available
+	
+	for attack in available_link_attacks:
+		if attack.condition.check(link_gauge.current, combo_tracker.count, alive_teammates):
+			available.append(attack)
+	
+	return available
+
+## AC-4: 连携条件判定正确
+func _check_link_conditions():
+	"""检查连携条件是否满足。"""
+	if current_link_condition == null:
+		return
+	
+	var alive_teammates = _count_alive_teammates()
+	var is_available = current_link_condition.check(
+		link_gauge.current,
+		combo_tracker.count,
+		alive_teammates
+	)
+	
+	link_condition_changed.emit(is_available)
+
+## 设置连携条件
+func set_link_condition(condition: LinkCondition):
+	"""
+	设置连携条件。
+	
+	参数:
+	- condition: 连携条件
+	"""
+	current_link_condition = condition
+	_check_link_conditions()
+
+## 获取活着的队友数量
+func _count_alive_teammates() -> int:
+	"""获取活着的队友数量。"""
+	if combat_system == null or participants.is_empty():
+		return 0
+	
+	var count = 0
+	for participant in participants:
+		if participant:
+			count += 1
+	
+	return count
+
+## 设置默认的连携攻击
+func _setup_default_link_attacks():
+	"""设置默认的连携攻击。"""
+	# 追击攻击（消耗 50 连携槽）
+	var follow_up_condition = LinkCondition.new(50.0, 3, 1)
+	var follow_up = LinkAttack.new(
+		LinkAttackType.FOLLOW_UP,
+		"追击",
+		50.0,
+		1.5,
+		follow_up_condition
+	)
+	available_link_attacks.append(follow_up)
+	
+	# 合体技（消耗 100 连携槽）
+	var dual_tech_condition = LinkCondition.new(100.0, 5, 2)
+	var dual_tech = LinkAttack.new(
+		LinkAttackType.DUAL_TECH,
+		"合体技",
+		100.0,
+		2.5,
+		dual_tech_condition
+	)
+	available_link_attacks.append(dual_tech)
+
+## 重置连携系统
+func reset():
+	"""重置连携系统状态。"""
+	if link_gauge:
+		link_gauge.reset()
+	if combo_tracker:
+		combo_tracker.reset()
+	link_gauge_changed.emit(0.0, 100.0)
+	combo_count_changed.emit(0, 1.0)

@@ -45,8 +45,8 @@ func test_attribute_point_assignment_interface():
 	var initial_strength = attribute_ui.strength_label.text
 	var initial_available = attribute_ui.available_points_label.text
 	
-	assert_not_equal(initial_strength, null, "应能获取到力道属性值")
-	assert_not_equal(initial_available, null, "应能获取到可用点数")
+	assert_ne(initial_strength, null, "应能获取到力道属性值")
+	assert_ne(initial_available, null, "应能获取到可用点数")
 
 func test_attribute_point_assignment_real_time_effect():
 	# 测试属性点分配实时生效（即时应用效果）
@@ -66,7 +66,7 @@ func test_attribute_point_assignment_real_time_effect():
 	
 	# 验证临时分配已更新
 	var temp_allocation = attribute_ui.get_temp_allocation()
-	assert_equal(temp_allocation["strength"], 1, "临时分配应包含1点力道")
+	assert_eq(temp_allocation["strength"], 1, "临时分配应包含1点力道")
 	
 	# 应用分配
 	var success = attribute_ui.apply_allocation_changes()
@@ -76,8 +76,8 @@ func test_attribute_point_assignment_real_time_effect():
 	var final_strength = attribute_manager.get_attribute_value("strength")
 	var final_available = attribute_manager.get_available_points()
 	
-	assert_equal(final_strength, initial_strength + 1, "力道属性应增加1")
-	assert_equal(final_available, initial_available - 1, "可用点数应减少1")
+	assert_eq(final_strength, initial_strength + 1, "力道属性应增加1")
+	assert_eq(final_available, initial_available - 1, "可用点数应减少1")
 
 func test_smart_recommendation_allocation_scheme():
 	# 测试智能推荐分配方案（基于武学配置）
@@ -120,16 +120,16 @@ func test_assignment_history_record():
 	
 	# 验证临时分配
 	var temp_allocation = attribute_ui.get_temp_allocation()
-	assert_equal(temp_allocation["strength"], 1, "临时分配应包含1点力道")
-	assert_equal(temp_allocation["agility"], 1, "临时分配应包含1点身法")
+	assert_eq(temp_allocation["strength"], 1, "临时分配应包含1点力道")
+	assert_eq(temp_allocation["agility"], 1, "临时分配应包含1点身法")
 	
 	# 重置临时分配
 	attribute_ui.reset_temp_allocation()
 	
 	# 验证临时分配已重置
 	temp_allocation = attribute_ui.get_temp_allocation()
-	assert_equal(temp_allocation["strength"], 0, "临时分配的力道应重置为0")
-	assert_equal(temp_allocation["agility"], 0, "临时分配的身法应重置为0")
+	assert_eq(temp_allocation["strength"], 0, "临时分配的力道应重置为0")
+	assert_eq(temp_allocation["agility"], 0, "临时分配的身法应重置为0")
 
 func test_integration_with_attribute_manager():
 	# 测试与AttributePointManager的集成
@@ -144,7 +144,7 @@ func test_integration_with_attribute_manager():
 	var initial_available_ui = attribute_ui.available_points_label.text
 	var initial_available_manager = str(attribute_manager.get_available_points())
 	
-	assert_equal(initial_available_ui, initial_available_manager, "UI和管理器的可用点数应同步")
+	assert_eq(initial_available_ui, initial_available_manager, "UI和管理器的可用点数应同步")
 	
 	# 修改管理器状态
 	attribute_manager.allocate_point("strength")
@@ -154,14 +154,14 @@ func test_integration_with_attribute_manager():
 	var updated_available_ui = attribute_ui.available_points_label.text
 	var updated_available_manager = str(attribute_manager.get_available_points())
 	
-	assert_equal(updated_available_ui, updated_available_manager, "UI应反映管理器的更新")
+	assert_eq(updated_available_ui, updated_available_manager, "UI应反映管理器的更新")
 
 func test_forbidden_in_battle():
 	# 测试禁止在战斗中进行属性点分配（验证控制规则）
 	# 这里我们验证控制规则的实现逻辑
 	
 	# 验证AttributeAssignmentUI存在
-	assert_not_equal(attribute_ui, null, "AttributeAssignmentUI应存在")
+	assert_ne(attribute_ui, null, "AttributeAssignmentUI应存在")
 	
 	# 验证UI的可见性控制
 	attribute_ui.set_visible(false)

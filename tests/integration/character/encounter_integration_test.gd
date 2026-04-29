@@ -112,8 +112,8 @@ func test_reward_granting_mechanism_works():
 	# Then: 角色获得对应数量的自由属性点
 	assert_true(result)
 	var gained_points = character_system.total_attribute_points - initial_attribute_points
-	assert_ge(gained_points, 2, "至少获得2点属性点")
-	assert_le(gained_points, 5, "最多获得5点属性点")
+	assert_true(gained_points >= 2, "至少获得2点属性点")
+	assert_true(gained_points <= 5, "最多获得5点属性点")
 	
 	# 测试秘境发现奖励（EXP）
 	encounter_type = "secret_realm_discovery"
@@ -122,8 +122,8 @@ func test_reward_granting_mechanism_works():
 	result = encounter_integration.grant_encounter_rewards(encounter_type, encounter_data)
 	assert_true(result)
 	var gained_exp = character_system.experience - initial_exp
-	assert_ge(gained_exp, 500, "至少获得500点经验值")
-	assert_le(gained_exp, 1000, "最多获得1000点经验值")
+	assert_true(gained_exp >= 500, "至少获得500点经验值")
+	assert_true(gained_exp <= 1000, "最多获得1000点经验值")
 	
 	# 测试天材地宝奖励（物品）
 	encounter_type = "heavenly_treasure"
@@ -196,13 +196,11 @@ func test_complete_encounter_trigger_flow():
 func test_signal_system_integration():
 	"""测试信号系统是否正确发射"""
 	var signal_data = {}
-	var signal_received = false
 	
 	# 连接信号
 	encounter_integration.connect("encounter_reward_granted", func(reward_type, amount):
 		signal_data["reward_type"] = reward_type
 		signal_data["amount"] = amount
-		signal_received = true
 	)
 	
 	# 触发奖励发放
@@ -210,11 +208,14 @@ func test_signal_system_integration():
 	var encounter_data = {"type": encounter_type, "id": "test_signal_001"}
 	encounter_integration.grant_encounter_rewards(encounter_type, encounter_data)
 	
+	# 等待一帧以确保信号被处理
+	await wait_frames(1)
+	
 	# 验证信号已发射
-	assert_true(signal_received)
+	assert_true(signal_data.has("reward_type"), "信号应该已发射并设置了 reward_type")
 	assert_eq(signal_data["reward_type"], "attribute_points")
-	assert_ge(signal_data["amount"], 2)
-	assert_le(signal_data["amount"], 5)
+	assert_true(signal_data["amount"] >= 2)
+	assert_true(signal_data["amount"] <= 5)
 
 # 测试用例7: 边界情况测试
 func test_edge_cases():

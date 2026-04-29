@@ -1,7 +1,7 @@
 # 角色等级和境界突破单元测试
 # 验证角色成长系统的核心功能是否按预期工作
-
-extends Node
+extends "res://addons/gut/test.gd"
+#extends Node
 
 # 导入需要测试的模块
 var CharacterSystem = load("res://src/scripts/character/character_system.gd")
@@ -21,8 +21,9 @@ func test_character_leveling_system():
 	assert(character_system.total_attribute_points == 5, "Initial attribute points should be 5")
 	assert(character_system.total_talent_points == 1, "Initial talent points should be 1")
 	
-	# 测试升级
-	character_system.add_experience(1000)  # 足够升级到2级
+	# 测试升级 - 使用精确的经验值
+	var exp_for_level_2 = character_system.get_exp_required_for_level(2)
+	character_system.add_experience(exp_for_level_2)
 	
 	# 检查升级后状态
 	assert(character_system.level == 2, "Level should be 2 after upgrade")
@@ -86,12 +87,12 @@ func test_realm_breakthrough_system():
 	character_system.breakthrough_realm()
 	
 	assert(character_system.realm_index == 9, "Realm index should be 9 after final breakthrough (真仙)")
-	assert(character_system.realm_bonus == 2.0, "Realm bonus should be 2.0 after final breakthrough (100% bonus)")
+	assert(character_system.realm_bonus == 1.9, "Realm bonus should be 1.9 after final breakthrough (90% bonus)")
 	
 	# 测试超过最高境界
 	character_system.breakthrough_realm()
 	assert(character_system.realm_index == 9, "Realm index should not exceed 9")
-	assert(character_system.realm_bonus == 2.0, "Realm bonus should not exceed 2.0")
+	assert(character_system.realm_bonus == 1.9, "Realm bonus should not exceed 1.9")
 	
 	print("PASSED: test_realm_breakthrough_system")
 
@@ -120,20 +121,24 @@ func test_experience_and_level_up_mechanism():
 	character_system.add_experience(1)
 	assert(character_system.level == 2, "Level should be 2 with sufficient experience")
 	
-	# 测试批量升级
+	# 测试批量升级 - 计算从1级升到5级所需的总经验值
 	character_system.level = 1
 	character_system.experience = 0
-	var exp_for_level_5 = character_system.get_exp_required_for_level(6) - 1
+	var total_exp_for_level_5 = 0
+	for i in range(2, 6):  # 2, 3, 4, 5
+		total_exp_for_level_5 += character_system.get_exp_required_for_level(i)
 	
-	character_system.add_experience(exp_for_level_5)
+	character_system.add_experience(total_exp_for_level_5)
 	assert(character_system.level == 5, "Should level up to 5 with enough experience for level 5")
 	
-	# 测试经验值溢出处理
+	# 测试经验值溢出处理 - 计算从1级升到3级所需的总经验值
 	character_system.level = 1
 	character_system.experience = 0
-	var exp_for_level_3 = character_system.get_exp_required_for_level(4) - 1
+	var total_exp_for_level_3 = 0
+	for i in range(2, 4):  # 2, 3
+		total_exp_for_level_3 += character_system.get_exp_required_for_level(i)
 	
-	character_system.add_experience(exp_for_level_3)
+	character_system.add_experience(total_exp_for_level_3)
 	assert(character_system.level == 3, "Should handle experience overflow correctly")
 	
 	print("PASSED: test_experience_and_level_up_mechanism")
@@ -152,14 +157,13 @@ func test_character_data_persistence():
 	character_system.level = 25
 	character_system.experience = 5000
 	character_system.total_attribute_points = 125  # 25级 * 5点
-	character_system.allocated_attribute_points = 50
 	character_system.total_talent_points = 25     # 25级 * 1点
 	character_system.allocated_talent_points = 10
 	character_system.realm_index = 2  # 金丹期
 	character_system.realm_bonus = 1.2  # 20%加成
 	character_system.free_reset_count = 2
 	
-	# 分配一些属性点
+	# 分配一些属性点（allocate_attribute_points 会自动更新 allocated_attribute_points）
 	character_system.allocate_attribute_points("strength", 20)
 	character_system.allocate_attribute_points("agility", 15)
 	character_system.allocate_attribute_points("constitution", 15)

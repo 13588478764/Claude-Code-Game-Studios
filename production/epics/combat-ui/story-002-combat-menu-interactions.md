@@ -4,7 +4,7 @@
 > **Status**: Pending Test
 > **Layer**: Feature
 > **Type**: UI
-> **Manifest Version**: 2026-04-27
+> **Manifest Version**: 2026-04-28
 
 ## Context
 
@@ -94,9 +94,9 @@
 
 **Story Type**: UI
 **Required evidence**:
-- Evidence: `production/qa/evidence/combat-menu-interactions-evidence.md` — must exist and pass
+- Evidence: `production/qa/evidence/combat-menu-interactions-evidence.md` — manual test walkthrough and sign-off
 
-**Status**: [x] Completed
+**Status**: [ ] Pending
 
 ---
 
