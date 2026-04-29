@@ -1,19 +1,29 @@
 ## WeaknessSystem
-## weakness system
+## 弱点打击系统
 ##
-## 战斗系统模块
-
-# 武侠奇遇录 - 弱点打击系统
-# 实现属性克制系统、弱点打击判定、击倒机制和总攻击触发
-#
-# 设计原则（来自 ADR-001）：
-# - 使用节点系统和信号系统
-# - 依赖注入模式传递系统引用
-# - 业务逻辑与 UI 分离
-# - 使用信号驱动系统间通信
+## 实现属性克制系统、弱点打击判定、击倒机制和总攻击触发。
+##
+## 功能：
+## - 属性克制系统（五行相克）
+## - 弱点打击判定（伤害倍率、击倒触发）
+## - 击倒状态管理（易伤倍率、状态追踪）
+## - 总攻击触发（全员击倒条件判定）
+##
+## 设计原则（来自 ADR-001）：
+## - 使用节点系统和信号系统
+## - 依赖注入模式传递系统引用
+## - 业务逻辑与 UI 分离
+## - 使用信号驱动系统间通信
+##
+## 依赖系统：
+## - CombatSystem（战斗系统）
 
 extends Node
 class_name WeaknessSystem
+
+# ============================================================================
+# 常量定义
+# ============================================================================
 
 ## 属性枚举（五行属性）
 enum Element {
@@ -26,7 +36,7 @@ enum Element {
 
 ## 属性克制关系
 ## 金克木、木克土、土克水、水克火、火克金
-const ELEMENT_WEAKNESS = {
+const ELEMENT_WEAKNESS: Dictionary = {
 	Element.METAL: Element.WOOD,   # 金克木
 	Element.WOOD: Element.EARTH,   # 木克土
 	Element.EARTH: Element.WATER,  # 土克水
@@ -35,11 +45,15 @@ const ELEMENT_WEAKNESS = {
 }
 
 ## 弱点打击伤害倍率
-const WEAKNESS_DAMAGE_MULTIPLIER = 1.5
-const NORMAL_DAMAGE_MULTIPLIER = 1.0
+const WEAKNESS_DAMAGE_MULTIPLIER: float = 1.5
+const NORMAL_DAMAGE_MULTIPLIER: float = 1.0
 
 ## 击倒状态易伤倍率
-const DOWN_VULNERABILITY_MULTIPLIER = 1.5
+const DOWN_VULNERABILITY_MULTIPLIER: float = 1.5
+
+# ============================================================================
+# 内部类定义
+# ============================================================================
 
 ## 弱点信息类
 class WeaknessInfo:
@@ -64,13 +78,17 @@ class WeaknessHitResult:
 # ============================================================================
 # 信号定义
 # ============================================================================
+
 signal weakness_hit(attacker: Node, target: Node, result: WeaknessHitResult)
 signal down_triggered(target: Node)
 signal down_cleared(target: Node)
-signal all_out_attack_available
-signal all_out_attack_unavailable
+signal all_out_attack_available()
+signal all_out_attack_unavailable()
 
-# 弱点系统数据
+# ============================================================================
+# 属性定义
+# ============================================================================
+
 var combat_system: Node = null  # 引用战斗系统
 var participant_weaknesses: Dictionary = {}  # 参与者弱点信息
 var participant_down_status: Dictionary = {}  # 参与者击倒状态

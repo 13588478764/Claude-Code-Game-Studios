@@ -1,28 +1,39 @@
 ## MartialArtsSystem
-## martial arts system
+## 武学系统
 ##
-## 战斗系统模块
-
-# 武学系统实现
-# 管理武学的获取、熟练度、装备和组合等功能
+## 管理武学的获取、熟练度、装备和组合等功能。
+##
+## 功能：
+## - 武学获取与管理（数据库、玩家武学、残页）
+## - 武学装备（4个槽位、装备/卸载）
+## - 熟练度系统（等级、经验、升级）
+## - 武学组合（组合数据、执行）
+##
+## 依赖系统：
+## - 无直接依赖
 
 extends Node
 class_name MartialArtsSystem
 
 # ============================================================================
+# 常量定义
+# ============================================================================
+
+const FRAGMENT_NEEDED_FOR_SYNTHESIS: int = 3  # 合成所需残页数
+const EMPTY_MANUAL_ITEM_ID: String = "empty_manual"  # 空槽位ID
+
+const MAX_EQUIPPED_MARTIAL_ARTS: int = 4  # 最大装备武学数
+const MAX_PROFICIENCY_LEVEL: int = 10  # 最大熟练度等级
+
+# ============================================================================
 # 信号定义
 # ============================================================================
+
 signal martial_art_acquired(martial_art_id: String)
 signal martial_art_proficiency_changed(martial_art_id: String, new_level: int)
 signal martial_art_equipped(martial_art_id: String, slot_index: int)
 signal martial_art_combo_executed(combo_name: String, damage_multiplier: float)
-
-# ============================================================================
-# 常量定义
-# ============================================================================
-
-const FRAGMENT_NEEDED_FOR_SYNTHESIS = 3
-const EMPTY_MANUAL_ITEM_ID = "empty_manual"
+signal martial_art_unequipped(martial_art_id: String, slot_index: int)
 
 # 武学数据结构
 class MartialArtData:

@@ -1,38 +1,73 @@
 ## QiManager
-## qi manager
+## 内力管理器
 ##
-## 战斗系统模块
-
-# QiManager
-# 管理内力系统的节点，实现内力池、恢复和消耗机制
+## 管理内力系统的节点，实现内力池、恢复和消耗机制。
+##
+## 功能：
+## - 内力池管理（当前值、最大值、计算）
+## - 内力消耗（基础消耗、连招递增、心境减免）
+## - 内力恢复（自然恢复、行动恢复、战斗外恢复）
+## - 过载机制（内力不足时消耗生命值）
+##
+## 依赖系统：
+## - MartialArtsSystem（武学系统）
+## - CombatSystem（战斗系统）
+## - CharacterProgressionSystem（角色成长系统）
 
 extends Node
 class_name QiManager
 
 # ============================================================================
+# 常量定义
+# ============================================================================
+
+const MAX_OVERLOAD_RATIO: float = 2.0  # 最大过载转换率
+const MIN_OVERLOAD_RATIO: float = 0.1  # 最小过载转换率
+
+const DEFAULT_WISDOM: int = 10  # 默认悟性
+const DEFAULT_MIND_ATTRIBUTE: int = 10  # 默认心境
+const DEFAULT_CULTIVATION_LEVEL: int = 1  # 默认修为境界
+
+const BASE_QI: int = 100  # 基础内力值
+const MIN_QI: int = 100  # 最小内力值
+const MAX_QI: int = 1000  # 最大内力值
+
+const BASE_RECOVERY_RATE: float = 0.05  # 基础恢复比例
+const DEFAULT_OVERLOAD_RATIO: float = 0.8  # 默认过载转换率
+
+const WISDOM_QI_BONUS: int = 5  # 每点悟性提供的内力值
+const WISDOM_RECOVERY_BONUS: float = 0.05  # 每点悟性提供的恢复加成
+const MIND_REDUCTION_PER_POINT: float = 0.01  # 每点心境提供的消耗减免
+const MAX_MIND_REDUCTION: float = 0.3  # 最大消耗减免（30%）
+
+const COMBO_SCALING: float = 0.15  # 连招递增系数
+const ATTACK_RECOVERY: int = 10  # 普攻恢复内力
+const DEFEND_RECOVERY: int = 20  # 防御恢复内力
+const HIT_TAKEN_RECOVERY: int = 5  # 受击恢复内力
+const ITEM_RECOVERY: int = 30  # 物品恢复内力
+
+# ============================================================================
 # 信号定义
 # ============================================================================
+
 signal qi_changed(current: int, max: int)
 signal qi_recovered(amount: int)
 signal qi_consumed(amount: int)
 signal overload_triggered(damage: int)
+signal combat_state_changed(in_combat: bool)
 
 # ============================================================================
-# 常量定义
+# 属性定义
 # ============================================================================
-
-const MAX_OVERLOAD_RATIO = 2.0  # 最大过载转换率
-const MIN_OVERLOAD_RATIO = 0.1  # 最小过载转换率
 
 # 内力池相关属性
-var current_qi: int
-var max_qi: int
-var base_qi: int = 100  # 基础内力值
+var current_qi: int = 0
+var max_qi: int = 0
 
 # 角色属性
-var wisdom: int = 10  # 悟性
-var mind_attribute: int = 10  # 心境
-var cultivation_level: int = 1  # 修为境界
+var wisdom: int = DEFAULT_WISDOM  # 悟性
+var mind_attribute: int = DEFAULT_MIND_ATTRIBUTE  # 心境
+var cultivation_level: int = DEFAULT_CULTIVATION_LEVEL  # 修为境界
 
 # 装备和技能加成
 var equipment_qi_bonus: int = 0
@@ -44,13 +79,13 @@ var combo_count: int = 0  # 当前回合连击数
 var last_combat_action: String = ""
 
 # 系统引用
-var martial_arts_system = null
-var combat_system = null
-var character_progression_system = null
+var martial_arts_system: Node = null
+var combat_system: Node = null
+var character_progression_system: Node = null
 
 # 恢复相关参数
-var base_recovery_rate: float = 0.05  # 基础恢复比例
-var overload_ratio: float = 0.8  # 过载转换率
+var base_recovery_rate: float = BASE_RECOVERY_RATE  # 基础恢复比例
+var overload_ratio: float = DEFAULT_OVERLOAD_RATIO  # 过载转换率
 
 # 初始化
 func _ready():

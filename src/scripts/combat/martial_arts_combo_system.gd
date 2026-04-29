@@ -1,30 +1,46 @@
 ## MartialArtsComboSystem
-## martial arts combo system
+## 武学组合系统
 ##
-## 战斗系统模块
-
-# Martial Arts Combo System
-# 武学组合/连招系统实现
+## 实现武学组合/连招系统，包括协同效果检测、内力回流、连携槽管理。
+##
+## 功能：
+## - 协同效果检测（标签协同、状态协同）
+## - 内力回流计算（基于协同效果等级）
+## - 连携槽管理（积累、消耗、检查）
+## - 连招状态追踪（当前标签、上次标签、连招链）
+##
+## 依赖系统：
+## - 无直接依赖
 
 extends Node
 class_name MartialArtsComboSystem
 
 # ============================================================================
+# 常量定义
+# ============================================================================
+
+const MAX_LINK_GAUGE: int = 100  # 最大连携槽
+const COMBO_WINDOW_TIME: float = 3.0  # 连招窗口时间（秒）
+const REFUND_RATIO_MIN: float = 0.2  # 最小回流比例
+const REFUND_RATIO_MAX: float = 0.5  # 最大回流比例
+
+const BASE_LINK_GAUGE_INCREMENT: int = 20  # 基础连携槽增量
+const LINK_GAUGE_THRESHOLD: int = 30  # 连携触发阈值
+
+const COMBO_CHAIN_MAX_LENGTH: int = 5  # 连招链最大长度
+const BASIC_COMBO_MULTIPLIER: float = 1.0  # 普通连招倍率
+const ADVANCED_COMBO_MULTIPLIER: float = 1.5  # 高阶连招倍率
+const ULTIMATE_COMBO_MULTIPLIER: float = 2.0  # 终极连招倍率
+
+# ============================================================================
 # 信号定义
 # ============================================================================
+
 signal combo_triggered(combo_name: String, damage_multiplier: float)
 signal synergy_detected(tag1: String, tag2: String)
 signal link_gauge_updated(value: int, max_value: int)
 signal internal_energy_refunded(amount: float)
-
-# ============================================================================
-# 常量定义
-# ============================================================================
-
-const MAX_LINK_GAUGE = 100
-const COMBO_WINDOW_TIME = 3.0  # 连招窗口时间（秒）
-const REFUND_RATIO_MIN = 0.2
-const REFUND_RATIO_MAX = 0.5
+signal combo_state_reset()
 
 # 连招系统数据结构
 var combo_state = {

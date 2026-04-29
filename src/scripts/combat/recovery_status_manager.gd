@@ -1,51 +1,72 @@
 ## RecoveryStatusManager
-## recovery status manager
+## 恢复与状态管理器
 ##
-## 战斗系统模块
-
-# RecoveryStatusManager
-# 管理恢复和状态效果的系统，实现战斗内外恢复机制和状态效果管理
+## 管理恢复和状态效果的系统，实现战斗内外恢复机制和状态效果管理。
+##
+## 功能：
+## - 战斗内恢复（HP、Poise定期恢复）
+## - 战斗外恢复（自动恢复到满值）
+## - 状态效果管理（应用、移除、计时）
+## - 恢复速度调整（基于属性和装备）
+##
+## 依赖系统：
+## - HealthPoiseManager（生命值与架势值管理器）
+## - EquipmentSystem（装备系统）
+## - CharacterProgressionSystem（角色成长系统）
 
 extends Node
 class_name RecoveryStatusManager
 
 # ============================================================================
+# 常量定义
+# ============================================================================
+
+const STATUS_NORMAL: String = "normal"
+const STATUS_DEFENDING: String = "defending"
+const STATUS_BREAK: String = "break"
+const STATUS_CRITICAL: String = "critical"
+const STATUS_DEAD: String = "dead"
+
+const DEFAULT_RECOVERY_CHECK_INTERVAL: float = 1.0  # 默认恢复检查间隔（秒）
+const DEFAULT_HP_RECOVERY_RATE: float = 0.0  # 默认战斗外HP恢复速度
+const DEFAULT_POISE_RECOVERY_RATE: float = 0.2  # 默认战斗外Poise恢复速度（20%）
+
+const COMBAT_HP_RECOVERY_RATE: float = 0.02  # 战斗内HP恢复速度（2%）
+const COMBAT_POISE_RECOVERY_RATE: float = 0.05  # 战斗内Poise恢复速度（5%）
+
+# ============================================================================
 # 信号定义
 # ============================================================================
+
 signal hp_recovered(amount: int)
 signal poise_recovered(amount: int)
 signal status_effect_applied(effect_name: String)
 signal status_effect_removed(effect_name: String)
 signal rest_point_used()
+signal recovery_state_changed(in_combat: bool)
 
 # ============================================================================
-# 常量定义
+# 属性定义
 # ============================================================================
-
-const STATUS_NORMAL = "normal"
-const STATUS_DEFENDING = "defending"
-const STATUS_BREAK = "break"
-const STATUS_CRITICAL = "critical"
-const STATUS_DEAD = "dead"
 
 # 战斗内外恢复相关
 var is_in_combat: bool = false
 var combat_recovery_timer: Timer = null
 var out_of_combat_recovery_timer: Timer = null
-var recovery_check_interval: float = 1.0  # 恢复检查间隔（秒）
+var recovery_check_interval: float = DEFAULT_RECOVERY_CHECK_INTERVAL  # 恢复检查间隔（秒）
 
 # 恢复速度
-var hp_recovery_rate: float = 0.0  # 战斗外HP恢复速度（每秒恢复最大HP的百分比）
-var poise_recovery_rate: float = 0.2  # 战斗外Poise恢复速度（每秒恢复最大Poise的20%）
+var hp_recovery_rate: float = DEFAULT_HP_RECOVERY_RATE  # 战斗外HP恢复速度（每秒恢复最大HP的百分比）
+var poise_recovery_rate: float = DEFAULT_POISE_RECOVERY_RATE  # 战斗外Poise恢复速度（每秒恢复最大Poise的20%）
 
 # 状态效果管理
 var active_status_effects: Dictionary = {}
 var status_effect_timers: Dictionary = {}
 
 # 系统引用
-var health_poise_manager = null
-var equipment_system = null
-var character_progression_system = null
+var health_poise_manager: Node = null
+var equipment_system: Node = null
+var character_progression_system: Node = null
 
 # 初始化
 func _ready():
