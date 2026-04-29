@@ -10,41 +10,11 @@ extends Node
 
 class_name HistoryLogger
 
+# 导入统一的数据结构
+var EncounterRecord = preload("res://src/scripts/encounter/encounter_data_structures.gd").EncounterRecord
+
 # 信号定义
 signal encounter_logged(record_id: String, record_data: Object)
-
-# ============================================================================
-# 内部类定义
-# ============================================================================
-
-## 奇遇记录类
-class EncounterRecord:
-	var id: String
-	var encounter_id: String
-	var title: String
-	var encounter_type: String
-	var outcome: String
-	var rewards: Array
-	var timestamp: float
-	var position: Vector2
-	var weather: String
-	var player_level: int
-	var player_realm: String
-	var player_attributes: Dictionary
-	
-	func _init():
-		id = ""
-		encounter_id = ""
-		title = ""
-		encounter_type = ""
-		outcome = ""
-		rewards = []
-		timestamp = 0.0
-		position = Vector2.ZERO
-		weather = ""
-		player_level = 0
-		player_realm = ""
-		player_attributes = {}
 
 # ============================================================================
 # 成员变量
