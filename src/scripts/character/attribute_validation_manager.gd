@@ -1,25 +1,43 @@
 ## AttributeValidationManager
 ## 属性点验证管理器
 ##
-## 管理属性点分配的验证、重置和数据完整性检查
+## 管理属性点分配的验证、重置和数据完整性检查。
+## 提供属性点分配的验证、数据完整性验证和重置功能。
+##
+## 主要功能：
+## - 属性点分配验证
+## - 属性值范围验证
+## - 数据完整性检查
+## - 重置操作管理
+## - 错误记录和报告
 
 extends Node
 class_name AttributeValidationManager
 
-# 常量
+# ============================================================================
+# 常量定义
+# ============================================================================
+
 const MAX_ATTRIBUTE_VALUE = 99
 const RESET_TYPE_ITEM = "item"  # 洗髓丹重置
 const RESET_TYPE_BREAKTHROUGH = "breakthrough"  # 境界突破重置
 
-# 属性
+# ============================================================================
+# 成员变量
+# ============================================================================
+
 var attribute_manager
 var validation_errors: Array = []
 
-# 信号
+# ============================================================================
+# 信号定义
+# ============================================================================
+
 signal validation_passed(attribute_type: String, points: int)
 signal validation_failed(attribute_type: String, reason: String)
 signal reset_completed(reset_type: String)
 signal data_integrity_verified()
+REPLACE
 
 func _ready():
 	pass

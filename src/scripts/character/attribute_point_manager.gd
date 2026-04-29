@@ -1,17 +1,31 @@
-## attribute_point_manager.gd
+## AttributePointManager
 ## 属性点管理器
 ##
-## 管理玩家的属性点分配和六维属性系统
+## 管理玩家的属性点分配和六维属性系统。
+## 提供属性点的获取、分配、重置和数据持久化功能。
+##
+## 主要功能：
+## - 属性点总数管理
+## - 单个属性点分配
+## - 属性点重置
+## - 数据保存和加载
+## - 智能推荐分配方案
 
 extends Node
 class_name AttributePointManager
 
-# 常量
+# ============================================================================
+# 常量定义
+# ============================================================================
+
 const MAX_TOTAL_POINTS = 495  # 99级 × 5点
 const MAX_ATTRIBUTE_VALUE = 99
 const POINTS_PER_LEVEL = 5
 
-# 属性
+# ============================================================================
+# 成员变量
+# ============================================================================
+
 var total_points: int = 0  # 总获得属性点数
 var allocated_points: int = 0  # 已分配属性点数
 var attributes: Dictionary = {
@@ -24,9 +38,13 @@ var attributes: Dictionary = {
 }
 var reset_count: int = 0  # 免费重置次数
 
-# 信号
+# ============================================================================
+# 信号定义
+# ============================================================================
+
 signal attribute_allocated(attribute_type: String, new_value: int)
 signal attributes_reset()
+REPLACE
 
 func _ready():
 	pass

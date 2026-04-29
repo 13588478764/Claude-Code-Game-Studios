@@ -1,16 +1,34 @@
-# 经验值获取管理器
-# 实现EXP获取机制，包括战斗收益、探索与奇遇收益、任务进度收益
+## ExpAcquisitionManager
+## 经验值获取管理器
+##
+## 实现EXP获取机制，包括战斗收益、探索与奇遇收益、任务进度收益。
+## 根据不同的来源类型计算和分配经验值。
+##
+## 主要功能：
+## - 战斗经验值计算和奖励
+## - 探索经验值计算和奖励
+## - 奇遇经验值计算和奖励
+## - 任务经验值计算和奖励
+## - 批量处理多个经验值来源
 
 extends Node
+class_name ExpAcquisitionManager
 
-# 信号定义
-signal exp_granted(exp_amount: int, source_type: String, source_details: Dictionary)
-
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const EXP_SOURCE_COMBAT = "combat"
 const EXP_SOURCE_EXPLORATION = "exploration"
 const EXP_SOURCE_ENCOUNTER = "encounter"
 const EXP_SOURCE_QUEST = "quest"
+
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+signal exp_granted(exp_amount: int, source_type: String, source_details: Dictionary)
+REPLACE
 
 # 战斗EXP奖励基数
 var combat_exp_base_values = {

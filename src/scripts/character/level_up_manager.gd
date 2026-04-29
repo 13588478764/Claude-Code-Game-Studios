@@ -1,20 +1,39 @@
-# LevelUpManager
-# 管理等级提升逻辑的节点，处理小境界提升和大境界突破
+## LevelUpManager
+## 等级提升管理器
+##
+## 管理等级提升逻辑的节点，处理小境界提升和大境界突破。
+## 包括经验值阈值计算、圆满状态检查和境界突破验证。
+##
+## 主要功能：
+## - 小境界等级提升
+## - 大境界突破处理
+## - 经验值阈值计算
+## - 圆满状态管理
+## - 突破条件验证
+## - 新功能解锁
 
 extends Node
+class_name LevelUpManager
 
+# ============================================================================
+# 常量定义
+# ============================================================================
+
+const BASE_EXP = 100
+const EXPONENT_COEFFICIENT = 1.5
+const MINOR_BONUS_BASE = 5
+const MAJOR_BONUS_RATE = 0.1  # 10%全属性加成
+
+# ============================================================================
 # 信号定义
+# ============================================================================
+
 signal minor_realm_upgraded(character_id: String, new_level: int)
 signal major_realm_breakthrough_started(character_id: String, new_realm: String)
 signal major_realm_breakthrough_completed(character_id: String, new_realm: String)
 signal perfect_state_achieved(character_id: String, realm: String)
 signal exp_threshold_calculated(level: int, threshold: int)
-
-# 常量定义
-const BASE_EXP = 100
-const EXPONENT_COEFFICIENT = 1.5
-const MINOR_BONUS_BASE = 5
-const MAJOR_BONUS_RATE = 0.1  # 10%全属性加成
+REPLACE
 
 # 境界结构定义
 var realm_structure = {

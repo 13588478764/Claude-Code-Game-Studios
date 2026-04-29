@@ -1,12 +1,23 @@
 ## AttributeAssignmentUI
 ## 属性点分配UI管理器
 ##
-## 管理属性点分配界面的显示、交互和与AttributePointManager的集成
+## 管理属性点分配界面的显示、交互和与AttributePointManager的集成。
+## 提供属性点分配的UI交互、历史记录和智能推荐功能。
+##
+## 主要功能：
+## - 属性点分配UI显示
+## - 属性点分配交互处理
+## - 分配历史记录管理
+## - 撤销/重做功能
+## - 智能推荐分配方案
 
 extends Control
 class_name AttributeAssignmentUI
 
-# 属性
+# ============================================================================
+# 成员变量
+# ============================================================================
+
 var attribute_manager
 var temp_allocation: Dictionary = {
 	"strength": 0,
@@ -28,9 +39,13 @@ var willpower_label: Label
 var luck_label: Label
 var available_points_label: Label
 
-# 信号
+# ============================================================================
+# 信号定义
+# ============================================================================
+
 signal allocation_applied(allocation: Dictionary)
 signal allocation_reset()
+REPLACE
 
 func _ready():
 	# 初始化UI组件（在实际项目中这些会从场景中获取）

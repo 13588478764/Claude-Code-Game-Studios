@@ -1,7 +1,19 @@
-# 武侠奇遇录 - 角色系统
-# 负责管理角色的核心属性、等级、境界和成长机制
+## CharacterSystem
+## 角色系统核心管理器
+##
+## 负责管理角色的核心属性、等级、境界和成长机制。
+## 包括属性管理、经验值系统、升级机制、境界突破和天赋网格系统。
+##
+## 主要功能：
+## - 角色属性管理（六维属性系统）
+## - 经验值获取和升级机制
+## - 境界突破系统
+## - 天赋网格解锁和效果应用
+## - 战斗属性计算
 
 extends Node
+class_name CharacterSystem
+REPLACE
 
 # 信号定义
 signal level_up_event(new_level: int, attribute_points: int, talent_points: int)
