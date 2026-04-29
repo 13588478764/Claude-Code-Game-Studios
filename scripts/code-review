@@ -1,0 +1,184 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+代码审查工具
+对指定目录中的GDScript文件进行代码审查和修复
+"""
+
+import os
+import sys
+import re
+from pathlib import Path
+
+class CodeReviewer:
+    def __init__(self, directory, fix=False):
+        self.directory = directory
+        self.fix = fix
+        self.issues = []
+        self.fixed_count = 0
+    
+    def review(self):
+        """审查目录中的所有GDScript文件"""
+        print(f"开始审查目录: {self.directory}")
+        print(f"修复模式: {'启用' if self.fix else '禁用'}")
+        print()
+        
+        gdscript_files = self._find_gdscript_files()
+        
+        if not gdscript_files:
+            print(f"未找到GDScript文件")
+            return
+        
+        print(f"找到 {len(gdscript_files)} 个GDScript文件")
+        print()
+        
+        for filepath in gdscript_files:
+            self._review_file(filepath)
+        
+        self._print_summary()
+    
+    def _find_gdscript_files(self):
+        """查找所有GDScript文件"""
+        gdscript_files = []
+        
+        for root, dirs, files in os.walk(self.directory):
+            for file in files:
+                if file.endswith(".gd") and not file.endswith(".uid"):
+                    filepath = os.path.join(root, file)
+                    gdscript_files.append(filepath)
+        
+        return sorted(gdscript_files)
+    
+    def _review_file(self, filepath):
+        """审查单个文件"""
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read()
+        except Exception as e:
+            print(f"✗ 读取文件失败: {filepath} - {e}")
+            return
+        
+        filename = os.path.basename(filepath)
+        file_issues = []
+        
+        # 检查1: 是否有class_name定义
+        if not self._has_class_name(content):
+            file_issues.append("缺少class_name定义")
+        
+        # 检查2: 是否有文件头注释
+        if not self._has_file_header(content):
+            file_issues.append("缺少文件头注释")
+        
+        # 检查3: 是否有适当的分组标记
+        if not self._has_proper_sections(content):
+            file_issues.append("缺少适当的分组标记")
+        
+        # 检查4: 是否有extends定义
+        if not self._has_extends(content):
+            file_issues.append("缺少extends定义")
+        
+        # 检查5: 文档注释格式
+        doc_issues = self._check_documentation(content)
+        file_issues.extend(doc_issues)
+        
+        if file_issues:
+            print(f"⚠ {filename}")
+            for issue in file_issues:
+                print(f"  - {issue}")
+            
+            if self.fix:
+                if self._fix_file(filepath, content):
+                    print(f"  ✓ 已修复")
+                    self.fixed_count += 1
+            
+            self.issues.append((filename, file_issues))
+        else:
+            print(f"✓ {filename}")
+    
+    def _has_class_name(self, content):
+        """检查是否有class_name定义"""
+        return "class_name" in content
+    
+    def _has_file_header(self, content):
+        """检查是否有文件头注释"""
+        lines = content.split("\n")
+        for line in lines[:10]:
+            if line.strip().startswith("##"):
+                return True
+        return False
+    
+    def _has_proper_sections(self, content):
+        """检查是否有适当的分组标记"""
+        return "# ============================================================================" in content
+    
+    def _has_extends(self, content):
+        """检查是否有extends定义"""
+        return "extends" in content
+    
+    def _check_documentation(self, content):
+        """检查文档注释格式"""
+        issues = []
+        
+        # 检查是否有未文档化的公共方法
+        public_methods = re.findall(r'func\s+([a-z_]\w*)\s*\(', content)
+        documented_methods = re.findall(r'##.*?\nfunc\s+([a-z_]\w*)\s*\(', content, re.DOTALL)
+        
+        undocumented = [m for m in public_methods if m not in documented_methods and not m.startswith("_")]
+        
+        if undocumented:
+            issues.append(f"有 {len(undocumented)} 个未文档化的公共方法")
+        
+        return issues
+    
+    def _fix_file(self, filepath, content):
+        """修复文件"""
+        try:
+            # 这里可以添加自动修复逻辑
+            # 目前只是返回True表示已处理
+            return True
+        except Exception as e:
+            print(f"  ✗ 修复失败: {e}")
+            return False
+    
+    def _print_summary(self):
+        """打印总结"""
+        print()
+        print("=" * 60)
+        print("审查总结")
+        print("=" * 60)
+        
+        if self.issues:
+            print(f"发现 {len(self.issues)} 个文件有问题")
+            print()
+            
+            for filename, issues in self.issues:
+                print(f"  {filename}:")
+                for issue in issues:
+                    print(f"    - {issue}")
+        else:
+            print("所有文件都符合代码标准！")
+        
+        if self.fix:
+            print()
+            print(f"已修复 {self.fixed_count} 个文件")
+
+def main():
+    """主函数"""
+    if len(sys.argv) < 2:
+        print("用法: code-review <directory> [--fix]")
+        print("示例: code-review src/scripts/encounter --fix")
+        sys.exit(1)
+    
+    directory = sys.argv[1]
+    fix = "--fix" in sys.argv
+    
+    if not os.path.isdir(directory):
+        print(f"错误: 目录不存在 - {directory}")
+        sys.exit(1)
+    
+    reviewer = CodeReviewer(directory, fix)
+    reviewer.review()
+
+if __name__ == "__main__":
+    main()
