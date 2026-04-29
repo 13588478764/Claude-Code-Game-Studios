@@ -1,3 +1,7 @@
+## PriceBalancingManager
+## price balancing manager
+##
+## 经济系统模块
 # 武侠奇遇录 - 价格平衡机制
 # 实现强化费用、掉落修正、出售价格和黑市价格的计算公式
 

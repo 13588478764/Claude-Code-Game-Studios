@@ -1,3 +1,7 @@
+## CurrencyManager
+## currency manager
+##
+## 经济系统模块
 # 武侠奇遇录 - 货币管理系统
 # 实现银两和核心资源的获取、消耗、验证和存储功能
 
