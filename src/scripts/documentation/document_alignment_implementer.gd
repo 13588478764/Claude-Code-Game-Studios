@@ -1,3 +1,7 @@
+## DocumentAlignmentImplementer
+## document alignment implementer
+##
+## 文档管理模块
 extends Node
 
 # 文档对齐实施器

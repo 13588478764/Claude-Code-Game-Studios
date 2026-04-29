@@ -1,3 +1,7 @@
+## ConflictResolutionPlanner
+## conflict resolution planner
+##
+## 文档管理模块
 extends Node
 
 # 冲突解决方案规划器

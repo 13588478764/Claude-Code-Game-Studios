@@ -1,3 +1,7 @@
+## DocumentConsistencyAnalyzer
+## document consistency analyzer
+##
+## 文档管理模块
 extends Node
 
 # 文档一致性分析器
