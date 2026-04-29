@@ -1,45 +1,89 @@
+# PlayerPositionTracker - 玩家位置追踪器
+#
+# 负责基于玩家位置的智能加载策略
+# 符合 ADR-001 架构决策：组件化设计，使用 Godot 信号系统
+#
+# 信号:
+#   - fast_movement_detected(velocity)
+#   - important_block_marked(block_position, priority)
+
 extends Node
 
-# 玩家位置追踪器 - 负责基于玩家位置的智能加载策略
-# 符合ADR-001架构决策：组件化设计，使用Godot信号系统
+class_name PlayerPositionTracker
 
-# 依赖的世界流式加载管理器
+# ============================================================================
+# 依赖注入
+# ============================================================================
+
 @onready var world_streaming_manager = $WorldStreamingManager
 
-# 配置参数
-const MIN_STAY_TIME_MS = 500  # 防抖最小停留时间（毫秒）
-const FAST_MOVEMENT_THRESHOLD = 500.0  # 快速移动阈值（像素/秒）
-const PREDICTION_LOOKAHEAD_BLOCKS = 3  # 路径预测前瞻区块数
+# ============================================================================
+# 常量定义 - 配置参数
+# ============================================================================
 
-# 玩家状态
+const MIN_STAY_TIME_MS: int = 500
+const FAST_MOVEMENT_THRESHOLD: float = 500.0
+const PREDICTION_LOOKAHEAD_BLOCKS: int = 3
+const MOVEMENT_HISTORY_SIZE: int = 10
+
+# ============================================================================
+# 常量定义 - 其他
+# ============================================================================
+
+const LOG_PREFIX: String = "[PlayerPositionTracker]"
+
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+## 快速移动检测信号
+signal fast_movement_detected(velocity: Vector2)
+
+## 重要区块标记信号
+signal important_block_marked(block_position: Vector2i, priority: float)
+
+# ============================================================================
+# 成员变量 - 玩家状态
+# ============================================================================
+
 var player_position: Vector2 = Vector2.ZERO
 var player_velocity: Vector2 = Vector2.ZERO
 var last_position_update: float = 0.0
 var current_block: Vector2i = Vector2i.ZERO
 var previous_block: Vector2i = Vector2i.ZERO
 
-# 移动状态
+# ============================================================================
+# 成员变量 - 移动状态
+# ============================================================================
+
 var is_moving_fast: bool = false
-var movement_history: Array = []  # 存储最近的移动历史
-var stay_timers: Dictionary = {}  # 区块停留计时器 {Vector2i: float}
+var movement_history: Array = []
+var stay_timers: Dictionary = {}
 
-# 兴趣点优先级
-var high_priority_blocks: Dictionary = {}  # 高优先级区块 {Vector2i: priority_level}
+# ============================================================================
+# 成员变量 - 其他
+# ============================================================================
 
-# 信号：快速移动检测
-signal fast_movement_detected(velocity: Vector2)
-# 信号：重要区块标记
-signal important_block_marked(block_position: Vector2i, priority: float)
+var high_priority_blocks: Dictionary = {}
+var debug_enabled: bool = true
 
+# ============================================================================
+# 生命周期方法
+# ============================================================================
+
+## 初始化
 func _ready() -> void:
 	# 连接信号
-	connect("fast_movement_detected", _on_fast_movement_detected)
-	connect("important_block_marked", _on_important_block_marked)
+	connect("fast_movement_detected", Callable(self, "_on_fast_movement_detected"))
+	connect("important_block_marked", Callable(self, "_on_important_block_marked"))
 	
 	# 初始化移动历史
-	movement_history.resize(10)  # 保留最近10个位置
+	movement_history.resize(MOVEMENT_HISTORY_SIZE)
 	for i in range(movement_history.size()):
 		movement_history[i] = Vector2.ZERO
+	
+	if debug_enabled:
+		print("%s 初始化完成" % LOG_PREFIX)
 
 func _process(delta: float) -> void:
 	# 更新玩家位置和速度

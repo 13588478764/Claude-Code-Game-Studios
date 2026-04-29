@@ -1,15 +1,34 @@
+# WorldStateLoader - 世界状态加载器
+#
+# 负责从本地存储读取和解析加密的存档文件
+# 符合 ADR-001 架构决策：使用 JSON 格式本地存储，组件化设计
+
+class_name WorldStateLoader
 extends Node
 
-# 世界状态加载器 - 负责从本地存储读取和解析加密的存档文件
-# 符合ADR-001架构决策：使用JSON格式本地存储，组件化设计
+# ============================================================================
+# 常量定义
+# ============================================================================
 
-# 加密密钥（必须与WorldStateSaver中的密钥一致）
-const ENCRYPTION_KEY = "wuxia_jianghu_2026"
+const ENCRYPTION_KEY: String = "wuxia_jianghu_2026"
+const LOG_PREFIX: String = "[WorldStateLoader]"
+const MAX_BACKUP_ATTEMPTS: int = 3
 
-# 信号：加载完成
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+## 加载完成信号
 signal load_completed(save_data: Dictionary)
-# 信号：加载失败
+
+## 加载失败信号
 signal load_failed(error_message: String)
+
+# ============================================================================
+# 成员变量
+# ============================================================================
+
+var debug_enabled: bool = true
 
 # 从指定路径加载游戏状态
 func load_game(save_path: String) -> void:

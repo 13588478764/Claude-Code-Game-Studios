@@ -1,13 +1,35 @@
-# 武侠奇遇录 - MVP验证测试脚本
-# 直接运行MVP验证而不依赖UI按钮
+# MVPValidationTest - MVP 验证测试脚本
+#
+# 直接运行 MVP 验证而不依赖 UI 按钮
+# 验证所有核心系统的功能完整性
 
+class_name MVPValidationTest
 extends Node
 
-func _ready():
-	print("=== 开始MVP完整验证 ===")
+# ============================================================================
+# 常量定义
+# ============================================================================
+
+const LOG_PREFIX: String = "[MVPValidation]"
+const VALIDATION_TIMEOUT: float = 30.0
+
+# ============================================================================
+# 成员变量
+# ============================================================================
+
+var validation_results: Dictionary = {}
+var debug_enabled: bool = true
+
+# ============================================================================
+# 生命周期方法
+# ============================================================================
+
+## 初始化
+func _ready() -> void:
+	print("=== 开始 MVP 完整验证 ===")
 	
-	# 运行完整的MVP验证
-	var validation_results = {
+	# 初始化验证结果字典
+	validation_results = {
 		"character_system": false,
 		"combat_system": false,
 		"experience_system": false,

@@ -1,72 +1,127 @@
+# ProgressManager - 玩家进度管理器
+#
+# 负责协调所有保存触发条件和管理存档槽位
+# 符合 ADR-001 架构决策：组件化设计，使用 Godot 信号系统
+#
+# 信号:
+#   - auto_save_triggered(reason)
+#   - manual_save_requested(slot_index)
+#   - checkpoint_save_triggered(event_name)
+#   - cloud_sync_status_changed(status)
+
 extends Node
 
-# 玩家进度管理器 - 负责协调所有保存触发条件和管理存档槽位
-# 符合ADR-001架构决策：组件化设计，使用Godot信号系统
+class_name ProgressManager
 
-# 依赖的保存和加载组件
+# ============================================================================
+# 依赖注入
+# ============================================================================
+
 @onready var world_state_saver = $WorldStateSaver
 @onready var world_state_loader = $WorldStateLoader
 
-# 存档槽位配置
-const MAX_SAVE_SLOTS = 5
-const AUTO_SAVE_INTERVAL_REAL_TIME = 600  # 10分钟（现实时间）
-const AUTO_SAVE_INTERVAL_GAME_TIME = 1800  # 30分钟（游戏内时间）
+# ============================================================================
+# 常量定义 - 存档配置
+# ============================================================================
 
-# 当前存档槽位
-var current_save_slot = 0
-var save_slots = []
+const MAX_SAVE_SLOTS: int = 5
+const AUTO_SAVE_INTERVAL_REAL_TIME: int = 600
+const AUTO_SAVE_INTERVAL_GAME_TIME: int = 1800
 
-# 自动保存计时器
-var last_auto_save_real_time = 0
-var last_auto_save_game_time = 0
+# ============================================================================
+# 常量定义 - 其他
+# ============================================================================
 
-# Steam Cloud集成（如果可用）
-var steam_cloud_available = false
+const LOG_PREFIX: String = "[ProgressManager]"
 
-# 信号：自动保存触发
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+## 自动保存触发信号
 signal auto_save_triggered(reason: String)
-# 信号：手动保存请求
+
+## 手动保存请求信号
 signal manual_save_requested(slot_index: int)
-# 信号：关键事件保存触发
+
+## 关键事件保存触发信号
 signal checkpoint_save_triggered(event_name: String)
-# 信号：云同步状态变化
+
+## 云同步状态变化信号
 signal cloud_sync_status_changed(status: String)
 
+# ============================================================================
+# 成员变量 - 存档管理
+# ============================================================================
+
+var current_save_slot: int = 0
+var save_slots: Array = []
+
+# ============================================================================
+# 成员变量 - 自动保存
+# ============================================================================
+
+var last_auto_save_real_time: float = 0.0
+var last_auto_save_game_time: float = 0.0
+
+# ============================================================================
+# 成员变量 - 云同步
+# ============================================================================
+
+var steam_cloud_available: bool = false
+var debug_enabled: bool = true
+
+# ============================================================================
+# 生命周期方法
+# ============================================================================
+
+## 初始化
 func _ready() -> void:
 	# 初始化存档槽位
 	_initialize_save_slots()
 	
-	# 检查Steam Cloud可用性
+	# 检查 Steam Cloud 可用性
 	_check_steam_cloud_availability()
 	
 	# 连接保存完成信号
-	world_state_saver.connect("save_completed", _on_save_completed)
-	world_state_saver.connect("save_failed", _on_save_failed)
+	world_state_saver.connect("save_completed", Callable(self, "_on_save_completed"))
+	world_state_saver.connect("save_failed", Callable(self, "_on_save_failed"))
 	
 	# 连接加载完成信号
-	world_state_loader.connect("load_completed", _on_load_completed)
-	world_state_loader.connect("load_failed", _on_load_failed)
+	world_state_loader.connect("load_completed", Callable(self, "_on_load_completed"))
+	world_state_loader.connect("load_failed", Callable(self, "_on_load_failed"))
 	
 	# 初始化自动保存计时器
 	last_auto_save_real_time = OS.get_unix_time()
 	last_auto_save_game_time = get_game_time()
+	
+	if debug_enabled:
+		print("%s 初始化完成 (存档槽位: %d)" % [LOG_PREFIX, MAX_SAVE_SLOTS])
 
+## 每帧更新
 func _process(delta: float) -> void:
 	# 检查自动保存条件
 	_check_auto_save_conditions()
 
-# 初始化存档槽位
+# ============================================================================
+# 私有方法 - 初始化
+# ============================================================================
+
+## 初始化存档槽位
 func _initialize_save_slots() -> void:
 	save_slots.resize(MAX_SAVE_SLOTS)
 	for i in range(MAX_SAVE_SLOTS):
 		save_slots[i] = {
 			"slot_index": i,
-			"save_path": "user://saves/slot_" + str(i) + "/save_data.sav",
+			"save_path": "user://saves/slot_%d/save_data.sav" % i,
 			"last_save_time": 0,
 			"player_level": 1,
 			"location": "",
 			"cloud_synced": false
 		}
+	
+	if debug_enabled:
+		print("%s 存档槽位初始化完成" % LOG_PREFIX)
 
 # 检查Steam Cloud可用性
 func _check_steam_cloud_availability() -> void:

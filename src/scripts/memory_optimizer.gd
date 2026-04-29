@@ -1,46 +1,89 @@
+# MemoryOptimizer - 内存优化器
+#
+# 负责资源优先级加载、LOD系统、对象池和性能预算管理
+# 符合 ADR-001 架构决策：组件化设计，利用 PC 平台硬件优势
+#
+# 信号:
+#   - performance_warning(warning_type, severity)
+#   - lod_level_changed(block_position, old_lod, new_lod)
+
 extends Node
 
-# 内存优化器 - 负责资源优先级加载、LOD系统、对象池和性能预算管理
-# 符合ADR-001架构决策：组件化设计，利用PC平台硬件优势
+class_name MemoryOptimizer
 
-# 依赖的世界流式加载管理器和玩家位置追踪器
+# ============================================================================
+# 依赖注入
+# ============================================================================
+
 @onready var world_streaming_manager = $WorldStreamingManager
 @onready var player_position_tracker = $PlayerPositionTracker
 
-# 资源优先级权重
-const PRIORITY_TERRAIN = 1.0    # 背景地形（最高优先级）
-const PRIORITY_BUILDINGS = 0.8  # 建筑物
-const PRIORITY_NPCS = 0.6       # NPC
-const PRIORITY_EFFECTS = 0.4    # 特效（最低优先级）
+# ============================================================================
+# 常量定义 - 资源优先级
+# ============================================================================
 
-# LOD配置
-const MAX_LOD_LEVELS = 4  # 最大LOD级别数
-const LOD_DISTANCE_THRESHOLDS = [0, 500, 1000, 2000]  # LOD距离阈值（像素）
+const PRIORITY_TERRAIN: float = 1.0      # 背景地形（最高优先级）
+const PRIORITY_BUILDINGS: float = 0.8    # 建筑物
+const PRIORITY_NPCS: float = 0.6         # NPC
+const PRIORITY_EFFECTS: float = 0.4      # 特效（最低优先级）
 
-# 性能预算
-const TARGET_FPS = 60
-const MAX_FRAME_TIME_MS = 1000.0 / TARGET_FPS  # 目标帧时间（毫秒）
-const MAX_ALLOWED_FRAME_DROP_PERCENTAGE = 10.0  # 最大允许帧率下降百分比
+# ============================================================================
+# 常量定义 - LOD 配置
+# ============================================================================
 
-# 硬件配置
-var hardware_tier: int = 0  # 硬件等级（0=低, 1=中, 2=高）
+const MAX_LOD_LEVELS: int = 4
+const LOD_DISTANCE_THRESHOLDS: Array = [0, 500, 1000, 2000]
+
+# ============================================================================
+# 常量定义 - 性能预算
+# ============================================================================
+
+const TARGET_FPS: int = 60
+const MAX_FRAME_TIME_MS: float = 1000.0 / TARGET_FPS
+const MAX_ALLOWED_FRAME_DROP_PERCENTAGE: float = 10.0
+
+# ============================================================================
+# 常量定义 - 其他
+# ============================================================================
+
+const LOG_PREFIX: String = "[MemoryOptimizer]"
+const MIN_RETAINED_BLOCKS: int = 4
+const MIN_RETAINED_POOL_OBJECTS: int = 5
+
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+## 性能警告信号
+signal performance_warning(warning_type: String, severity: int)
+
+## LOD 级别变更信号
+signal lod_level_changed(block_position: Vector2i, old_lod: int, new_lod: int)
+
+# ============================================================================
+# 成员变量 - 硬件配置
+# ============================================================================
+
+var hardware_tier: int = 0
 var available_memory_mb: float = 0.0
 var cpu_cores: int = 0
 var gpu_performance: float = 0.0
 
-# 对象池
-var object_pools: Dictionary = {}  # 对象池字典 {resource_type: pool}
+# ============================================================================
+# 成员变量 - 对象池和性能监控
+# ============================================================================
 
-# 性能监控
+var object_pools: Dictionary = {}
 var frame_times: Array = []
 var memory_usage_history: Array = []
 var loading_times: Array = []
+var debug_enabled: bool = true
 
-# 信号：性能警告
-signal performance_warning(warning_type: String, severity: int)
-# 信号：LOD级别变更
-signal lod_level_changed(block_position: Vector2i, old_lod: int, new_lod: int)
+# ============================================================================
+# 生命周期方法
+# ============================================================================
 
+## 初始化
 func _ready() -> void:
 	# 检测硬件配置
 	_detect_hardware_configuration()
@@ -49,13 +92,16 @@ func _ready() -> void:
 	_initialize_object_pools()
 	
 	# 连接信号
-	connect("performance_warning", _on_performance_warning)
-	connect("lod_level_changed", _on_lod_level_changed)
+	connect("performance_warning", Callable(self, "_on_performance_warning"))
+	connect("lod_level_changed", Callable(self, "_on_lod_level_changed"))
 	
 	# 初始化性能监控数组
-	frame_times.resize(60)  # 保留最近60帧的数据
+	frame_times.resize(60)
 	memory_usage_history.resize(60)
 	loading_times.resize(30)
+	
+	if debug_enabled:
+		print("%s 初始化完成 (硬件等级: %d)" % [LOG_PREFIX, hardware_tier])
 
 func _process(delta: float) -> void:
 	# 监控性能

@@ -1,57 +1,72 @@
-## StatusEffectManager Node类
-## 管理角色身上的所有状态效果
-## 
-## 负责施加、移除、更新状态效果,并在适当时机触发效果
-## 遵循ADR-001: 使用Node类管理状态效果实例,通过信号系统通知状态变化
+# StatusEffectManager - 状态效果管理器
+#
+# 管理角色身上的所有状态效果
+# 负责施加、移除、更新状态效果，并在适当时机触发效果
+# 遵循 ADR-001: 使用 Node 类管理状态效果实例，通过信号系统通知状态变化
+#
+# 信号:
+#   - status_applied(effect_type, stacks)
+#   - status_removed(effect_type)
+#   - status_triggered(effect_type, value)
+#   - status_refreshed(effect_type, new_duration)
+#   - status_rejected(effect_type, reason)
 
 class_name StatusEffectManager
 extends Node
 
-## 信号: 状态效果被施加
-## @param effect_type: 状态效果类型
-## @param stacks: 层数
-signal status_applied(effect_type: StatusEffect.EffectType, stacks: int)
+# ============================================================================
+# 常量定义
+# ============================================================================
 
-## 信号: 状态效果被移除
-## @param effect_type: 状态效果类型
-signal status_removed(effect_type: StatusEffect.EffectType)
-
-## 信号: 状态效果被触发
-## @param effect_type: 状态效果类型
-## @param value: 触发的数值(伤害或恢复量)
-signal status_triggered(effect_type: StatusEffect.EffectType, value: float)
-
-## 信号: 状态效果被刷新
-## @param effect_type: 状态效果类型
-## @param new_duration: 新的持续时间
-signal status_refreshed(effect_type: StatusEffect.EffectType, new_duration: int)
-
-## 信号: 状态效果被拒绝
-## @param effect_type: 状态效果类型
-## @param reason: 拒绝原因
-signal status_rejected(effect_type: StatusEffect.EffectType, reason: String)
-
-## 当前激活的状态效果列表
-var active_effects: Array[StatusEffect] = []
-
-## 最大同时存在的状态效果数量(Control Manifest Guardrail)
 const MAX_ACTIVE_EFFECTS: int = 8
+const LOG_PREFIX: String = "[StatusEffectManager]"
 
-## AC5: 互斥状态规则 - 定义哪些状态互斥以及优先级
-## 键是低优先级状态,值是高优先级状态
-## 例如: FREEZE: BURN 表示 Burn优先级高于Freeze
+# AC5: 互斥状态规则 - 定义哪些状态互斥以及优先级
+# 键是低优先级状态，值是高优先级状态
 const MUTEX_RULES: Dictionary = {
-	StatusEffect.EffectType.FREEZE: StatusEffect.EffectType.BURN,  # Burn > Freeze
-	StatusEffect.EffectType.ROOT: StatusEffect.EffectType.STUN     # Stun > Root
+	StatusEffect.EffectType.FREEZE: StatusEffect.EffectType.BURN,
+	StatusEffect.EffectType.ROOT: StatusEffect.EffectType.STUN
 }
 
-## 角色属性引用(用于计算伤害/恢复)
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+## 状态效果被施加信号
+signal status_applied(effect_type: StatusEffect.EffectType, stacks: int)
+
+## 状态效果被移除信号
+signal status_removed(effect_type: StatusEffect.EffectType)
+
+## 状态效果被触发信号
+signal status_triggered(effect_type: StatusEffect.EffectType, value: float)
+
+## 状态效果被刷新信号
+signal status_refreshed(effect_type: StatusEffect.EffectType, new_duration: int)
+
+## 状态效果被拒绝信号
+signal status_rejected(effect_type: StatusEffect.EffectType, reason: String)
+
+# ============================================================================
+# 成员变量 - 状态管理
+# ============================================================================
+
+var active_effects: Array[StatusEffect] = []
+
+# ============================================================================
+# 成员变量 - 角色属性
+# ============================================================================
+
 var max_hp: float = 1000.0
 var current_hp: float = 1000.0
 var defense: float = 50.0
 
-## AC6: 道具系统桥接器引用(用于监听道具使用信号)
+# ============================================================================
+# 成员变量 - 系统集成
+# ============================================================================
+
 var item_system: Node = null
+var debug_enabled: bool = true
 
 ## 设置角色属性
 ## @param p_max_hp: 最大生命值
