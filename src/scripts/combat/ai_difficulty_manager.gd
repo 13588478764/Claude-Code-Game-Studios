@@ -1,9 +1,18 @@
+## AiDifficultyManager
+## ai difficulty manager
+##
+## 战斗系统模块
+
 extends Node
+class_name AiDifficultyManager
 
 # AI难度管理器
 # 管理三种难度等级（简单、普通、困难）及对应的AI行为特征
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const DIFFICULTY_LEVELS = {
 	"EASY": { "name": "简单", "description": "莽夫模式" },
 	"NORMAL": { "name": "普通", "description": "武者模式" },

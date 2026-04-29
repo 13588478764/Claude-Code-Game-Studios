@@ -1,3 +1,8 @@
+## CombatSystem
+## combat system
+##
+## 战斗系统模块
+
 # 武侠奇遇录 - 战斗系统核心
 # 实现回合制战斗机制、战斗资源系统、战斗状态管理和战斗流程阶段划分
 #
@@ -8,6 +13,7 @@
 # - 使用信号驱动系统间通信
 
 extends Node
+class_name CombatSystem
 
 ## 战斗状态枚举
 enum CombatState {
@@ -99,7 +105,9 @@ class CombatParticipant:
 	func can_act() -> bool:
 		return state != CombatState.DOWN and state != CombatState.STUN
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal combat_started
 signal combat_ended
 signal phase_changed(new_phase: CombatPhase)

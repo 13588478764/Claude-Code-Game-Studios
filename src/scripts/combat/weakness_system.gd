@@ -1,3 +1,8 @@
+## WeaknessSystem
+## weakness system
+##
+## 战斗系统模块
+
 # 武侠奇遇录 - 弱点打击系统
 # 实现属性克制系统、弱点打击判定、击倒机制和总攻击触发
 #
@@ -8,6 +13,7 @@
 # - 使用信号驱动系统间通信
 
 extends Node
+class_name WeaknessSystem
 
 ## 属性枚举（五行属性）
 enum Element {
@@ -55,7 +61,9 @@ class WeaknessHitResult:
 		damage_multiplier = multiplier
 		triggered_down = down
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal weakness_hit(attacker: Node, target: Node, result: WeaknessHitResult)
 signal down_triggered(target: Node)
 signal down_cleared(target: Node)

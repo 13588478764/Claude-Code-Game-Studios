@@ -1,15 +1,26 @@
+## MartialArtsSystem
+## martial arts system
+##
+## 战斗系统模块
+
 # 武学系统实现
 # 管理武学的获取、熟练度、装备和组合等功能
 
 extends Node
+class_name MartialArtsSystem
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal martial_art_acquired(martial_art_id: String)
 signal martial_art_proficiency_changed(martial_art_id: String, new_level: int)
 signal martial_art_equipped(martial_art_id: String, slot_index: int)
 signal martial_art_combo_executed(combo_name: String, damage_multiplier: float)
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const FRAGMENT_NEEDED_FOR_SYNTHESIS = 3
 const EMPTY_MANUAL_ITEM_ID = "empty_manual"
 

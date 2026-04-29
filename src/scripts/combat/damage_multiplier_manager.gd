@@ -1,3 +1,7 @@
+## DamageMultiplierManager
+## damage multiplier manager
+##
+## 战斗系统模块
 # DamageMultiplierManager - 伤害倍率与修正系统
 #
 # 负责计算所有伤害倍率和修正系数，包括暴击、连击、弱点和状态效果

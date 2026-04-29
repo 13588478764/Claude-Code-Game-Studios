@@ -1,16 +1,27 @@
+## HealthPoiseManager
+## health poise manager
+##
+## 战斗系统模块
+
 # HealthPoiseManager
 # 管理生命值和架势值的系统，实现生命值和架势值机制
 
 extends Node
+class_name HealthPoiseManager
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal hp_changed(current: int, max: int)
 signal poise_changed(current: int, max: int)
 signal break_triggered()
 signal death_triggered()
 signal status_changed(new_status: String)
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const STATUS_NORMAL = "normal"
 const STATUS_DEFENDING = "defending"
 const STATUS_BREAK = "break"

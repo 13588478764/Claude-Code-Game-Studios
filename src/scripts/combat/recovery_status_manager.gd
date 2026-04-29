@@ -1,16 +1,27 @@
+## RecoveryStatusManager
+## recovery status manager
+##
+## 战斗系统模块
+
 # RecoveryStatusManager
 # 管理恢复和状态效果的系统，实现战斗内外恢复机制和状态效果管理
 
 extends Node
+class_name RecoveryStatusManager
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal hp_recovered(amount: int)
 signal poise_recovered(amount: int)
 signal status_effect_applied(effect_name: String)
 signal status_effect_removed(effect_name: String)
 signal rest_point_used()
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const STATUS_NORMAL = "normal"
 const STATUS_DEFENDING = "defending"
 const STATUS_BREAK = "break"

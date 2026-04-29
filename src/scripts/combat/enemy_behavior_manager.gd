@@ -1,9 +1,18 @@
+## EnemyBehaviorManager
+## enemy behavior manager
+##
+## 战斗系统模块
+
 extends Node
+class_name EnemyBehaviorManager
 
 # 敌人AI行为管理器
 # 实现五种核心战术意识行为：基础攻击、弱点利用、状态管理、生存本能、连携配合
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const BEHAVIOR_TYPES = {
 	"BASIC_ATTACK": "基础攻击",
 	"WEAKNESS_EXPLOITATION": "弱点利用", 

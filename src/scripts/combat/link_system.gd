@@ -1,3 +1,8 @@
+## LinkSystem
+## link system
+##
+## 战斗系统模块
+
 # 武侠奇遇录 - 连携系统
 # 实现连携槽系统、连击系统、连携攻击和连携条件判定
 #
@@ -8,6 +13,7 @@
 # - 使用信号驱动系统间通信
 
 extends Node
+class_name LinkSystem
 
 ## 连携攻击类型
 enum LinkAttackType {
@@ -102,7 +108,9 @@ class LinkAttack:
 		damage_multiplier = dmg_mult
 		condition = cond
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal link_gauge_changed(current: float, max_value: float)
 signal combo_count_changed(count: int, multiplier: float)
 signal link_attack_executed(attack_name: String, damage_multiplier: float)

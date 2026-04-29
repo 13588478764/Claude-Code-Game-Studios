@@ -1,15 +1,26 @@
+## QiManager
+## qi manager
+##
+## 战斗系统模块
+
 # QiManager
 # 管理内力系统的节点，实现内力池、恢复和消耗机制
 
 extends Node
+class_name QiManager
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal qi_changed(current: int, max: int)
 signal qi_recovered(amount: int)
 signal qi_consumed(amount: int)
 signal overload_triggered(damage: int)
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const MAX_OVERLOAD_RATIO = 2.0  # 最大过载转换率
 const MIN_OVERLOAD_RATIO = 0.1  # 最小过载转换率
 

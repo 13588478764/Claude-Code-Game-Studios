@@ -1,14 +1,25 @@
+## HitDetectionManager
+## hit detection manager
+##
+## 战斗系统模块
+
 # HitDetectionManager
 # 管理命中检测逻辑的系统，实现命中率计算、随机判定、强制命中检查和结果反馈
 
 extends Node
+class_name HitDetectionManager
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal hit_detected(attacker_id: String, target_id: String, hit_success: bool)
 signal guaranteed_hit_detected(attacker_id: String, target_id: String)
 signal miss_detected(attacker_id: String, target_id: String)
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const MIN_HIT_CHANCE = 0.05  # 最小命中率 5%
 const MAX_HIT_CHANCE = 0.95  # 最大命中率 95%
 const AGI_FACTOR = 0.005      # 身法系数

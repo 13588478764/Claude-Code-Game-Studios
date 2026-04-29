@@ -1,9 +1,17 @@
+## DefenseMitigationManager
+## defense mitigation manager
+##
+## 战斗系统模块
+
 # DefenseMitigationManager
 # 管理各种防御类型的系统，实现护甲减伤、内力抗性、闪避和格挡机制
 
 extends Node
+class_name DefenseMitigationManager
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal defense_applied(defense_type: String, reduction_amount: int)
 signal dodge_triggered()
 signal block_triggered()

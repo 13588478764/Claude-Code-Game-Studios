@@ -1,15 +1,26 @@
+## MartialArtsComboSystem
+## martial arts combo system
+##
+## 战斗系统模块
+
 # Martial Arts Combo System
 # 武学组合/连招系统实现
 
 extends Node
+class_name MartialArtsComboSystem
 
+# ============================================================================
 # 信号定义
+# ============================================================================
 signal combo_triggered(combo_name: String, damage_multiplier: float)
 signal synergy_detected(tag1: String, tag2: String)
 signal link_gauge_updated(value: int, max_value: int)
 signal internal_energy_refunded(amount: float)
 
+# ============================================================================
 # 常量定义
+# ============================================================================
+
 const MAX_LINK_GAUGE = 100
 const COMBO_WINDOW_TIME = 3.0  # 连招窗口时间（秒）
 const REFUND_RATIO_MIN = 0.2

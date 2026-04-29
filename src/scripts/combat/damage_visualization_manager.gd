@@ -1,3 +1,7 @@
+## DamageVisualizationManager
+## damage visualization manager
+##
+## 战斗系统模块
 # DamageVisualizationManager - 伤害可视化与反馈系统
 #
 # 负责显示伤害数字、特效和反馈，包括颜色、动画和音效
