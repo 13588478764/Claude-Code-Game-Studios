@@ -1,3 +1,7 @@
+## ConsumableData
+## consumable data
+##
+## 数据定义模块
 # ConsumableData
 # 消耗品数据类，继承自ItemData，定义消耗品特有的属性
 

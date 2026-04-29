@@ -1,3 +1,7 @@
+## MartialArtData
+## martial art data
+##
+## 数据定义模块
 # 武学数据资源定义
 # 定义游戏中所有武学技能的数据结构和属性
 

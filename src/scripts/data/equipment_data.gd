@@ -1,3 +1,7 @@
+## EquipmentData
+## equipment data
+##
+## 数据定义模块
 # EquipmentData
 # 装备数据类，继承自ItemData，定义装备特有的属性
 
