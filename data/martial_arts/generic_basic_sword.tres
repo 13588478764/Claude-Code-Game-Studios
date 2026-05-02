@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_5rcl6"]
+
+[resource]
+script = ExtResource("1_5rcl6")
+id = "generic_basic_sword"
+name = "基础剑法"
+description = "最基础的剑法，适合炼气期修士入门修炼。以灵气御剑，剑随心动。"
+cost_stamina = 10.0
+cost_mana = 10.0
+cooldown = 3.0
+damage_base = 50.0
+startup_frames = 0.2
+active_frames = 0.5
+recovery_frames = 0.3
+total_duration = 1.0
+weapon_type = 0
+can_cancel_from_frame = 0.6
+combo_chain = Array[String](["generic_basic_sword"])

@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8ydvvvvvvvvvvvv"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/hud/weakness_icon_display.gd" id="1_abcdef"]
+
+[node name="WeaknessIcon" type="Control"]
+custom_minimum_size = Vector2(32, 32)
+script = ExtResource("1_abcdef")
+
+[node name="IconTexture" type="TextureRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+expand_mode = 1
+stretch_mode = 0
+
+[node name="HighlightOverlay" type="Panel" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+visible = false
+modulate = Color(1, 0.843137, 0, 1)

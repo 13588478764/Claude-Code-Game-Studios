@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_ppe33"]
+
+[resource]
+script = ExtResource("1_ppe33")
+id = "mojiao_jie_ti"
+name = "天魔解体"
+description = "魔教禁忌秘法，元婴期以上修士可修炼。燃烧精血和元婴，短时间内获得恐怖战力，但会损伤根基。"
+cost_stamina = 80.0
+cost_mana = 250.0
+cooldown = 180.0
+unlock_level = 75
+damage_scale = 0.0
+hit_count = 0
+element_type = "暗"
+startup_frames = 1.5
+active_frames = 20.0
+recovery_frames = 2.0
+total_duration = 23.5
+martial_art_type = 3
+school = 1
+grade = 3

@@ -1,21 +1,18 @@
 ## CharacterSystem
-## CharacterSystem
-角色系统核心管理器
-负责管理角色的核心属性、等级、境界和成长机制。
-包括属性管理、经验值系统、升级机制、境界突破和天赋网格系统。
-主要功能：
-- 角色属性管理（六维属性系统）
-- 经验值获取和升级机制
-- 境界突破系统
-- 天赋网格解锁和效果应用
-- 战斗属性计算
-##
+## 角色系统核心管理器
+## 负责管理角色的核心属性、等级、境界和成长机制。
+## 包括属性管理、经验值系统、升级机制、境界突破和天赋网格系统。
 ## 主要功能：
-## - 待补充
+## - 角色属性管理（六维属性系统）
+## - 经验值获取和升级机制
+## - 境界突破系统
+## - 天赋网格解锁和效果应用
+## - 战斗属性计算
 
 extends Node
 
-class_name CharacterSystem
+# 注意：此脚本作为AutoLoad单例使用，不需要class_name声明
+# AutoLoad名称：CharacterSystem
 
 # ============================================================================
 # 常量定义
@@ -40,9 +37,6 @@ class_name CharacterSystem
 # ============================================================================
 # 私有方法
 # ============================================================================
-
-class_name CharacterSystem
-REPLACE
 
 # 信号定义
 signal level_up_event(new_level: int, attribute_points: int, talent_points: int)
@@ -110,6 +104,9 @@ var realm_index = 0  # 当前境界索引 (0-9)
 var realm_bonus = 1.0  # 境界加成系数
 var free_reset_count = 0  # 免费重置次数
 
+# 寿命管理器引用（用于NPC寿命系统）
+var lifespan_manager: LifespanManager = null
+
 # 天赋网格系统
 var talent_grid = []  # 4x4天赋网格 [[{unlocked: bool, effect: {...}}, ...], ...]
 var talent_definitions = {}  # 天赋定义 {talent_id: {name: str, effect: {...}, description: str}}
@@ -124,6 +121,9 @@ var exp_curve = {
 func _ready():
 	# 初始化角色
 	initialize_character()
+	
+	# 初始化寿命管理器
+	initialize_lifespan_manager()
 
 func initialize_character():
 	"""初始化角色默认状态"""
@@ -142,6 +142,22 @@ func initialize_character():
 	initialize_talent_grid()
 	
 	print("角色初始化完成")
+
+func initialize_lifespan_manager():
+	"""初始化寿命管理器"""
+	# 创建寿命管理器实例
+	lifespan_manager = LifespanManager.new()
+	add_child(lifespan_manager)
+	
+	# 连接寿命警告信号
+	lifespan_manager.npc_lifespan_warning.connect(_on_npc_lifespan_warning)
+	
+	print("寿命管理器初始化完成")
+
+func _on_npc_lifespan_warning(npc_id: String, remaining_years: int):
+	"""处理NPC寿命警告信号"""
+	print("[CharacterSystem] NPC %s 寿命将尽，剩余 %d 年" % [npc_id, remaining_years])
+	# 这里可以触发特殊剧情或对话
 
 func initialize_talent_grid():
 	"""初始化4x4天赋网格"""
@@ -471,6 +487,31 @@ func get_combat_stats():
 	
 	return combat_stats
 
+# 寿命系统相关方法
+func get_npc_lifespan_info(npc_id: String) -> Dictionary:
+	"""获取NPC寿命信息（用于UI显示和对话系统）"""
+	if lifespan_manager:
+		return lifespan_manager.get_npc_lifespan_info(npc_id)
+	return {}
+
+func get_npc_age_description(npc_id: String) -> String:
+	"""获取NPC年龄描述（用于对话系统）"""
+	if lifespan_manager:
+		return lifespan_manager.get_age_description(npc_id)
+	return "年龄未知"
+
+func get_npc_lifespan_description(npc_id: String) -> String:
+	"""获取NPC寿命描述（用于对话系统）"""
+	if lifespan_manager:
+		return lifespan_manager.get_lifespan_description(npc_id)
+	return "未知"
+
+func is_npc_lifespan_warning(npc_id: String) -> bool:
+	"""检查NPC是否寿命将尽（用于剧情判定）"""
+	if lifespan_manager:
+		return lifespan_manager.is_npc_lifespan_warning(npc_id)
+	return false
+
 # 调试函数
 func debug_print_character_info():
 	"""打印角色信息用于调试"""
@@ -515,6 +556,12 @@ func debug_print_character_info():
 			else:
 				row_str += "O "
 		print("  %s" % row_str)
+	
+	# 打印NPC寿命信息
+	if lifespan_manager:
+		print("\n=== NPC寿命信息 ===")
+		lifespan_manager.debug_print_all_npcs()
+	
 	print("================")
 
 # UI回调函数

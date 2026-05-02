@@ -75,6 +75,8 @@ func _on_test_all_systems_pressed():
 		"quest_system": false,
 		"world_system": false,
 		"economy_system": false,
+		"relationship_system": false,
+		"dialogue_system": false,
 		"integration_test": false
 	}
 	
@@ -111,7 +113,13 @@ func _on_test_all_systems_pressed():
 	# 11. 经济系统验证
 	validation_results["economy_system"] = validate_economy_system()
 	
-	# 12. 集成测试
+	# 12. 角色关系系统验证
+	validation_results["relationship_system"] = validate_relationship_system()
+	
+	# 13. 对话系统验证
+	validation_results["dialogue_system"] = validate_dialogue_system()
+	
+	# 14. 集成测试
 	validation_results["integration_test"] = validate_integration()
 	
 	# 输出验证结果
@@ -458,6 +466,86 @@ func validate_economy_system():
 		return false
 	
 	print("✅ 经济系统验证通过")
+	return true
+
+func validate_relationship_system():
+	"""验证角色关系系统"""
+	print("验证角色关系系统...")
+	
+	var relationship_manager = get_node_or_null("/root/RelationshipManager")
+	if relationship_manager == null:
+		print("❌ 关系系统未找到")
+		return false
+	
+	# 测试关系值修改
+	relationship_manager.modify_relationship("test_npc", 20, "测试")
+	var rel_value = relationship_manager.get_relationship_value("test_npc")
+	if rel_value != 20:
+		print("❌ 关系值修改失败")
+		return false
+	
+	# 测试关系等级判定
+	relationship_manager.set_relationship_value("test_npc2", 60)
+	var rel_level = relationship_manager.get_relationship_level("test_npc2")
+	if rel_level != RelationshipData.RelationshipLevel.INTIMATE:
+		print("❌ 关系等级判定失败")
+		return false
+	
+	# 测试道心值修改
+	relationship_manager.modify_dao_heart(30, "正道行为")
+	var dao_value = relationship_manager.get_dao_heart_value()
+	if dao_value != 30:
+		print("❌ 道心值修改失败")
+		return false
+	
+	# 测试商店折扣
+	relationship_manager.set_relationship_value("merchant", 55)
+	var discount = relationship_manager.get_shop_discount("merchant")
+	if discount != 0.20:
+		print("❌ 商店折扣计算失败")
+		return false
+	
+	print("✅ 角色关系系统验证通过")
+	return true
+
+func validate_dialogue_system():
+	"""验证对话系统"""
+	print("验证对话系统...")
+	
+	var dialogue_manager = get_node_or_null("/root/DialogueManager")
+	if dialogue_manager == null:
+		print("❌ 对话系统未找到")
+		return false
+	
+	# 创建测试对话树
+	var tree = DialogueData.DialogueTree.new("test_dialogue", "测试对话")
+	tree.start_node = "greeting"
+	
+	var greeting = DialogueData.DialogueNode.new("greeting", "npc_test", "你好，旅者。")
+	greeting.next_node = "END"
+	tree.add_node(greeting)
+	
+	# 注册对话树
+	var register_success = dialogue_manager.register_dialogue_tree(tree)
+	if not register_success:
+		print("❌ 对话树注册失败")
+		return false
+	
+	# 开始对话
+	var start_success = dialogue_manager.start_dialogue("test_dialogue")
+	if not start_success:
+		print("❌ 对话开始失败")
+		return false
+	
+	# 检查对话状态
+	if not dialogue_manager.is_in_dialogue():
+		print("❌ 对话状态检查失败")
+		return false
+	
+	# 结束对话
+	dialogue_manager.end_dialogue()
+	
+	print("✅ 对话系统验证通过")
 	return true
 
 func validate_integration():

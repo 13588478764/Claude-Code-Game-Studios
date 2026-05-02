@@ -1,8 +1,6 @@
 # 技能树管理器
 # 实现线性主干、分支专精和网状关联三种学习路径类型
 
-extends Node
-
 class_name SkillTreeManager
 
 # 路径类型枚举
@@ -27,7 +25,7 @@ var skill_trees: Dictionary = {}  # 存储所有武学流派的图谱 {school_id
 class SkillTree:
 	var school_id: String           # 武学流派ID
 	var school_name: String         # 武学流派名称
-	var nodes: Dictionary = {}      # 节点字典 {node_id: SkillNode}
+	var nodes: Dictionary = {}      # 节点字典 {node_id: SkillTreeNode}
 	var main_path: Array = []       # 线性主干路径节点ID列表
 	var branches: Dictionary = {}   # 分支路径 {parent_node_id: [branch_nodes]}
 	var cross_links: Array = []     # 网状关联 [{from_school, from_node, to_school, to_node}]
@@ -36,8 +34,8 @@ class SkillTree:
 		school_id = id
 		school_name = name
 
-# 武学节点类
-class SkillNode:
+# 武学节点数据类
+class SkillTreeNode:
 	var node_id: String             # 节点ID
 	var skill_name: String          # 招式名称
 	var description: String         # 招式描述
@@ -65,20 +63,20 @@ func _initialize_default_skill_trees():
 	var huashan = SkillTree.new("huashan_sword", "华山剑法")
 	
 	# 线性主干路径：刺→撩→劈→崩
-	var ci = SkillNode.new("ci", "刺", "基础刺击，快速精准", PathType.MAIN_PATH, 1)
-	var liao = SkillNode.new("liao", "撩", "向上撩击，破防效果", PathType.MAIN_PATH, 1)
+	var ci = SkillTreeNode.new("ci", "刺", "基础刺击，快速精准", PathType.MAIN_PATH, 1)
+	var liao = SkillTreeNode.new("liao", "撩", "向上撩击，破防效果", PathType.MAIN_PATH, 1)
 	liao.prerequisites = ["ci"]
-	var pi = SkillNode.new("pi", "劈", "向下劈砍，高伤害", PathType.MAIN_PATH, 2)
+	var pi = SkillTreeNode.new("pi", "劈", "向下劈砍，高伤害", PathType.MAIN_PATH, 2)
 	pi.prerequisites = ["liao"]
-	var beng = SkillNode.new("beng", "崩", "崩字诀，破甲攻击", PathType.MAIN_PATH, 2)
+	var beng = SkillTreeNode.new("beng", "崩", "崩字诀，破甲攻击", PathType.MAIN_PATH, 2)
 	beng.prerequisites = ["pi"]
 	
 	# 分支专精路径：劈之后分叉为重劈和快劈
-	var zhong_pi = SkillNode.new("zhong_pi", "重劈", "重型劈砍，高伤害破防", PathType.BRANCH, 2)
+	var zhong_pi = SkillTreeNode.new("zhong_pi", "重劈", "重型劈砍，高伤害破防", PathType.BRANCH, 2)
 	zhong_pi.prerequisites = ["pi"]
 	zhong_pi.branch_condition = {"STR": 10}  # 需要力道≥10
 	
-	var kuai_pi = SkillNode.new("kuai_pi", "快劈", "快速劈砍，高连击加身法", PathType.BRANCH, 2)
+	var kuai_pi = SkillTreeNode.new("kuai_pi", "快劈", "快速劈砍，高连击加身法", PathType.BRANCH, 2)
 	kuai_pi.prerequisites = ["pi"]
 	kuai_pi.branch_condition = {"AGI": 10}  # 需要身法≥10
 	
@@ -102,7 +100,7 @@ func _initialize_default_skill_trees():
 	# 创建太极拳图谱
 	var taiji = SkillTree.new("taiji_quan", "太极拳")
 	
-	var jie_li = SkillNode.new("jie_li", "借力", "借力打力，以柔克刚", PathType.MAIN_PATH, 2)
+	var jie_li = SkillTreeNode.new("jie_li", "借力", "借力打力，以柔克刚", PathType.MAIN_PATH, 2)
 	taiji.nodes["jie_li"] = jie_li
 	taiji.main_path = ["jie_li"]
 	
@@ -111,7 +109,7 @@ func _initialize_default_skill_trees():
 	# 创建擒拿手图谱
 	var qinna = SkillTree.new("qinna_shou", "擒拿手")
 	
-	var fan_guan_jie = SkillNode.new("fan_guan_jie", "反关节技", "反关节擒拿技巧", PathType.CROSS_LINK, 2)
+	var fan_guan_jie = SkillTreeNode.new("fan_guan_jie", "反关节技", "反关节擒拿技巧", PathType.CROSS_LINK, 2)
 	fan_guan_jie.cross_link_source = {"taiji_quan": "jie_li"}  # 需要太极拳的借力
 	qinna.nodes["fan_guan_jie"] = fan_guan_jie
 	
@@ -217,7 +215,7 @@ func get_branch_options(school_id: String, parent_node_id: String) -> Array:
 	return branch_nodes
 
 # 验证分支条件
-func validate_branch_condition(node: SkillNode, player_attributes: Dictionary) -> bool:
+func validate_branch_condition(node: SkillTreeNode, player_attributes: Dictionary) -> bool:
 	if node.branch_condition.is_empty():
 		return true  # 无条件限制
 	
@@ -335,7 +333,7 @@ func load_skill_tree_from_json(json_path: String) -> bool:
 	return true
 
 # 解析技能节点数据
-func _parse_skill_node(node_data: Dictionary) -> SkillNode:
+func _parse_skill_node(node_data: Dictionary) -> SkillTreeNode:
 	var node_id = node_data.get("node_id", "")
 	var skill_name = node_data.get("skill_name", "")
 	var description = node_data.get("description", "")
@@ -355,7 +353,7 @@ func _parse_skill_node(node_data: Dictionary) -> SkillNode:
 		"CROSS_LINK":
 			path_type = PathType.CROSS_LINK
 	
-	var node = SkillNode.new(node_id, skill_name, description, path_type, tier)
+	var node = SkillTreeNode.new(node_id, skill_name, description, path_type, tier)
 	
 	# 解析前置依赖
 	node.prerequisites = node_data.get("prerequisites", [])
@@ -369,7 +367,7 @@ func _parse_skill_node(node_data: Dictionary) -> SkillNode:
 	return node
 
 # 获取节点信息
-func get_node_info(school_id: String, node_id: String) -> SkillNode:
+func get_node_info(school_id: String, node_id: String) -> SkillTreeNode:
 	var tree = get_skill_tree(school_id)
 	if not tree:
 		return null

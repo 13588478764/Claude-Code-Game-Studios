@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_44h52"]
+
+[resource]
+script = ExtResource("1_44h52")
+id = "xiaoyao_lingbo"
+name = "凌波微步"
+description = "逍遥派轻功绝学，筑基期修士可修炼。身法飘逸，如履平地，可短距离瞬移。"
+cost_stamina = 25.0
+cost_mana = 30.0
+cooldown = 5.0
+unlock_level = 32
+damage_scale = 0.0
+hit_count = 0
+startup_frames = 0.1
+active_frames = 2.0
+recovery_frames = 0.1
+total_duration = 2.2
+martial_art_type = 2
+school = 8
+grade = 1

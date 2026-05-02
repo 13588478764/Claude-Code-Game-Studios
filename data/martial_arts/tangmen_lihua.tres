@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_6lacs"]
+
+[resource]
+script = ExtResource("1_6lacs")
+id = "tangmen_lihua"
+name = "暴雨梨花针"
+description = "唐门暗器绝技，筑基期修士可修炼。一次发射数十枚银针，如暴雨梨花，针针带毒。"
+cost_stamina = 20.0
+cost_mana = 40.0
+cooldown = 6.0
+unlock_level = 26
+damage_base = 100.0
+damage_scale = 1.3
+hit_count = 12
+element_type = "毒"
+startup_frames = 0.3
+active_frames = 1.5
+recovery_frames = 0.5
+total_duration = 2.3
+school = 5
+grade = 1

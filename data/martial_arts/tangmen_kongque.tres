@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_vki46"]
+
+[resource]
+script = ExtResource("1_vki46")
+id = "tangmen_kongque"
+name = "孔雀翎"
+description = "唐门至宝，金丹期修士可修炼。天下第一暗器，一击必杀，机关精妙，威力无穷。"
+cost_stamina = 80.0
+cost_mana = 150.0
+cooldown = 30.0
+unlock_level = 56
+damage_base = 500.0
+damage_scale = 4.0
+element_type = "金"
+startup_frames = 1.0
+active_frames = 0.5
+recovery_frames = 1.5
+total_duration = 3.0
+school = 5
+grade = 2

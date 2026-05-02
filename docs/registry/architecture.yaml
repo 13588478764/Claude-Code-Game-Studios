@@ -30,7 +30,7 @@
 #   Superseded entries:     Grep pattern="status: superseded"
 
 version: 1
-last_updated: ""
+last_updated: "2026-04-30"
 
 # ─── STATE OWNERSHIP ─────────────────────────────────────────────────────────
 # Who is the authoritative owner of each piece of shared game state.
@@ -71,7 +71,22 @@ state_ownership: []
 #
 # pattern options: signal | direct_call | event_bus | shared_resource | rpc | none
 
-interfaces: []
+interfaces:
+  - contract: game_events_signal_bus
+    status: active
+    pattern: signal
+    producer: game-systems
+    consumers:
+      - hud-system
+      - ui-components
+    adr: docs/architecture/adr-003-data-binding-mechanism.md
+    signal_signature: "50+ typed signals in GameEvents autoload (player_*, combat_*, enemy_*, buff_*, quest_*, nav_*, item_*, skill_*, system_*)"
+    referenced_by:
+      - docs/architecture/adr-002-hud-architecture-pattern.md
+      - docs/architecture/adr-003-data-binding-mechanism.md
+    added: 2026-04-30
+    revised: ""
+    notes: "All game-to-UI communication must use GameEvents signals. Naming convention: namespace_prefix + verb_past_tense (e.g., player_hp_changed, combat_started)"
 
 # Example:
 #
@@ -100,7 +115,30 @@ interfaces: []
 # Register a budget when an ADR explicitly claims a frame time allocation.
 # The registry lets /architecture-review verify the total doesn't exceed the target.
 
-performance_budgets: []
+performance_budgets:
+  - system: hud-system
+    status: active
+    budget_ms: 1.0
+    context: combat
+    adr: docs/architecture/adr-004-performance-optimization-strategy.md
+    notes: "HUD update time in combat mode. Includes all UI updates, batch processing, and object pool operations."
+    referenced_by:
+      - docs/architecture/adr-002-hud-architecture-pattern.md
+      - docs/architecture/adr-004-performance-optimization-strategy.md
+    added: 2026-04-30
+    revised: ""
+  
+  - system: hud-system
+    status: active
+    budget_ms: 0.5
+    context: exploration
+    adr: docs/architecture/adr-004-performance-optimization-strategy.md
+    notes: "HUD update time in exploration mode. Lower priority updates use LOD scheduling to reduce frequency."
+    referenced_by:
+      - docs/architecture/adr-002-hud-architecture-pattern.md
+      - docs/architecture/adr-004-performance-optimization-strategy.md
+    added: 2026-04-30
+    revised: ""
 
 # Example:
 #
@@ -131,7 +169,40 @@ performance_budgets: []
 # Register an API decision when the choice is non-obvious and other ADRs might
 # make a different choice for the same purpose without knowing this was decided.
 
-api_decisions: []
+api_decisions:
+  - purpose: ui_data_binding
+    status: active
+    api: GameEvents signal bus (Godot autoload singleton)
+    not: Direct UI component references or polling in _process()
+    adr: docs/architecture/adr-003-data-binding-mechanism.md
+    reason: "Signal-driven architecture ensures loose coupling between game logic and UI. Avoids performance overhead of polling and maintains clean separation of concerns."
+    referenced_by:
+      - docs/architecture/adr-002-hud-architecture-pattern.md
+      - docs/architecture/adr-003-data-binding-mechanism.md
+    added: 2026-04-30
+    revised: ""
+  
+  - purpose: ui_element_pooling
+    status: active
+    api: ObjectPool pattern (custom implementation)
+    not: Direct instantiate/free for frequently created UI elements
+    adr: docs/architecture/adr-004-performance-optimization-strategy.md
+    reason: "Object pooling eliminates GC pressure from frequent UI element creation/destruction. Pre-allocates fixed pool size for Buff icons, damage numbers, and notifications."
+    referenced_by:
+      - docs/architecture/adr-004-performance-optimization-strategy.md
+    added: 2026-04-30
+    revised: ""
+  
+  - purpose: ui_batch_updates
+    status: active
+    api: BatchUpdateManager (custom autoload)
+    not: Immediate UI updates on every signal
+    adr: docs/architecture/adr-004-performance-optimization-strategy.md
+    reason: "Batch update mechanism collects multiple update requests per frame and applies them once, reducing draw calls by 50%+. Merges duplicate updates automatically."
+    referenced_by:
+      - docs/architecture/adr-004-performance-optimization-strategy.md
+    added: 2026-04-30
+    revised: ""
 
 # Example:
 #

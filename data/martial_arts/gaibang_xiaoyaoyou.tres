@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_570vf"]
+
+[resource]
+script = ExtResource("1_570vf")
+id = "gaibang_xiaoyaoyou"
+name = "逍遥游掌"
+description = "丐帮掌法，筑基期修士可修炼。掌法飘逸，如行云流水。"
+cost_stamina = 30.0
+cost_mana = 42.0
+cooldown = 7.5
+unlock_level = 33
+damage_base = 145.0
+damage_scale = 1.65
+hit_count = 5
+startup_frames = 0.38
+active_frames = 1.15
+recovery_frames = 0.57
+total_duration = 2.1
+weapon_type = 2
+school = 4
+grade = 1
+combo_chain = Array[String](["gaibang_xianglong"])

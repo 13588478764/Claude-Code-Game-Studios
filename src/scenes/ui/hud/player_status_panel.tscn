@@ -1,0 +1,156 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8y7x3m9qwp2d"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/hud/player_status_panel.gd" id="1_player_status_panel"]
+
+[node name="PlayerStatusPanel" type="PanelContainer"]
+offset_right = 320.0
+offset_bottom = 240.0
+script = ExtResource("1_player_status_panel")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HPContainer" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="HPLabel" type="Label" parent="VBox/HPContainer"]
+layout_mode = 2
+text = "HP:"
+size_flags_horizontal = 0
+
+[node name="HPBar" type="ProgressBar" parent="VBox/HPContainer"]
+custom_minimum_size = Vector2(280, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="VBox/HPContainer/HPBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "100 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QiContainer" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="QiLabel" type="Label" parent="VBox/QiContainer"]
+layout_mode = 2
+text = "Qi:"
+size_flags_horizontal = 0
+
+[node name="QiBar" type="ProgressBar" parent="VBox/QiContainer"]
+custom_minimum_size = Vector2(280, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="VBox/QiContainer/QiBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "100 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PoiseContainer" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="PoiseLabel" type="Label" parent="VBox/PoiseContainer"]
+layout_mode = 2
+text = "Poise:"
+size_flags_horizontal = 0
+
+[node name="PoiseBar" type="ProgressBar" parent="VBox/PoiseContainer"]
+custom_minimum_size = Vector2(280, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="VBox/PoiseContainer/PoiseBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "100 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InfoContainer" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="VBox/InfoContainer"]
+layout_mode = 2
+text = "Lv.1"
+size_flags_horizontal = 0
+
+[node name="ExpBar" type="ProgressBar" parent="VBox/InfoContainer"]
+custom_minimum_size = Vector2(200, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="VBox/InfoContainer/ExpBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "0 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RealmContainer" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="RealmIcon" type="TextureRect" parent="VBox/RealmContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RealmLabel" type="Label" parent="VBox/RealmContainer"]
+layout_mode = 2
+text = "炼气期(早期)"
+vertical_alignment = 1

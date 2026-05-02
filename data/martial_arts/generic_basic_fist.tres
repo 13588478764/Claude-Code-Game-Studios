@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_r6gcs"]
+
+[resource]
+script = ExtResource("1_r6gcs")
+id = "generic_basic_fist"
+name = "基础拳法"
+description = "最基础的拳法，适合炼气期修士修炼。以内力催动拳劲，刚猛有力。"
+cost_stamina = 8.0
+cost_mana = 8.0
+cooldown = 2.5
+damage_base = 45.0
+hit_count = 2
+startup_frames = 0.15
+active_frames = 0.4
+recovery_frames = 0.25
+total_duration = 0.8
+weapon_type = 2
+can_cancel_from_frame = 0.5
+combo_chain = Array[String](["generic_basic_fist"])

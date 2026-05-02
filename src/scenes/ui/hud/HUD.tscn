@@ -1,0 +1,134 @@
+[gd_scene format=3 uid="uid://chudm0001hud0"]
+
+[ext_resource type="Script" uid="uid://gimkodkj3e4a" path="res://src/scripts/ui/hud/hud_manager.gd" id="1_hudmanager"]
+[ext_resource type="PackedScene" uid="uid://c8y7x3naqwp2d" path="res://src/scenes/ui/hud/player_status_panel.tscn" id="2_player_status_panel"]
+[ext_resource type="PackedScene" uid="uid://c2dyes32idflj" path="res://src/scenes/ui/hud/party_panel.tscn" id="3_party_panel"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/hud/action_queue_display.tscn" id="4_action_queue_display"]
+[ext_resource type="Script" uid="uid://b7f5up6bw1tg4" path="res://src/scripts/ui/hud/menu_system_functions.gd" id="5_menu_system"]
+[ext_resource type="Script" uid="uid://c6tpjmngw4m0l" path="res://src/scripts/ui/hud/notification_manager.gd" id="6_notification_manager"]
+
+[node name="HUD" type="CanvasLayer" unique_id=1001619888]
+layer = 10
+script = ExtResource("1_hudmanager")
+
+[node name="PlayerStatusPanel" parent="." unique_id=1654149978 instance=ExtResource("2_player_status_panel")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -200.0
+offset_right = 360.0
+offset_bottom = -40.0
+grow_vertical = 0
+
+[node name="PartyPanel" parent="." unique_id=1676729462 instance=ExtResource("3_party_panel")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -380.0
+offset_right = 390.0
+offset_bottom = -210.0
+grow_vertical = 0
+
+[node name="ActionQueueDisplay" parent="." unique_id=358424931 instance=ExtResource("4_action_queue_display")]
+
+[node name="CombatInfoPanel" type="PanelContainer" parent="." unique_id=1666755338]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -360.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = 200.0
+grow_horizontal = 0
+
+[node name="NavigationPanel" type="PanelContainer" parent="." unique_id=1878676854]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -240.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = 240.0
+grow_horizontal = 0
+
+[node name="HotbarController" type="PanelContainer" parent="." unique_id=713281239]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -90.0
+offset_right = 280.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="NotificationManager" type="Control" parent="." unique_id=95228418]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_top = 100.0
+offset_right = -40.0
+offset_bottom = 400.0
+grow_horizontal = 0
+script = ExtResource("6_notification_manager")
+
+[node name="NotificationsContainer" type="VBoxContainer" parent="NotificationManager" unique_id=1969800906]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuSystemFunctions" type="Control" parent="." unique_id=1330192076]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -100.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("5_menu_system")
+
+[node name="MenuButtons" type="HBoxContainer" parent="MenuSystemFunctions" unique_id=15915826]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 2
+
+[node name="MainMenuButton" type="Button" parent="MenuSystemFunctions/MenuButtons" unique_id=22671059]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "菜单"
+
+[node name="SettingsButton" type="Button" parent="MenuSystemFunctions/MenuButtons" unique_id=605920068]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "设置"
+
+[node name="HelpButton" type="Button" parent="MenuSystemFunctions/MenuButtons" unique_id=719666883]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+text = "帮助"
+
+[node name="TestCombatButton" type="Button" parent="." unique_id=1536117331]
+offset_left = 400.0
+offset_top = 20.0
+offset_right = 550.0
+offset_bottom = 60.0
+text = "测试战斗模式"

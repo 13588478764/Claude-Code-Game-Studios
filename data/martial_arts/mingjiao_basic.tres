@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_rs80l"]
+
+[resource]
+script = ExtResource("1_rs80l")
+id = "mingjiao_basic"
+name = "明教基础刀法"
+description = "明教入门刀法，炼气期修士可修炼。刀势刚猛，带有火焰之力。"
+cost_stamina = 11.0
+cost_mana = 14.0
+cooldown = 3.3
+unlock_level = 12
+damage_base = 62.0
+damage_scale = 1.02
+hit_count = 2
+element_type = "火"
+startup_frames = 0.23
+active_frames = 0.62
+recovery_frames = 0.35
+total_duration = 1.2
+weapon_type = 1
+school = 6
+can_cancel_from_frame = 0.72
+combo_chain = Array[String](["mingjiao_liehuo"])

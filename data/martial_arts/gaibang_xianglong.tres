@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_2wv1i"]
+
+[resource]
+script = ExtResource("1_2wv1i")
+id = "gaibang_xianglong"
+name = "降龙十八掌"
+description = "丐帮至高掌法，金丹期修士可修炼。刚猛无俦，天下第一掌法，掌力可降龙。"
+cost_stamina = 60.0
+cost_mana = 120.0
+cooldown = 18.0
+unlock_level = 58
+damage_base = 400.0
+damage_scale = 3.5
+hit_count = 18
+startup_frames = 0.8
+active_frames = 3.0
+recovery_frames = 1.2
+total_duration = 5.0
+weapon_type = 2
+school = 4
+grade = 2

@@ -740,3 +740,60 @@ requirements:
     created: "2026-04-28"
     revised: ""
     status: active
+
+  # HUD系统
+  - id: TR-HUD-001
+    system: hud
+    gdd: design/ux/hud.md
+    requirement: "HUD场景结构和管理器 - 创建GameEvents全局信号总线(50+个类型化信号)，实现HUDManager主控制器支持探索/战斗/菜单三种模式切换，建立HUD.tscn场景包含所有子面板节点"
+    created: "2026-04-30"
+    revised: ""
+    status: active
+
+  - id: TR-HUD-002
+    system: hud
+    gdd: design/ux/hud.md
+    requirement: "主角状态显示 - P0级信息 - 实现HP/Qi/Poise条正确显示当前值/最大值，HP<30%时变红色警告，Poise<20%时2Hz频率闪烁，等级/经验/境界信息正确显示，数值格式化支持K单位(>9999)，UI更新响应时间<16.67ms(60FPS)"
+    created: "2026-04-30"
+    revised: ""
+    status: active
+
+  - id: TR-HUD-003
+    system: hud
+    gdd: design/ux/hud.md
+    requirement: "队友状态显示 - P0级信息 - 实现最多3名队友的头像(60x60px)和HP条(240x16px)显示，倒地状态有明显视觉标识，队友加入/离开时UI正确更新，队友加入有0.2秒淡入动画，HP变化有0.1秒平滑过渡，UI更新响应时间<16.67ms(60FPS)"
+    created: "2026-04-30"
+    revised: ""
+    status: active
+
+  - id: TR-HUD-004
+    system: hud
+    gdd: design/ux/hud.md
+    requirement: "行动顺序队列显示 - P1级信息 - 实现显示当前行动者+接下来3个单位(共4个)的队列，当前行动者有金色边框(#FFD700)高亮，玩家单位使用青绿边框(#2E8B57)，敌人单位使用深红边框(#DC143C)，行动顺序改变时队列正确更新，队列为空时显示提示或隐藏，队列更新时有0.3秒滑动动画，UI更新响应时间<16.67ms(60FPS)"
+    created: "2026-04-30"
+    revised: ""
+    status: active
+
+  - id: TR-HUD-005
+    system: hud
+    gdd: design/ux/hud.md
+    requirement: "敌人信息显示 - P1级信息 - 实现选中敌人时显示名称和等级，敌人HP条正确显示当前值/最大值(280x20px)，五行弱点图标正确显示(金/木/水/火/土,32x32px)，已发现弱点高亮显示，Down/Break状态有明显标识，未选中敌人时隐藏或显示提示，切换选中目标时有0.2秒淡入淡出过渡，弱点发现时有0.3秒高亮动画，多敌人选中逻辑正确，Boss敌人显示特殊边框，UI更新响应时间<16.67ms(60FPS)"
+    created: "2026-04-30"
+    revised: ""
+    status: active
+
+  - id: TR-HUD-006
+    system: hud
+    gdd: design/ux/hud.md
+    requirement: "连击和连携系统显示 - P1级信息 - 实现连击数字正确显示(48px字号)，连击倍率正确显示(20px字号,如×1.3)，连击数增加时颜色正确变化(白色→金色→橙色→红色)，连携槽正确显示当前值/最大值(300x40px水平条)，连携槽分段标记清晰可见(33%, 66%, 100%)，连携槽充满时有视觉提示(发光、闪烁等)，连击中断时连击数字有抖动动画(0.2秒)并快速归零，连击值归零时有淡出动画(0.3秒)，使用连携技能时连携槽有消耗动画(0.5秒)消耗量正确，连击值达到上限(如999)时不再增加显示MAX，连携槽充满时有脉冲动画提示可使用连携技能，连击颜色变化阈值1-10白色11-30金色31-50橙色51+红色"
+    created: "2026-04-30"
+    revised: ""
+    status: active
+
+  - id: TR-HUD-007
+    system: hud
+    gdd: design/ux/hud.md
+    requirement: "菜单入口和系统功能 - P4级信息 - 实现主菜单按钮(48x48px)点击打开主菜单，设置按钮(48x48px)点击打开设置界面，帮助按钮(48x48px)点击打开帮助界面，ESC键打开主菜单，F1键打开帮助，通知系统正确显示消息，战斗中主菜单按钮禁用显示灰色且不可点击，快捷键与其他系统冲突时HUD快捷键优先级最低，通知系统支持3种类型(信息蓝色、警告黄色、错误红色)，通知显示时长(信息3秒、警告5秒、错误持续到手动关闭)，同时最多显示3条通知超出时排队等待，按钮点击有0.1秒的按下动画和音效反馈"
+    created: "2026-04-30"
+    revised: ""
+    status: active

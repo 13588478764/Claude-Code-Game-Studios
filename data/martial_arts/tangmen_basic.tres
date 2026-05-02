@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_1o4y6"]
+
+[resource]
+script = ExtResource("1_1o4y6")
+id = "tangmen_basic"
+name = "唐门基础暗器"
+description = "唐门入门暗器手法，炼气期修士可修炼。教导弟子如何使用飞针、飞刀等暗器。"
+cost_stamina = 10.0
+cost_mana = 13.0
+cooldown = 3.0
+unlock_level = 11
+damage_base = 58.0
+damage_scale = 0.98
+hit_count = 3
+element_type = "金"
+startup_frames = 0.2
+active_frames = 0.6
+recovery_frames = 0.3
+total_duration = 1.1
+school = 5
+can_cancel_from_frame = 0.7
+combo_chain = Array[String](["tangmen_lihua"])

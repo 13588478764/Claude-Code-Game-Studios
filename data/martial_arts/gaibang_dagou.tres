@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_lf65q"]
+
+[resource]
+script = ExtResource("1_lf65q")
+id = "gaibang_dagou"
+name = "打狗棒法"
+description = "丐帮帮主代代相传的棍法，筑基期修士可修炼。共三十六路，变化莫测。"
+cost_stamina = 25.0
+cost_mana = 35.0
+cooldown = 7.0
+unlock_level = 27
+damage_base = 150.0
+damage_scale = 1.6
+hit_count = 4
+startup_frames = 0.4
+active_frames = 1.0
+recovery_frames = 0.5
+total_duration = 1.9
+weapon_type = 3
+school = 4
+grade = 1

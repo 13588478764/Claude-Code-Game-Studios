@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_ykrq1"]
+
+[resource]
+script = ExtResource("1_ykrq1")
+id = "shaolin_jingang"
+name = "金刚不坏体"
+description = "少林七十二绝技之一，金丹期修士可修炼。修炼至大成可刀枪不入，金丹不破。"
+cost_stamina = 30.0
+cost_mana = 60.0
+cooldown = 20.0
+unlock_level = 52
+damage_scale = 0.0
+hit_count = 0
+startup_frames = 0.3
+active_frames = 10.0
+recovery_frames = 0.2
+total_duration = 10.5
+martial_art_type = 1
+school = 2
+grade = 2

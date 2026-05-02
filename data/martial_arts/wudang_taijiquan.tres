@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_2fxhi"]
+
+[resource]
+script = ExtResource("1_2fxhi")
+id = "wudang_taijiquan"
+name = "太极拳"
+description = "武当派拳法，筑基期修士可修炼。以柔克刚，绵里藏针，阴阳调和。"
+cost_stamina = 28.0
+cost_mana = 38.0
+cooldown = 7.0
+unlock_level = 29
+damage_base = 140.0
+damage_scale = 1.6
+hit_count = 4
+startup_frames = 0.35
+active_frames = 1.1
+recovery_frames = 0.55
+total_duration = 2.0
+weapon_type = 2
+school = 3
+grade = 1

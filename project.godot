@@ -12,18 +12,28 @@ config_version=5
 
 config/name="武侠奇遇录"
 config/description="一款深度武侠RPG游戏"
-run/main_scene="res://test_attribute_manager.tscn"
+run/main_scene="uid://c51pplliwyjuc"
 config/features=PackedStringArray("4.6")
 config/main_scene="res://scenes/main_game_ui.tscn"
 
 [autoload]
 
-CharacterSystem="res://src/scripts/character/character_system.gd"
+GameEvents="*res://src/scripts/core/game_events.gd"
+CharacterSystem="*res://src/scripts/character/character_system.gd"
 CombatSystem="res://src/scripts/combat/combat_manager.gd"
 EncounterSystem="res://src/scripts/encounter/encounter_trigger_manager.gd"
 AudioSystem="res://src/scripts/audio/audio_system.gd"
 QuestSystem="res://src/scripts/quest/quest_manager.gd"
+EncounterIntegration="*uid://bjiekx7cgnfyw"
+RelationshipManager="*res://src/scripts/relationship/relationship_manager.gd"
+DialogueManager="*res://src/scripts/dialogue/dialogue_manager.gd"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[gut]
+
+dirs=["res://tests/unit/"]
+include_subdirs=true
+log_level=1

@@ -1,13 +1,13 @@
 ## EquipmentManager
 ## 装备管理器
-负责管理玩家的装备获取、存储、筛选、排序、拆解和绑定功能
+## 负责管理玩家的装备获取、存储、筛选、排序、拆解和绑定功能
 
 extends Node
 
 class_name EquipmentManager
 
-# 装备数据结构
-class EquipmentData:
+# 装备数据结构（内部使用，避免与全局 EquipmentData 冲突）
+class EquipmentInfo:
 	var id: String
 	var name: String
 	var type: String  # weapon, armor, accessory
@@ -33,19 +33,19 @@ class EquipmentData:
 
 # 信号定义
 signal equipment_changed(equipment_id: String, change_type: String)
-signal equipment_added(equipment: EquipmentData)
+signal equipment_added(equipment: EquipmentInfo)
 signal equipment_removed(equipment_id: String)
 signal equipment_disassembled(equipment_id: String, resources_gained: Dictionary)
 
 # 装备背包（存储所有装备）
-var equipment_inventory: Array[EquipmentData] = []
+var equipment_inventory: Array[EquipmentInfo] = []
 
 # 初始化
 func _ready():
 	print("装备管理器已初始化")
 
 # 添加装备到背包
-func add_equipment(equipment_data: EquipmentData) -> bool:
+func add_equipment(equipment_data: EquipmentInfo) -> bool:
 	if equipment_data:
 		equipment_inventory.append(equipment_data)
 		emit_signal("equipment_added", equipment_data)
@@ -54,7 +54,7 @@ func add_equipment(equipment_data: EquipmentData) -> bool:
 	return false
 
 # 从背包移除装备
-func remove_equipment(equipment_id: String) -> EquipmentData:
+func remove_equipment(equipment_id: String) -> EquipmentInfo:
 	for i in range(equipment_inventory.size()):
 		if equipment_inventory[i].id == equipment_id:
 			var equipment = equipment_inventory.pop_at(i)
@@ -64,8 +64,8 @@ func remove_equipment(equipment_id: String) -> EquipmentData:
 	return null
 
 # 根据过滤条件获取装备
-func get_equipment_by_filter(filter_params: Dictionary) -> Array[EquipmentData]:
-	var result: Array[EquipmentData] = []
+func get_equipment_by_filter(filter_params: Dictionary) -> Array[EquipmentInfo]:
+	var result: Array[EquipmentInfo] = []
 	
 	for equipment in equipment_inventory:
 		var matches = true
@@ -92,31 +92,16 @@ func get_equipment_by_filter(filter_params: Dictionary) -> Array[EquipmentData]:
 	return result
 
 # 排序装备
-func sort_equipment(sort_params: Dictionary) -> Array[EquipmentData]:
+func sort_equipment(sort_params: Dictionary) -> Array[EquipmentInfo]:
 	var sorted_list = equipment_inventory.duplicate()
 	
 	# 根据不同参数排序
-	if sort_params.has("by_attribute"):
-		var attr = sort_params.by_attribute
-		sorted_list.sort_custom(Callable(self, "_sort_by_attribute"), attr)
-	elif sort_params.has("by_tier"):
-		sorted_list.sort_custom(Callable(self, "_sort_by_tier"))
+	if sort_params.has("by_tier"):
+		sorted_list.sort_custom(func(a, b): return a.tier > b.tier)
 	elif sort_params.has("by_name"):
-		sorted_list.sort_custom(Callable(self, "_sort_by_name"))
+		sorted_list.sort_custom(func(a, b): return a.name < b.name)
 	
 	return sorted_list
-
-# 排序辅助函数
-func _sort_by_attribute(a: EquipmentData, b: EquipmentData, attr_name: String) -> bool:
-	var a_value = a.base_attributes.get(attr_name, 0)
-	var b_value = b.base_attributes.get(attr_name, 0)
-	return a_value > b_value
-
-func _sort_by_tier(a: EquipmentData, b: EquipmentData) -> bool:
-	return a.tier > b.tier
-
-func _sort_by_name(a: EquipmentData, b: EquipmentData) -> bool:
-	return a.name < b.name
 
 # 拆解装备
 func disassemble_equipment(equipment_id: String) -> Dictionary:
@@ -138,7 +123,7 @@ func disassemble_equipment(equipment_id: String) -> Dictionary:
 	return {}
 
 # 计算拆解资源
-func _calculate_disassembly_resources(equipment: EquipmentData) -> Dictionary:
+func _calculate_disassembly_resources(equipment: EquipmentInfo) -> Dictionary:
 	var resources = {
 		"refinement_stone": 0,
 		"gem_slot_drill": 0,
@@ -166,14 +151,14 @@ func get_equipment_count() -> int:
 	return equipment_inventory.size()
 
 # 获取指定ID的装备
-func get_equipment_by_id(equipment_id: String) -> EquipmentData:
+func get_equipment_by_id(equipment_id: String) -> EquipmentInfo:
 	for equipment in equipment_inventory:
 		if equipment.id == equipment_id:
 			return equipment
 	return null
 
 # 获取指定槽位的装备
-func get_equipment_by_slot(slot_type: String) -> EquipmentData:
+func get_equipment_by_slot(slot_type: String) -> EquipmentInfo:
 	for equipment in equipment_inventory:
 		if equipment.slot == slot_type:
 			return equipment
@@ -213,7 +198,7 @@ func test_equipment_management():
 	print("开始测试装备管理功能...")
 	
 	# 创建测试装备
-	var test_sword = EquipmentData.new("sword_001", "青钢剑", "weapon", "weapon_main")
+	var test_sword = EquipmentInfo.new("sword_001", "青钢剑", "weapon", "weapon_main")
 	test_sword.tier = 2
 	test_sword.base_attributes = {"attack": 50, "attack_speed": 1.2}
 	

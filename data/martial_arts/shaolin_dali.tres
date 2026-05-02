@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_nguvd"]
+
+[resource]
+script = ExtResource("1_nguvd")
+id = "shaolin_dali"
+name = "大力金刚掌"
+description = "少林七十二绝技之一，筑基期修士可修炼。掌力刚猛，可开山裂石。"
+cost_stamina = 35.0
+cost_mana = 40.0
+cooldown = 8.0
+unlock_level = 30
+damage_base = 160.0
+damage_scale = 1.8
+startup_frames = 0.5
+active_frames = 0.3
+recovery_frames = 0.7
+total_duration = 1.5
+weapon_type = 2
+school = 2
+grade = 1

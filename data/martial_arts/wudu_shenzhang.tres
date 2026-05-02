@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_v7huw"]
+
+[resource]
+script = ExtResource("1_v7huw")
+id = "wudu_shenzhang"
+name = "五毒神掌"
+description = "五毒教掌法，筑基期修士可修炼。掌力含毒，中者必死，毒入骨髓。"
+cost_stamina = 30.0
+cost_mana = 45.0
+cooldown = 8.0
+unlock_level = 30
+damage_base = 130.0
+damage_scale = 1.5
+hit_count = 5
+element_type = "毒"
+startup_frames = 0.4
+active_frames = 1.2
+recovery_frames = 0.6
+total_duration = 2.2
+weapon_type = 2
+school = 7
+grade = 1

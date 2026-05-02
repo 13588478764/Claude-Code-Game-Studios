@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_d142f"]
+
+[resource]
+script = ExtResource("1_d142f")
+id = "wudang_basic"
+name = "武当基础剑法"
+description = "武当派入门剑法，炼气期修士可修炼。讲究以柔克刚，四两拨千斤。"
+cost_stamina = 11.0
+cost_mana = 14.0
+cooldown = 3.2
+unlock_level = 9
+damage_base = 65.0
+damage_scale = 1.05
+hit_count = 2
+startup_frames = 0.22
+active_frames = 0.65
+recovery_frames = 0.33
+total_duration = 1.2
+weapon_type = 0
+school = 3
+can_cancel_from_frame = 0.75
+combo_chain = Array[String](["wudang_liangyi"])

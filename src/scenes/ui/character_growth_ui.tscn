@@ -1,424 +1,342 @@
-[gd_scene load_steps=4 format=3 uid="uid://-jz0q00000000"]
+[gd_scene format=3 uid="uid://bvx8qm3r5yw7h"]
 
-[ext_resource type="Script" uid="uid://-jz0q00000001" path="res://src/scripts/ui/character_growth_ui_script.gd"]
-[ext_resource type="Texture2D" uid="uid://-jz0q00000002" path="res://src/assets/icons/character_icon.png"]
-[ext_resource type="Theme" uid="uid://-jz0q00000003" path="res://src/assets/ui/ink_wash_theme.tres"]
+[ext_resource type="Script" uid="uid://bm8m5vyk17kn5" path="res://src/scripts/ui/character_growth_ui_script.gd" id="1_character_growth_script"]
 
-[node]
-name = "CharacterGrowthUI"
-type = "Control"
-script = ExtResource("uid://-jz0q00000001")
-
-[node/TabContainer]
-type = "TabContainer"
+[node name="CharacterGrowthUI" type="Control" unique_id=40801341]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_character_growth_script")
 
-[node/TabContainer/CharacterPanel]
-type = "Panel"
-tooltip_text = "角色面板"
-
-[node/TabContainer/CharacterPanel/Background]
-type = "TextureRect"
+[node name="TabContainer" type="TabContainer" parent="." unique_id=752875378]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource("uid://-jz0q00000002")
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
 
-[node/TabContainer/CharacterPanel/Background/LevelInfo]
-type = "HBoxContainer"
+[node name="角色面板" type="Panel" parent="TabContainer" unique_id=1413810221]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/角色面板" unique_id=747138187]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
-size_flags_vertical = 0
-alignment = 2
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node/TabContainer/CharacterPanel/Background/LevelInfo/LevelLabel]
-type = "Label"
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/角色面板/MarginContainer" unique_id=1134889524]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LevelContainer" type="HBoxContainer" parent="TabContainer/角色面板/MarginContainer/VBoxContainer" unique_id=473183064]
+layout_mode = 2
+
+[node name="LevelLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/LevelContainer" unique_id=1795044155]
+layout_mode = 2
 text = "等级:"
+horizontal_alignment = 1
 
-[node/TabContainer/CharacterPanel/Background/LevelInfo/LevelValue]
-type = "Label"
+[node name="LevelValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/LevelContainer" unique_id=1050928353]
+layout_mode = 2
 text = "1"
 
-[node/TabContainer/CharacterPanel/Background/LevelInfo/RealmLabel]
-type = "Label"
+[node name="RealmContainer" type="HBoxContainer" parent="TabContainer/角色面板/MarginContainer/VBoxContainer" unique_id=203434171]
+layout_mode = 2
+
+[node name="RealmLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/RealmContainer" unique_id=961128754]
+layout_mode = 2
 text = "境界:"
 
-[node/TabContainer/CharacterPanel/Background/LevelInfo/RealmValue]
-type = "Label"
-text = "炼气"
+[node name="RealmValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/RealmContainer" unique_id=1774071367]
+layout_mode = 2
+text = "炼气期"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel]
-type = "VBoxContainer"
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 3
+[node name="AttributesLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer" unique_id=47142336]
+layout_mode = 2
+text = "六维属性"
+horizontal_alignment = 1
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
+[node name="AttributesGrid" type="GridContainer" parent="TabContainer/角色面板/MarginContainer/VBoxContainer" unique_id=85059541]
+layout_mode = 2
+columns = 2
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow/StrengthLabel]
-type = "Label"
+[node name="StrengthLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=1450122145]
+layout_mode = 2
 text = "力道:"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow/StrengthValue]
-type = "Label"
+[node name="StrengthValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=460732376]
+layout_mode = 2
 text = "10"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/StrengthRow/StrengthAddButton]
-type = "Button"
-text = "+"
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow/AgilityLabel]
-type = "Label"
+[node name="AgilityLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=1778853432]
+layout_mode = 2
 text = "身法:"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow/AgilityValue]
-type = "Label"
+[node name="AgilityValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=236214963]
+layout_mode = 2
 text = "10"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/AgilityRow/AgilityAddButton]
-type = "Button"
-text = "+"
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow/ConstitutionLabel]
-type = "Label"
+[node name="ConstitutionLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=1658431235]
+layout_mode = 2
 text = "根骨:"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow/ConstitutionValue]
-type = "Label"
+[node name="ConstitutionValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=1610530980]
+layout_mode = 2
 text = "10"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/ConstitutionRow/ConstitutionAddButton]
-type = "Button"
-text = "+"
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow/IntelligenceLabel]
-type = "Label"
+[node name="IntelligenceLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=211225432]
+layout_mode = 2
 text = "悟性:"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow/IntelligenceValue]
-type = "Label"
+[node name="IntelligenceValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=386243814]
+layout_mode = 2
 text = "10"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/IntelligenceRow/IntelligenceAddButton]
-type = "Button"
-text = "+"
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow/WillpowerLabel]
-type = "Label"
+[node name="WillpowerLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=594538983]
+layout_mode = 2
 text = "定力:"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow/WillpowerValue]
-type = "Label"
+[node name="WillpowerValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=344883668]
+layout_mode = 2
 text = "10"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/WillpowerRow/WillpowerAddButton]
-type = "Button"
-text = "+"
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow/LuckLabel]
-type = "Label"
+[node name="LuckLabel" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=2081306807]
+layout_mode = 2
 text = "福缘:"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow/LuckValue]
-type = "Label"
+[node name="LuckValue" type="Label" parent="TabContainer/角色面板/MarginContainer/VBoxContainer/AttributesGrid" unique_id=2139903212]
+layout_mode = 2
 text = "10"
 
-[node/TabContainer/CharacterPanel/Background/AttributesPanel/LuckRow/LuckAddButton]
-type = "Button"
-text = "+"
+[node name="属性分配" type="Panel" parent="TabContainer" unique_id=1100967008]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
-[node/TabContainer/CharacterPanel/Background/AttributePointsRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/属性分配" unique_id=9096796]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node/TabContainer/CharacterPanel/Background/AttributePointsRow/AttributePointsLabel]
-type = "Label"
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/属性分配/MarginContainer" unique_id=264848053]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="AvailablePointsContainer" type="HBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=1119151735]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/AvailablePointsContainer" unique_id=429661099]
+layout_mode = 2
 text = "可用属性点:"
 
-[node/TabContainer/CharacterPanel/Background/AttributePointsRow/AttributePointsValue]
-type = "Label"
+[node name="AvailablePointsValue" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/AvailablePointsContainer" unique_id=818672354]
+layout_mode = 2
 text = "0"
 
-[node/TabContainer/CharacterPanel/Background/AttributePointsRow/ResetButton]
-type = "Button"
+[node name="StrengthContainer" type="VBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=340366683]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/StrengthContainer" unique_id=1353766127]
+layout_mode = 2
+text = "力道"
+
+[node name="StrengthSlider" type="HSlider" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/StrengthContainer" unique_id=523267094]
+layout_mode = 2
+max_value = 99.0
+
+[node name="AgilityContainer" type="VBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=964433859]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/AgilityContainer" unique_id=1238876415]
+layout_mode = 2
+text = "身法"
+
+[node name="AgilitySlider" type="HSlider" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/AgilityContainer" unique_id=456049098]
+layout_mode = 2
+max_value = 99.0
+
+[node name="ConstitutionContainer" type="VBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=34794637]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/ConstitutionContainer" unique_id=1144950864]
+layout_mode = 2
+text = "根骨"
+
+[node name="ConstitutionSlider" type="HSlider" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/ConstitutionContainer" unique_id=192981936]
+layout_mode = 2
+max_value = 99.0
+
+[node name="IntelligenceContainer" type="VBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=2058890579]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/IntelligenceContainer" unique_id=1243162757]
+layout_mode = 2
+text = "悟性"
+
+[node name="IntelligenceSlider" type="HSlider" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/IntelligenceContainer" unique_id=832094030]
+layout_mode = 2
+max_value = 99.0
+
+[node name="WillpowerContainer" type="VBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=2029270475]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/WillpowerContainer" unique_id=1311526329]
+layout_mode = 2
+text = "定力"
+
+[node name="WillpowerSlider" type="HSlider" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/WillpowerContainer" unique_id=143904852]
+layout_mode = 2
+max_value = 99.0
+
+[node name="LuckContainer" type="VBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=169808677]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/LuckContainer" unique_id=1380642459]
+layout_mode = 2
+text = "福缘"
+
+[node name="LuckSlider" type="HSlider" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/LuckContainer" unique_id=2107523854]
+layout_mode = 2
+max_value = 99.0
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="TabContainer/属性分配/MarginContainer/VBoxContainer" unique_id=153998571]
+layout_mode = 2
+alignment = 1
+
+[node name="ConfirmButton" type="Button" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=109436421]
+layout_mode = 2
+text = "确认分配"
+
+[node name="ResetButton" type="Button" parent="TabContainer/属性分配/MarginContainer/VBoxContainer/ButtonsContainer" unique_id=1044927940]
+layout_mode = 2
 text = "重置"
 
-[node/TabContainer/CharacterPanel/Background/AttributePointsRow/ApplyButton]
-type = "Button"
-text = "应用"
+[node name="天赋网格" type="Panel" parent="TabContainer" unique_id=1179030606]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
 
-[node/TabContainer/CharacterPanel/Background/CloseButton]
-type = "Button"
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/天赋网格" unique_id=1805743856]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-text = "关闭"
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node/TabContainer/AttributeAllocationPanel]
-type = "Panel"
-tooltip_text = "属性分配"
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/天赋网格/MarginContainer" unique_id=1650557930]
+layout_mode = 2
 
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders]
-type = "VBoxContainer"
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow/StrengthSliderLabel]
-type = "Label"
-text = "力道:"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow/StrengthSlider]
-type = "HSlider"
-max_value = 100
-step = 1
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/StrengthSliderRow/StrengthSliderValue]
-type = "Label"
-text = "10"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow/AgilitySliderLabel]
-type = "Label"
-text = "身法:"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow/AgilitySlider]
-type = "HSlider"
-max_value = 100
-step = 1
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/AgilitySliderRow/AgilitySliderValue]
-type = "Label"
-text = "10"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow/ConstitutionSliderLabel]
-type = "Label"
-text = "根骨:"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow/ConstitutionSlider]
-type = "HSlider"
-max_value = 100
-step = 1
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/ConstitutionSliderRow/ConstitutionSliderValue]
-type = "Label"
-text = "10"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow/IntelligenceSliderLabel]
-type = "Label"
-text = "悟性:"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow/IntelligenceSlider]
-type = "HSlider"
-max_value = 100
-step = 1
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/IntelligenceSliderRow/IntelligenceSliderValue]
-type = "Label"
-text = "10"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow/WillpowerSliderLabel]
-type = "Label"
-text = "定力:"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow/WillpowerSlider]
-type = "HSlider"
-max_value = 100
-step = 1
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/WillpowerSliderRow/WillpowerSliderValue]
-type = "Label"
-text = "10"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow/LuckSliderLabel]
-type = "Label"
-text = "福缘:"
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow/LuckSlider]
-type = "HSlider"
-max_value = 100
-step = 1
-
-[node/TabContainer/AttributeAllocationPanel/AttributeSliders/LuckSliderRow/LuckSliderValue]
-type = "Label"
-text = "10"
-
-[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo]
-type = "HBoxContainer"
-size_flags_vertical = 0
-
-[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/AvailablePointsLabel]
-type = "Label"
-text = "可用属性点:"
-
-[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/AvailablePointsValue]
-type = "Label"
-text = "0"
-
-[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/ResetAllocationButton]
-type = "Button"
-text = "重置分配"
-
-[node/TabContainer/AttributeAllocationPanel/AttributePointsInfo/ApplyAllocationButton]
-type = "Button"
-text = "应用分配"
-
-[node/TabContainer/TalentGridPanel]
-type = "Panel"
-tooltip_text = "天赋网格"
-
-[node/TabContainer/TalentGridPanel/TalentGridTitle]
-type = "Label"
-anchor_right = 1.0
-size_flags_vertical = 0
+[node name="TitleLabel" type="Label" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer" unique_id=1426003934]
+layout_mode = 2
 text = "天赋网格 (4x4)"
+horizontal_alignment = 1
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer]
-type = "GridContainer"
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="TalentGrid" type="GridContainer" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer" unique_id=80296623]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 columns = 4
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode00]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent1" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1909622737]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "1"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode01]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent2" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=873358178]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "2"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode02]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent3" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=248683124]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "3"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode03]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent4" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=745792751]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "4"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode10]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent5" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1150498693]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "5"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode11]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent6" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=84860565]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "6"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode12]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent7" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=472430493]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "7"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode13]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent8" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=535398777]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "8"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode20]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent9" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1675911918]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "9"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode21]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent10" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1233028149]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "10"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode22]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent11" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1419731260]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "11"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode23]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent12" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=758225583]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "12"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode30]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent13" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=779336579]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "13"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode31]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent14" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1302443518]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "14"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode32]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
+[node name="Talent15" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=947043690]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "15"
 
-[node/TabContainer/TalentGridPanel/TalentGridContainer/TalentNode33]
-type = "TextureButton"
-size = Vector2(64, 64)
-stretched = true
-
-[node/TabContainer/TalentGridPanel/TalentGridDescription]
-type = "Label"
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 1
-text = "将鼠标悬停在天赋节点上查看描述"
-
-[node/TabContainer/TalentGridPanel/ResetTalentsButton]
-type = "Button"
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "重置天赋"
-
-[node/TabContainer/TalentGridPanel/CloseTalentGridButton]
-type = "Button"
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "关闭"
-
-[theme]
-theme = ExtResource("uid://-jz0q00000003")
+[node name="Talent16" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1309104954]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+text = "16"

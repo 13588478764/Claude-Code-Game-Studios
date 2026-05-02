@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_hbjkv"]
+
+[resource]
+script = ExtResource("1_hbjkv")
+id = "tianjian_jianguang"
+name = "剑气纵横"
+description = "天剑盟高级剑法，筑基后期修士可修炼。凝聚剑气，纵横四方，剑气可达十丈。"
+cost_stamina = 30.0
+cost_mana = 50.0
+cooldown = 8.0
+unlock_level = 35
+damage_base = 180.0
+damage_scale = 2.0
+hit_count = 5
+element_type = "金"
+startup_frames = 0.4
+active_frames = 1.2
+recovery_frames = 0.6
+total_duration = 2.2
+weapon_type = 0
+school = 0
+grade = 1

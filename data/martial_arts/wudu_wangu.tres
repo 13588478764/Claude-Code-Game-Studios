@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_ny8i4"]
+
+[resource]
+script = ExtResource("1_ny8i4")
+id = "wudu_wangu"
+name = "万蛊噬心"
+description = "五毒教禁术，金丹期修士可修炼。以万蛊噬心，令敌人痛不欲生，持续削弱，蛊毒噬金丹。"
+cost_stamina = 40.0
+cost_mana = 100.0
+cooldown = 25.0
+unlock_level = 62
+damage_base = 80.0
+element_type = "毒"
+startup_frames = 1.0
+active_frames = 30.0
+recovery_frames = 1.0
+total_duration = 32.0
+martial_art_type = 4
+school = 7
+grade = 2

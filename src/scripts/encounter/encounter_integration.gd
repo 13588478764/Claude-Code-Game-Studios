@@ -1,18 +1,19 @@
 ## EncounterIntegration
 ## 武侠奇遇录 - 奇遇集成管理器
-负责奇遇触发概率计算、奇遇类型判定、奖励发放和一次性奇遇状态记录
+## 负责奇遇触发概率计算、奇遇类型判定、奖励发放和一次性奇遇状态记录
 
-设计原则：
-- 通过依赖注入实现松耦合
-- 使用信号系统实现跨系统通信
-- 符合 ADR-001 架构要求
+## 设计原则：
+## - 通过依赖注入实现松耦合
+## - 使用信号系统实现跨系统通信
+## - 符合 ADR-001 架构要求
 ##
 ## 主要功能：
 ## - 待补充
 
 extends Node
 
-class_name EncounterIntegration
+# 注意：此脚本作为AutoLoad单例使用，不需要class_name声明
+# AutoLoad名称：EncounterIntegration
 
 # ============================================================================
 # 常量定义
@@ -149,38 +150,55 @@ func determine_encounter_type() -> String:
 ## 返回：
 ##   bool: 是否成功发放奖励
 func grant_encounter_rewards(encounter_type: String, encounter_data: Dictionary) -> bool:
+	print("[EncounterIntegration] Granting rewards for: %s" % encounter_type)
+	
+	# 检查CharacterSystem是否已初始化
+	if character_system == null:
+		push_warning("[EncounterIntegration] CharacterSystem not initialized! Call initialize() first.")
+		return false
+	
 	# 检查是否为一次性奇遇且已触发
 	if encounter_data.has("id"):
 		var encounter_id = encounter_data["id"]
 		if check_encounter_triggered(encounter_id):
-			# 已触发过的一次性奇遇不再发放奖励
+			print("[EncounterIntegration] Encounter already triggered: %s" % encounter_id)
 			return false
 		# 标记为已触发
 		mark_encounter_triggered(encounter_id)
 	
 	# 获取奖励配置
 	if not ENCOUNTER_REWARDS.has(encounter_type):
-		push_error("未知的奇遇类型: " + encounter_type)
+		push_error("[EncounterIntegration] Unknown encounter type: " + encounter_type)
 		return false
 	
 	var reward_config = ENCOUNTER_REWARDS[encounter_type]
 	var reward_type = reward_config["type"]
 	
+	print("[EncounterIntegration] Reward type: %s" % reward_type)
+	
 	# 根据奖励类型发放奖励
+	var result = false
 	match reward_type:
 		"attribute_points":
-			return _grant_attribute_points(reward_config)
+			result = _grant_attribute_points(reward_config)
 		"experience":
-			return _grant_experience(reward_config)
+			result = _grant_experience(reward_config)
 		"item":
-			return _grant_item(reward_config)
+			result = _grant_item(reward_config)
 		"martial_proficiency":
-			return _grant_martial_proficiency(reward_config)
+			result = _grant_martial_proficiency(reward_config)
 		"talent_points":
-			return _grant_talent_points(reward_config)
+			result = _grant_talent_points(reward_config)
 		_:
-			push_error("未知的奖励类型: " + reward_type)
+			push_error("[EncounterIntegration] Unknown reward type: " + reward_type)
 			return false
+	
+	if result:
+		print("[EncounterIntegration] Reward granted successfully")
+	else:
+		print("[EncounterIntegration] Failed to grant reward")
+	
+	return result
 
 ## 检查一次性奇遇是否已触发
 ## 
@@ -242,16 +260,20 @@ func trigger_encounter_with_integration(base_probability: float, encounter_id: S
 ## 私有方法：发放属性点奖励
 func _grant_attribute_points(reward_config: Dictionary) -> bool:
 	if character_system == null:
+		push_warning("[EncounterIntegration] CharacterSystem is null in _grant_attribute_points")
 		return false
 	
 	var min_points = reward_config["min"]
 	var max_points = reward_config["max"]
 	var points = randi() % (max_points - min_points + 1) + min_points
 	
+	print("[EncounterIntegration] Granted %d attribute points" % points)
 	character_system.total_attribute_points += points
+	print("[EncounterIntegration] CharacterSystem total attribute points: %d (allocated: %d)" % [character_system.total_attribute_points, character_system.allocated_attribute_points])
 	
 	# 发射信号
 	encounter_reward_granted.emit("attribute_points", points)
+	print("[EncounterIntegration] Reward granted signal emitted: attribute_points x%d" % points)
 	
 	return true
 

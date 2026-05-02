@@ -1,6 +1,6 @@
 # Epics Index
 
-Last Updated: 2026-04-26
+Last Updated: 2026-04-30
 Engine: Godot 4.6
 
 | Epic | Layer | System | GDD | Stories | Status |
@@ -22,3 +22,4 @@ Engine: Godot 4.6
 | character-progression-system | Feature | 角色成长系统 | design/gdd/character-progression-system.md | Not yet created | Ready |
 | equipment-system | Feature | 装备系统 | design/gdd/equipment-system.md | Not yet created | Ready |
 | enemy-scaling-system | Feature | 敌人缩放系统 | design/gdd/enemy-scaling-system.md | Not yet created | Ready |
+| hud-system | Presentation | HUD系统 | design/ux/hud.md | Not yet created | Ready |

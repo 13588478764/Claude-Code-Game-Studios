@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_pa0qr"]
+
+[resource]
+script = ExtResource("1_pa0qr")
+id = "tangmen_qixing"
+name = "七星海棠毒"
+description = "唐门剧毒，筑基期修士可修炼。中毒者七日内必死，可削弱敌人防御和恢复能力。"
+cost_stamina = 15.0
+cost_mana = 50.0
+cooldown = 15.0
+unlock_level = 31
+damage_base = 50.0
+damage_scale = 0.5
+element_type = "毒"
+startup_frames = 0.5
+active_frames = 20.0
+recovery_frames = 0.5
+total_duration = 21.0
+martial_art_type = 4
+school = 5
+grade = 1

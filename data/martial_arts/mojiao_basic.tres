@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_bxad5"]
+
+[resource]
+script = ExtResource("1_bxad5")
+id = "mojiao_basic"
+name = "血煞入门功"
+description = "魔教入门功法，炼气期修士可修炼。吸收煞气入体，以血炼体。"
+cost_stamina = 11.0
+cost_mana = 14.0
+cooldown = 3.2
+unlock_level = 12
+damage_base = 65.0
+damage_scale = 1.05
+hit_count = 2
+element_type = "暗"
+startup_frames = 0.22
+active_frames = 0.55
+recovery_frames = 0.33
+total_duration = 1.1
+weapon_type = 2
+school = 1
+can_cancel_from_frame = 0.65
+combo_chain = Array[String](["mojiao_xuemo"])

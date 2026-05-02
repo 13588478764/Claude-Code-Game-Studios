@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_u7w4k"]
+
+[resource]
+script = ExtResource("1_u7w4k")
+id = "xiaoyao_xiaowuxiang"
+name = "小无相功"
+description = "逍遥派内功，筑基期修士可修炼。可模仿他人武功，无形无相，变化万千。"
+cost_stamina = 35.0
+cost_mana = 65.0
+cooldown = 35.0
+unlock_level = 39
+damage_scale = 0.0
+hit_count = 0
+startup_frames = 0.9
+active_frames = 20.0
+recovery_frames = 0.9
+total_duration = 21.8
+martial_art_type = 3
+school = 8
+grade = 1

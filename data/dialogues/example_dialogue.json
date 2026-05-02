@@ -1,0 +1,208 @@
+{
+  "id": "yunzhonghe_first_meeting",
+  "title": "云中鹤初次见面",
+  "description": "玩家第一次遇到云中鹤时的对话",
+  "start_node": "greeting",
+  "metadata": {
+    "author": "系统设计师",
+    "version": "1.0",
+    "created": "2026-05-02"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "yunzhonghe",
+      "text": "这位道友，看你气质不凡，想必也是修真之人？",
+      "emotion": "curious",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [
+        {
+          "id": "choice_polite",
+          "text": "在下正是，敢问前辈高姓大名？",
+          "dao_heart_hint": 5,
+          "icon": "righteous",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_relationship",
+              "target": "yunzhonghe",
+              "value": 5,
+              "reason": "礼貌回应"
+            },
+            {
+              "type": "modify_dao_heart",
+              "value": 2,
+              "reason": "谦逊有礼"
+            }
+          ],
+          "next_node": "introduce_self"
+        },
+        {
+          "id": "choice_arrogant",
+          "text": "你算什么东西，也配问我？",
+          "dao_heart_hint": -10,
+          "icon": "evil",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_relationship",
+              "target": "yunzhonghe",
+              "value": -15,
+              "reason": "傲慢无礼"
+            },
+            {
+              "type": "modify_dao_heart",
+              "value": -5,
+              "reason": "傲慢无礼"
+            }
+          ],
+          "next_node": "offended"
+        },
+        {
+          "id": "choice_neutral",
+          "text": "是的，我在修炼。",
+          "dao_heart_hint": 0,
+          "icon": "neutral",
+          "conditions": [],
+          "effects": [],
+          "next_node": "introduce_self"
+        }
+      ]
+    },
+    {
+      "id": "introduce_self",
+      "speaker": "yunzhonghe",
+      "text": "在下云中鹤，天剑盟长老。看道友骨骼清奇，不知可有兴趣学习我派剑法？",
+      "emotion": "friendly",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [
+        {
+          "id": "choice_accept",
+          "text": "多谢前辈赏识，晚辈愿意学习！",
+          "dao_heart_hint": 5,
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_relationship",
+              "target": "yunzhonghe",
+              "value": 10,
+              "reason": "接受传授"
+            },
+            {
+              "type": "unlock_quest",
+              "target": "quest_sword_training"
+            }
+          ],
+          "next_node": "accept_training"
+        },
+        {
+          "id": "choice_decline",
+          "text": "多谢前辈好意，但我已有师承。",
+          "dao_heart_hint": 0,
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_relationship",
+              "target": "yunzhonghe",
+              "value": -5,
+              "reason": "婉拒传授"
+            }
+          ],
+          "next_node": "decline_training"
+        },
+        {
+          "id": "choice_ask_more",
+          "text": "能否先告诉我，这剑法有何特别之处？",
+          "dao_heart_hint": 0,
+          "conditions": [],
+          "effects": [],
+          "next_node": "explain_sword_art"
+        }
+      ]
+    },
+    {
+      "id": "offended",
+      "speaker": "yunzhonghe",
+      "text": "哼！无礼之徒，我天剑盟不欢迎你这种人！",
+      "emotion": "angry",
+      "priority": 1,
+      "conditions": [],
+      "effects": [
+        {
+          "type": "set_flag",
+          "target": "yunzhonghe_offended",
+          "value": true
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "accept_training",
+      "speaker": "yunzhonghe",
+      "text": "很好！从今日起，你便是我天剑盟的记名弟子。这本《基础剑诀》你先拿去修炼。",
+      "emotion": "happy",
+      "priority": 1,
+      "conditions": [],
+      "effects": [
+        {
+          "type": "give_item",
+          "target": "item_basic_sword_manual",
+          "value": 1
+        },
+        {
+          "type": "give_exp",
+          "value": 100
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "decline_training",
+      "speaker": "yunzhonghe",
+      "text": "既然如此，我也不勉强。日后若有需要，可来天剑盟找我。",
+      "emotion": "neutral",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "next_node": "END"
+    },
+    {
+      "id": "explain_sword_art",
+      "speaker": "yunzhonghe",
+      "text": "我派剑法讲究以气御剑，剑气合一。修炼至高深处，可做到飞剑取敌首级于千里之外！",
+      "emotion": "proud",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [
+        {
+          "id": "choice_impressed",
+          "text": "如此神妙！晚辈愿意学习！",
+          "dao_heart_hint": 5,
+          "conditions": [],
+          "effects": [
+            {
+              "type": "modify_relationship",
+              "target": "yunzhonghe",
+              "value": 8,
+              "reason": "表现出兴趣"
+            }
+          ],
+          "next_node": "accept_training"
+        },
+        {
+          "id": "choice_skeptical",
+          "text": "听起来很厉害，但我还是想再考虑考虑。",
+          "dao_heart_hint": 0,
+          "conditions": [],
+          "effects": [],
+          "next_node": "decline_training"
+        }
+      ]
+    }
+  ]
+}

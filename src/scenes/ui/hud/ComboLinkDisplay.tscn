@@ -1,0 +1,139 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8ydvqvqvqvq"]
+
+[ext_resource type="Script" path="res://src/scenes/ui/hud/ComboLinkDisplay.gd"]
+
+[node name="ComboLinkDisplay" type="PanelContainer"]
+script = ExtResource("res://src/scenes/ui/hud/ComboLinkDisplay.gd")
+custom_minimum_size = Vector2(350, 150)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+separation = 10
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+# ============================================================================
+# 连击显示区域
+# ============================================================================
+
+[node name="ComboSection" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+separation = 10
+
+[node name="ComboCountLabel" type="Label" parent="VBoxContainer/ComboSection"]
+layout_mode = 2
+size_flags_horizontal = Control.SIZE_EXPAND_FILL
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+custom_minimum_size = Vector2(100, 60)
+
+[node name="ComboMultiplierLabel" type="Label" parent="VBoxContainer/ComboSection"]
+layout_mode = 2
+size_flags_horizontal = Control.SIZE_EXPAND_FILL
+text = "×1.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+custom_minimum_size = Vector2(80, 40)
+
+# ============================================================================
+# 连携槽显示区域
+# ============================================================================
+
+[node name="LinkGaugeSection" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+separation = 5
+
+[node name="LinkGaugeLabel" type="Label" parent="VBoxContainer/LinkGaugeSection"]
+layout_mode = 2
+text = "0 / 100"
+horizontal_alignment = 1
+custom_minimum_size = Vector2(0, 20)
+
+[node name="LinkGaugeBar" type="ProgressBar" parent="VBoxContainer/LinkGaugeSection"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 40)
+max_value = 100.0
+value = 0.0
+show_percentage = false
+
+# 连携槽分段标记 - 33%, 66%, 100%
+[node name="SegmentMarkers" type="Control" parent="VBoxContainer/LinkGaugeSection/LinkGaugeBar"]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+
+[node name="Segment33" type="Control" parent="VBoxContainer/LinkGaugeSection/LinkGaugeBar/SegmentMarkers"]
+layout_mode = 1
+anchors_left = 0.33
+anchors_top = 0.0
+anchors_right = 0.33
+anchors_bottom = 1.0
+offset_left = -1.0
+offset_right = 1.0
+
+[node name="Line33" type="ColorRect" parent="VBoxContainer/LinkGaugeSection/LinkGaugeBar/SegmentMarkers/Segment33"]
+layout_mode = 1
+anchors_left = 0.5
+anchors_top = 0.0
+anchors_right = 0.5
+anchors_bottom = 1.0
+color = Color(1, 1, 1, 0.5)
+custom_minimum_size = Vector2(2, 0)
+
+[node name="Segment66" type="Control" parent="VBoxContainer/LinkGaugeSection/LinkGaugeBar/SegmentMarkers"]
+layout_mode = 1
+anchors_left = 0.66
+anchors_top = 0.0
+anchors_right = 0.66
+anchors_bottom = 1.0
+offset_left = -1.0
+offset_right = 1.0
+
+[node name="Line66" type="ColorRect" parent="VBoxContainer/LinkGaugeSection/LinkGaugeBar/SegmentMarkers/Segment66"]
+layout_mode = 1
+anchors_left = 0.5
+anchors_top = 0.0
+anchors_right = 0.5
+anchors_bottom = 1.0
+color = Color(1, 1, 1, 0.5)
+custom_minimum_size = Vector2(2, 0)
+
+[node name="Segment100" type="Control" parent="VBoxContainer/LinkGaugeSection/LinkGaugeBar/SegmentMarkers"]
+layout_mode = 1
+anchors_left = 1.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = -1.0
+offset_right = 1.0
+
+[node name="Line100" type="ColorRect" parent="VBoxContainer/LinkGaugeSection/LinkGaugeBar/SegmentMarkers/Segment100"]
+layout_mode = 1
+anchors_left = 0.5
+anchors_top = 0.0
+anchors_right = 0.5
+anchors_bottom = 1.0
+color = Color(1, 1, 1, 0.5)
+custom_minimum_size = Vector2(2, 0)
+
+# 连携槽充满指示器 - 脉冲发光效果
+[node name="LinkFullIndicator" type="Control" parent="VBoxContainer/LinkGaugeSection"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 20)
+visible = false
+
+[node name="FullIndicatorLabel" type="Label" parent="VBoxContainer/LinkGaugeSection/LinkFullIndicator"]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+text = "连携槽已满！"
+horizontal_alignment = 1
+vertical_alignment = 1
+modulate = Color(1, 0.84, 0, 1)

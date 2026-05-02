@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_1et00"]
+
+[resource]
+script = ExtResource("1_1et00")
+id = "gaibang_tianxia"
+name = "天下无狗"
+description = "丐帮至高绝学，元婴期以上修士可修炼。打狗棒法的终极奥义，棍意通天，可破元婴。"
+cost_stamina = 95.0
+cost_mana = 280.0
+cooldown = 110.0
+unlock_level = 82
+damage_base = 750.0
+damage_scale = 4.8
+hit_count = 36
+startup_frames = 1.8
+active_frames = 4.5
+recovery_frames = 1.8
+total_duration = 8.1
+weapon_type = 3
+school = 4
+grade = 3

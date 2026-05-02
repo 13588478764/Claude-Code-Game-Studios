@@ -1,48 +1,42 @@
 ## MartialArtData
-## MartialArtData
-martial art data
-数据定义模块
-武学数据资源定义
-定义游戏中所有武学技能的数据结构和属性
-##
-## 主要功能：
-## - 待补充
-
-extends Node
+## 武学数据资源定义
+## 定义游戏中所有武学技能的数据结构和属性
 
 class_name MartialArtData
-
-# ============================================================================
-# 常量定义
-# ============================================================================
-
-# ============================================================================
-# 信号定义
-# ============================================================================
-
-# ============================================================================
-# 成员变量
-# ============================================================================
-
-# ============================================================================
-# 生命周期方法
-# ============================================================================
-
-# ============================================================================
-# 公共方法
-# ============================================================================
-
-# ============================================================================
-# 私有方法
-# ============================================================================
-
 extends Resource
 
 # 枚举定义
 enum MartialArtType { ATTACK, DEFENSE, MOVEMENT, BUFF, DEBUFF }
 enum WeaponType { SWORD, BLADE, FIST, STAFF, NONE }
-enum SchoolType { SHAOLIN, WUDANG, EMEI, GAOYANG, QINGCHENG, GENERIC }
+# 九大修真势力
+enum SchoolType { 
+	TIANJIAN,    # 天剑盟（剑修宗门）
+	MOJIAO,      # 魔教（血炼宗门）
+	SHAOLIN,     # 少林寺（体修宗门）
+	WUDANG,      # 武当派（阴阳修士）
+	GAIBANG,     # 丐帮（散修联盟）
+	TANGMEN,     # 唐门（机关炼器）
+	MINGJIAO,    # 明教（火修宗门）
+	WUDU,        # 五毒教（毒修蛊修）
+	XIAOYAO,     # 逍遥派（全能修士）
+	GENERIC      # 通用（新手功法）
+}
 enum GradeType { COMMON, RARE, EPIC, LEGENDARY }
+# 元素属性
+enum ElementType {
+	NONE,        # 无属性
+	METAL,       # 金
+	WOOD,        # 木
+	WATER,       # 水
+	FIRE,        # 火
+	EARTH,       # 土
+	POISON,      # 毒
+	ICE,         # 冰
+	LIGHTNING,   # 雷
+	WIND,        # 风
+	DARKNESS,    # 暗
+	LIGHT        # 光
+}
 
 # 基础信息
 @export var id: String = ""
@@ -147,11 +141,15 @@ func get_weapon_type_string() -> String:
 # 获取门派类型字符串
 func get_school_string() -> String:
 	match school:
-		SchoolType.SHAOLIN: return "少林"
-		SchoolType.WUDANG: return "武当"
-		SchoolType.EMEI: return "峨眉"
-		SchoolType.GAOYANG: return "高阳"
-		SchoolType.QINGCHENG: return "青城"
+		SchoolType.TIANJIAN: return "天剑盟"
+		SchoolType.MOJIAO: return "魔教"
+		SchoolType.SHAOLIN: return "少林寺"
+		SchoolType.WUDANG: return "武当派"
+		SchoolType.GAIBANG: return "丐帮"
+		SchoolType.TANGMEN: return "唐门"
+		SchoolType.MINGJIAO: return "明教"
+		SchoolType.WUDU: return "五毒教"
+		SchoolType.XIAOYAO: return "逍遥派"
 		SchoolType.GENERIC: return "通用"
 		_: return "未知"
 
@@ -169,7 +167,7 @@ func get_element_string() -> String:
 	return element_type
 
 # 字符串表示
-func to_string() -> String:
+func get_display_string() -> String:
 	return "武学[%s] ID:%s 类型:%s 伤害:%.1f 消耗:%.1f内力 %.1f体力 CD:%.1fs" % [
 		name, id, get_martial_art_type_string(), 
 		damage_base, cost_mana, cost_stamina, cooldown

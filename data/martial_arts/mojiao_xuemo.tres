@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_m3p68"]
+
+[resource]
+script = ExtResource("1_m3p68")
+id = "mojiao_xuemo"
+name = "血魔爪"
+description = "魔教爪法，筑基期修士可修炼。以煞气凝聚血爪，可吸取敌人精血。"
+cost_stamina = 25.0
+cost_mana = 35.0
+cooldown = 6.0
+unlock_level = 28
+damage_base = 130.0
+damage_scale = 1.6
+hit_count = 3
+element_type = "暗"
+startup_frames = 0.32
+active_frames = 0.9
+recovery_frames = 0.48
+total_duration = 1.7
+weapon_type = 2
+school = 1
+grade = 1

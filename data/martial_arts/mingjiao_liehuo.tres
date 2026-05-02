@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_wfsmr"]
+
+[resource]
+script = ExtResource("1_wfsmr")
+id = "mingjiao_liehuo"
+name = "烈火刀法"
+description = "明教刀法，筑基期修士可修炼。刀势如烈火燎原，势不可挡，火焰灼烧敌人。"
+cost_stamina = 25.0
+cost_mana = 35.0
+cooldown = 6.0
+unlock_level = 28
+damage_base = 140.0
+damage_scale = 1.7
+hit_count = 4
+element_type = "火"
+startup_frames = 0.4
+active_frames = 1.0
+recovery_frames = 0.5
+total_duration = 1.9
+weapon_type = 1
+school = 6
+grade = 1
+can_cancel_from_frame = 1.2
+combo_chain = Array[String](["mingjiao_shenghuo"])

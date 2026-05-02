@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_n5m67"]
+
+[resource]
+script = ExtResource("1_n5m67")
+id = "tianjian_wanjian"
+name = "万剑归宗"
+description = "天剑盟至高剑法，元婴期以上修士可修炼。召唤万剑齐发，剑意通天，可斩元婴。需领悟剑道法则。"
+cost_stamina = 100.0
+cost_mana = 300.0
+cooldown = 120.0
+unlock_level = 80
+damage_base = 800.0
+damage_scale = 5.0
+hit_count = 100
+element_type = "金"
+startup_frames = 2.0
+active_frames = 5.0
+recovery_frames = 2.0
+total_duration = 9.0
+weapon_type = 0
+school = 0
+grade = 3

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_bvcsm"]
+
+[resource]
+script = ExtResource("1_bvcsm")
+id = "wudu_basic"
+name = "五毒基础掌法"
+description = "五毒教入门掌法，炼气期修士可修炼。掌力带有微毒，可侵蚀敌人。"
+cost_stamina = 10.0
+cost_mana = 13.0
+cooldown = 3.1
+unlock_level = 13
+damage_base = 56.0
+damage_scale = 0.96
+hit_count = 2
+element_type = "毒"
+startup_frames = 0.21
+active_frames = 0.58
+recovery_frames = 0.31
+total_duration = 1.1
+weapon_type = 2
+school = 7
+can_cancel_from_frame = 0.68
+combo_chain = Array[String](["wudu_shenzhang"])

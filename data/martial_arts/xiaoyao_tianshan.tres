@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_pl43t"]
+
+[resource]
+script = ExtResource("1_pl43t")
+id = "xiaoyao_tianshan"
+name = "天山六阳掌"
+description = "逍遥派掌法，金丹期修士可修炼。掌力至阳至刚，可破除阴寒之气，掌意通天。"
+cost_stamina = 60.0
+cost_mana = 120.0
+cooldown = 18.0
+unlock_level = 64
+damage_base = 380.0
+damage_scale = 3.0
+hit_count = 6
+element_type = "火"
+startup_frames = 0.9
+active_frames = 2.5
+recovery_frames = 1.1
+total_duration = 4.5
+weapon_type = 2
+school = 8
+grade = 2

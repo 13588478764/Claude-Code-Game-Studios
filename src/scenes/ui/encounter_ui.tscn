@@ -1,76 +1,151 @@
-[gd_scene load_steps=5 format=3 uid="uid://-jz0q00000000"]
+[gd_scene load_steps=4 format=3 uid="uid://c7m9kn2p8qx4r"]
 
-[ext_resource type="Script" uid="uid://-jz0q00000001" path="res://src/scripts/ui/encounter_ui_script.gd"]
-[ext_resource type="Texture2D" uid="uid://-jz0q00000002" path="res://src/assets/ui/encounter_background.png"]
-[ext_resource type="Texture2D" uid="uid://-jz0q00000003" path="res://src/assets/icons/lucky_star.png"]
-[ext_resource type="Theme" uid="uid://-jz0q00000004" path="res://src/assets/ui/ink_wash_theme.tres"]
-[ext_resource type="AnimationLibrary" uid="uid://-jz0q00000005" path="res://src/assets/animations/encounter_animations.anilibrary"]
+[ext_resource type="Script" path="res://src/scripts/ui/encounter_ui_script.gd" id="1_encounter_script"]
 
-[node]
-name = "EncounterUI"
-type = "Control"
-script = ExtResource("uid://-jz0q00000001")
+[sub_resource type="Animation" id="Animation_entrance"]
+resource_name = "entrance"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CenterContainer/EncounterCard:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CenterContainer/EncounterCard:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
 
-[node/EncounterCard]
-type = "Panel"
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1"]
+_data = {
+"entrance": SubResource("Animation_entrance")
+}
+
+[node name="EncounterUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.8, 0.8)
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_encounter_script")
 
-[node/EncounterCard/Background]
-type = "TextureRect"
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource("uid://-jz0q00000002")
+grow_horizontal = 2
+grow_vertical = 2
 
-[node/EncounterCard/EncounterTitle]
-type = "Label"
+[node name="EncounterCard" type="Panel" parent="CenterContainer"]
+custom_minimum_size = Vector2(600, 400)
+layout_mode = 2
+
+[node name="BackgroundTexture" type="ColorRect" parent="CenterContainer/EncounterCard"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
-size_flags_vertical = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.2, 0.3, 0.2, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/EncounterCard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/EncounterCard/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/EncounterCard/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
 text = "奇遇事件"
-theme_override_colors/font_color = Color(0.8, 0.7, 0.5, 1)
+horizontal_alignment = 1
 
-[node/EncounterCard/EncounterDescription]
-type = "Label"
-anchor_right = 1.0
-anchor_bottom = 1.0
-size = Vector2(300, 100)
-text = "这里显示奇遇事件的详细描述。根据奇遇类型，背景和描述会有所不同。"
+[node name="DescriptionLabel" type="Label" parent="CenterContainer/EncounterCard/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "你在竹林中遇到了一位高人..."
+autowrap_mode = 3
 
-[node/EncounterCard/LuckyStarIcon]
-type = "TextureRect"
-anchor_right = 1.0
-size_flags_vertical = 0
-visible = false
-texture = ExtResource("uid://-jz0q00000003")
+[node name="Spacer" type="Control" parent="CenterContainer/EncounterCard/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
 
-[node/EncounterCard/OptionButtons]
-type = "HBoxContainer"
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_vertical = 0
-alignment = 2
+[node name="ButtonsContainer" type="HBoxContainer" parent="CenterContainer/EncounterCard/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
 
-[node/EncounterCard/OptionButtons/AcceptButton]
-type = "Button"
+[node name="AcceptButton" type="Button" parent="CenterContainer/EncounterCard/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
 text = "接受"
 
-[node/EncounterCard/OptionButtons/DeclineButton]
-type = "Button"
+[node name="DeclineButton" type="Button" parent="CenterContainer/EncounterCard/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
 text = "拒绝"
 
-[node/EncounterCard/OptionButtons/TryButton]
-type = "Button"
+[node name="TryButton" type="Button" parent="CenterContainer/EncounterCard/MarginContainer/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
 text = "尝试"
 
-[node/AnimationPlayer]
-type = "AnimationPlayer"
-playback_default_blend_time = 0.0
-resource_local_to_scene = true
+[node name="LuckyStarIcon" type="Panel" parent="CenterContainer/EncounterCard"]
+visible = false
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -68.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 68.0
+grow_horizontal = 0
 
-[animations]
-default = Resource( "uid://-jz0q00000005" )
+[node name="Label" type="Label" parent="CenterContainer/EncounterCard/LuckyStarIcon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "吉"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[theme]
-theme = ExtResource("uid://-jz0q00000004")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_1")
+}
+
+[connection signal="pressed" from="CenterContainer/EncounterCard/MarginContainer/VBoxContainer/ButtonsContainer/AcceptButton" to="." method="_on_accept_button_pressed"]
+[connection signal="pressed" from="CenterContainer/EncounterCard/MarginContainer/VBoxContainer/ButtonsContainer/DeclineButton" to="." method="_on_decline_button_pressed"]
+[connection signal="pressed" from="CenterContainer/EncounterCard/MarginContainer/VBoxContainer/ButtonsContainer/TryButton" to="." method="_on_try_button_pressed"]

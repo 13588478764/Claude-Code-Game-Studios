@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_irn48"]
+
+[resource]
+script = ExtResource("1_irn48")
+id = "gaibang_basic"
+name = "丐帮基础棍法"
+description = "丐帮弟子入门棍法，炼气期修士可修炼。简单实用，适合散修。"
+cost_stamina = 9.0
+cost_mana = 12.0
+cooldown = 2.8
+unlock_level = 7
+damage_base = 55.0
+damage_scale = 0.95
+hit_count = 2
+startup_frames = 0.18
+active_frames = 0.55
+recovery_frames = 0.27
+total_duration = 1.0
+weapon_type = 3
+school = 4
+can_cancel_from_frame = 0.65
+combo_chain = Array[String](["gaibang_dagou"])

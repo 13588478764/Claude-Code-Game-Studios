@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_vvqbj"]
+
+[resource]
+script = ExtResource("1_vvqbj")
+id = "wudang_taiji"
+name = "太极玄功"
+description = "武当派至高心法，化神期修士可修炼。阴阳调和，道法自然，可领悟阴阳法则，延寿三千年。"
+cost_stamina = 60.0
+cost_mana = 200.0
+cooldown = 90.0
+unlock_level = 90
+damage_scale = 0.0
+hit_count = 0
+startup_frames = 1.5
+active_frames = 60.0
+recovery_frames = 1.5
+total_duration = 63.0
+martial_art_type = 3
+school = 3
+grade = 3

@@ -37,7 +37,7 @@
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
-last_updated: "2026-04-28"
+last_updated: "2026-05-02"
 
 # ─── ENTITIES ────────────────────────────────────────────────────────────────
 # Named game-world objects: enemies, NPCs, characters, factions, bosses.
@@ -49,6 +49,152 @@ last_updated: "2026-04-28"
 #   (health, damage, drops, faction, etc.)
 
 entities:
+  # ─── 九大修真势力 ───────────────────────────────────────────────────────
+  - name: Tianjian_Alliance
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 天剑盟
+    faction_type: 剑修宗门
+    element_affinity: 金属性
+    representative_martial_art: 万剑归宗（天阶）
+    region: 蜀中山地
+    realm_cap: 元婴后期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Demon_Sect
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 魔教
+    faction_type: 血炼宗门
+    element_affinity: 暗属性
+    representative_martial_art: 天魔解体（天阶）
+    region: 关外荒野
+    realm_cap: 化神初期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Shaolin_Temple
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 少林寺
+    faction_type: 体修宗门
+    element_affinity: 佛门（光属性）
+    representative_martial_art: 易筋经（天阶）
+    region: 中原腹地
+    realm_cap: 化神中期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Wudang_Sect
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 武当派
+    faction_type: 阴阳修士
+    element_affinity: 阴阳（无属性）
+    representative_martial_art: 太极玄功（天阶）
+    region: 中原腹地
+    realm_cap: 化神后期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Beggar_Gang
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 丐帮
+    faction_type: 散修联盟
+    element_affinity: 无属性
+    representative_martial_art: 降龙十八掌（地阶）
+    region: 遍布九州
+    realm_cap: 元婴初期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Tang_Clan
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 唐门
+    faction_type: 机关炼器
+    element_affinity: 金/毒属性
+    representative_martial_art: 含沙射影（天阶）
+    region: 江南水乡
+    realm_cap: 元婴中期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Ming_Cult
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 明教
+    faction_type: 火修宗门
+    element_affinity: 火属性
+    representative_martial_art: 焚天煮海（地阶）
+    region: 西域荒漠
+    realm_cap: 元婴后期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Five_Poison_Cult
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 五毒教
+    faction_type: 毒修蛊修
+    element_affinity: 毒属性
+    representative_martial_art: 毒龙钻（天阶）
+    region: 南疆密林
+    realm_cap: 金丹后期
+    added: "2026-05-02"
+    revised: ""
+
+  - name: Carefree_Sect
+    status: active
+    source: design/narrative/narrative-brief.md
+    referenced_by:
+      - design/narrative/narrative-brief.md
+      - design/gdd/martial-arts-system.md
+      - src/scripts/data/martial_art_data.gd
+    chinese_name: 逍遥派
+    faction_type: 全能修士
+    element_affinity: 水/空间属性
+    representative_martial_art: 北冥神功（天阶）
+    region: 隐秘之地
+    realm_cap: 化神后期
+    added: "2026-05-02"
+    revised: ""
+
+  # ─── 原有实体 ───────────────────────────────────────────────────────────
   - name: Realm_Early_Qi_Refining
     status: active
     source: design/gdd/character-progression-system.md
@@ -604,6 +750,116 @@ constants:
     unit: fps
     notes: "Target frame rate for PC platform"
     added: "2026-04-28"
+    revised: ""
+
+  # ─── 功法系统常量 ───────────────────────────────────────────────────────
+  - name: MARTIAL_ART_GRADE_YELLOW_LEVEL_RANGE
+    status: active
+    source: design/gdd/martial-arts-system.md
+    referenced_by:
+      - design/gdd/martial-arts-system.md
+      - design/narrative/world-cultivation-framework.md
+      - src/scripts/data/martial_art_data.gd
+    value: [1, 22]
+    unit: level_range
+    notes: "黄阶功法等级范围（炼气期）"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: MARTIAL_ART_GRADE_MYSTIC_LEVEL_RANGE
+    status: active
+    source: design/gdd/martial-arts-system.md
+    referenced_by:
+      - design/gdd/martial-arts-system.md
+      - design/narrative/world-cultivation-framework.md
+      - src/scripts/data/martial_art_data.gd
+    value: [23, 44]
+    unit: level_range
+    notes: "玄阶功法等级范围（筑基期）"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: MARTIAL_ART_GRADE_EARTH_LEVEL_RANGE
+    status: active
+    source: design/gdd/martial-arts-system.md
+    referenced_by:
+      - design/gdd/martial-arts-system.md
+      - design/narrative/world-cultivation-framework.md
+      - src/scripts/data/martial_art_data.gd
+    value: [45, 66]
+    unit: level_range
+    notes: "地阶功法等级范围（金丹期）"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: MARTIAL_ART_GRADE_HEAVEN_LEVEL_RANGE
+    status: active
+    source: design/gdd/martial-arts-system.md
+    referenced_by:
+      - design/gdd/martial-arts-system.md
+      - design/narrative/world-cultivation-framework.md
+      - src/scripts/data/martial_art_data.gd
+    value: [67, 99]
+    unit: level_range
+    notes: "天阶功法等级范围（元婴期-化神期）"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: MARTIAL_ART_TOTAL_COUNT
+    status: active
+    source: src/scripts/data/martial_art_database.gd
+    referenced_by:
+      - src/scripts/data/martial_art_database.gd
+      - scripts/test_martial_arts_database.gd
+    value: 48
+    unit: count
+    notes: "当前实现的功法总数（通用3个 + 九大势力各5个）"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: ELEMENT_TYPE_COUNT
+    status: active
+    source: src/scripts/data/martial_art_data.gd
+    referenced_by:
+      - src/scripts/data/martial_art_data.gd
+      - design/gdd/martial-arts-system.md
+    value: 12
+    unit: count
+    notes: "元素属性类型总数（金木水火土毒冰雷风暗光无）"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: SCHOOL_SYNERGY_2_SET_BONUS
+    status: active
+    source: design/gdd/martial-arts-system.md
+    referenced_by:
+      - design/gdd/martial-arts-system.md
+    value: 0.10
+    unit: percentage
+    notes: "同流派2件套羁绊：-10%内力消耗"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: WEAPON_COMPATIBILITY_PERFECT
+    status: active
+    source: design/gdd/martial-arts-system.md
+    referenced_by:
+      - design/gdd/martial-arts-system.md
+    value: 1.2
+    unit: multiplier
+    notes: "完美武器适配：伤害+20%"
+    added: "2026-05-02"
+    revised: ""
+
+  - name: WEAPON_COMPATIBILITY_POOR
+    status: active
+    source: design/gdd/martial-arts-system.md
+    referenced_by:
+      - design/gdd/martial-arts-system.md
+    value: 0.7
+    unit: multiplier
+    notes: "勉强武器适配：伤害-30%"
+    added: "2026-05-02"
     revised: ""
 
 # Example:

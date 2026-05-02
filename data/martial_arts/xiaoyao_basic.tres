@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_syodj"]
+
+[resource]
+script = ExtResource("1_syodj")
+id = "xiaoyao_basic"
+name = "逍遥基础身法"
+description = "逍遥派入门身法，炼气期修士可修炼。身形飘逸，来去自如，如履平地。"
+cost_stamina = 18.0
+cost_mana = 8.0
+cooldown = 4.0
+unlock_level = 14
+damage_scale = 0.0
+hit_count = 0
+startup_frames = 0.12
+active_frames = 1.2
+recovery_frames = 0.12
+total_duration = 1.44
+martial_art_type = 2
+school = 8
+combo_chain = Array[String](["xiaoyao_lingbo"])

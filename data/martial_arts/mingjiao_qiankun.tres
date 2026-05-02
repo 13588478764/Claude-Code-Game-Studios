@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_jtocg"]
+
+[resource]
+script = ExtResource("1_jtocg")
+id = "mingjiao_qiankun"
+name = "乾坤大挪移"
+description = "明教镇教神功，化神期修士可修炼。可挪移乾坤，反弹敌人攻击，领悟空间法则。"
+cost_stamina = 40.0
+cost_mana = 180.0
+cooldown = 45.0
+unlock_level = 88
+damage_scale = 0.0
+hit_count = 0
+startup_frames = 0.8
+active_frames = 15.0
+recovery_frames = 1.0
+total_duration = 16.8
+martial_art_type = 1
+school = 6
+grade = 3

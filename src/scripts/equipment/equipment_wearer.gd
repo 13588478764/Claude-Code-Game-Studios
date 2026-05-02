@@ -1,6 +1,6 @@
 ## EquipmentWearer
 ## 装备穿戴器
-负责管理装备穿戴、卸下、兼容性验证和外观渲染
+## 负责管理装备穿戴、卸下、兼容性验证和外观渲染
 
 extends Node
 
@@ -20,30 +20,8 @@ enum EquipmentSlot {
 	BELT
 }
 
-# 装备数据结构（引用自EquipmentManager）
-class EquipmentData:
-	var id: String
-	var name: String
-	var type: String  # weapon, armor, accessory
-	var slot: String  # weapon_main, weapon_offhand, head, body, hands, feet, necklace, ring_1, ring_2, belt
-	var tier: int  # 1=普通, 2=稀有, 3=史诗, 4=传说
-	var base_attributes: Dictionary
-	var enhancement_level: int
-	var gems: Array
-	var is_bound: bool
-	var acquisition_source: String  # drop, craft, quest, shop
-	
-	func _init(p_id: String, p_name: String, p_type: String, p_slot: String):
-		id = p_id
-		name = p_name
-		type = p_type
-		slot = p_slot
-		tier = 1
-		base_attributes = {}
-		enhancement_level = 0
-		gems = []
-		is_bound = false
-		acquisition_source = "unknown"
+# 装备数据类型别名（使用 EquipmentManager 中的 EquipmentInfo）
+# 注意：实际使用时通过 EquipmentManager.EquipmentInfo 访问
 
 # 当前装备槽位状态
 var equipped_items: Dictionary = {
@@ -159,7 +137,7 @@ func validate_compatibility(equipment_id: String, slot_type: String) -> bool:
 	return true
 
 # 验证武器与武学流派兼容性
-func validate_weapon_school_compatibility(equipment: EquipmentData, slot_type: String) -> bool:
+func validate_weapon_school_compatibility(equipment, slot_type: String) -> bool:
 	# 这里可以实现具体的武器与武学流派兼容性检查
 	# 例如：剑类武器只能装备在剑法流派下
 	if equipment.name.find("剑") != -1:
@@ -170,7 +148,7 @@ func validate_weapon_school_compatibility(equipment: EquipmentData, slot_type: S
 	return true
 
 # 获取当前已装备的装备
-func get_equipped_item(slot_type: String) -> EquipmentData:
+func get_equipped_item(slot_type: String):
 	return equipped_items.get(slot_type, null)
 
 # 获取所有已装备的装备
@@ -194,7 +172,8 @@ func render_equipment_visuals():
 	# 由于这是一个脚本文件，我们只模拟这个过程
 	print("渲染装备外观...")
 	
-	for slot, equipment in equipped_items:
+	for slot in equipped_items:
+		var equipment = equipped_items[slot]
 		if equipment:
 			print("  - 槽位: ", slot, ", 装备: ", equipment.name)
 	
@@ -238,7 +217,8 @@ func get_equipment_stats() -> Dictionary:
 		"by_type": {"weapon": 0, "armor": 0, "accessory": 0}
 	}
 	
-	for slot, equipment in equipped_items:
+	for slot in equipped_items:
+		var equipment = equipped_items[slot]
 		if equipment:
 			stats.total_equipped += 1
 			stats.by_tier[equipment.tier] += 1

@@ -1,13 +1,13 @@
 ## EquipmentAttributeCalculator
 ## 装备属性计算器
-负责计算装备的基础属性、强化加成、宝石效果和流派加成
+## 负责计算装备的基础属性、强化加成、宝石效果和流派加成
 
 extends Node
 
 class_name EquipmentAttributeCalculator
 
-# 装备数据结构（与EquipmentManager一致）
-class EquipmentData:
+# 装备数据结构（内部使用，避免与全局 EquipmentData 冲突）
+class EquipmentInfo:
 	var id: String
 	var name: String
 	var type: String  # weapon, armor, accessory
@@ -50,7 +50,7 @@ func _ready():
 	print("装备属性计算器已初始化")
 
 # 计算装备基础属性
-func calculate_base_attributes(equipment_data: EquipmentData) -> Dictionary:
+func calculate_base_attributes(equipment_data: EquipmentInfo) -> Dictionary:
 	var calculated_attributes = {}
 	
 	# 复制基础属性
@@ -60,7 +60,7 @@ func calculate_base_attributes(equipment_data: EquipmentData) -> Dictionary:
 	return calculated_attributes
 
 # 计算强化属性加成
-func calculate_enhancement_bonus(equipment_data: EquipmentData, enhancement_level: int = -1) -> Dictionary:
+func calculate_enhancement_bonus(equipment_data: EquipmentInfo, enhancement_level: int = -1) -> Dictionary:
 	var bonus_attributes = {}
 	
 	# 使用传入的强化等级，如果未传入则使用装备的当前强化等级
@@ -78,7 +78,7 @@ func calculate_enhancement_bonus(equipment_data: EquipmentData, enhancement_leve
 	return bonus_attributes
 
 # 计算宝石效果
-func calculate_gem_effects(equipment_data: EquipmentData) -> Dictionary:
+func calculate_gem_effects(equipment_data: EquipmentInfo) -> Dictionary:
 	var gem_attributes = {}
 	
 	# 遍历所有宝石
@@ -95,7 +95,7 @@ func calculate_gem_effects(equipment_data: EquipmentData) -> Dictionary:
 	return gem_attributes
 
 # 计算流派加成
-func calculate_school_bonus(equipment_data: EquipmentData, martial_art_school: String) -> Dictionary:
+func calculate_school_bonus(equipment_data: EquipmentInfo, martial_art_school: String) -> Dictionary:
 	var school_bonus = {}
 	
 	# 检查装备是否有流派加成
@@ -112,7 +112,7 @@ func calculate_school_bonus(equipment_data: EquipmentData, martial_art_school: S
 	return school_bonus
 
 # 计算装备套装效果
-func calculate_set_bonus(equipped_items: Array[EquipmentData]) -> Dictionary:
+func calculate_set_bonus(equipped_items: Array[EquipmentInfo]) -> Dictionary:
 	var set_bonus = {}
 	
 	# 统计宝石颜色
@@ -142,7 +142,7 @@ func calculate_set_bonus(equipped_items: Array[EquipmentData]) -> Dictionary:
 	return set_bonus
 
 # 计算单件装备的总属性
-func calculate_equipment_total(equipment_data: EquipmentData, martial_art_school: String = "") -> Dictionary:
+func calculate_equipment_total(equipment_data: EquipmentInfo, martial_art_school: String = "") -> Dictionary:
 	var total_attributes = {}
 	
 	# 1. 基础属性
@@ -178,7 +178,7 @@ func calculate_equipment_total(equipment_data: EquipmentData, martial_art_school
 	return total_attributes
 
 # 计算角色总装备属性
-func calculate_character_equipment_attributes(equipped_items: Array[EquipmentData], martial_art_school: String = "") -> Dictionary:
+func calculate_character_equipment_attributes(equipped_items: Array[EquipmentInfo], martial_art_school: String = "") -> Dictionary:
 	var total_equipment_attributes = {}
 	
 	# 计算每件装备的属性
@@ -237,7 +237,7 @@ func test_equipment_attribute_calculation():
 	print("开始测试装备属性计算...")
 	
 	# 创建测试装备
-	var test_sword = EquipmentData.new("sword_001", "武当剑", "weapon", "weapon_main")
+	var test_sword = EquipmentInfo.new("sword_001", "武当剑", "weapon", "weapon_main")
 	test_sword.tier = 3  # 史诗
 	test_sword.base_attributes = {"attack": 60, "attack_speed": 1.2}
 	test_sword.enhancement_level = 10

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_g52xn"]
+
+[resource]
+script = ExtResource("1_g52xn")
+id = "wudang_liangyi"
+name = "两仪剑法"
+description = "武当派剑法，金丹期修士可修炼。阴阳相济，刚柔并济，剑意通玄。"
+cost_stamina = 35.0
+cost_mana = 70.0
+cooldown = 10.0
+unlock_level = 54
+damage_base = 280.0
+damage_scale = 2.3
+hit_count = 6
+startup_frames = 0.5
+active_frames = 1.8
+recovery_frames = 0.7
+total_duration = 3.0
+weapon_type = 0
+school = 3
+grade = 2

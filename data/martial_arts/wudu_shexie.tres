@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_f4yax"]
+
+[resource]
+script = ExtResource("1_f4yax")
+id = "wudu_shexie"
+name = "蛇蝎美人"
+description = "五毒教媚功，筑基期修士可修炼。可魅惑敌人，使其失去战斗力，神识混乱。"
+cost_stamina = 20.0
+cost_mana = 55.0
+cooldown = 18.0
+unlock_level = 37
+damage_base = 60.0
+damage_scale = 0.6
+element_type = "毒"
+startup_frames = 0.6
+active_frames = 15.0
+recovery_frames = 0.6
+total_duration = 16.2
+martial_art_type = 4
+school = 7
+grade = 1

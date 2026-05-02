@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_wovok"]
+
+[resource]
+script = ExtResource("1_wovok")
+id = "mingjiao_fentian"
+name = "焚天煮海"
+description = "明教火系大招，金丹期修士可修炼。召唤烈焰焚烧一切，火海滔天，可焚金丹。"
+cost_stamina = 65.0
+cost_mana = 130.0
+cooldown = 20.0
+unlock_level = 60
+damage_base = 420.0
+damage_scale = 3.2
+hit_count = 10
+element_type = "火"
+startup_frames = 1.0
+active_frames = 3.0
+recovery_frames = 1.2
+total_duration = 5.2
+school = 6
+grade = 2

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_86lxp"]
+
+[resource]
+script = ExtResource("1_86lxp")
+id = "mojiao_shihun"
+name = "噬魂诀"
+description = "魔教禁术，筑基后期修士可修炼。以神识攻击敌人元神，可削弱敌人战力。"
+cost_stamina = 20.0
+cost_mana = 60.0
+cooldown = 15.0
+unlock_level = 38
+damage_base = 90.0
+element_type = "暗"
+startup_frames = 0.5
+active_frames = 10.0
+recovery_frames = 0.5
+total_duration = 11.0
+martial_art_type = 4
+school = 1
+grade = 1

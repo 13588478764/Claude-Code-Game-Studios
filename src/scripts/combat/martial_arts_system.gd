@@ -35,8 +35,8 @@ signal martial_art_equipped(martial_art_id: String, slot_index: int)
 signal martial_art_combo_executed(combo_name: String, damage_multiplier: float)
 signal martial_art_unequipped(martial_art_id: String, slot_index: int)
 
-# 武学数据结构
-class MartialArtData:
+# 武学数据结构（内部使用，避免与全局 MartialArtData 冲突）
+class MartialArtInfo:
 	var id: String
 	var name: String
 	var description: String
@@ -58,11 +58,11 @@ class MartialArtData:
 	var proficiency_level: int
 	var fragments_collected: int
 	
-	func _init(p_id: String, p_name: String, p_description: String, p_school: String, p_grade: String, 
-	           p_weapon_type: String, p_base_damage: float, p_damage_scale: float, p_hit_count: int,
-	           p_element_type: String, p_startup_frames: float, p_active_frames: float, 
-	           p_recovery_frames: float, p_total_duration: float, p_cost_stamina: float, 
-	           p_cost_mana: float, p_cooldown: float, p_unlock_level: int):
+	func _init(p_id: String = "", p_name: String = "", p_description: String = "", p_school: String = "", p_grade: String = "", 
+	           p_weapon_type: String = "", p_base_damage: float = 0.0, p_damage_scale: float = 1.0, p_hit_count: int = 1,
+	           p_element_type: String = "", p_startup_frames: float = 0.0, p_active_frames: float = 0.0, 
+	           p_recovery_frames: float = 0.0, p_total_duration: float = 0.0, p_cost_stamina: float = 0.0, 
+	           p_cost_mana: float = 0.0, p_cooldown: float = 0.0, p_unlock_level: int = 1):
 		id = p_id
 		name = p_name
 		description = p_description
@@ -83,6 +83,31 @@ class MartialArtData:
 		unlock_level = p_unlock_level
 		proficiency_level = 0
 		fragments_collected = 0
+	
+	# 复制方法
+	func duplicate(deep: bool = false) -> MartialArtInfo:
+		var copy = MartialArtInfo.new()
+		copy.id = id
+		copy.name = name
+		copy.description = description
+		copy.school = school
+		copy.grade = grade
+		copy.weapon_type = weapon_type
+		copy.base_damage = base_damage
+		copy.damage_scale = damage_scale
+		copy.hit_count = hit_count
+		copy.element_type = element_type
+		copy.startup_frames = startup_frames
+		copy.active_frames = active_frames
+		copy.recovery_frames = recovery_frames
+		copy.total_duration = total_duration
+		copy.cost_stamina = cost_stamina
+		copy.cost_mana = cost_mana
+		copy.cooldown = cooldown
+		copy.unlock_level = unlock_level
+		copy.proficiency_level = proficiency_level
+		copy.fragments_collected = fragments_collected
+		return copy
 
 # 武学系统数据
 var martial_arts_database: Dictionary = {}  # 存储所有武学数据
@@ -103,7 +128,7 @@ func _ready():
 # 加载基础武学数据
 func load_basic_martial_arts():
 	# 示例：添加一些基础武学
-	var basic_sword = MartialArtData.new(
+	var basic_sword = MartialArtInfo.new(
 		"sword_basic_01", 
 		"基础剑法", 
 		"最基础的剑法，适合初学者练习", 
@@ -124,7 +149,7 @@ func load_basic_martial_arts():
 		1
 	)
 	
-	var basic_fist = MartialArtData.new(
+	var basic_fist = MartialArtInfo.new(
 		"fist_basic_01", 
 		"基础拳法", 
 		"最基础的拳法，锻炼根基", 
@@ -149,13 +174,13 @@ func load_basic_martial_arts():
 	martial_arts_database[basic_fist.id] = basic_fist
 
 # 获取武学数据
-func get_martial_art_data(martial_art_id: String) -> MartialArtData:
+func get_martial_art_data(martial_art_id: String):
 	if martial_arts_database.has(martial_art_id):
 		return martial_arts_database[martial_art_id]
 	return null
 
 # 获取玩家武学
-func get_player_martial_art(martial_art_id: String) -> MartialArtData:
+func get_player_martial_art(martial_art_id: String):
 	if player_martial_arts.has(martial_art_id):
 		return player_martial_arts[martial_art_id]
 	return null
@@ -277,7 +302,7 @@ func equip_martial_art(martial_art_id: String, slot_index: int) -> bool:
 	return true
 
 # 获取已装备的武学
-func get_equipped_martial_art(slot_index: int) -> MartialArtData:
+func get_equipped_martial_art(slot_index: int):
 	if slot_index < 0 or slot_index >= equipped_martial_arts.size():
 		return null
 	return equipped_martial_arts[slot_index]

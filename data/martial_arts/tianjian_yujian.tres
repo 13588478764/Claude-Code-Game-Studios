@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_qvc7v"]
+
+[resource]
+script = ExtResource("1_qvc7v")
+id = "tianjian_yujian"
+name = "御剑术"
+description = "天剑盟核心剑法，筑基期修士可修炼。以神识御剑，剑气纵横三尺。"
+cost_stamina = 20.0
+cost_mana = 30.0
+cooldown = 5.0
+unlock_level = 25
+damage_base = 120.0
+damage_scale = 1.5
+hit_count = 3
+element_type = "金"
+startup_frames = 0.3
+active_frames = 0.8
+recovery_frames = 0.4
+total_duration = 1.5
+weapon_type = 0
+school = 0
+grade = 1
+can_cancel_from_frame = 1.0
+combo_chain = Array[String](["tianjian_jianguang"])

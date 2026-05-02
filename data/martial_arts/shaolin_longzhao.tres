@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_5l1ur"]
+
+[resource]
+script = ExtResource("1_5l1ur")
+id = "shaolin_longzhao"
+name = "龙爪手"
+description = "少林擒拿功夫，筑基期修士可修炼。手如龙爪，可擒拿敌人，封锁经脉。"
+cost_stamina = 25.0
+cost_mana = 35.0
+cooldown = 12.0
+unlock_level = 32
+damage_base = 100.0
+damage_scale = 1.2
+startup_frames = 0.4
+active_frames = 8.0
+recovery_frames = 0.4
+total_duration = 8.8
+martial_art_type = 4
+weapon_type = 2
+school = 2
+grade = 1

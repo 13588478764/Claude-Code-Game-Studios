@@ -7,14 +7,13 @@ class_name LearningPathTypesTest
 
 var skill_tree_manager: SkillTreeManager
 
-func before_all():
+func before_each():
 	# 初始化技能树管理器
-	skill_tree_manager = SkillTreeManager.new()
+	skill_tree_manager = preload("res://src/scripts/skill_tree/skill_tree_manager.gd").new()
 
-func after_all():
+func after_each():
 	# 清理测试资源
-	if skill_tree_manager:
-		skill_tree_manager.queue_free()
+	skill_tree_manager = null
 
 # 测试线性主干路径
 func test_main_path_implementation():
@@ -129,9 +128,9 @@ func test_edge_case_circular_dependency():
 	# Given: 创建一个包含循环依赖的图谱
 	var test_tree = SkillTreeManager.SkillTree.new("test_circular", "测试循环依赖")
 	
-	var node_a = SkillTreeManager.SkillNode.new("a", "节点A", "测试节点A", SkillTreeManager.PathType.MAIN_PATH)
-	var node_b = SkillTreeManager.SkillNode.new("b", "节点B", "测试节点B", SkillTreeManager.PathType.MAIN_PATH)
-	var node_c = SkillTreeManager.SkillNode.new("c", "节点C", "测试节点C", SkillTreeManager.PathType.MAIN_PATH)
+	var node_a = SkillTreeManager.SkillTreeNode.new("a", "节点A", "测试节点A", SkillTreeManager.PathType.MAIN_PATH)
+	var node_b = SkillTreeManager.SkillTreeNode.new("b", "节点B", "测试节点B", SkillTreeManager.PathType.MAIN_PATH)
+	var node_c = SkillTreeManager.SkillTreeNode.new("c", "节点C", "测试节点C", SkillTreeManager.PathType.MAIN_PATH)
 	
 	# 创建循环依赖：A → B → C → A
 	node_b.prerequisites = ["a"]
@@ -156,8 +155,8 @@ func test_edge_case_broken_path():
 	# Given: 创建一个包含断裂路径的图谱
 	var test_tree = SkillTreeManager.SkillTree.new("test_broken", "测试断裂路径")
 	
-	var node_a = SkillTreeManager.SkillNode.new("a", "节点A", "测试节点A", SkillTreeManager.PathType.MAIN_PATH)
-	var node_b = SkillTreeManager.SkillNode.new("b", "节点B", "测试节点B", SkillTreeManager.PathType.MAIN_PATH)
+	var node_a = SkillTreeManager.SkillTreeNode.new("a", "节点A", "测试节点A", SkillTreeManager.PathType.MAIN_PATH)
+	var node_b = SkillTreeManager.SkillTreeNode.new("b", "节点B", "测试节点B", SkillTreeManager.PathType.MAIN_PATH)
 	
 	# 节点B依赖不存在的节点C
 	node_b.prerequisites = ["c"]
@@ -213,9 +212,9 @@ func test_edge_case_isolated_node():
 	# Given: 创建一个包含孤立节点的图谱
 	var test_tree = SkillTreeManager.SkillTree.new("test_isolated", "测试孤立节点")
 	
-	var node_a = SkillTreeManager.SkillNode.new("a", "节点A", "测试节点A", SkillTreeManager.PathType.MAIN_PATH)
-	var node_b = SkillTreeManager.SkillNode.new("b", "节点B", "测试节点B", SkillTreeManager.PathType.MAIN_PATH)
-	var node_isolated = SkillTreeManager.SkillNode.new("isolated", "孤立节点", "测试孤立节点", SkillTreeManager.PathType.MAIN_PATH)
+	var node_a = SkillTreeManager.SkillTreeNode.new("a", "节点A", "测试节点A", SkillTreeManager.PathType.MAIN_PATH)
+	var node_b = SkillTreeManager.SkillTreeNode.new("b", "节点B", "测试节点B", SkillTreeManager.PathType.MAIN_PATH)
+	var node_isolated = SkillTreeManager.SkillTreeNode.new("isolated", "孤立节点", "测试孤立节点", SkillTreeManager.PathType.MAIN_PATH)
 	
 	node_b.prerequisites = ["a"]
 	# node_isolated 没有前置依赖，也不在主干路径中

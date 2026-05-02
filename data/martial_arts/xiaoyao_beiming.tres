@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_6j07j"]
+
+[resource]
+script = ExtResource("1_6j07j")
+id = "xiaoyao_beiming"
+name = "北冥神功"
+description = "逍遥派至高心法，元婴期以上修士可修炼。可吸取他人内力为己用，领悟水之法则，延寿五千年。"
+cost_stamina = 50.0
+cost_mana = 160.0
+cooldown = 70.0
+unlock_level = 92
+damage_scale = 0.0
+hit_count = 0
+element_type = "水"
+startup_frames = 1.2
+active_frames = 45.0
+recovery_frames = 1.2
+total_duration = 47.4
+martial_art_type = 3
+school = 8
+grade = 3

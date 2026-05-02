@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="MartialArtData" format=3]
+
+[ext_resource type="Script" path="res://src/scripts/data/martial_art_data.gd" id="1_85jxs"]
+
+[resource]
+script = ExtResource("1_85jxs")
+id = "mingjiao_shenghuo"
+name = "圣火令"
+description = "明教圣物，筑基期修士可修炼。可发出圣火攻击敌人，火焰永不熄灭。"
+cost_stamina = 32.0
+cost_mana = 45.0
+cooldown = 8.5
+unlock_level = 36
+damage_base = 155.0
+damage_scale = 1.75
+hit_count = 3
+element_type = "火"
+startup_frames = 0.42
+active_frames = 1.0
+recovery_frames = 0.58
+total_duration = 2.0
+school = 6
+grade = 1
