@@ -29,6 +29,7 @@ var current_mode: HUDMode = HUDMode.EXPLORATION
 @onready var navigation_panel: Node = get_node_or_null("NavigationPanel")
 @onready var hotbar_controller: Node = get_node_or_null("HotbarController")
 @onready var notification_manager: Node = get_node_or_null("NotificationManager")
+@onready var dialogue_box: Node = get_node_or_null("DialogueBox")
 
 ## 性能优化框架组件 (Story 009)
 ## 注意: 这些组件暂时不使用类型声明,因为对应的脚本文件没有class_name声明
@@ -92,7 +93,8 @@ func _validate_scene_structure() -> void:
 		{"name": "CombatInfoPanel", "node": combat_info_panel},
 		{"name": "NavigationPanel", "node": navigation_panel},
 		{"name": "HotbarController", "node": hotbar_controller},
-		{"name": "NotificationManager", "node": notification_manager}
+		{"name": "NotificationManager", "node": notification_manager},
+		{"name": "DialogueBox", "node": dialogue_box}
 	]
 
 	var missing_nodes: Array = []
@@ -128,6 +130,18 @@ func _connect_signals() -> void:
 
 	# 监听系统模式变化
 	GameEvents.system_mode_changed.connect(_on_system_mode_changed)
+
+	# 监听对话系统信号,控制对话UI显示/隐藏
+	var dialogue_manager = get_node_or_null("/root/DialogueManager")
+	if dialogue_manager != null:
+		if not dialogue_manager.is_connected("node_displayed", _on_dialogue_node_displayed):
+			dialogue_manager.node_displayed.connect(_on_dialogue_node_displayed)
+		if not dialogue_manager.is_connected("dialogue_started", _on_dialogue_started):
+			dialogue_manager.dialogue_started.connect(_on_dialogue_started)
+		if not dialogue_manager.is_connected("dialogue_ended", _on_dialogue_ended):
+			dialogue_manager.dialogue_ended.connect(_on_dialogue_ended)
+	else:
+		push_warning("[HUDManager] DialogueManager not found - dialogue UI will not function")
 
 
 ## 设置HUD模式 (AC-4, AC-5, AC-6, AC-7)
@@ -239,3 +253,32 @@ func _on_test_combat_button_pressed() -> void:
 		# 当前在探索模式，进入战斗模式
 		print("[HUDManager] Test: Starting combat")
 		GameEvents.combat_started.emit()
+
+
+# ============================================================================
+# 对话系统信号处理
+# ============================================================================
+
+## 对话开始时的回调
+func _on_dialogue_started(_dialogue_id: String) -> void:
+	if dialogue_box != null:
+		dialogue_box.show_dialogue()
+		# 切换到对话模式，隐藏其他HUD元素
+		set_mode(HUDMode.MENU)
+	print("[HUDManager] Dialogue started")
+
+
+## 对话节点显示时的回调（传递到对话UI）
+func _on_dialogue_node_displayed(_node: DialogueData.DialogueNode) -> void:
+	# 对话节点显示由DialogueBox通过自己的信号连接处理
+	# 这里保留回调用于将来的扩展（如音效、动画等）
+	pass
+
+
+## 对话结束时的回调
+func _on_dialogue_ended(_dialogue_id: String) -> void:
+	if dialogue_box != null:
+		dialogue_box.hide_dialogue()
+		# 恢复到探索模式
+		set_mode(HUDMode.EXPLORATION)
+	print("[HUDManager] Dialogue ended")

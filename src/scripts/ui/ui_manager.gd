@@ -59,7 +59,8 @@ enum UIState {
 var current_state: int = UIState.MAIN_MENU
 
 ## UI组件引用
-var character_panel: Node = null
+var character_panel: Node = null          # Control root for show()/hide()
+var character_panel_script: Node = null   # Script node for update_display()
 var equipment_panel: Node = null
 var backpack_panel: Node = null
 var combat_interface: Node = null
@@ -97,6 +98,9 @@ func _ready() -> void:
 ## 设置UI组件引用
 func _setup_ui_components() -> void:
 	print("设置UI组件引用")
+	# CharacterPanelInstance is added dynamically by main_game_ui_script
+	# Use deferred to find it after both scenes are ready
+	call_deferred("_deferred_setup_character_panel")
 
 ## 切换到指定UI状态
 func switch_to_state(new_state: int) -> void:
@@ -150,6 +154,26 @@ func debug_print_ui_info() -> void:
 # 私有方法
 # ============================================================================
 
+## 延迟查找角色面板（确保场景实例化完成）
+func _deferred_setup_character_panel() -> void:
+	var main_ui = get_parent()
+	var panel_wrapper = main_ui.get_node_or_null("CharacterPanelInstance")
+	if panel_wrapper == null:
+		push_warning("CharacterPanelInstance 节点未找到")
+		return
+	
+	# CharacterPanelInstance is a Control (root of the instanced scene)
+	# We store a reference to it for show()/hide()
+	character_panel = panel_wrapper
+	
+	# Also get the script child node for update_display()
+	for child in panel_wrapper.get_children():
+		if child.name == "CharacterPanelScript":
+			character_panel_script = child
+			break
+	
+	print("  - 角色面板已绑定: ", character_panel.name)
+
 ## 隐藏当前UI状态
 func _hide_current_state() -> void:
 	match current_state:
@@ -199,14 +223,14 @@ func _update_character_panel() -> void:
 		push_error("无法访问CharacterSystem")
 		return
 	
-	if character_panel == null:
+	if character_panel == null or character_panel_script == null:
 		push_warning("角色面板未初始化")
 		return
 	
-	var character_data: Dictionary = character_system.get_final_attributes()
-	var combat_stats: Dictionary = character_system.get_combat_stats()
+	var character_data = character_system.get_final_attributes()
+	var combat_stats = character_system.get_combat_stats()
 	
-	character_panel.update_display({
+	character_panel_script.update_display({
 		"level": character_system.level,
 		"realm": character_system.get_current_realm()["name"],
 		"attributes": character_data,

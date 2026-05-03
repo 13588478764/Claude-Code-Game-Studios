@@ -10,18 +10,37 @@ func _ready():
 	if character_system != null:
 		character_system.initialize_character()
 	
+	# 动态加载并添加角色面板
+	load_and_add_character_panel()
+	
 	# 手动连接按钮信号
 	var start_button = get_node("StartNewGameButton")
 	if start_button != null:
-		start_button.pressed.connect(_on_start_new_game_pressed)
+		print("  - 开始新游戏按钮已连接")
+		if not start_button.pressed.is_connected(_on_start_new_game_pressed):
+			start_button.pressed.connect(_on_start_new_game_pressed)
+	else:
+		push_warning("StartNewGameButton 节点未找到")
 	
 	var load_button = get_node("LoadGameButton")
 	if load_button != null:
-		load_button.pressed.connect(_on_load_game_pressed)
+		if not load_button.pressed.is_connected(_on_load_game_pressed):
+			load_button.pressed.connect(_on_load_game_pressed)
 	
 	var test_button = get_node("TestAllSystemsButton")
 	if test_button != null:
-		test_button.pressed.connect(_on_test_all_systems_pressed)
+		if not test_button.pressed.is_connected(_on_test_all_systems_pressed):
+			test_button.pressed.connect(_on_test_all_systems_pressed)
+
+func load_and_add_character_panel():
+	"""动态加载角色面板场景"""
+	var scene = load("res://src/scenes/ui/character_panel.tscn")
+	if scene != null:
+		var panel_instance = scene.instantiate()
+		panel_instance.name = "CharacterPanelInstance"
+		add_child(panel_instance)
+	else:
+		push_error("无法加载角色面板场景")
 
 func _on_start_new_game_pressed():
 	"""开始新游戏按钮回调"""
@@ -59,7 +78,7 @@ func _on_test_all_systems_pressed():
 	print("=== 开始MVP完整验证 ===")
 	
 	# 直接调用现有的MVP验证脚本
-	var mvp_validator = preload("res://scripts/test_mvp_validation.gd").new()
+	var mvp_validator = preload("res://src/scripts/test_mvp_validation.gd").new()
 	add_child(mvp_validator)
 	
 	print("MVP验证已启动，请查看控制台输出...")
@@ -88,19 +107,11 @@ func initialize_game_systems():
 
 func show_character_panel():
 	"""显示角色面板"""
-	var ui_manager = get_node_or_null("/root/UIManager")
-	if ui_manager != null:
-		ui_manager.switch_to_state(ui_manager.UIState.CHARACTER_PANEL)
+	# UIManager 是 main_game_ui.tscn 的子节点，不是 Autoload
+	var ui_manager = get_node_or_null("UIManager")
+	if ui_manager == null:
+		push_warning("UIManager not found as child node")
+		return
 	
-	# 更新角色数据（通过UIManager）
-	var character_system = get_node_or_null("/root/CharacterSystem")
-	if character_system != null:
-		var character_data = {
-			"level": character_system.level,
-			"realm": character_system.get_current_realm()["name"],
-			"attributes": character_system.attributes.get_total(),
-			"attribute_points": character_system.total_attribute_points - character_system.allocated_attribute_points
-		}
-		
-		# UIManager会自动调用角色面板的update_display函数
-		ui_manager.update_character_panel()
+	# switch_to_state 会自动调用 _update_character_panel() 更新数据
+	ui_manager.switch_to_state(ui_manager.UIState.CHARACTER_PANEL)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8ydvvvvvvvvvvvv"]
+[gd_scene load_steps=2 format=3 uid="uid://c8ydweaknessico"]
 
 [ext_resource type="Script" path="res://src/scripts/ui/hud/weakness_icon_display.gd" id="1_abcdef"]
 

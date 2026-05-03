@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/hud/action_queue_display.tscn" id="4_action_queue_display"]
 [ext_resource type="Script" uid="uid://b7f5up6bw1tg4" path="res://src/scripts/ui/hud/menu_system_functions.gd" id="5_menu_system"]
 [ext_resource type="Script" uid="uid://c6tpjmngw4m0l" path="res://src/scripts/ui/hud/notification_manager.gd" id="6_notification_manager"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/dialogue_box.tscn" id="7_dialogue_box"]
 
 [node name="HUD" type="CanvasLayer" unique_id=1001619888]
 layer = 10
@@ -132,3 +133,5 @@ offset_top = 20.0
 offset_right = 550.0
 offset_bottom = 60.0
 text = "测试战斗模式"
+
+[node name="DialogueBox" parent="." unique_id=1536117332 instance=ExtResource("7_dialogue_box")]

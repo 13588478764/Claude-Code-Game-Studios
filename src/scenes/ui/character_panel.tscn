@@ -1,193 +1,225 @@
-[gd_scene load_steps=3 format=3 uid="uid://character_panel_ui"]
+[gd_scene format=3 uid="uid://cp0panelcharact"]
 
-[ext_resource type="Script" path="res://scripts/ui/character_panel_script.gd" id="1"]
+[ext_resource type="Script" uid="uid://dh8vgrkvc4s01" path="res://src/scripts/ui/character_panel_script.gd" id="1_script"]
 
 [node name="CharacterPanel" type="Control"]
-visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 3
 
 [node name="Background" type="Panel" parent="."]
-anchor_left = 0.2
-anchor_top = 0.1
-anchor_right = 0.8
-anchor_bottom = 0.9
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 0.0
-offset_bottom = 0.0
+layout_mode = 1
+anchors_left = 0.2
+anchors_top = 0.1
+anchors_right = 0.8
+anchors_bottom = 0.9
 
 [node name="TitleLabel" type="Label" parent="Background"]
-anchor_left = 0.0
-anchor_top = 0.0
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 0.1
 offset_left = 20.0
 offset_top = 20.0
 offset_right = -20.0
-offset_bottom = 60.0
+offset_bottom = -10.0
 text = "角色信息"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_type_variation = "HeaderLarge"
 
 [node name="LevelInfo" type="HBoxContainer" parent="Background"]
-anchor_left = 0.0
-anchor_top = 0.0
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.1
+anchors_right = 1.0
+anchors_bottom = 0.15
 offset_left = 20.0
-offset_top = 80.0
+offset_top = 50.0
 offset_right = -20.0
-offset_bottom = 120.0
+offset_bottom = 80.0
 
-[node name="LevelLabel" type="Label" parent="LevelInfo"]
+[node name="LevelLabel" type="Label" parent="Background/LevelInfo"]
+layout_mode = 2
 text = "等级: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LevelValue" type="Label" parent="LevelInfo"]
+[node name="LevelValue" type="Label" parent="Background/LevelInfo"]
+layout_mode = 2
 text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RealmLabel" type="Label" parent="LevelInfo"]
+[node name="RealmLabel" type="Label" parent="Background/LevelInfo"]
+layout_mode = 2
 text = " 境界: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RealmValue" type="Label" parent="LevelInfo"]
+[node name="RealmValue" type="Label" parent="Background/LevelInfo"]
+layout_mode = 2
 text = "炼气期"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AttributesPanel" type="VBoxContainer" parent="Background"]
-anchor_left = 0.0
-anchor_top = 0.0
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.15
+anchors_right = 1.0
+anchors_bottom = 0.7
 offset_left = 20.0
-offset_top = 140.0
+offset_top = 80.0
 offset_right = -20.0
-offset_bottom = 300.0
+offset_bottom = -60.0
 
-[node name="StrengthRow" type="HBoxContainer" parent="AttributesPanel"]
+[node name="StrengthRow" type="HBoxContainer" parent="Background/AttributesPanel"]
+layout_mode = 2
 
-[node name="StrengthLabel" type="Label" parent="StrengthRow"]
+[node name="StrengthLabel" type="Label" parent="Background/AttributesPanel/StrengthRow"]
+layout_mode = 2
 text = "力道: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StrengthValue" type="Label" parent="StrengthRow"]
+[node name="StrengthValue" type="Label" parent="Background/AttributesPanel/StrengthRow"]
+layout_mode = 2
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StrengthAddButton" type="Button" parent="StrengthRow"]
+[node name="StrengthAddButton" type="Button" parent="Background/AttributesPanel/StrengthRow"]
+layout_mode = 2
 text = "+"
 size_flags_horizontal = 2
 
-[node name="AgilityRow" type="HBoxContainer" parent="AttributesPanel"]
+[node name="AgilityRow" type="HBoxContainer" parent="Background/AttributesPanel"]
+layout_mode = 2
 
-[node name="AgilityLabel" type="Label" parent="AgilityRow"]
+[node name="AgilityLabel" type="Label" parent="Background/AttributesPanel/AgilityRow"]
+layout_mode = 2
 text = "身法: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AgilityValue" type="Label" parent="AgilityRow"]
+[node name="AgilityValue" type="Label" parent="Background/AttributesPanel/AgilityRow"]
+layout_mode = 2
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AgilityAddButton" type="Button" parent="AgilityRow"]
+[node name="AgilityAddButton" type="Button" parent="Background/AttributesPanel/AgilityRow"]
+layout_mode = 2
 text = "+"
 size_flags_horizontal = 2
 
-[node name="ConstitutionRow" type="HBoxContainer" parent="AttributesPanel"]
+[node name="ConstitutionRow" type="HBoxContainer" parent="Background/AttributesPanel"]
+layout_mode = 2
 
-[node name="ConstitutionLabel" type="Label" parent="ConstitutionRow"]
+[node name="ConstitutionLabel" type="Label" parent="Background/AttributesPanel/ConstitutionRow"]
+layout_mode = 2
 text = "根骨: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ConstitutionValue" type="Label" parent="ConstitutionRow"]
+[node name="ConstitutionValue" type="Label" parent="Background/AttributesPanel/ConstitutionRow"]
+layout_mode = 2
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ConstitutionAddButton" type="Button" parent="ConstitutionRow"]
+[node name="ConstitutionAddButton" type="Button" parent="Background/AttributesPanel/ConstitutionRow"]
+layout_mode = 2
 text = "+"
 size_flags_horizontal = 2
 
-[node name="IntelligenceRow" type="HBoxContainer" parent="AttributesPanel"]
+[node name="IntelligenceRow" type="HBoxContainer" parent="Background/AttributesPanel"]
+layout_mode = 2
 
-[node name="IntelligenceLabel" type="Label" parent="IntelligenceRow"]
+[node name="IntelligenceLabel" type="Label" parent="Background/AttributesPanel/IntelligenceRow"]
+layout_mode = 2
 text = "悟性: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="IntelligenceValue" type="Label" parent="IntelligenceRow"]
+[node name="IntelligenceValue" type="Label" parent="Background/AttributesPanel/IntelligenceRow"]
+layout_mode = 2
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="IntelligenceAddButton" type="Button" parent="IntelligenceRow"]
+[node name="IntelligenceAddButton" type="Button" parent="Background/AttributesPanel/IntelligenceRow"]
+layout_mode = 2
 text = "+"
 size_flags_horizontal = 2
 
-[node name="WillpowerRow" type="HBoxContainer" parent="AttributesPanel"]
+[node name="WillpowerRow" type="HBoxContainer" parent="Background/AttributesPanel"]
+layout_mode = 2
 
-[node name="WillpowerLabel" type="Label" parent="WillpowerRow"]
+[node name="WillpowerLabel" type="Label" parent="Background/AttributesPanel/WillpowerRow"]
+layout_mode = 2
 text = "定力: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WillpowerValue" type="Label" parent="WillpowerRow"]
+[node name="WillpowerValue" type="Label" parent="Background/AttributesPanel/WillpowerRow"]
+layout_mode = 2
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WillpowerAddButton" type="Button" parent="WillpowerRow"]
+[node name="WillpowerAddButton" type="Button" parent="Background/AttributesPanel/WillpowerRow"]
+layout_mode = 2
 text = "+"
 size_flags_horizontal = 2
 
-[node name="LuckRow" type="HBoxContainer" parent="AttributesPanel"]
+[node name="LuckRow" type="HBoxContainer" parent="Background/AttributesPanel"]
+layout_mode = 2
 
-[node name="LuckLabel" type="Label" parent="LuckRow"]
+[node name="LuckLabel" type="Label" parent="Background/AttributesPanel/LuckRow"]
+layout_mode = 2
 text = "福缘: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LuckValue" type="Label" parent="LuckRow"]
+[node name="LuckValue" type="Label" parent="Background/AttributesPanel/LuckRow"]
+layout_mode = 2
 text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LuckAddButton" type="Button" parent="LuckRow"]
+[node name="LuckAddButton" type="Button" parent="Background/AttributesPanel/LuckRow"]
+layout_mode = 2
 text = "+"
 size_flags_horizontal = 2
 
 [node name="AttributePointsRow" type="HBoxContainer" parent="Background"]
-anchor_left = 0.0
-anchor_top = 0.0
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.7
+anchors_right = 1.0
+anchors_bottom = 0.75
 offset_left = 20.0
-offset_top = 320.0
+offset_top = 0.0
 offset_right = -20.0
-offset_bottom = 360.0
+offset_bottom = 30.0
 
-[node name="AttributePointsLabel" type="Label" parent="AttributePointsRow"]
+[node name="AttributePointsLabel" type="Label" parent="Background/AttributePointsRow"]
+layout_mode = 2
 text = "可用属性点: "
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AttributePointsValue" type="Label" parent="AttributePointsRow"]
+[node name="AttributePointsValue" type="Label" parent="Background/AttributePointsRow"]
+layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ResetButton" type="Button" parent="Background"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 1.0
 offset_left = -240.0
 offset_top = -60.0
 offset_right = -140.0
@@ -195,8 +227,9 @@ offset_bottom = -20.0
 text = "重置"
 
 [node name="ApplyButton" type="Button" parent="Background"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 1.0
 offset_left = -130.0
 offset_top = -60.0
 offset_right = -30.0
@@ -204,15 +237,16 @@ offset_bottom = -20.0
 text = "应用"
 
 [node name="CloseButton" type="Button" parent="Background"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 1.0
 offset_left = -120.0
 offset_top = -100.0
 offset_right = -20.0
 offset_bottom = -60.0
 text = "关闭"
 
-[connection signal="pressed" from="CloseButton" to="CharacterPanel" method="_on_close_button_pressed"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]
 
 [node name="CharacterPanelScript" type="Node" parent="."]
-script = ExtResource("1")
+script = ExtResource("1_script")

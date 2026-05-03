@@ -27,6 +27,7 @@ QuestSystem="res://src/scripts/quest/quest_manager.gd"
 EncounterIntegration="*uid://bjiekx7cgnfyw"
 RelationshipManager="*res://src/scripts/relationship/relationship_manager.gd"
 DialogueManager="*res://src/scripts/dialogue/dialogue_manager.gd"
+DialogueLoader="*res://src/scripts/dialogue/dialogue_loader.gd"
 
 [editor_plugins]
 
