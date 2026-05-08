@@ -1,0 +1,84 @@
+{
+  "id": "encounter_08_beast",
+  "title": "灵兽契约 — 受伤灵兽",
+  "description": "在山林间发现受伤的雪灵狐，通体雪白，额头有金色纹路",
+  "type": "beast_contract",
+  "probability": 0.08,
+  "trigger_conditions": {
+    "region": "zhongyuan_forest",
+    "min_realm": "qi_refining_early",
+    "cooldown_minutes": 5
+  },
+  "dao_heart_alignment": "compassion",
+  "start_node": "BEAST_START",
+  "nodes": [
+    {
+      "id": "BEAST_START",
+      "speaker": "system",
+      "text": "你在山林间发现一只受伤的灵兽，它通体雪白，额头有一道金色纹路。\n它警惕地看着你，但没有逃跑。",
+      "next_node": "BEAST_CHOICE"
+    },
+    {
+      "id": "BEAST_CHOICE",
+      "speaker": "system",
+      "text": "灵兽的前腿上有一道深深的伤口，血液已经凝固。它的眼神中带着警惕和求助。",
+      "choices": [
+        {
+          "id": "heal",
+          "text": "用灵气为它治疗伤口",
+          "effects": [
+            {"type": "item_cost", "target": "spirit_energy", "value": 20},
+            {"type": "relationship_change", "target": "spirit_beast", "value": 30}
+          ],
+          "next_node": "BEAST_HEAL"
+        },
+        {
+          "id": "observe",
+          "text": "远远观察，不打扰它",
+          "effects": [
+            {"type": "skill_check", "target": "beast_knowledge", "operator": ">=", "value": 10}
+          ],
+          "next_node": "BEAST_OBSERVE_CHECK"
+        },
+        {
+          "id": "capture",
+          "text": "用灵气尝试强行捕捉",
+          "effects": [
+            {"type": "combat_check", "target": "capture_beast", "operator": ">=", "value": 20}
+          ],
+          "next_node": "BEAST_CAPTURE_CHECK"
+        }
+      ]
+    },
+    {
+      "id": "BEAST_HEAL",
+      "speaker": "system",
+      "text": "你运转灵气，小心翼翼地为其治疗伤口。\n\n灵兽起初有些抗拒，但感受到你的善意后逐渐放松下来。\n\n伤口愈合后，灵兽用头蹭了蹭你的手，表达了感谢。\n\n[b]消耗：[/b]灵气-20\n[b]获得：[/b]临时伙伴\"雪灵狐\"\n[b]效果：[/b]灵气感知+10%",
+      "next_node": "END"
+    },
+    {
+      "id": "BEAST_OBSERVE_CHECK",
+      "speaker": "system",
+      "text": "你躲在远处，仔细观察这只灵兽的特征。",
+      "next_node": "BEAST_OBSERVE_RESULT"
+    },
+    {
+      "id": "BEAST_OBSERVE_RESULT",
+      "speaker": "system",
+      "text": "[b]识别成功：[/b]这是一只罕见的\"雪灵狐\"，\n属于冰属性灵兽，极为珍贵。\n\n你获得了关于灵兽的知识，随后它自行离开了。\n\n[b]获得：[/b]灵兽知识（雪灵狐图鉴）",
+      "next_node": "END"
+    },
+    {
+      "id": "BEAST_CAPTURE_CHECK",
+      "speaker": "system",
+      "text": "你汇聚灵气，试图用契约阵法强行捕捉这只灵兽。",
+      "next_node": "BEAST_CAPTURE_RESULT"
+    },
+    {
+      "id": "BEAST_CAPTURE_RESULT",
+      "speaker": "system",
+      "text": "[b]捕捉成功：[/b]灵兽被阵法束缚，但眼神中充满敌意。\n它需要时间驯服才能成为可靠的伙伴。\n\n[b]获得：[/b]灵兽\"雪灵狐\"（敌对状态，需要驯服）",
+      "next_node": "END"
+    }
+  ]
+}

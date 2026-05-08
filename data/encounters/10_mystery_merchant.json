@@ -1,0 +1,76 @@
+{
+  "id": "encounter_10_merchant",
+  "title": "机缘巧合 — 神秘商人",
+  "description": "一个穿着奇特服饰的商人突然出现在路边，出售稀世珍宝",
+  "type": "random_merchant",
+  "probability": 0.05,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "cooldown_minutes": 5
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "MERCHANT_START",
+  "nodes": [
+    {
+      "id": "MERCHANT_START",
+      "speaker": "system",
+      "text": "一个穿着奇特服饰的商人突然出现在路边，他笑容可掬地说：\n\n\"这位道友，我这里有稀世珍宝，要不要看看？\"",
+      "next_node": "MERCHANT_CHOICE"
+    },
+    {
+      "id": "MERCHANT_CHOICE",
+      "speaker": "system",
+      "text": "商人的货物看起来琳琅满目，但来路不明，你需要谨慎决定。",
+      "choices": [
+        {
+          "id": "browse",
+          "text": "看看他卖什么东西",
+          "effects": [
+            {"type": "shop_open", "target": "mystery_merchant", "value": true}
+          ],
+          "next_node": "MERCHANT_BROWSE"
+        },
+        {
+          "id": "negotiate",
+          "text": "试着讨价还价",
+          "effects": [
+            {"type": "skill_check", "target": "negotiation", "operator": ">=", "value": 15}
+          ],
+          "next_node": "MERCHANT_NEGOTIATE_CHECK"
+        },
+        {
+          "id": "leave",
+          "text": "天上不会掉馅饼，离开",
+          "effects": [
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "MERCHANT_LEAVE"
+        }
+      ]
+    },
+    {
+      "id": "MERCHANT_BROWSE",
+      "speaker": "system",
+      "text": "商人打开了他的储物袋，里面陈列着几件物品：\n\n• 灵气结晶×10（价格：50灵石）\n• 黄阶功法残篇（价格：30灵石）\n• 神秘丹药×1（价格：80灵石）\n\n[b]商品：[/b]随机1-3件物品（可能稀有）",
+      "next_node": "END"
+    },
+    {
+      "id": "MERCHANT_NEGOTIATE_CHECK",
+      "speaker": "system",
+      "text": "你试着与商人讨价还价...",
+      "next_node": "MERCHANT_NEGOTIATE_RESULT"
+    },
+    {
+      "id": "MERCHANT_NEGOTIATE_RESULT",
+      "speaker": "system",
+      "text": "[b]谈判成功：[/b]商人微笑着同意给你20%的折扣。\n\n\"道友果然好口才！这个价格，我只给你一个人。\"\n\n[b]获得：[/b]20%折扣",
+      "next_node": "END"
+    },
+    {
+      "id": "MERCHANT_LEAVE",
+      "speaker": "system",
+      "text": "你没有理会商人，继续前行。\n\n商人看着你的背影，笑容不变：\"谨慎是好习惯，也许我们还会再见。\"\n\n正如他所说，神秘商人可能在其他地方再次出现。\n\n[b]道心：[/b]+5（谨慎）",
+      "next_node": "END"
+    }
+  ]
+}

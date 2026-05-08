@@ -1,0 +1,404 @@
+{
+  "id": "XIAO_QUEST_LINE",
+  "title": "萧寒夜支线 — 道魔之择",
+  "description": "魔教长老萧寒夜的诱惑与考验，正道与魔道的抉择",
+  "npc_id": "xiaohanye",
+  "quest_line": "xiaohanye_demonic",
+  "min_realm": "qi_refining_late",
+  "start_node": "XIAO_QUEST_001",
+  "nodes": [
+    {
+      "id": "XIAO_QUEST_001",
+      "speaker": "system",
+      "text": "在你处理魔修之事时，一位黑衣男子从天而降。\\n\\n他气质冷峻，周身散发着淡淡的魔气。\\n\\n萧寒夜（魔教长老）：\"有点意思。正道人士处理起魔道来，倒是煞有介事。\"",
+      "next_node": "XIAO_QUEST_002"
+    },
+    {
+      "id": "XIAO_QUEST_002",
+      "speaker": "xiaohanye",
+      "text": "我乃魔教长老萧寒夜。看你实力不俗，却为正道卖命，实在可惜。\\n\\n正道虚伪，满口仁义道德，背地里却干着见不得人的勾当。\\n\\n不如加入魔道，力量才是永恒。",
+      "emotion": "cold",
+      "effects": [
+        {"type": "dao_heart_change", "value": -5}
+      ],
+      "next_node": "XIAO_QUEST_CHOICE_001"
+    },
+    {
+      "id": "XIAO_QUEST_CHOICE_001",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "intrigued",
+          "text": "魔道力量？说来听听",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 15},
+            {"type": "dao_heart_change", "value": -5}
+          ],
+          "next_node": "XIAO_EXPLAIN_POWER"
+        },
+        {
+          "id": "reject",
+          "text": "道不同不相为谋，请回吧",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": -10},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "XIAO_REJECT"
+        },
+        {
+          "id": "question",
+          "text": "正道如何虚伪？愿闻其详",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 5}
+          ],
+          "next_node": "XIAO_EXPLAIN_HYPOCRISY"
+        }
+      ]
+    },
+    {
+      "id": "XIAO_EXPLAIN_POWER",
+      "speaker": "xiaohanye",
+      "text": "魔道功法，以情入道，以欲炼功。不求清心寡欲，而是直面人性。\\n\\n噬魂诀——吞噬敌人神魂，化为己用。\\n血魔大法——以血为媒，力量倍增。\\n\\n这些，正道敢教你吗？",
+      "emotion": "tempting",
+      "next_node": "XIAO_TEST_OFFER"
+    },
+    {
+      "id": "XIAO_EXPLAIN_HYPOCRISY",
+      "speaker": "xiaohanye",
+      "text": "天剑盟表面是正道领袖，暗地里却与魔教交易，出卖同道。\\n\\n我萧家满门，就是被天剑盟陷害灭族的。\\n\\n（他眼中闪过一丝恨意）\\n\\n你说，正道与魔道，有何区别？",
+      "emotion": "bitter",
+      "effects": [
+        {"type": "quest_trigger", "target": "xiao_family_mystery", "value": true}
+      ],
+      "next_node": "XIAO_TEST_OFFER"
+    },
+    {
+      "id": "XIAO_TEST_OFFER",
+      "speaker": "xiaohanye",
+      "text": "光说不练假把式。你若真有兴趣，通过我的考验，我便传授你魔道功法。\\n\\n当然，若你不敢，我也不勉强。",
+      "emotion": "challenging",
+      "next_node": "XIAO_TEST_CHOICE"
+    },
+    {
+      "id": "XIAO_REJECT",
+      "speaker": "xiaohanye",
+      "text": "（冷笑）\\n\\n哼，又是一个被正道洗脑的可怜虫。\\n\\n等你看透正道的虚伪面目时，再来找我吧。\\n\\n（他转身离去，消失在黑暗中）",
+      "emotion": "mocking",
+      "effects": [
+        {"type": "dao_heart_change", "value": 5}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "XIAO_TEST_CHOICE",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "accept_test",
+          "text": "好，我接受你的考验",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 10},
+            {"type": "dao_heart_change", "value": -5}
+          ],
+          "next_node": "XIAO_TEST_ACCEPT"
+        },
+        {
+          "id": "refuse_test",
+          "text": "抱歉，我不想卷入正魔之争",
+          "effects": [
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "XIAO_REJECT"
+        }
+      ]
+    },
+    {
+      "id": "XIAO_TEST_ACCEPT",
+      "speaker": "xiaohanye",
+      "text": "很好。我的考验很简单——\\n\\n击败我带来的三个试炼者，证明你的实力。\\n\\n但记住，真正的考验不在于胜负，而在于选择。",
+      "emotion": "cold",
+      "effects": [
+        {"type": "quest_trigger", "target": "demonic_trial", "value": true}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "TRIAL_FIGHT_START",
+      "speaker": "system",
+      "text": "萧寒夜带来三名魔道试炼者，实力从筑基初期到中期不等。\\n\\n你必须连续击败他们，不得休息。\\n\\n[b]战斗目标：[/b]连续击败3名试炼者",
+      "next_node": "TRIAL_FIGHT_RESULT"
+    },
+    {
+      "id": "TRIAL_FIGHT_RESULT",
+      "speaker": "system",
+      "text": "经过苦战，你终于击败了三名试炼者。\\n\\n他们倒在地上，等待你的发落。\\n\\n萧寒夜在一旁冷眼旁观。",
+      "next_node": "TRIAL_CHOICE"
+    },
+    {
+      "id": "TRIAL_CHOICE",
+      "speaker": "xiaohanye",
+      "text": "做得不错。现在，真正的考验来了——\\n\\n这三个人，你如何处置？\\n\\n杀了他们，证明你有魔道的决断力。\\n还是放他们走，继续你的伪善？",
+      "emotion": "testing",
+      "choices": [
+        {
+          "id": "kill_captives",
+          "text": "斩草除根，永绝后患",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 20},
+            {"type": "dao_heart_change", "value": -15},
+            {"type": "reputation_change", "target": "demonic_sect", "value": 10}
+          ],
+          "next_node": "TRIAL_KILL"
+        },
+        {
+          "id": "spare_captives",
+          "text": "他们已经败了，杀之不义",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": -5},
+            {"type": "dao_heart_change", "value": 15}
+          ],
+          "next_node": "TRIAL_SPADE"
+        },
+        {
+          "id": "release_captives",
+          "text": "放他们走，冤家宜解不宜结",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": -10},
+            {"type": "dao_heart_change", "value": 10},
+            {"type": "reputation_change", "target": "righteous_path", "value": 5}
+          ],
+          "next_node": "TRIAL_RELEASE"
+        }
+      ]
+    },
+    {
+      "id": "TRIAL_KILL",
+      "speaker": "xiaohanye",
+      "text": "（满意地点头）\\n\\n很好，你终于有了魔道的觉悟。\\n\\n从今天起，你便是我萧寒夜的弟子。噬魂诀的入门心法，我会传授于你。\\n\\n但记住，力量越大，责任越大。",
+      "emotion": "satisfied",
+      "effects": [
+        {"type": "quest_complete", "target": "xiaohanye_demonic", "value": true},
+        {"type": "martial_art_unlock", "target": "soul_devouring_art", "value": true}
+      ],
+      "next_node": "ENDING_DEMON"
+    },
+    {
+      "id": "TRIAL_SPADE",
+      "speaker": "xiaohanye",
+      "text": "（眉头微皱）\\n\\n不杀他们？看来你还是被正道思想束缚。\\n\\n不过，我不勉强。等你想通了，再来找我吧。\\n\\n（他带着人离去，留下一本功法秘籍）\\n\\n这本《噬魂诀》入门，就当是见面礼。",
+      "emotion": "disappointed",
+      "effects": [
+        {"type": "martial_art_unlock", "target": "soul_devouring_art", "value": true}
+      ],
+      "next_node": "ENDING_NEUTRAL"
+    },
+    {
+      "id": "TRIAL_RELEASE",
+      "speaker": "xiaohanye",
+      "text": "（怒极反笑）\\n\\n哈哈哈！好一个冤家宜解不宜结！\\n\\n（他眼中闪过一丝赞赏）\\n\\n有趣，你比我想象的更有趣。我萧寒夜见过无数正道人士，你是第一个敢在我面前放人的。\\n\\n这本《噬魂诀》送给你，希望你不要被自己的善良束缚。",
+      "emotion": "amused",
+      "effects": [
+        {"type": "relationship_change", "target": "xiaohanye", "value": 5},
+        {"type": "martial_art_unlock", "target": "soul_devouring_art", "value": true}
+      ],
+      "next_node": "ENDING_NEUTRAL"
+    },
+    {
+      "id": "ENDING_DEMON",
+      "speaker": "system",
+      "text": "你踏上了魔道之路。\\n\\n萧寒夜传授了你噬魂诀的入门心法，从此你正式成为魔道中人。\\n\\n[b]道心值大幅降低[/b]\\n[b]获得魔道功法：噬魂诀（入门）[/b]\\n[b]解锁后续任务：魔教试炼[/b]",
+      "next_node": null
+    },
+    {
+      "id": "ENDING_NEUTRAL",
+      "speaker": "system",
+      "text": "萧寒夜留下一本秘籍后离去。\\n\\n你获得了魔道功法《噬魂诀》，但尚未决定是否要修炼。\\n\\n正道与魔道的抉择，将由你未来的行动来决定。\\n\\n[b]获得功法：噬魂诀（入门）[/b]\\n[b]后续剧情待定[/b]",
+      "next_node": "FAMILY_REVENGE_CHECK"
+    },
+    {
+      "id": "FAMILY_REVENGE_CHECK",
+      "speaker": "xiaohanye",
+      "text": "他深夜来访，神色比往常更加阴沉。\\n\\n萧寒夜：\"我调查到了一些关于萧家灭门案的新线索。\"\\n\\n萧寒夜：\"当年陷害我萧家的证据，就在天剑盟的机密档案之中。\"",
+      "emotion": "intense",
+      "condition": {"type": "relationship_check", "target": "xiaohanye", "min": 50},
+      "next_node": "FAMILY_REVENGE_START"
+    },
+    {
+      "id": "FAMILY_REVENGE_START",
+      "speaker": "xiaohanye",
+      "text": "他深吸一口气，开始讲述那段被掩埋的历史。\\n\\n萧寒夜：\"三百年前，我萧家是正道大族，世代守护天剑盟。\"\\n\\n萧寒夜：\"但当时的几位长老忌惮我萧家的势力，联合起来设计了一场阴谋。\"\\n\\n萧寒夜：\"他们伪造证据，说我萧家与魔教勾结。天剑盟盟主信以为真，下令围剿。\"\\n\\n萧寒夜：\"一夜之间，萧家满门三百余口……只剩下我一个旁支子弟。\"",
+      "emotion": "painful",
+      "next_node": "FAMILY_REVENGE_CHOICE"
+    },
+    {
+      "id": "FAMILY_REVENGE_CHOICE",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "help_investigate",
+          "text": "我帮你找到确凿证据，揭露真相",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 15},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "FAMILY_REVENGE_ACCEPT"
+        },
+        {
+          "id": "warn_rash",
+          "text": "复仇之前，要先想好复仇之后的路",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 5},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "FAMILY_REVENGE_WARN"
+        },
+        {
+          "id": "oppose_revenge",
+          "text": "仇恨只会带来更大的仇恨。放下吧",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": -15},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "FAMILY_REVENGE_REJECT"
+        }
+      ]
+    },
+    {
+      "id": "FAMILY_REVENGE_ACCEPT",
+      "speaker": "xiaohanye",
+      "text": "他的眼中闪过一丝感激。\\n\\n萧寒夜：\"谢谢你……{player_name}。\"\\n\\n萧寒夜：\"我不需要你替我做决定。但如果你愿意帮我找到证据……我欠你一个人情。\"",
+      "emotion": "grateful",
+      "effects": [
+        {"type": "quest_trigger", "target": "xiao_family_evidence", "value": true}
+      ],
+      "next_node": "FAMILY_REVENGE_END"
+    },
+    {
+      "id": "FAMILY_REVENGE_WARN",
+      "speaker": "xiaohanye",
+      "text": "他沉默了许久。\\n\\n萧寒夜：\"复仇之后的路？\"\\n\\n萧寒夜：\"也许你说的对。但三百年了……有些事情，不是想放下就能放下的。\"\\n\\n萧寒夜：\"至少……让我先找到真相。至于之后……再说吧。\"",
+      "emotion": "hesitant",
+      "effects": [
+        {"type": "dao_heart_change", "value": 5}
+      ],
+      "next_node": "FAMILY_REVENGE_END"
+    },
+    {
+      "id": "FAMILY_REVENGE_REJECT",
+      "speaker": "xiaohanye",
+      "text": "他的眼中闪过一丝怒意，但很快消散。\\n\\n萧寒夜：\"放下？你说的轻松。\"\\n\\n萧寒夜：\"如果你的家人在一夜之间被屠戮殆尽，你能放下吗？\"\\n\\n他转身离去，留下一句话：\\n\\n萧寒夜：\"我不会强求你的理解。但这是我的路。\"",
+      "emotion": "angry",
+      "effects": [
+        {"type": "relationship_change", "target": "xiaohanye", "value": -5}
+      ],
+      "next_node": "FAMILY_REVENGE_END"
+    },
+    {
+      "id": "FAMILY_REVENGE_END",
+      "speaker": "system",
+      "text": "[b]支线场景三完成：[/b]家族血仇\\n\\n萧寒夜的身世之谜已揭示。\\n萧家被天剑盟长老陷害灭门，萧寒夜是唯一的幸存者。\\n\\n[b]下一场景：[/b]道魔之择（关系值65解锁）",
+      "next_node": "END"
+    },
+    {
+      "id": "DAO_DEMON_CHOICE_CHECK",
+      "speaker": "xiaohanye",
+      "text": "{player_name}，我有一件最后的事情要告诉你。\\n\\n关于我，关于正道与魔道，关于……我自己的选择。",
+      "emotion": "solemn",
+      "condition": {"type": "relationship_check", "target": "xiaohanye", "min": 65},
+      "next_node": "DAO_DEMON_CHOICE_START"
+    },
+    {
+      "id": "DAO_DEMON_CHOICE_START",
+      "speaker": "xiaohanye",
+      "text": "他独自站在山崖之上，望着远方的夜色。\\n\\n萧寒夜：\"你知道我为什么选择魔道吗？\"\\n\\n萧寒夜：\"不是因为我相信魔道的理念。而是因为……正道已经没有我的容身之处。\"\\n\\n萧寒夜：\"萧家灭门之后，我无处可去。是魔道收留了我。\"\\n\\n萧寒夜：\"但他们也不知道，我加入魔道的真正目的——\"",
+      "emotion": "contemplative",
+      "next_node": "DAO_DEMON_CHOICE_REVEAL"
+    },
+    {
+      "id": "DAO_DEMON_CHOICE_REVEAL",
+      "speaker": "xiaohanye",
+      "text": "他转过头，直视你的眼睛。\\n\\n萧寒夜：\"我要从内部瓦解魔道。\"\\n\\n萧寒夜：\"三百年了，我在魔道中积累了足够的势力和信任。\"\\n\\n萧寒夜：\"等时机成熟，我会一举铲除魔道的核心力量。\"\\n\\n萧寒夜：\"到那时，天剑盟的真相也会被公之于众。\"\\n\\n萧寒夜：\"正道和魔道，都将迎来真正的变革。\"",
+      "emotion": "determined",
+      "next_node": "DAO_DEMON_CHOICE_RESPONSE"
+    },
+    {
+      "id": "DAO_DEMON_CHOICE_RESPONSE",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "support_xiao",
+          "text": "我支持你。这是一个艰难但正确的选择",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 25},
+            {"type": "dao_heart_change", "value": 15}
+          ],
+          "next_node": "DAO_DEMON_SUPPORT"
+        },
+        {
+          "id": "warn_danger",
+          "text": "这条路极其危险。你确定自己走得下去吗？",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 10},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "DAO_DEMON_WARN"
+        },
+        {
+          "id": "persuade_let_go",
+          "text": "三百年了……也许放下仇恨，才是你自己的解脱",
+          "effects": [
+            {"type": "relationship_change", "target": "xiaohanye", "value": 15},
+            {"type": "dao_heart_change", "value": 20}
+          ],
+          "next_node": "DAO_DEMON_LET_GO"
+        }
+      ]
+    },
+    {
+      "id": "DAO_DEMON_SUPPORT",
+      "speaker": "xiaohanye",
+      "text": "他的嘴角微微上扬，露出了一个罕见的笑容。\\n\\n萧寒夜：\"支持？三百年来，你是第一个说支持我的人。\"\\n\\n萧寒夜：\"也许……这条路没那么孤单。\"\\n\\n萧寒夜：\"谢谢你，{player_name}。这份情，我萧寒夜记下了。\"",
+      "emotion": "moved",
+      "next_node": "DAO_DEMON_REWARD"
+    },
+    {
+      "id": "DAO_DEMON_WARN",
+      "speaker": "xiaohanye",
+      "text": "他沉默了片刻。\\n\\n萧寒夜：\"危险？我当然知道。\"\\n\\n萧寒夜：\"但三百年前，萧家三百口人的命，比我的命更危险。\"\\n\\n萧寒夜：\"我已经没有退路了。\"\\n\\n萧寒夜：\"但……我会小心。谢谢你提醒我。\"",
+      "emotion": "resolute",
+      "next_node": "DAO_DEMON_REWARD"
+    },
+    {
+      "id": "DAO_DEMON_LET_GO",
+      "speaker": "xiaohanye",
+      "text": "他仰望着星空，久久不语。\\n\\n萧寒夜：\"放下……谈何容易。\"\\n\\n萧寒夜：\"但你说得对。这三百年来，我被仇恨推着走，几乎忘记了自己是谁。\"\\n\\n萧寒夜：\"也许……是时候重新审视我自己的道路了。\"\\n\\n他的眼中，少了几分疯狂，多了一丝清明。",
+      "emotion": "reflective",
+      "effects": [
+        {"type": "dao_heart_change", "value": 10}
+      ],
+      "next_node": "DAO_DEMON_REWARD"
+    },
+    {
+      "id": "DAO_DEMON_REWARD",
+      "speaker": "xiaohanye",
+      "text": "他从怀中取出一本古朴的秘籍，递给你。\\n\\n萧寒夜：\"这是《血魔大法》的残篇。虽然名字听起来邪门，但其中的修炼之法，却是极为精妙的。\"\\n\\n萧寒夜：\"我一生所学的精华，都在这里了。\"\\n\\n萧寒夜：\"不管你将来选择什么道路，希望它能帮到你。\"",
+      "emotion": "sincere",
+      "effects": [
+        {"type": "skill_give", "target": "blood_demon_art_fragment", "value": 1},
+        {"type": "quest_trigger", "target": "xiaohanye_final_battle", "value": true},
+        {"type": "relationship_change", "target": "xiaohanye", "value": 20}
+      ],
+      "next_node": "DAO_DEMON_END"
+    },
+    {
+      "id": "DAO_DEMON_END",
+      "speaker": "system",
+      "text": "[b]获得：[/b]血魔大法残篇（地阶中品）\\n[b]获得：[/b]萧寒夜的承诺（最终战协助概率+30%）\\n[b]获得：[/b]魔道声望+30\\n\\n[b]支线完成：[/b]萧寒夜 — 道魔之择\\n\\n[b]—— 正道与魔道之间，是一个人的选择。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

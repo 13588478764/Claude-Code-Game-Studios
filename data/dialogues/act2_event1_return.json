@@ -1,0 +1,89 @@
+{
+  "id": "ACT2_EVENT1_RETURN",
+  "title": "第二幕事件一 — 青云镇归来",
+  "description": "玩家回到青云镇，发现城镇已重建，但云中鹤旧伤复发，时日无多",
+  "start_node": "RETURN_001",
+  "metadata": { "npc_id": "yun_zhonghe", "event": "act2_event1" },
+  "nodes": [
+    {
+      "id": "RETURN_001",
+      "speaker": "system",
+      "text": "数月之后，你再次踏上了青云镇的土地。\n\n眼前的景象令你驻足——昔日被战火摧残的街道已经焕然一新。新砌的青石路面上，商铺林立，人来人往，孩童们追逐嬉戏，仿佛那一场浩劫从未发生过。\n\n然而，城镇的繁华掩盖不住远处那道孤寂的身影。",
+      "next_node": "RETURN_002"
+    },
+    {
+      "id": "RETURN_002",
+      "speaker": "system",
+      "text": "你循着那道身影走去，发现云中鹤独自坐在镇外的古松之下。\n\n他背对着你，原本挺拔的身姿如今竟有几分佝偻。秋风卷起落叶，在他周身盘旋，而他仿佛毫无察觉，只是静静地凝视着远方。\n\n你注意到，他的呼吸略显急促，面色也比记忆中苍白了许多。",
+      "next_node": "RETURN_003"
+    },
+    {
+      "id": "RETURN_003",
+      "speaker": "yun_zhonghe",
+      "text": "……你回来了。\n\n他缓缓转过头来，嘴角勉强挤出一丝笑意，但眼中的疲惫却难以掩饰。\n\n青云镇重建得不错。百姓们有韧性，灾难过后总能站起来……只是我，恐怕看不到它完全恢复的那一日了。",
+      "emotion": "melancholy",
+      "next_node": "RETURN_004"
+    },
+    {
+      "id": "RETURN_004",
+      "speaker": "yun_zhonghe",
+      "text": "你不必多问。旧伤而已，当年那一战留下的根疾，这些年一直靠丹药压制。\n\n他轻咳了两声，声音低沉下去。\n\n但压制终究不是根治。我能感觉到……经脉中的灵气正在日渐枯竭。或许还有数月，或许更短。",
+      "emotion": "resigned",
+      "choices": [
+        {
+          "id": "ask_injury",
+          "text": "有没有办法治疗？我可以去寻找灵药",
+          "effects": [
+            { "type": "relationship_change", "target": "yun_zhonghe", "value": 5 }
+          ],
+          "next_node": "RETURN_005_A"
+        },
+        {
+          "id": "express_worry",
+          "text": "前辈……您不能就这样放弃",
+          "effects": [
+            { "type": "dao_heart_change", "value": 5 }
+          ],
+          "next_node": "RETURN_005_B"
+        },
+        {
+          "id": "change_topic",
+          "text": "……青云镇的变化确实很大",
+          "effects": [],
+          "next_node": "RETURN_005_C"
+        }
+      ]
+    },
+    {
+      "id": "RETURN_005_A",
+      "speaker": "player",
+      "text": "有没有办法治疗？我可以去寻找灵药！九州修真界这么大，一定有什么天材地宝能够治愈您的旧伤。",
+      "next_node": "RETURN_006"
+    },
+    {
+      "id": "RETURN_005_B",
+      "speaker": "player",
+      "text": "前辈……您不能就这样放弃。您教了我那么多，我还没有来得及报答您。",
+      "next_node": "RETURN_006"
+    },
+    {
+      "id": "RETURN_005_C",
+      "speaker": "player",
+      "text": "……青云镇的变化确实很大。百姓们的生活似乎已经恢复了正轨。",
+      "next_node": "RETURN_006"
+    },
+    {
+      "id": "RETURN_006",
+      "speaker": "yun_zhonghe",
+      "text": "他望着你，眼中闪过一丝欣慰。\n\n好孩子。你能有这份心，我便知足了。\n\n他站起身来，拍了拍衣袍上的尘土，语气忽然变得郑重。\n\n听我说——如今修真界风云变幻，你的实力还远远不够。天剑盟即将举办宗门大比，前三甲可获得玄阶功法，前十可拜入大宗门。你必须参加，必须变强。\n\n这不是为了我，是为了你自己，为了这九州修真界的未来。",
+      "emotion": "earnest",
+      "next_node": "RETURN_END"
+    },
+    {
+      "id": "RETURN_END",
+      "speaker": "system",
+      "text": "云中鹤的话语如同一记重锤，敲在你的心上。\n\n你望向远方，青云镇的炊烟袅袅升起，而天际隐隐有风云涌动之象。\n\n[b]宗门大比——你命运的下一个转折点，即将来临。[/b]",
+      "next_node": "END"
+    }
+  ]
+}

@@ -114,6 +114,17 @@
 - ⚠️ 初期开发速度可能较慢
 - ⚠️ 需要团队培训
 
+## ADR Dependencies
+
+无（这是第一个核心架构决策，不依赖其他 ADR）
+
+## GDD Requirements Addressed
+
+本 ADR 支持以下 GDD 系统：
+- 游戏概念文档（design/gdd/game-concept.md）
+- 所有核心游戏系统的技术基础
+- 项目整体架构标准定义
+
 ## Related Decisions
 
 - ADR-002: 战斗系统架构（待创建）

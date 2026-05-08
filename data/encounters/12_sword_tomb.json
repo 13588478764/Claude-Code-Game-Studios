@@ -1,0 +1,83 @@
+{
+  "id": "encounter_12_sword_tomb",
+  "title": "剑冢遗迹",
+  "description": "在中原剑山区域探索时，发现一处古老的剑修埋骨之地，残剑林立，剑气弥漫",
+  "type": "exploration",
+  "probability": 0.06,
+  "trigger_conditions": {
+    "region": "zhongyuan_sword_mountain",
+    "min_realm": "qi_refining_late",
+    "cooldown_minutes": 10
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "SWORD_TOMB_START",
+  "nodes": [
+    {
+      "id": "SWORD_TOMB_START",
+      "speaker": "system",
+      "text": "你在剑山深处发现一处隐秘的峡谷，四周插满了残破的古剑。\n剑气纵横交错，空气中弥漫着肃杀之意。\n\n这里是传说中的剑冢——历代剑修的埋骨之地。\n每一柄残剑都蕴含着一位剑修毕生的剑意...",
+      "next_node": "SWORD_TOMB_CHOICE"
+    },
+    {
+      "id": "SWORD_TOMB_CHOICE",
+      "speaker": "system",
+      "text": "面对这座剑冢，你需要做出选择。",
+      "choices": [
+        {
+          "id": "pull_sword",
+          "text": "尝试拔取一柄古剑",
+          "effects": [
+            {"type": "skill_check", "target": "sword_skill", "operator": ">=", "value": 15}
+          ],
+          "next_node": "SWORD_PULL_CHECK"
+        },
+        {
+          "id": "respect_spirits",
+          "text": "祭拜剑灵，表达对先辈的敬意",
+          "effects": [
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "SWORD_RESPECT"
+        },
+        {
+          "id": "record_leave",
+          "text": "记录剑冢位置后离开",
+          "effects": [
+            {"type": "map_mark", "target": "sword_tomb_location", "value": true}
+          ],
+          "next_node": "SWORD_LEAVE"
+        }
+      ]
+    },
+    {
+      "id": "SWORD_PULL_CHECK",
+      "speaker": "system",
+      "text": "你握住一柄古剑的剑柄，试图将其拔出。\n剑身传来强烈的反抗之力，你需要以剑道修为压制...",
+      "next_node": "SWORD_PULL_RESULT"
+    },
+    {
+      "id": "SWORD_PULL_RESULT",
+      "speaker": "system",
+      "text": "[b]拔剑成功：[/b]古剑应声而出，剑身虽已残缺，但剑意犹存。\n\n你从剑中获得了一段失传已久的剑诀碎片。\n\n[b]获得：[/b]上古剑诀残篇\n[b]获得：[/b]古剑碎片",
+      "next_node": "END"
+    },
+    {
+      "id": "SWORD_PULL_FAIL",
+      "speaker": "system",
+      "text": "[b]拔剑失败：[/b]古剑猛然震颤，一道凌厉的剑气反噬而来！\n\n你匆忙松手后退，但仍被剑气所伤。\n剑冢中的剑灵似乎对你的冒犯感到不满...\n\n[b]受伤：[/b]剑气反噬，气血受损\n[b]道心：[/b]-3",
+      "next_node": "END"
+    },
+    {
+      "id": "SWORD_RESPECT",
+      "speaker": "system",
+      "text": "你恭敬地向剑冢行礼，以修士之礼祭拜这些先辈剑灵。\n\n片刻后，一股温和的剑气从剑冢中升起，融入你的体内。\n剑灵们感受到了你的诚意，赐予你一份馈赠...\n\n[b]获得：[/b]剑骨祝福（被动技能）\n效果：剑道修炼速度+10%，剑法威力+5%\n[b]道心：[/b]+5",
+      "next_node": "END"
+    },
+    {
+      "id": "SWORD_LEAVE",
+      "speaker": "system",
+      "text": "你仔细观察了剑冢的布局和剑气流向，将位置详细记录下来。\n\n此地剑意深不可测，贸然行事恐怕有危险。\n待日后修为精进，再来此地探寻不迟。\n\n[b]获得：[/b]剑冢地图标记\n[b]解锁后续事件：[/b]重访剑冢",
+      "next_node": "END"
+    }
+  ]
+}

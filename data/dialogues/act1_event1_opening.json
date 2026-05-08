@@ -1,0 +1,249 @@
+{
+  "id": "ACT1_OPENING_001",
+  "title": "第一幕开场 — 青云镇的日常",
+  "description": "玩家在青云镇家中醒来，前往春集市，触发紫色光芒异象",
+  "start_node": "WAKEUP_001",
+  "metadata": {"npc_id": "system", "event": "act1_event1"},
+  "nodes": [
+    {
+      "id": "WAKEUP_001",
+      "speaker": "system",
+      "text": "清晨的阳光透过窗纸洒在屋内。今天是青云镇一年一度的春集市。\n桌上的旧剑微微泛着冷光——那是父亲留给你的唯一遗物。",
+      "next_node": "WAKEUP_002"
+    },
+    {
+      "id": "WAKEUP_002",
+      "speaker": "system",
+      "text": "你推开木门，清新的空气扑面而来。镇上传来阵阵叫卖声，炊烟袅袅升起。\n青云镇的一天，开始了。",
+      "choices": [
+        {
+          "id": "look_at_sword",
+          "text": "拿起桌上的旧剑，仔细端详",
+          "effects": [],
+          "next_node": "SWORD_REVEW_001"
+        },
+        {
+          "id": "go_market",
+          "text": "直接前往集市",
+          "effects": [],
+          "next_node": "MARKET_ENTRANCE_001"
+        }
+      ]
+    },
+    {
+      "id": "SWORD_REVEW_001",
+      "speaker": "player",
+      "text": "这把剑...父亲曾说它有些来历，但从未告诉我详情。剑身隐隐透着一股暖意，仿佛有什么力量在其中...",
+      "next_node": "SWORD_REVEW_002"
+    },
+    {
+      "id": "SWORD_REVEW_002",
+      "speaker": "system",
+      "text": "你将剑挎在腰间，走出了家门。剑身与你之间仿佛有一丝莫名的联系。\n（获得：[b]父亲的旧剑[/b]——看似普通，却隐隐不凡）",
+      "next_node": "MARKET_ENTRANCE_001"
+    },
+    {
+      "id": "MARKET_ENTRANCE_001",
+      "speaker": "system",
+      "text": "青云镇的春集市热闹非凡。镇民们从四面八方赶来，摊位上摆满了各色商品。\n你看到了铁匠铺前忙碌的王铁匠，还有坐在路边聊天的李婆婆。",
+      "choices": [
+        {
+          "id": "talk_wang",
+          "text": "去和王铁匠打个招呼",
+          "effects": [],
+          "next_node": "WANG_001"
+        },
+        {
+          "id": "talk_li",
+          "text": "去听李婆婆她们在聊什么",
+          "effects": [],
+          "next_node": "LI_001"
+        },
+        {
+          "id": "explore_market",
+          "text": "先在集市上随便逛逛",
+          "effects": [],
+          "next_node": "MARKET_EXPLORE_001"
+        }
+      ]
+    },
+    {
+      "id": "WANG_001",
+      "speaker": "wang_tiejiang",
+      "text": "哟，{player_name}，今天起得早啊！来瞧瞧我新打的菜刀，锋利得很呐！",
+      "choices": [
+        {
+          "id": "chat_rumor",
+          "text": "王叔，最近镇上有什么新鲜事吗？",
+          "effects": [
+            {"type": "quest_trigger", "target": "rumor_mill", "value": true}
+          ],
+          "next_node": "WANG_002"
+        },
+        {
+          "id": "buy_sword",
+          "text": "看看我带的这把剑怎么样？",
+          "effects": [],
+          "next_node": "WANG_SWORD_001"
+        },
+        {
+          "id": "leave_wang",
+          "text": "我先去别处转转",
+          "effects": [],
+          "next_node": "MARKET_EXPLORE_001"
+        }
+      ]
+    },
+    {
+      "id": "WANG_002",
+      "speaker": "wang_tiejiang",
+      "text": "说起新鲜事...最近后山那边确实不太平。好几个打柴的都说晚上听到怪声，低沉得很，像是...像是有人在念咒似的。",
+      "emotion": "worried",
+      "next_node": "WANG_003"
+    },
+    {
+      "id": "WANG_003",
+      "speaker": "wang_tiejiang",
+      "text": "不过你放心，大白天的，哪来什么邪祟！来，这把匕首你拿着防身，算是叔送你的。",
+      "effects": [
+        {"type": "item_give", "target": "iron_dagger", "value": 1}
+      ],
+      "next_node": "MARKET_EXPLORE_001"
+    },
+    {
+      "id": "WANG_SWORD_001",
+      "speaker": "wang_tiejiang",
+      "text": "嗯？这剑...看着普通，但材质我竟然认不出来。你从哪弄来的？",
+      "emotion": "surprised",
+      "choices": [
+        {
+          "id": "tell_truth",
+          "text": "是我父亲留下的遗物",
+          "effects": [
+            {"type": "relationship_change", "target": "wang_tiejiang", "value": 5}
+          ],
+          "next_node": "WANG_SWORD_002"
+        },
+        {
+          "id": "avoid_topic",
+          "text": "随便捡的，不值钱",
+          "effects": [],
+          "next_node": "WANG_SWORD_003"
+        }
+      ]
+    },
+    {
+      "id": "WANG_SWORD_002",
+      "speaker": "wang_tiejiang",
+      "text": "你父亲...是个了不起的人。这剑我看不透，但绝非凡品。你好好收着，将来或许有大用。",
+      "next_node": "MARKET_EXPLORE_001"
+    },
+    {
+      "id": "WANG_SWORD_003",
+      "speaker": "wang_tiejiang",
+      "text": "哈哈，那你运气不错。不过这剑确实不简单，你小子有福了。",
+      "next_node": "MARKET_EXPLORE_001"
+    },
+    {
+      "id": "LI_001",
+      "speaker": "li_popo",
+      "text": "小{player_name}啊，最近夜里老听见山上有奇怪的声音，你可别往那边跑啊。",
+      "emotion": "worried",
+      "choices": [
+        {
+          "id": "concerned",
+          "text": "李婆婆，是什么样的声音？",
+          "effects": [
+            {"type": "quest_trigger", "target": "mountain_rumor", "value": true},
+            {"type": "relationship_change", "target": "li_popo", "value": 5}
+          ],
+          "next_node": "LI_002"
+        },
+        {
+          "id": "dismiss",
+          "text": "婆婆多虑了，可能是野兽吧",
+          "effects": [],
+          "next_node": "LI_003"
+        }
+      ]
+    },
+    {
+      "id": "LI_002",
+      "speaker": "li_popo",
+      "text": "那声音啊...低沉得很，有时候还夹杂着紫光。张家的二小子说他在后山看到了什么阵法，结果被村里大人骂了一顿，说他在胡言乱语。",
+      "emotion": "fearful",
+      "next_node": "LI_003"
+    },
+    {
+      "id": "LI_003",
+      "speaker": "li_popo",
+      "text": "不管怎样，你一个小年轻，千万别一个人往山里跑。听话啊！",
+      "next_node": "MARKET_EXPLORE_001"
+    },
+    {
+      "id": "MARKET_EXPLORE_001",
+      "speaker": "system",
+      "text": "你在集市上逛了一会儿。热闹非凡，但你隐隐觉得...空气中似乎有一丝不寻常的灵气波动。\n很微弱，但你确实感觉到了。",
+      "next_node": "MARKET_EXPLORE_002"
+    },
+    {
+      "id": "MARKET_EXPLORE_002",
+      "speaker": "system",
+      "text": "就在这时——",
+      "next_node": "ANOMALY_001"
+    },
+    {
+      "id": "ANOMALY_001",
+      "speaker": "system",
+      "text": "[color=#a855f7]天空突然出现了一道紫色的光芒，照亮了整个青云镇。[/color]\n\n光芒持续了三秒左右，然后瞬间消失。\n\n集市上顿时炸开了锅——",
+      "next_node": "ANOMALY_002"
+    },
+    {
+      "id": "ANOMALY_002",
+      "speaker": "system",
+      "text": "众人议论纷纷。而你注意到——腰间的旧剑在紫色光芒出现时，微微震动了一下。\n[b]那绝不是普通的自然现象。[/b]",
+      "choices": [
+        {
+          "id": "investigate",
+          "text": "朝光芒方向（北方山林）调查",
+          "effects": [],
+          "next_node": "CHOICE_INVESTIGATE_001"
+        },
+        {
+          "id": "ask_around",
+          "text": "先在镇上问问其他人看到了什么",
+          "effects": [],
+          "next_node": "CHOICE_ASK_001"
+        }
+      ]
+    },
+    {
+      "id": "CHOICE_INVESTIGATE_001",
+      "speaker": "player",
+      "text": "那道光...和我的剑有关系。我必须去查清楚。",
+      "effects": [
+        {"type": "quest_trigger", "target": "act1_anomaly", "value": true}
+      ],
+      "next_node": "END_INVESTIGATE"
+    },
+    {
+      "id": "END_INVESTIGATE",
+      "speaker": "system",
+      "text": "你快步走出青云镇，朝着北方山林的方向奔去。\n\n[b]——前往事件二：启蒙[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "CHOICE_ASK_001",
+      "speaker": "player",
+      "text": "先问问其他人吧，也许他们知道些什么。",
+      "effects": [],
+      "next_node": "ASK_MORE_001"
+    },
+    {
+      "id": "ASK_MORE_001",
+      "speaker": "system",
+      "text": "你又询问了几位镇民，但大家都说不出所以然。\n\n然而到了夜里，镇上开始出现更多异常——地面微微震动，空气中弥漫着不安的气息。\n\n[b]你知道，不能再等待了。[/b]",
+      "next_node": "CHOICE_INVESTIGATE_001"
+    }
+  ]
+}

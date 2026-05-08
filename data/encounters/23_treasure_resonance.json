@@ -1,0 +1,115 @@
+{
+  "id": "encounter_23_treasure_resonance",
+  "title": "仙缘灵宝 — 宝物共鸣",
+  "description": "身上携带的某件宝物突然发出奇异共鸣，似乎在感应附近的其他灵宝",
+  "type": "item",
+  "probability": 0.08,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_mid",
+    "cooldown_minutes": 10
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "TREASURE_RESONANCE_START",
+  "nodes": [
+    {
+      "id": "TREASURE_RESONANCE_START",
+      "speaker": "system",
+      "text": "你突然感到怀中某件物品微微发烫，取出查看后发现它正在发出淡金色的光芒。\n\n这种共鸣现象只有在附近存在同源灵宝时才会出现...\n\n你顺着共鸣的方向望去，发现光芒似乎在指引你前往某个地方。",
+      "next_node": "TREASURE_RESONANCE_CHOICE"
+    },
+    {
+      "id": "TREASURE_RESONANCE_CHOICE",
+      "speaker": "system",
+      "text": "宝物的共鸣越来越强烈，你需要做出决定。",
+      "choices": [
+        {
+          "id": "follow_resonance",
+          "text": "跟随共鸣的指引，寻找源头",
+          "effects": [
+            {"type": "time_advance", "value": 15},
+            {"type": "skill_check", "target": "luck", "operator": ">=", "value": 10}
+          ],
+          "next_node": "TREASURE_FOLLOW"
+        },
+        {
+          "id": "analyze_first",
+          "text": "先分析宝物状态，确认共鸣的原因",
+          "effects": [
+            {"type": "skill_check", "target": "knowledge", "operator": ">=", "value": 12}
+          ],
+          "next_node": "TREASURE_ANALYZE_CHECK"
+        },
+        {
+          "id": "suppress_resonance",
+          "text": "压制共鸣，避免暴露自己拥有宝物",
+          "effects": [
+            {"type": "dao_heart_change", "value": 2}
+          ],
+          "next_node": "TREASURE_SUPPRESS_END"
+        }
+      ]
+    },
+    {
+      "id": "TREASURE_FOLLOW",
+      "speaker": "system",
+      "text": "你跟随共鸣的指引穿过山谷，来到一处隐蔽的石洞前。\n\n洞中传来强烈的灵力波动，宝物在你手中震动得更加厉害。\n\n[b]你发现了一处灵宝埋藏之地！[/b]",
+      "next_node": "TREASURE_DISCOVER_CHOICE"
+    },
+    {
+      "id": "TREASURE_ANALYZE_CHECK",
+      "speaker": "system",
+      "text": "你仔细感应宝物的共鸣频率，发现它与一种古老的炼器手法有关。\n\n这种共鸣说明附近有同源的炼器材料或成品灵宝。",
+      "next_node": "TREASURE_ANALYZE_RESULT"
+    },
+    {
+      "id": "TREASURE_ANALYZE_RESULT",
+      "speaker": "system",
+      "text": "[b]分析成功：[/b]你判断共鸣源自东方约三里处的一处山谷。\n\n根据共鸣的强度，其中至少有一件黄阶以上的灵宝。\n\n[b]获得：[/b]灵宝位置信息",
+      "next_node": "TREASURE_DISCOVER_CHOICE"
+    },
+    {
+      "id": "TREASURE_SUPPRESS_END",
+      "speaker": "system",
+      "text": "你运转灵力压制了宝物的共鸣，将其重新收入怀中。\n\n虽然错过了一次可能的机缘，但谨慎行事也是一种修行。\n\n[b]道心：[/b]+2",
+      "next_node": "END"
+    },
+    {
+      "id": "TREASURE_DISCOVER_CHOICE",
+      "speaker": "system",
+      "text": "你来到了共鸣源头，地面上隐约可见一个古老的法阵。\n\n法阵中央似乎有什么东西在发光。",
+      "choices": [
+        {
+          "id": "activate_array",
+          "text": "尝试激活法阵，看会发生什么",
+          "effects": [
+            {"type": "skill_check", "target": "array_mastery", "operator": ">=", "value": 15},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "TREASURE_ARRAY_END"
+        },
+        {
+          "id": "dig_directly",
+          "text": "不管法阵，直接挖掘发光之处",
+          "effects": [
+            {"type": "item_give", "target": "spirit_treasure_fragment", "value": 1},
+            {"type": "reputation_change", "target": "bold_cultivator", "value": 2}
+          ],
+          "next_node": "TREASURE_DIG_END"
+        }
+      ]
+    },
+    {
+      "id": "TREASURE_ARRAY_END",
+      "speaker": "system",
+      "text": "你按照感应到的灵力流向激活了法阵，一阵光芒闪过...\n\n法阵中央浮现出一件散发着柔和光芒的灵宝！\n\n[b]获得：[/b]共鸣灵宝（黄阶）\n[b]道心：[/b]+5\n\n此灵宝与你原有的宝物同源，两者配合使用效果更佳。",
+      "next_node": "END"
+    },
+    {
+      "id": "TREASURE_DIG_END",
+      "speaker": "system",
+      "text": "你不顾法阵的存在，直接动手挖掘发光之处。\n\n在泥土中发现了一块灵宝碎片，虽然不完整，但依然蕴含不少灵力。\n\n[b]获得：[/b]灵宝碎片 x1",
+      "next_node": "END"
+    }
+  ]
+}

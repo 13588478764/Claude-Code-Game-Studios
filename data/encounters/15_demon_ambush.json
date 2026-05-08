@@ -1,0 +1,89 @@
+{
+  "id": "encounter_15_combat",
+  "title": "魔修伏击",
+  "description": "在荒僻之处遭到几名魔修的突然袭击，这些堕落的修士以掠夺其他修士的灵石和法宝为生",
+  "type": "combat",
+  "probability": 0.09,
+  "trigger_conditions": {
+    "region": "zhongyuan_danger_zone",
+    "min_realm": "qi_refining_mid",
+    "cooldown_minutes": 5
+  },
+  "dao_heart_alignment": "righteous",
+  "start_node": "DEMON_AMBUSH_START",
+  "nodes": [
+    {
+      "id": "DEMON_AMBUSH_START",
+      "speaker": "system",
+      "text": "你正行至一处荒僻山谷，忽然感到四周杀气弥漫。\n\n三道黑影从岩石后闪出，将你团团围住。\n\n这些人的气息阴邪诡异，显然是堕入魔道的修士——\n他们以掠夺其他修士为生，手上已沾染了不知多少修士的鲜血。\n\n「嘿嘿，又一个肥羊。」为首的魔修舔了舔嘴唇，眼中闪着贪婪的光芒。",
+      "next_node": "DEMON_AMBUSH_CHOICE"
+    },
+    {
+      "id": "DEMON_AMBUSH_CHOICE",
+      "speaker": "system",
+      "text": "三名魔修已将你包围，你必须立刻做出决断。\n\n形势危急，不容犹豫。",
+      "choices": [
+        {
+          "id": "fight",
+          "text": "迎战魔修，以正义之力降妖除魔",
+          "effects": [
+            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 18}
+          ],
+          "next_node": "DEMON_FIGHT_CHECK"
+        },
+        {
+          "id": "flee",
+          "text": "施展身法，迅速逃离包围",
+          "effects": [
+            {"type": "skill_check", "target": "speed", "operator": ">=", "value": 16}
+          ],
+          "next_node": "DEMON_FLEE_CHECK"
+        },
+        {
+          "id": "negotiate",
+          "text": "尝试与魔修交涉，以言词化解危机",
+          "effects": [
+            {"type": "skill_check", "target": "charisma", "operator": ">=", "value": 14}
+          ],
+          "next_node": "DEMON_NEGOTIATE_CHECK"
+        }
+      ]
+    },
+    {
+      "id": "DEMON_FIGHT_CHECK",
+      "speaker": "system",
+      "text": "你毫无惧色，周身灵力运转，摆开阵势迎向三名魔修。\n\n战斗一触即发——",
+      "next_node": "DEMON_FIGHT_RESULT"
+    },
+    {
+      "id": "DEMON_FIGHT_RESULT",
+      "speaker": "system",
+      "text": "[b]战斗胜利：[/b]\n\n你以精妙的武学和高超的战术，将三名魔修尽数击溃。\n\n虽然受了一些轻伤，但你的浩然正气在这场战斗中愈发凝练。\n\n从魔修的储物袋中，你获得了不少战利品——看来这些人确实掠夺了不少无辜修士。\n\n[b]获得：[/b]灵石 × 3，低阶法器 × 1，魔修储物袋\n[b]道心：[/b]+5（正义之举）\n[b]声望：[/b]+3",
+      "next_node": "END"
+    },
+    {
+      "id": "DEMON_FLEE_CHECK",
+      "speaker": "system",
+      "text": "你身形一闪，施展出最擅长的身法，向包围圈的薄弱处突去。\n\n身后的魔修发出怒吼，紧追不舍——",
+      "next_node": "DEMON_FLEE_RESULT"
+    },
+    {
+      "id": "DEMON_FLEE_RESULT",
+      "speaker": "system",
+      "text": "[b]逃脱成功：[/b]\n\n你凭借迅捷的身法，成功摆脱了魔修的追击。\n\n虽然没能获得战利品，但保全了自身才是最重要的。\n\n那几名魔修日后若有机缘，定要替天行道。\n\n[b]灵力消耗：[/b]中等",
+      "next_node": "END"
+    },
+    {
+      "id": "DEMON_NEGOTIATE_CHECK",
+      "speaker": "system",
+      "text": "你深吸一口气，运足中气，朗声说道：\n\n「三位道友，你我皆是修行之人，何必刀兵相见？若肯放行，在下愿以灵石相赠，化干戈为玉帛。」",
+      "next_node": "DEMON_NEGOTIATE_RESULT"
+    },
+    {
+      "id": "DEMON_NEGOTIATE_RESULT",
+      "speaker": "system",
+      "text": "[b]交涉成功：[/b]\n\n为首的魔修眯着眼睛打量了你一番，似乎被你的言辞打动了——或者说，他评估了一下你的实力，觉得强攻未必能占到便宜。\n\n「算你识相。」他冷冷说道，挥手示意手下退下。\n\n你付出了一些灵石，好歹全身而退。\n\n不过，放走这些魔修，日后不知又有多少无辜修士会遭其毒手……\n\n[b]失去：[/b]灵石 × 2\n[b]道心：[/b]-2（纵容魔修）",
+      "next_node": "END"
+    }
+  ]
+}

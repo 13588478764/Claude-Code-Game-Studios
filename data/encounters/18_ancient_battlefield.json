@@ -1,0 +1,71 @@
+{
+  "id": "encounter_18_ancient_battlefield",
+  "title": "古战场遗迹 — 上古修士战场",
+  "description": "发现一处上古修士战场的遗址，残破的法宝和断裂的剑器散落其间，空气中仍残留着淡淡的灵力",
+  "type": "exploration",
+  "probability": 0.06,
+  "trigger_conditions": {
+    "region": "zhongyuan_battlefield",
+    "min_realm": "qi_refining_late",
+    "cooldown_minutes": 12
+  },
+  "dao_heart_alignment": "righteous",
+  "start_node": "BATTLEFIELD_START",
+  "nodes": [
+    {
+      "id": "BATTLEFIELD_START",
+      "speaker": "system",
+      "text": "你穿过一片荒芜的山谷，眼前赫然出现一片广阔的古战场遗迹。\n\n断裂的飞剑插在焦土之上，碎裂的法宝残片随处可见。空气中隐隐有灵力在涌动，似乎是当年战斗留下的残余。\n\n远处，几座残破的阵法仍在缓缓运转……",
+      "next_node": "BATTLEFIELD_CHOICE"
+    },
+    {
+      "id": "BATTLEFIELD_CHOICE",
+      "speaker": "system",
+      "text": "这片古战场中或许还残留着珍贵之物，但也潜藏着未知的危险。你需要做出选择。",
+      "choices": [
+        {
+          "id": "search_loot",
+          "text": "搜寻战场，寻找幸存者遗物和珍贵法宝",
+          "effects": [
+            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 18}
+          ],
+          "next_node": "BATTLEFIELD_SEARCH_CHECK"
+        },
+        {
+          "id": "pay_respect",
+          "text": "为陨落的修士们敬上一炷香，超度亡魂",
+          "effects": [
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "BATTLEFIELD_RESPECT"
+        },
+        {
+          "id": "study_formations",
+          "text": "仔细研究战场上的阵法痕迹，学习战斗技艺",
+          "effects": [
+            {"type": "skill_gain", "target": "formation_knowledge", "value": 1}
+          ],
+          "next_node": "BATTLEFIELD_STUDY"
+        }
+      ]
+    },
+    {
+      "id": "BATTLEFIELD_SEARCH_CHECK",
+      "speaker": "system",
+      "text": "你小心翼翼地翻找着战场上的每一处角落。\n\n在一具枯骨旁，你发现了一枚保存完好的储物戒指和几件低阶法宝。\n\n然而，残余的灵力突然暴动，一道远古剑气向你袭来！你勉强避开，但手臂仍被划出一道血痕。\n\n[b]获得：[/b]储物戒指（内含灵石×50，疗伤丹×3）\n[b]获得：[/b]破损飞剑×1\n[b]灵力：[/b]受到残余灵力冲击，-10",
+      "next_node": "END"
+    },
+    {
+      "id": "BATTLEFIELD_RESPECT",
+      "speaker": "system",
+      "text": "你取出随身携带的香火，在战场中央点燃。\n\n青烟袅袅升起，周围残留的灵力似乎感应到了你的善意，渐渐平息。恍惚间，你仿佛看到无数身影向你抱拳致谢，随后消散于天地之间。\n\n你的心境在此刻得到了升华，道心愈发坚定。\n\n[b]道心：[/b]+10\n[b]感悟：[/b]对生死之道有了新的领悟",
+      "next_node": "END"
+    },
+    {
+      "id": "BATTLEFIELD_STUDY",
+      "speaker": "system",
+      "text": "你盘膝坐在一处残阵前，仔细观察阵纹的走向和灵力的流转。\n\n这是上古时期两位金丹修士对决时留下的合击阵法痕迹。虽然阵法已经残缺，但其中蕴含的阵法原理仍然值得学习。\n\n经过一个时辰的推演，你终于领悟了这套阵法的核心要诀。\n\n[b]获得：[/b]上古合击阵法残篇（知识）\n[b]阵法造诣：[/b]+1\n[b]解锁：[/b]后续可尝试修复此阵法",
+      "next_node": "END"
+    }
+  ]
+}

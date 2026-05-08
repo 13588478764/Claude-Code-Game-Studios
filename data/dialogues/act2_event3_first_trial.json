@@ -1,0 +1,110 @@
+{
+  "id": "ACT2_EVENT3_FIRST_TRIAL",
+  "title": "第二幕事件三 — 初次试炼",
+  "description": "玩家参加宗门大比前的资格试炼，面对天剑盟外门弟子",
+  "start_node": "TRIAL_001",
+  "metadata": { "npc_id": "tianjian_outsider", "event": "act2_event3" },
+  "nodes": [
+    {
+      "id": "TRIAL_001",
+      "speaker": "system",
+      "text": "太华山试炼擂台。\n\n巨大的汉白玉擂台悬浮于半空之上，四周环绕着淡金色的灵力屏障。数十座擂台并排而立，每一座上都正在进行着激烈的对决。\n\n灵气从擂台缝隙中溢出，令周围的空气都微微震颤。\n\n你站在第七号擂台前，等待着你的第一个对手。",
+      "next_node": "TRIAL_002"
+    },
+    {
+      "id": "TRIAL_002",
+      "speaker": "system",
+      "text": "一个身穿天剑盟外门弟子服饰的青年跃上擂台。\n\n他看起来约莫二十出头，面容冷峻，腰间佩剑散发着淡淡的寒光。他打量了你一番，眼中闪过一丝不易察觉的轻视。\n\n但他的站姿沉稳，灵力内敛——绝不是表面看起来那么简单。",
+      "next_node": "TRIAL_003"
+    },
+    {
+      "id": "TRIAL_003",
+      "speaker": "tianjian_outsider",
+      "text": "你就是那个从青云镇来的散修？\n\n他嘴角微微一扬，语气中带着几分傲气。\n\n我叫赵无极，天剑盟外门弟子。这资格赛的规矩很简单——将我击出擂台，或者让我认输。\n\n他拔出长剑，剑锋指向你。\n\n来吧。让我看看你有没有资格参加大比。",
+      "emotion": "arrogant",
+      "next_node": "TRIAL_004"
+    },
+    {
+      "id": "TRIAL_004",
+      "speaker": "system",
+      "text": "赵无极已经摆开架势，剑意在周身流转。\n\n你观察着他的战斗姿态——剑势凌厉，但步伐略显浮躁。你判断，他的实际修为应该在筑基初期，略高于你。\n\n正面硬拼并非上策，但你必须找到一个突破口。",
+      "next_node": "TRIAL_005"
+    },
+    {
+      "id": "TRIAL_005",
+      "speaker": "system",
+      "text": "你决定采取什么策略？",
+      "choices": [
+        {
+          "id": "full_attack",
+          "text": "全力攻击，以压倒性气势压制对手",
+          "effects": [
+            { "type": "quest_trigger", "target": "trial_aggressive_route", "value": true }
+          ],
+          "next_node": "TRIAL_006_A"
+        },
+        {
+          "id": "probe_observe",
+          "text": "试探观察，先摸清对方的招式套路",
+          "effects": [
+            { "type": "quest_trigger", "target": "trial_cautious_route", "value": true }
+          ],
+          "next_node": "TRIAL_006_B"
+        },
+        {
+          "id": "defensive_counter",
+          "text": "防守反击，以静制动，后发制人",
+          "effects": [
+            { "type": "quest_trigger", "target": "trial_defensive_route", "value": true }
+          ],
+          "next_node": "TRIAL_006_C"
+        }
+      ]
+    },
+    {
+      "id": "TRIAL_006_A",
+      "speaker": "player",
+      "text": "你深吸一口气，体内灵气瞬间爆发。\n\n不再犹豫，不再试探——你将全部力量灌注于剑锋之上，如雷霆万钧般向赵无极冲去。\n\n空气中响起尖锐的破空声！",
+      "next_node": "TRIAL_007_A"
+    },
+    {
+      "id": "TRIAL_007_A",
+      "speaker": "tianjian_outsider",
+      "text": "哼，莽夫！\n\n赵无极脸色微变，仓促间举剑格挡。但你的气势远超他的预料，巨大的冲击力令他连连后退，脚下的汉玉砖面出现了裂痕。\n\n然而他毕竟是天剑盟外门弟子——稳住身形后，他的眼中反而多了一分凝重。\n\n有点本事。但也仅此而已了！",
+      "emotion": "angry",
+      "next_node": "TRIAL_RESULT"
+    },
+    {
+      "id": "TRIAL_006_B",
+      "speaker": "player",
+      "text": "你没有急于出手，而是绕着擂台缓缓移动。\n\n赵无极的每一个细微动作都在你的观察之中——他握剑的手指节微微发白，右肩的重心有少许前倾。你判断出，他的惯用招式是右路直刺。\n\n足够了。你已经找到了破绽。",
+      "next_node": "TRIAL_007_B"
+    },
+    {
+      "id": "TRIAL_007_B",
+      "speaker": "tianjian_outsider",
+      "text": "你在那磨蹭什么？怕了吗？\n\n赵无极冷笑一声，主动向你攻来。但他的每一次攻击都被你精准地化解——因为你已经提前预判了他的路线。\n\n几个回合后，他的脸色终于变了。\n\n你……你怎么知道我的招式习惯？！",
+      "emotion": "shocked",
+      "next_node": "TRIAL_RESULT"
+    },
+    {
+      "id": "TRIAL_006_C",
+      "speaker": "player",
+      "text": "你后退一步，剑尖朝下，摆出了守势。\n\n赵无极连出数剑，你一一化解，不急不躁。你的防御如同一面铜墙铁壁，将他的攻势尽数挡下。\n\n渐渐地，赵无极的呼吸变得急促，攻势也出现了破绽。\n\n就是现在。",
+      "next_node": "TRIAL_007_C"
+    },
+    {
+      "id": "TRIAL_007_C",
+      "speaker": "tianjian_outsider",
+      "text": "赵无极的攻击愈发急躁，终于在一次全力突刺中露出了巨大的空当。\n\n你抓住了那个瞬间——\n\n剑光一闪，你的剑尖停在了他喉咙前半寸。\n\n赵无极僵住了。他的额头上渗出了冷汗。\n\n……我认输。",
+      "emotion": "defeated",
+      "next_node": "TRIAL_RESULT"
+    },
+    {
+      "id": "TRIAL_RESULT",
+      "speaker": "system",
+      "text": "擂台上的灵力屏障亮起，判定结果——\n\n[b]胜者：你。[/b]\n\n赵无极收起长剑，深深地看了你一眼，跃下擂台。围观的修士们发出阵阵惊叹。\n\n资格试炼通过。你获得了参加宗门大比的正式资格。\n\n[b]——前往事件四：魔教入侵[/b]",
+      "next_node": "END"
+    }
+  ]
+}

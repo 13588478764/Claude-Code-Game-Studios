@@ -1,0 +1,120 @@
+{
+  "id": "ACT3_EVENT2_TRIAL",
+  "title": "第三幕事件二 — 宗门/势力试炼",
+  "description": "玩家必须通过当地势力的考验，证明自己的实力",
+  "start_node": "TRIAL_001",
+  "metadata": { "npc_id": "system", "event": "act3_event2" },
+  "nodes": [
+    {
+      "id": "TRIAL_001",
+      "speaker": "system",
+      "text": "你在新的地域安顿下来后不久，便收到了势力的通知。\n\n无论你是身处天剑盟的外门、万魔殿的偏殿，还是千宝阁的试炼场，考验的形式都大同小异——\n\n在修士云集之地，唯有实力才能赢得话语权。",
+      "next_node": "TRIAL_002"
+    },
+    {
+      "id": "TRIAL_002",
+      "speaker": "system",
+      "text": "考验分为两个阶段：\n\n第一轮：与同辈修士切磋，展示基础修为\n第二轮：应对突发试炼，考验实战能力\n\n你深吸一口气，走进了试炼场。",
+      "next_node": "TRIAL_BRANCH_FACTION"
+    },
+    {
+      "id": "TRIAL_BRANCH_FACTION",
+      "speaker": "system",
+      "text": "你所在的势力决定了试炼的形式。",
+      "choices": [
+        {
+          "id": "trial_tianjian",
+          "text": "（天剑盟外门大考）",
+          "condition": { "type": "quest_status", "target": "tianjian_faction_hub", "value": "active" },
+          "effects": [],
+          "next_node": "TRIAL_TIANJIAN"
+        },
+        {
+          "id": "trial_demonic",
+          "text": "（万魔殿生死试炼）",
+          "condition": { "type": "quest_status", "target": "dark_faction_hub", "value": "active" },
+          "effects": [],
+          "next_node": "TRIAL_DEMONIC"
+        },
+        {
+          "id": "trial_free",
+          "text": "（千宝阁佣兵试炼）",
+          "effects": [],
+          "next_node": "TRIAL_FREE"
+        }
+      ]
+    },
+    {
+      "id": "TRIAL_TIANJIAN",
+      "speaker": "system",
+      "text": "天剑盟的外门大考在演武场举行。\n\n数十名外门弟子列阵而立，剑气纵横。你的对手是一名筑基初期的弟子，手持一柄寒光闪烁的铁剑。\n\n对手：\"听说你从青云镇来？让我看看你有什么本事。\"",
+      "next_node": "TRIAL_TIANJIAN_FIGHT"
+    },
+    {
+      "id": "TRIAL_TIANJIAN_FIGHT",
+      "speaker": "player",
+      "text": "你拔剑出鞘，剑骨碎片在体内微微颤动。\n\n请指教。",
+      "next_node": "TRIAL_TIANJIAN_RESULT"
+    },
+    {
+      "id": "TRIAL_TIANJIAN_RESULT",
+      "speaker": "system",
+      "text": "剑光交错，数招之后，你的对手败下阵来。\n\n你并未下重手，只是点到为止。这正是云中鹤教你的——剑修的骄傲，不在于杀伤，而在于境界。\n\n陆明远在一旁点了点头，眼中闪过一丝赞许。\n\n陆明远：\"不错。你的剑法有传承，不像野路子。第二轮试炼，你准备好了吗？\"",
+      "next_node": "TRIAL_SECOND_ROUND"
+    },
+    {
+      "id": "TRIAL_DEMONIC",
+      "speaker": "system",
+      "text": "万魔殿的试炼残酷无比。\n\n你的对手是一名筑基初期的魔修，眼中满是嗜血的疯狂。\n\n魔修：\"在这里，只有活人和死人。来吧！\"\n\n他话音未落，便已扑了上来。",
+      "next_node": "TRIAL_DEMONIC_FIGHT"
+    },
+    {
+      "id": "TRIAL_DEMONIC_FIGHT",
+      "speaker": "player",
+      "text": "你侧身闪避，剑骨的力量涌入剑身，一剑斩出。\n\n魔修的攻势被你硬生生打断，踉跄后退。",
+      "next_node": "TRIAL_DEMONIC_RESULT"
+    },
+    {
+      "id": "TRIAL_DEMONIC_RESULT",
+      "speaker": "system",
+      "text": "你本可以一剑毙命，但你停下了剑锋。\n\n对手瘫倒在地，惊疑不定地看着你。\n\n旁观的魔修们窃窃私语。\n\n神秘声音再次响起：\"留手不杀，是仁慈还是软弱？罢了，第二轮试炼，你会遇到更艰难的考验。\"",
+      "next_node": "TRIAL_SECOND_ROUND"
+    },
+    {
+      "id": "TRIAL_FREE",
+      "speaker": "system",
+      "text": "千宝阁的佣兵试炼不同于宗门的规矩。\n\n你的任务是：进入附近的妖兽山谷，带回一只一阶妖兽的妖核。\n\n任务发布者：\"生死自负。完成了任务，你在千宝阁就有了一席之地。\"",
+      "next_node": "TRIAL_FREE_FIGHT"
+    },
+    {
+      "id": "TRIAL_FREE_FIGHT",
+      "speaker": "system",
+      "text": "妖兽山中，你与一只一阶巅峰的铁甲犀牛相遇。\n\n剑骨的感知提前预警了妖兽的冲锋，你抓住破绽，一剑刺入它的弱点。\n\n妖核入手，温热而充满灵力。",
+      "next_node": "TRIAL_FREE_RESULT"
+    },
+    {
+      "id": "TRIAL_FREE_RESULT",
+      "speaker": "system",
+      "text": "你带着妖核回到千宝阁。\n\n任务发布者接过妖核，点了点头。\n\n任务发布者：\"不错。从现在起，你可以接取千宝阁的委托了。\"\n\n[b]千宝阁佣兵资格已获取。[/b]",
+      "next_node": "TRIAL_SECOND_ROUND"
+    },
+    {
+      "id": "TRIAL_SECOND_ROUND",
+      "speaker": "system",
+      "text": "第一轮试炼顺利通过。\n\n然而你还没来得及休整，一股突如其来的灵力波动从远方传来——\n\n所有人都感觉到了。那不是普通的灵力波动，而是一种……撕裂感。\n\n仿佛有什么东西正在从内部崩坏。",
+      "next_node": "TRIAL_INTERRUPTED"
+    },
+    {
+      "id": "TRIAL_INTERRUPTED",
+      "speaker": "system",
+      "text": "试炼被迫中断。\n\n一名神色慌张的修士冲了过来：\"不好了！北边的封印又裂了！这次的裂缝比上次大了整整一倍！\"\n\n众人哗然。\n\n[b]第二轮试炼因突发事件中断。\n封印松动的速度，比预想的更快……[/b]",
+      "next_node": "TRIAL_END"
+    },
+    {
+      "id": "TRIAL_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\n\n• 第一轮试炼：通过\n• 获得所在势力的初步认可\n• 封印异动提前发生，紧迫感上升\n• 下一事件：封印异动调查\n\n[b]—— 时间不等人。封印正在加速崩溃。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

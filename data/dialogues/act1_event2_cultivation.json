@@ -1,0 +1,173 @@
+{
+  "id": "ACT2_CULTIVATION_001",
+  "title": "事件二 — 拜师与修炼突破",
+  "description": "玩家在山林中跟随云中鹤修炼，突破至炼气初期的对话",
+  "start_node": "CULTIVATION_START_001",
+  "metadata": {"npc_id": "yunzhonghe", "event": "act1_event2"},
+  "nodes": [
+    {
+      "id": "CULTIVATION_START_001",
+      "speaker": "yunzhonghe",
+      "text": "好，既然你决定踏入修炼之道，那便先从感知灵气开始。闭上眼睛，用心去感受周围的气息。",
+      "next_node": "CULTIVATION_START_002"
+    },
+    {
+      "id": "CULTIVATION_START_002",
+      "speaker": "system",
+      "text": "你按照云中鹤的指导，盘膝坐下，闭目凝神。\n起初什么都感觉不到，但随着时间推移，一丝丝微弱的热流开始从四面八方汇聚而来。",
+      "next_node": "CULTIVATION_START_003"
+    },
+    {
+      "id": "CULTIVATION_START_003",
+      "speaker": "yunzhonghe",
+      "text": "嗯？！这么快就能感知到灵气...果然是'剑骨'体质，万中无一。",
+      "emotion": "surprised",
+      "choices": [
+        {
+          "id": "what_is_sword_bone",
+          "text": "'剑骨'体质？那是什么？",
+          "effects": [],
+          "next_node": "SWORD_BONE_EXPLAIN_001"
+        },
+        {
+          "id": "focus_training",
+          "text": "（沉默不语，继续专注感知灵气）",
+          "effects": [
+            {"type": "dao_heart_change", "target": "dao_heart", "value": 5}
+          ],
+          "next_node": "FOCUS_TRAINING_001"
+        }
+      ]
+    },
+    {
+      "id": "SWORD_BONE_EXPLAIN_001",
+      "speaker": "yunzhonghe",
+      "text": "'剑骨'是一种极罕见的先天体质。拥有此骨者，天生与剑道有缘，修炼剑系功法事半功倍。\n但古往今来，剑骨持有者往往命运多舛...",
+      "emotion": "contemplative",
+      "next_node": "SWORD_BONE_EXPLAIN_002"
+    },
+    {
+      "id": "SWORD_BONE_EXPLAIN_002",
+      "speaker": "yunzhonghe",
+      "text": "不说这些了。既然你天赋异禀，我便传你《基础剑诀》。此诀虽为黄阶上品，但根基扎实，最适合入门。",
+      "effects": [
+        {"type": "item_give", "target": "basic_sword_manual", "value": 1},
+        {"type": "skill_give", "target": "basic_sword_art", "value": 1}
+      ],
+      "next_node": "TRAINING_TUTORIAL_001"
+    },
+    {
+      "id": "FOCUS_TRAINING_001",
+      "speaker": "yunzhonghe",
+      "text": "（见你不为所动，继续凝神修炼，微微点头）\n心性沉稳，不急不躁，倒难得。'剑骨'之名，你且日后自会知晓。",
+      "emotion": "approving",
+      "next_node": "SWORD_BONE_EXPLAIN_002"
+    },
+    {
+      "id": "TRAINING_TUTORIAL_001",
+      "speaker": "system",
+      "text": "云中鹤将《基础剑诀》交予你，并开始指导你修炼。\n\n你翻开册子，只见第一页写着：\n[i]\"剑道之始，在于凝气入体。以意引气，以气御剑，方能登堂入室。\"[/i]",
+      "next_node": "TRAINING_TUTORIAL_002"
+    },
+    {
+      "id": "TRAINING_TUTORIAL_002",
+      "speaker": "system",
+      "text": "[b]修炼教程开始[/b]\n\n第一步：吸收灵气——感应周围的灵气，并将其引入体内。\n（点击灵气节点，将其引导至丹田）",
+      "next_node": "TRAINING_STEP1_001"
+    },
+    {
+      "id": "TRAINING_STEP1_001",
+      "speaker": "system",
+      "text": "你成功将第一缕灵气引入丹田。一股暖流在体内流转，感觉前所未有的奇妙。\n\n第二步：引导灵气沿经脉运行，完成第一次小周天循环。",
+      "next_node": "TRAINING_STEP2_001"
+    },
+    {
+      "id": "TRAINING_STEP2_001",
+      "speaker": "system",
+      "text": "你按照《基础剑诀》的指引，引导灵气沿十二经脉循环。\n起初灵气运行缓慢，但随着循环次数增加，速度越来越快。",
+      "next_node": "TRAINING_STEP3_001"
+    },
+    {
+      "id": "TRAINING_STEP3_001",
+      "speaker": "system",
+      "text": "第三步：突破——当灵气积累到临界点时，将灵气凝聚成气旋，正式踏入炼气期。\n\n[b]注意：突破时需谨慎控制灵气，避免走火入魔。[/b]",
+      "next_node": "BREAKTHROUGH_001"
+    },
+    {
+      "id": "BREAKTHROUGH_001",
+      "speaker": "system",
+      "text": "你将丹田中的灵气压缩、凝聚、旋转...\n\n[b]轰！[/b]\n\n一股强大的灵气从你体内爆发而出，周围的气流为之涌动。\n\n你感到体内的气旋已成——正式踏入[b]炼气初期[/b]！",
+      "next_node": "BREAKTHROUGH_002"
+    },
+    {
+      "id": "BREAKTHROUGH_002",
+      "speaker": "yunzhonghe",
+      "text": "不错！三天便到炼气初期，比我预期的还快。\n但你记住，修炼之路漫长，切不可急躁。根基不牢，日后必生瓶颈。",
+      "emotion": "approving",
+      "next_node": "BREAKTHROUGH_003"
+    },
+    {
+      "id": "BREAKTHROUGH_003",
+      "speaker": "yunzhonghe",
+      "text": "嗯？这种灵气波动...似曾相识。三百年前飞升之战后，就再没见过这种波动...",
+      "emotion": "concerned",
+      "choices": [
+        {
+          "id": "ask_ascension",
+          "text": "前辈，飞升之战是什么？",
+          "effects": [],
+          "next_node": "ASCENSION_FORESHADOW_001"
+        },
+        {
+          "id": "let_it_go",
+          "text": "（见前辈神色有异，暂时没有追问）",
+          "effects": [],
+          "next_node": "BREAKTHROUGH_004"
+        }
+      ]
+    },
+    {
+      "id": "ASCENSION_FORESHADOW_001",
+      "speaker": "yunzhonghe",
+      "text": "...此事说来话长。现在你刚入门，知道太多反而无益。时机到了，我自会告诉你。",
+      "emotion": "sighing",
+      "effects": [
+        {"type": "quest_trigger", "target": "foreshadowing_001", "value": true}
+      ],
+      "next_node": "BREAKTHROUGH_004"
+    },
+    {
+      "id": "BREAKTHROUGH_004",
+      "speaker": "yunzhonghe",
+      "text": "好了，你已踏入炼气期，也算正式迈入修炼之门。\n接下来我会教你几招基础剑式，用来防身。",
+      "next_node": "COMBAT_INTRO_001"
+    },
+    {
+      "id": "COMBAT_INTRO_001",
+      "speaker": "system",
+      "text": "[b]战斗教学开始[/b]\n\n云中鹤向你演示了基础剑式的三个要领：\n1. 挥剑——基础攻击\n2. 格挡——防御技能\n3. 灵气附剑——增加伤害",
+      "next_node": "COMBAT_INTRO_002"
+    },
+    {
+      "id": "COMBAT_INTRO_002",
+      "speaker": "yunzhonghe",
+      "text": "去，拿你的剑试试。前方林中有几只低阶灵兽，正好拿来练手。",
+      "next_node": "COMBAT_PRACTICE_001"
+    },
+    {
+      "id": "COMBAT_PRACTICE_001",
+      "speaker": "system",
+      "text": "你握紧手中的剑，朝林中走去...\n\n[b]——基础战斗教学完成——[/b]\n\n获得成就：初露锋芒",
+      "effects": [
+        {"type": "quest_trigger", "target": "combat_tutorial_done", "value": true}
+      ],
+      "next_node": "EVENT2_END"
+    },
+    {
+      "id": "EVENT2_END",
+      "speaker": "system",
+      "text": "经过三天的修炼，你正式踏入炼气初期。\n云中鹤对你的进步颇为满意，但你注意到他偶尔会望着北方出神，似乎在担心着什么。\n\n[b]——返回青云镇，进入事件三：危机——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

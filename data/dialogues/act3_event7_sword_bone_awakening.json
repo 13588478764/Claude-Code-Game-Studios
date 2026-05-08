@@ -1,0 +1,83 @@
+{
+  "id": "ACT3_EVENT7_SWORD_BONE",
+  "title": "第三幕事件七 — 剑骨觉醒",
+  "description": "剑骨碎片完全觉醒，云中鹤留下真正的遗言，解锁云鹤九剑最后两式",
+  "start_node": "SWORD_BONE_001",
+  "metadata": { "npc_id": "yunzhonghe", "event": "act3_event7" },
+  "nodes": [
+    {
+      "id": "SWORD_BONE_001",
+      "speaker": "system",
+      "text": "从上古战场返回后的那个夜晚，你做了一个梦。\n\n梦中，你站在一片无垠的剑原之上。四面八方，皆是断裂的剑。\n\n而在那剑原的尽头，一个熟悉的身影背对着你。\n\n云中鹤。",
+      "emotion": "dream",
+      "next_node": "SWORD_BONE_002"
+    },
+    {
+      "id": "SWORD_BONE_002",
+      "speaker": "yunzhonghe",
+      "text": "他转过身来。这一次，他的脸上没有遗憾，没有悲伤，只有平静的欣慰。\n\n你来了。我在剑骨之中，等了你很久。",
+      "emotion": "peaceful",
+      "next_node": "SWORD_BONE_003"
+    },
+    {
+      "id": "SWORD_BONE_003",
+      "speaker": "player",
+      "text": "前辈……您还在这里？我以为您已经——",
+      "next_node": "SWORD_BONE_004"
+    },
+    {
+      "id": "SWORD_BONE_004",
+      "speaker": "yunzhonghe",
+      "text": "他笑了。\n\n我的身体确实已经不在了。但我的意志，我一生所悟的剑道，都在这块剑骨之中。\n\n你带着它走到了今天，看到了三百年前的真相。\n\n是时候了——将最后两式传授于你。",
+      "emotion": "proud",
+      "next_node": "SWORD_BONE_TEACH_001"
+    },
+    {
+      "id": "SWORD_BONE_TEACH_001",
+      "speaker": "yunzhonghe",
+      "text": "云鹤九剑，前七式斩敌，后两式——斩命。\n\n不是敌人的命，是命运之命。\n\n第八式，名为'断天'。以剑为引，斩断一切不应存在的枷锁——封印、执念、轮回。",
+      "emotion": "solemn",
+      "effects": [
+        { "type": "skill_give", "target": "yunhe_sword_8", "value": 1 },
+        { "type": "passive_give", "target": "sword_bone_complete", "value": true }
+      ],
+      "next_node": "SWORD_BONE_TEACH_002"
+    },
+    {
+      "id": "SWORD_BONE_TEACH_002",
+      "speaker": "yunzhonghe",
+      "text": "第九式，名为'归一'。\n\n以己身为剑，以道心为锋。不求杀敌，只求——找到那条唯一正确的路。\n\n这一式，不是剑法，是选择。是你面对九州命运时，必须做出的那个选择。",
+      "emotion": "final",
+      "effects": [
+        { "type": "skill_give", "target": "yunhe_sword_9", "value": 1 },
+        { "type": "dao_heart_change", "value": 15 }
+      ],
+      "next_node": "SWORD_BONE_FAREWELL"
+    },
+    {
+      "id": "SWORD_BONE_FAREWELL",
+      "speaker": "yunzhonghe",
+      "text": "他的身影开始变得模糊。剑骨中的意志正在消散。\n\n最后一句话——\n\n不要因为我让你'小心慕容雪'，就先入为主地认定她是敌人。\n\n人心从来不是非黑即白。用你自己的眼睛去看，用你自己的心去判断。\n\n{player_name}，你的道，只能由你自己来走。",
+      "emotion": "final",
+      "next_node": "SWORD_BONE_GOODBYE"
+    },
+    {
+      "id": "SWORD_BONE_GOODBYE",
+      "speaker": "player",
+      "text": "前辈——！\n\n你伸出手，却只触到了一片冰冷的剑光。\n\n云中鹤的身影彻底消散了。但这一次，你感受到的不再是悲伤——\n\n而是一种前所未有的坚定。",
+      "next_node": "SWORD_BONE_AWAKEN"
+    },
+    {
+      "id": "SWORD_BONE_AWAKEN",
+      "speaker": "system",
+      "text": "你从梦中醒来。\n\n体内的剑骨碎片已经不再是冰冷的——它变得温暖，仿佛与你的心跳同步。\n\n剑骨——完全觉醒。\n\n你站起身来，感受到体内涌动的力量。那是筑基期的真气，加上剑骨的传承之力。\n\n你已经准备好了。",
+      "next_node": "SWORD_BONE_END"
+    },
+    {
+      "id": "SWORD_BONE_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\n\n• 剑骨完全觉醒\n• 获得云鹤九剑第八式'断天'\n• 获得云鹤九剑第九式'归一'\n• 获得被动：剑骨传承（完整版）\n• 道心值大幅提升\n• 云中鹤的最终遗言已传达\n• 下一事件：九州之门开启\n\n[b]—— 师徒缘尽于此。但剑之道，永不终结。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

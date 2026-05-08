@@ -1,0 +1,175 @@
+{
+  "id": "ACT4_BOSS_001",
+  "title": "事件四 — 血祭阵决战",
+  "description": "玩家突袭血祭阵，与筑基期魔修对决，战后处置选择",
+  "start_node": "BOSS_PRE_001",
+  "metadata": {"npc_id": "mob_xiushi", "event": "act1_event4"},
+  "nodes": [
+    {
+      "id": "BOSS_PRE_001",
+      "speaker": "system",
+      "text": "夜幕降临，你们三人悄无声息地潜入山谷。\n\n山谷中紫气弥漫，一座血色法阵正在运转。阵眼处一名黑衣修士正在吸收灵气，旁边铁笼关着失踪的村民。",
+      "next_node": "BOSS_PRE_002"
+    },
+    {
+      "id": "BOSS_PRE_002",
+      "speaker": "yunzhonghe",
+      "text": "就是他。筑基后期的修为...比我预料的还要强一些。\n{player_name}，你负责护住村民，我和铁兄拖住他。",
+      "emotion": "serious",
+      "next_node": "BOSS_PRE_003"
+    },
+    {
+      "id": "BOSS_PRE_003",
+      "speaker": "tiewushuang",
+      "text": "嘿嘿，正好让我试试这几个月练的新招式！",
+      "emotion": "excited",
+      "next_node": "BOSS_PRE_004"
+    },
+    {
+      "id": "BOSS_PRE_004",
+      "speaker": "mob_xiushi",
+      "text": "哈哈哈，来得正好！老夫的血祭阵正缺几滴修士精血！\n你们一个都别想走！",
+      "emotion": "angry",
+      "next_node": "BOSS_BATTLE_START"
+    },
+    {
+      "id": "BOSS_BATTLE_START",
+      "speaker": "yunzhonghe",
+      "text": "动手！",
+      "next_node": "BOSS_PHASE1"
+    },
+    {
+      "id": "BOSS_PHASE1",
+      "speaker": "system",
+      "text": "[b]战斗阶段一[/b]\n\n云中鹤率先出手，剑光如虹，直逼魔修面门。\n铁无双紧随其后，双拳裹挟着浑厚内力砸向阵眼守卫。\n\n你的任务：清理血祭阵守卫，保护村民不被波及。",
+      "next_node": "BOSS_PHASE2"
+    },
+    {
+      "id": "BOSS_PHASE2",
+      "speaker": "system",
+      "text": "[b]战斗阶段二[/b]\n\n守卫已被清理干净。云中鹤与魔修激战正酣，一时难分胜负。\n\n现在！趁魔修被缠住，用灵气攻击破坏血祭阵阵眼！",
+      "next_node": "BOSS_PHASE3"
+    },
+    {
+      "id": "BOSS_PHASE3",
+      "speaker": "system",
+      "text": "[b]战斗阶段三[/b]\n\n血祭阵被你破坏一角，魔修暴怒之下全力出手。\n云中鹤为护住你，旧伤复发，一口鲜血喷出！\n\n现在你必须独自面对受伤的魔修。",
+      "next_node": "BOSS_POST_001"
+    },
+    {
+      "id": "BOSS_POST_001",
+      "speaker": "system",
+      "text": "经过一番苦战，魔修终于被你击倒在地。\n他口吐鲜血，眼神怨毒地盯着你...",
+      "next_node": "BOSS_POST_DIALOGUE_001"
+    },
+    {
+      "id": "BOSS_POST_DIALOGUE_001",
+      "speaker": "mob_xiushi",
+      "text": "咳...你们...别得意。\n他...不会放过你们的...\n血祭大阵...已经启动...谁也阻止不了...",
+      "emotion": "angry",
+      "next_node": "BOSS_POST_CHOICE"
+    },
+    {
+      "id": "BOSS_POST_CHOICE",
+      "speaker": "system",
+      "text": "魔修已经失去战斗力，现在你需要决定如何处置他。",
+      "next_node": "BOSS_POST_KILL_CHOICE"
+    },
+    {
+      "id": "BOSS_POST_KILL_CHOICE",
+      "speaker": "player",
+      "text": "这个邪修犯下滔天罪行，必须受到惩罚！",
+      "choices": [
+        {
+          "id": "kill",
+          "text": "邪修当诛，留你不得！",
+          "effects": [
+            {"type": "dao_heart_change", "target": "dao_heart", "value": -5},
+            {"type": "item_give", "target": "blood_refinement_manual", "value": 1}
+          ],
+          "next_node": "BOSS_POST_KILL"
+        },
+        {
+          "id": "capture",
+          "text": "将你交给正道审判",
+          "effects": [
+            {"type": "dao_heart_change", "target": "dao_heart", "value": 10},
+            {"type": "reputation_change", "target": "righteous", "value": 20}
+          ],
+          "next_node": "BOSS_POST_CAPTURE"
+        },
+        {
+          "id": "interrogate",
+          "text": "先审问出幕后主使再处置你",
+          "effects": [
+            {"type": "dao_heart_change", "target": "dao_heart", "value": 5},
+            {"type": "quest_trigger", "target": "behind_master_clue", "value": true}
+          ],
+          "next_node": "BOSS_POST_INTERROGATE"
+        }
+      ]
+    },
+    {
+      "id": "BOSS_POST_KILL",
+      "speaker": "player",
+      "text": "（一剑刺入魔修心脏，结束了他的罪恶一生）",
+      "next_node": "BOSS_POST_KILL_RESULT"
+    },
+    {
+      "id": "BOSS_POST_KILL_RESULT",
+      "speaker": "yunzhonghe",
+      "text": "唉...你虽然做了正确的事，但杀伐过重。\n日后切记，剑为护道之器，非为杀戮之刃。",
+      "emotion": "sighing",
+      "effects": [
+        {"type": "item_give", "target": "boss_storage_key", "value": 1}
+      ],
+      "next_node": "BOSS_AFTERMATH"
+    },
+    {
+      "id": "BOSS_POST_CAPTURE",
+      "speaker": "tiewushuang",
+      "text": "好！我这就用丐帮秘法封住他的修为，押回丐帮分舵！",
+      "emotion": "excited",
+      "effects": [
+        {"type": "reputation_change", "target": "beggar_sect", "value": 15}
+      ],
+      "next_node": "BOSS_AFTERMATH"
+    },
+    {
+      "id": "BOSS_POST_INTERROGATE",
+      "speaker": "player",
+      "text": "说！你的幕后主使是谁？血祭大阵的真正目的是什么？",
+      "next_node": "BOSS_INTERROGATE_RESULT"
+    },
+    {
+      "id": "BOSS_INTERROGATE_RESULT",
+      "speaker": "mob_xiushi",
+      "text": "哈哈哈...就凭你也想套我的话？\n不过...告诉你又何妨。反正你知道了也活不成...\n\n'血魂老祖'已经盯上了这一带的灵气节点。\n青云镇，只是开始...",
+      "emotion": "mocking",
+      "effects": [
+        {"type": "quest_trigger", "target": "blood_soul_ancestor_clue", "value": true},
+        {"type": "map_mark", "target": "blood_soul_lair", "value": true}
+      ],
+      "next_node": "BOSS_AFTERMATH"
+    },
+    {
+      "id": "BOSS_AFTERMATH",
+      "speaker": "system",
+      "text": "战斗结束，村民们被成功解救。\n血祭阵被破坏后，地面开始微微震动...\n\n云中鹤注意到地面裂开了一道缝隙，里面似乎有什么东西在发光。",
+      "next_node": "BOSS_AFTERMATH_002"
+    },
+    {
+      "id": "BOSS_AFTERMATH_002",
+      "speaker": "yunzhonghe",
+      "text": "等等...这个灵气波动...血祭阵下方竟然有东西！",
+      "emotion": "surprised",
+      "next_node": "EVENT4_END"
+    },
+    {
+      "id": "EVENT4_END",
+      "speaker": "system",
+      "text": "[b]事件四结算[/b]\n\n• Boss已被击败\n• 失踪村民全部获救\n• 血祭阵被破坏\n• 地面出现神秘裂缝，内有上古遗迹入口\n\n[b]——进入事件五：上古遗迹——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "id": "ACT3_CRISIS_001",
+  "title": "事件三 — 魔修现身的危机",
+  "description": "玩家回到青云镇发现村民失踪，结识铁无双，开始调查魔修线索",
+  "start_node": "RETURN_TOWN_001",
+  "metadata": {"npc_id": "tiewushuang", "event": "act1_event3"},
+  "nodes": [
+    {
+      "id": "RETURN_TOWN_001",
+      "speaker": "system",
+      "text": "三天后，你结束修炼回到青云镇。\n\n然而，镇上的气氛与离开时截然不同——",
+      "next_node": "RETURN_TOWN_002"
+    },
+    {
+      "id": "RETURN_TOWN_002",
+      "speaker": "system",
+      "text": "街上行人稀少，家家户户门窗紧闭。\n铁匠铺前聚集了几个面色凝重的镇民，正在低声议论。",
+      "next_node": "RETURN_TOWN_003"
+    },
+    {
+      "id": "RETURN_TOWN_003",
+      "speaker": "villager_a",
+      "text": "你听说了吗？后山的张家老二昨晚又失踪了！这已经是这个月第三个了！",
+      "emotion": "fearful",
+      "next_node": "RETURN_TOWN_004"
+    },
+    {
+      "id": "RETURN_TOWN_004",
+      "speaker": "villager_b",
+      "text": "可不是嘛...我媳妇说夜里看到后山方向有紫光，跟那天天上出现的一模一样...",
+      "emotion": "fearful",
+      "next_node": "MEET_VILLAGE_HEAD_001"
+    },
+    {
+      "id": "MEET_VILLAGE_HEAD_001",
+      "speaker": "village_head",
+      "text": "{player_name}！你回来了！太好了，你可得帮帮咱们青云镇啊！",
+      "emotion": "desperate",
+      "next_node": "MEET_VILLAGE_HEAD_002"
+    },
+    {
+      "id": "MEET_VILLAGE_HEAD_002",
+      "speaker": "player",
+      "text": "镇长，到底发生什么事了？",
+      "next_node": "MEET_VILLAGE_HEAD_003"
+    },
+    {
+      "id": "MEET_VILLAGE_HEAD_003",
+      "speaker": "village_head",
+      "text": "这个月来，咱们镇已经有六个村民在后山附近失踪了！活不见人，死不见尸...\n更可怕的是，昨晚村口出现了几个黑衣人，鬼鬼祟祟的，我怀疑...",
+      "emotion": "fearful",
+      "effects": [
+        {"type": "quest_trigger", "target": "missing_villagers", "value": true}
+      ],
+      "next_node": "MEET_TIE_001"
+    },
+    {
+      "id": "MEET_TIE_001",
+      "speaker": "tiewushuang",
+      "text": "这位小兄弟，看你面相不凡啊。我是丐帮弟子铁无双，路过此地，听闻镇上出了怪事。",
+      "emotion": "calm",
+      "next_node": "MEET_TIE_002"
+    },
+    {
+      "id": "MEET_TIE_002",
+      "speaker": "player",
+      "text": "我是云中鹤前辈的弟子，正想调查此事。铁兄也是为此而来？",
+      "choices": [
+        {
+          "id": "ally_tie",
+          "text": "不如我们联手调查？",
+          "effects": [
+            {"type": "relationship_change", "target": "tiewushuang", "value": 10},
+            {"type": "quest_trigger", "target": "investigate_team", "value": true}
+          ],
+          "next_node": "MEET_TIE_003A"
+        },
+        {
+          "id": "solo_investigate",
+          "text": "此事重大，我先自己探查一番",
+          "effects": [
+            {"type": "relationship_change", "target": "tiewushuang", "value": 0}
+          ],
+          "next_node": "MEET_TIE_003B"
+        }
+      ]
+    },
+    {
+      "id": "MEET_TIE_003A",
+      "speaker": "tiewushuang",
+      "text": "哈哈，痛快！我铁无双就喜欢跟爽快人打交道！走，咱们先去后山看看！",
+      "emotion": "excited",
+      "next_node": "INVESTIGATE_CHOICE_001"
+    },
+    {
+      "id": "MEET_TIE_003B",
+      "speaker": "tiewushuang",
+      "text": "也行。不过魔修之事非同小可，你若是需要帮手，随时来丐帮分舵找我。",
+      "emotion": "serious",
+      "next_node": "INVESTIGATE_CHOICE_001"
+    },
+    {
+      "id": "INVESTIGATE_CHOICE_001",
+      "speaker": "yunzhonghe",
+      "text": "此事涉及魔修，不可大意。我已经感知到后山有异常的灵气波动，很可能是血祭阵的征兆。",
+      "emotion": "serious",
+      "next_node": "INVESTIGATE_CHOICE_002"
+    },
+    {
+      "id": "INVESTIGATE_CHOICE_002",
+      "speaker": "yunzhonghe",
+      "text": "血祭阵若成，不仅失踪村民性命不保，整个青云镇都会被血气笼罩。\n我们必须尽快找到阵眼，将其破坏。",
+      "choices": [
+        {
+          "id": "investigate_village_site",
+          "text": "先去失踪村民最后出现的地方查看",
+          "effects": [],
+          "next_node": "INVESTIGATE_VILLAGE_SITE_001"
+        },
+        {
+          "id": "investigate_temple",
+          "text": "去镇外废弃庙宇看看有没有线索",
+          "effects": [],
+          "next_node": "INVESTIGATE_TEMPLE_001"
+        },
+        {
+          "id": "investigate_woodcutter",
+          "text": "去找山中樵夫打听消息",
+          "effects": [],
+          "next_node": "INVESTIGATE_WOODCUTTER_001"
+        }
+      ]
+    },
+    {
+      "id": "INVESTIGATE_VILLAGE_SITE_001",
+      "speaker": "system",
+      "text": "你来到失踪村民最后出现的后山小路。\n\n运起灵气感知，果然发现地面残留着淡淡的紫色灵气痕迹。\n更令人心惊的是，路边的草丛中有一滩已经干涸的血迹。",
+      "next_node": "INVESTIGATE_VILLAGE_SITE_002"
+    },
+    {
+      "id": "INVESTIGATE_VILLAGE_SITE_002",
+      "speaker": "system",
+      "text": "[b]获得线索：[/b]\n1. 紫色灵气残留（与血祭阵相关）\n2. 地面血迹（可能是失踪村民的）\n3. 地面有拖拽痕迹，方向指向北面山谷",
+      "effects": [
+        {"type": "quest_trigger", "target": "clue_blood_trail", "value": true}
+      ],
+      "next_node": "INVESTIGATE_SUMMARY_001"
+    },
+    {
+      "id": "INVESTIGATE_TEMPLE_001",
+      "speaker": "system",
+      "text": "废弃庙宇破败不堪，到处是灰尘和蛛网。\n\n但在佛像底座下方，你发现了一张残缺的图纸碎片。",
+      "next_node": "INVESTIGATE_TEMPLE_002"
+    },
+    {
+      "id": "INVESTIGATE_TEMPLE_002",
+      "speaker": "system",
+      "text": "[b]获得线索：[/b]\n血祭阵图纸碎片（残缺）\n\n碎片上隐约可见阵法的一角，标注着\u201c阵眼\u201d和\u201c灵气汇聚点\u201d。\n需要更多碎片才能还原完整的阵法图。",
+      "effects": [
+        {"type": "item_give", "target": "blood_array_fragment", "value": 1},
+        {"type": "quest_trigger", "target": "clue_array_fragment", "value": true}
+      ],
+      "next_node": "INVESTIGATE_SUMMARY_001"
+    },
+    {
+      "id": "INVESTIGATE_WOODCUTTER_001",
+      "speaker": "woodcutter",
+      "text": "你...你是来调查的？我确实看到了不得了的东西...",
+      "emotion": "fearful",
+      "next_node": "INVESTIGATE_WOODCUTTER_002"
+    },
+    {
+      "id": "INVESTIGATE_WOODCUTTER_002",
+      "speaker": "player",
+      "text": "老人家别怕，我是来帮忙的。你看到了什么？",
+      "next_node": "INVESTIGATE_WOODCUTTER_003"
+    },
+    {
+      "id": "INVESTIGATE_WOODCUTTER_003",
+      "speaker": "woodcutter",
+      "text": "三天前夜里，我在山上砍柴，看到北边山谷里有几个穿黑衣服的人...\n他们在山谷中央摆弄着什么，还发着紫色的光。\n我不敢多看，偷偷跑回来了...",
+      "emotion": "fearful",
+      "effects": [
+        {"type": "quest_trigger", "target": "clue_valley_sighting", "value": true}
+      ],
+      "next_node": "INVESTIGATE_WOODCUTTER_004"
+    },
+    {
+      "id": "INVESTIGATE_WOODCUTTER_004",
+      "speaker": "woodcutter",
+      "text": "年轻人，你可得小心啊。那些人绝不是善茬...",
+      "next_node": "INVESTIGATE_SUMMARY_001"
+    },
+    {
+      "id": "INVESTIGATE_SUMMARY_001",
+      "speaker": "yunzhonghe",
+      "text": "综合这些线索，情况不容乐观。\n\n魔修在北面山谷建立了血祭阵，目的是吸收凡人精血来突破境界。\n按这个速度，预计三日内仪式就会完成。",
+      "emotion": "serious",
+      "next_node": "INVESTIGATE_SUMMARY_002"
+    },
+    {
+      "id": "INVESTIGATE_SUMMARY_002",
+      "speaker": "yunzhonghe",
+      "text": "但魔修中必有筑基期以上的高手，单凭我们恐怕力有不逮。\n",
+      "choices": [
+        {
+          "id": "seek_help",
+          "text": "向正道宗门求援",
+          "effects": [
+            {"type": "dao_heart_change", "target": "dao_heart", "value": 10},
+            {"type": "quest_trigger", "target": "sect_backup", "value": true}
+          ],
+          "next_node": "CHOICE_HELP_001"
+        },
+        {
+          "id": "act_now",
+          "text": "来不及等了，必须立即行动",
+          "effects": [
+            {"type": "dao_heart_change", "target": "dao_heart", "value": 0}
+          ],
+          "next_node": "CHOICE_SOLO_001"
+        }
+      ]
+    },
+    {
+      "id": "CHOICE_HELP_001",
+      "speaker": "yunzhonghe",
+      "text": "好，我这就传书少林和武当。不过正道救援需要时间，\n在此期间我们必须做好万全准备，不能让魔修察觉。",
+      "emotion": "approving",
+      "next_node": "EVENT3_END"
+    },
+    {
+      "id": "CHOICE_SOLO_001",
+      "speaker": "yunzhonghe",
+      "text": "有胆识。但魔修实力不容小觑，需从长计议。\n我会尽力协助你，铁无双，你也一起来吧。",
+      "emotion": "serious",
+      "next_node": "EVENT3_END"
+    },
+    {
+      "id": "EVENT3_END",
+      "speaker": "system",
+      "text": "[b]线索汇总：[/b]\n• 魔修在山谷建立了血祭阵\n• 目的：吸收凡人精血突破境界\n• 预计三日内完成仪式\n\n[b]队伍组建完成：[/b]\n• 云中鹤（元婴期，但旧伤未愈）\n• 铁无双（筑基后期体修）\n• {player_name}（炼气初期）\n\n[b]——准备突袭血祭阵，进入事件四——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

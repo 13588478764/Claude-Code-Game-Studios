@@ -64,7 +64,7 @@ func _ready():
 	print("历史记录持久化管理器已初始化")
 	
 	# 尝试从存档加载历史记录
-	load_from_save()
+	load_from_file()
 
 # 添加历史记录
 func add_history_record(encounter_id: String, player_state: Dictionary, outcome: String, rewards: Array, metadata: Dictionary = {}) -> String:
@@ -97,8 +97,8 @@ func manage_memory():
 		print("内存管理：移除了 %d 条最旧的记录，当前记录数: %d" % [excess_count, history_records.size()])
 
 # 序列化到存档
-func serialize_to_save(data: Array[HistoryRecord] = null) -> String:
-	if data == null:
+func serialize_to_save(data: Array = []) -> String:
+	if data.is_empty():
 		data = history_records
 	
 	var save_data = {

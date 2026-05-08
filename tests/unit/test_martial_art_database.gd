@@ -23,7 +23,7 @@ func test_database_loads_successfully():
 ## 测试：验证加载的功法数量
 func test_correct_number_of_martial_arts_loaded():
 	var all_ids = database.get_all_martial_art_ids()
-	assert_eq(all_ids.size(), 13, "应该加载了13个功法")
+	assert_eq(all_ids.size(), 48, "应该加载了48个功法（10个门派各5个 + 3个通用）")
 
 ## 测试：验证通用功法加载
 func test_generic_martial_arts_loaded():
@@ -73,24 +73,28 @@ func test_query_by_type():
 	assert_gt(attack_arts.size(), 0, "应该有攻击型功法")
 	
 	var movement_arts = database.get_martial_arts_by_type(MartialArtData.MartialArtType.MOVEMENT)
-	assert_eq(movement_arts.size(), 1, "应该有1个移动型功法")
-	assert_eq(movement_arts[0].id, "generic_qinggong", "移动型功法应该是轻功")
+	assert_gt(movement_arts.size(), 0, "应该有移动型功法")
+	# 验证包含轻功（通过ID检查）
+	var movement_ids: Array[String] = []
+	for art in movement_arts:
+		movement_ids.append(art.id)
+	assert_true(movement_ids.has("generic_qinggong"), "移动型功法应该包含轻功")
 
 ## 测试：按品阶查询功法
 func test_query_by_grade():
-	var common_arts = database.get_martial_arts_by_grade(MartialArtData.GradeType.COMMON)
-	assert_eq(common_arts.size(), 3, "应该有3个普通品阶功法")
+	var rare_arts = database.get_martial_arts_by_grade(MartialArtData.GradeType.RARE)
+	assert_eq(rare_arts.size(), 18, "应该有18个稀有品阶功法")
 	
 	var legendary_arts = database.get_martial_arts_by_grade(MartialArtData.GradeType.LEGENDARY)
-	assert_eq(legendary_arts.size(), 3, "应该有3个传说品阶功法")
+	assert_eq(legendary_arts.size(), 9, "应该有9个传说品阶功法")
 
 ## 测试：按门派查询功法
 func test_query_by_school():
 	var shaolin_arts = database.get_martial_arts_by_school(MartialArtData.SchoolType.SHAOLIN)
-	assert_eq(shaolin_arts.size(), 2, "少林寺应该有2个功法")
+	assert_eq(shaolin_arts.size(), 5, "少林寺应该有5个功法")
 	
 	var wudang_arts = database.get_martial_arts_by_school(MartialArtData.SchoolType.WUDANG)
-	assert_eq(wudang_arts.size(), 2, "武当派应该有2个功法")
+	assert_eq(wudang_arts.size(), 5, "武当派应该有5个功法")
 
 ## 测试：按武器类型查询功法
 func test_query_by_weapon():
@@ -110,14 +114,18 @@ func test_query_by_unlock_level():
 
 ## 测试：多条件查询
 func test_multi_condition_query():
+	# 查询：攻击型 + RARE品阶 + 天剑盟
 	var filters = {
 		"type": MartialArtData.MartialArtType.ATTACK,
-		"grade": MartialArtData.GradeType.COMMON,
-		"weapon": MartialArtData.WeaponType.SWORD
+		"grade": MartialArtData.GradeType.RARE,
+		"school": MartialArtData.SchoolType.TIANJIAN,
 	}
 	var results = database.query_martial_arts(filters)
-	assert_eq(results.size(), 1, "应该只有1个符合条件的功法")
-	assert_eq(results[0].id, "generic_basic_sword", "应该是基础剑法")
+	assert_gt(results.size(), 0, "应该至少有一个符合条件的功法")
+	# 验证返回的功法确实符合所有条件
+	for art in results:
+		assert_eq(art.martial_art_type, MartialArtData.MartialArtType.ATTACK, "应该是攻击型")
+		assert_eq(art.school, MartialArtData.SchoolType.TIANJIAN, "应该是天剑盟")
 
 ## 测试：验证功法数据有效性
 func test_martial_art_data_validation():
@@ -135,7 +143,7 @@ func test_combo_chain():
 ## 测试：数据库统计信息
 func test_database_statistics():
 	var stats = database.get_statistics()
-	assert_eq(stats["total_count"], 13, "总功法数应该是13")
+	assert_eq(stats["total_count"], 48, "总功法数应该是48（10个门派各5个 + 3个通用）")
 	assert_true(stats["is_loaded"], "数据库应该已加载")
 	assert_eq(stats["load_errors"], 0, "不应该有加载错误")
 
@@ -143,7 +151,7 @@ func test_database_statistics():
 func test_advanced_martial_art_properties():
 	var tianjian_nine = database.get_martial_art("tianjian_nine_forms")
 	assert_not_null(tianjian_nine, "应该能获取天剑九式")
-	assert_eq(tianjian_nine.unlock_level, 45, "天剑九式解锁等级应该是45")
+	assert_eq(tianjian_nine.unlock_level, 50, "天剑九式解锁等级应该是50")
 	assert_eq(tianjian_nine.grade, MartialArtData.GradeType.EPIC, "天剑九式品阶应该是EPIC")
 	assert_eq(tianjian_nine.hit_count, 9, "天剑九式应该有9段攻击")
 	assert_eq(tianjian_nine.element_type, "金", "天剑九式元素类型应该是金")

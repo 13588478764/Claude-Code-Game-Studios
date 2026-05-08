@@ -69,6 +69,12 @@ func _ready():
 	# 注册全局事件钩子
 	register_event_hooks()
 
+# 清理资源
+func _exit_tree():
+	if is_instance_valid(condition_evaluator):
+		condition_evaluator.queue_free()
+		condition_evaluator = null
+
 # 注册区域触发器
 func register_zone_triggers(encounter_zones: Array) -> void:
 	for zone_data in encounter_zones:

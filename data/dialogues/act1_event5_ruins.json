@@ -1,0 +1,221 @@
+{
+  "id": "ACT5_RUINS_001",
+  "title": "事件五 — 上古遗迹的秘密",
+  "description": "血祭阵被破坏后，地下露出上古遗迹入口，发现飞升之战秘密",
+  "start_node": "RUIN_ENTRY_001",
+  "nodes": [
+    {
+      "id": "RUIN_ENTRY_001",
+      "speaker": "yunzhonghe",
+      "text": "这个符文...是300年前的封印。没想到这里竟藏着上古遗迹。\n{player_name}，跟紧我。",
+      "emotion": "serious",
+      "next_node": "RUIN_ENTRY_002"
+    },
+    {
+      "id": "RUIN_ENTRY_002",
+      "speaker": "tiewushuang",
+      "text": "乖乖，这么大的石门，得用多少灵气才能推开啊？",
+      "emotion": "surprised",
+      "next_node": "RUIN_ENTRY_003"
+    },
+    {
+      "id": "RUIN_ENTRY_003",
+      "speaker": "yunzhonghe",
+      "text": "不用推。血祭阵的破坏已经震开了封印，看——",
+      "next_node": "RUIN_ENTRY_004"
+    },
+    {
+      "id": "RUIN_ENTRY_004",
+      "speaker": "system",
+      "text": "石门缓缓开启，一股古老而强大的灵气从门内涌出。\n门上刻着繁复的符文，散发着微弱的光芒。",
+      "next_node": "RUIN_HALL_001"
+    },
+    {
+      "id": "RUIN_HALL_001",
+      "speaker": "system",
+      "text": "你们走进遗迹的前厅。破损的雕像排列两侧，墙壁上的壁画虽然斑驳，但仍能辨认出其中的内容。",
+      "next_node": "RUIN_HALL_002"
+    },
+    {
+      "id": "RUIN_HALL_002",
+      "speaker": "player",
+      "text": "这些壁画...描绘的是修士飞升的场景？",
+      "next_node": "RUIN_HALL_003"
+    },
+    {
+      "id": "RUIN_HALL_003",
+      "speaker": "yunzhonghe",
+      "text": "不错。这是上古时期的飞升仪式记录。\n但你看这里——",
+      "emotion": "contemplative",
+      "next_node": "RUIN_HALL_004"
+    },
+    {
+      "id": "RUIN_HALL_004",
+      "speaker": "yunzhonghe",
+      "text": "壁画的后半部分被刻意破坏了。有人不想让后人看到完整的记录。",
+      "emotion": "concerned",
+      "next_node": "RUIN_PASSAGE_001"
+    },
+    {
+      "id": "RUIN_PASSAGE_001",
+      "speaker": "system",
+      "text": "穿过前厅，你们来到一条狭长的通道。\n通道两侧有机关痕迹，地面布满了灰尘和碎石。",
+      "next_node": "RUIN_PASSAGE_002"
+    },
+    {
+      "id": "RUIN_PASSAGE_002",
+      "speaker": "tiewushuang",
+      "text": "小心，这里有机关。我来开路。",
+      "emotion": "serious",
+      "next_node": "RUIN_PASSAGE_003"
+    },
+    {
+      "id": "RUIN_PASSAGE_003",
+      "speaker": "system",
+      "text": "铁无双小心翼翼地破解了一道道机关。\n虽然有几处险些触发，但最终还是安全通过了通道。",
+      "next_node": "RUIN_CHAMBER_001"
+    },
+    {
+      "id": "RUIN_CHAMBER_001",
+      "speaker": "system",
+      "text": "通道尽头是一座宽敞的主室。\n中央有一座石台，上面放置着一颗散发着柔和光芒的水晶。",
+      "next_node": "RUIN_CHAMBER_002"
+    },
+    {
+      "id": "RUIN_CHAMBER_002",
+      "speaker": "yunzhonghe",
+      "text": "那是...记忆水晶。上古修士用来记录重要信息的东西。",
+      "emotion": "surprised",
+      "next_node": "RUIN_CHAMBER_003"
+    },
+    {
+      "id": "RUIN_CHAMBER_003",
+      "speaker": "system",
+      "text": "你走近石台，记忆水晶的光芒似乎感应到了你的到来，变得更加明亮。\n水晶表面刻着一行小字：",
+      "next_node": "RUIN_CHAMBER_004"
+    },
+    {
+      "id": "RUIN_CHAMBER_004",
+      "speaker": "system",
+      "text": "[i]\"后来者，若你有缘得见此晶，请继承我等遗志。\n飞升之路未绝，只是被人封印。\n真相...在水晶之中。\"[/i]",
+      "next_node": "MEMORY_CRYSTAL_CHOICE"
+    },
+    {
+      "id": "MEMORY_CRYSTAL_CHOICE",
+      "speaker": "system",
+      "text": "记忆水晶静静地等待着你是否触碰。",
+      "choices": [
+        {
+          "id": "touch_crystal",
+          "text": "伸手触碰记忆水晶",
+          "effects": [],
+          "next_node": "MEMORY_CRYSTAL_001"
+        },
+        {
+          "id": "wait_yun",
+          "text": "让云中鹤前辈先查看一下",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 5}
+          ],
+          "next_node": "WAIT_YUN_001"
+        }
+      ]
+    },
+    {
+      "id": "WAIT_YUN_001",
+      "speaker": "yunzhonghe",
+      "text": "谨慎是好事。不过记忆水晶一般不会有危险...罢了，我来看看。",
+      "next_node": "WAIT_YUN_002"
+    },
+    {
+      "id": "WAIT_YUN_002",
+      "speaker": "yunzhonghe",
+      "text": "（云中鹤伸手触碰水晶，但水晶毫无反应）\n奇怪，它似乎在等待特定的人...\n{player_name}，你来试试。",
+      "next_node": "MEMORY_CRYSTAL_001"
+    },
+    {
+      "id": "MEMORY_CRYSTAL_001",
+      "speaker": "system",
+      "text": "你触碰了记忆水晶，一股庞大的信息涌入脑海...",
+      "next_node": "MEMORY_VISION_001"
+    },
+    {
+      "id": "MEMORY_VISION_001",
+      "speaker": "system",
+      "text": "[b]——记忆碎片·飞升之战——[/b]\n\n画面1：数十名化神期修士在飞升台前集结\n天空祥云缭绕，仙乐阵阵",
+      "next_node": "MEMORY_VISION_002"
+    },
+    {
+      "id": "MEMORY_VISION_002",
+      "speaker": "system",
+      "text": "画面2：天空中突然降下雷霆，封印阵法启动\n飞升台被金色符文笼罩",
+      "next_node": "MEMORY_VISION_003"
+    },
+    {
+      "id": "MEMORY_VISION_003",
+      "speaker": "system",
+      "text": "画面3：一名神秘黑衣人出现在封印阵法中央\n他主持着仪式，面容隐藏在兜帽之下",
+      "next_node": "MEMORY_VISION_004"
+    },
+    {
+      "id": "MEMORY_VISION_004",
+      "speaker": "system",
+      "text": "画面4：飞升通道缓缓关闭，修士们绝望呼喊\n'不！我们等了千年！'",
+      "next_node": "MEMORY_VISION_005"
+    },
+    {
+      "id": "MEMORY_VISION_005",
+      "speaker": "system",
+      "text": "画面5：碎片结束，只留下一个模糊的符文印记\n那个印记与血祭阵上的符文有几分相似...",
+      "next_node": "MEMORY_CRYSTAL_002"
+    },
+    {
+      "id": "MEMORY_CRYSTAL_002",
+      "speaker": "player",
+      "text": "（从幻象中回过神来，额头满是冷汗）\n我看到了...飞升之路是被人为封印的！",
+      "emotion": "shocked",
+      "next_node": "YUN_REACTION_001"
+    },
+    {
+      "id": "YUN_REACTION_001",
+      "speaker": "yunzhonghe",
+      "text": "果然...是那个封印。三百年了，这个符文我从未忘记。",
+      "emotion": "sighing",
+      "next_node": "YUN_REACTION_002"
+    },
+    {
+      "id": "YUN_REACTION_002",
+      "speaker": "yunzhonghe",
+      "text": "{player_name}，看来你与那场战争有缘。\n但现在还不是告诉你一切的时候。",
+      "emotion": "serious",
+      "next_node": "YUN_REACTION_003"
+    },
+    {
+      "id": "YUN_REACTION_003",
+      "speaker": "yunzhonghe",
+      "text": "记住，飞升之路并未断绝，只是被人刻意封锁。\n总有一天，我们要重新打开那条路。",
+      "effects": [
+        {"type": "quest_trigger", "target": "ascension_mystery", "value": true},
+        {"type": "dao_heart_change", "target": "dao_heart", "value": 5}
+      ],
+      "next_node": "RUIN_REWARDS_001"
+    },
+    {
+      "id": "RUIN_REWARDS_001",
+      "speaker": "system",
+      "text": "你在遗迹中发现了以下物品：\n\n[b]获得物品：[/b]\n• 基础剑诀进阶版（玄阶下品）\n• 上古符文拓片（关键道具）\n• 灵气结晶×5（修炼资源）",
+      "effects": [
+        {"type": "item_give", "target": "advanced_sword_manual", "value": 1},
+        {"type": "item_give", "target": "ancient_rune_copy", "value": 1},
+        {"type": "item_give", "target": "spirit_crystal", "value": 5}
+      ],
+      "next_node": "EVENT5_END"
+    },
+    {
+      "id": "EVENT5_END",
+      "speaker": "system",
+      "text": "[b]事件五结算[/b]\n\n• 发现上古遗迹\n• 得知飞升之路被封印的真相\n• 获得关键道具和修炼资源\n• 云中鹤似乎知道更多内情...\n\n[b]——返回青云镇，进入事件六——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

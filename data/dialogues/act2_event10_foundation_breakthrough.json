@@ -1,0 +1,87 @@
+{
+  "id": "ACT2_EVENT10_BREAKTHROUGH",
+  "title": "第二幕事件十 — 筑基突破",
+  "description": "玩家借助云中鹤留下的剑骨碎片与自身积累，突破至筑基期",
+  "start_node": "BREAK_001",
+  "metadata": { "npc_id": "player", "event": "act2_event10" },
+  "nodes": [
+    {
+      "id": "BREAK_001",
+      "speaker": "system",
+      "text": "你将云中鹤的遗体安葬于青云镇外的古松之下。\n\n回到修炼室后，你盘膝坐下，将那块剑骨碎片放置于掌心。碎片冰冷刺骨，却蕴含着澎湃而纯粹的剑意。\n\n闭上双眼，你开始运转真气，引导碎片中的力量融入经脉。",
+      "next_node": "BREAK_002"
+    },
+    {
+      "id": "BREAK_002",
+      "speaker": "system",
+      "text": "片刻之后，碎片开始崩解，化为无数细小的剑气，如同活物一般钻入你的经脉。\n\n剧烈的疼痛瞬间席卷全身——那是灵气在强行打通筑基所需的灵脉通路。每一次真气流转，都如刀割剑刺般痛苦。\n\n但你知道，这是通往筑基期的必经之路。",
+      "next_node": "BREAK_003"
+    },
+    {
+      "id": "BREAK_003",
+      "speaker": "system",
+      "text": "关键时刻到了。灵气已经蓄积到临界点，你必须决定如何引导这股力量冲击筑基的瓶颈。\n\n三种突破方式，三种不同的根基——这将永久影响你未来的修行之路。",
+      "next_node": "BREAK_CHOICE"
+    },
+    {
+      "id": "BREAK_CHOICE",
+      "speaker": "system",
+      "text": "选择你的筑基之道。",
+      "choices": [
+        {
+          "id": "foundation_steady",
+          "text": "稳扎稳打，循序渐进——以稳健的根基冲击瓶颈",
+          "effects": [
+            { "type": "dao_heart_change", "value": 10 }
+          ],
+          "next_node": "BREAK_STEADY_001"
+        },
+        {
+          "id": "foundation_aggressive",
+          "text": "全力冲击，以剑骨碎片的力量强行突破",
+          "effects": [],
+          "next_node": "BREAK_AGGRO_CHECK"
+        },
+        {
+          "id": "foundation_balanced",
+          "text": "消耗灵石辅助突破，平衡风险与速度",
+          "effects": [
+            { "type": "item_cost", "target": "spirit_stones", "value": 50 }
+          ],
+          "next_node": "BREAK_BALANCED_001"
+        }
+      ]
+    },
+    {
+      "id": "BREAK_STEADY_001",
+      "speaker": "system",
+      "text": "你选择了最稳妥的方式。不急不躁，循序渐进，让灵气一层层地冲刷经脉。\n\n这个过程漫长而枯燥，但每一步都扎实无比。\n\n数个时辰之后，你感到体内灵脉轰然贯通——筑基期，成！",
+      "next_node": "BREAK_SUCCESS_CORE"
+    },
+    {
+      "id": "BREAK_AGGRO_CHECK",
+      "speaker": "system",
+      "text": "你全力催动剑骨碎片的力量，狂暴的剑气如洪水般冲击瓶颈。\n\n剧烈的疼痛令你几乎昏厥，但你咬紧牙关，不肯退让分毫。\n\n轰——\n\n一声只有你能听到的巨响在体内炸开，灵脉被强行贯通！",
+      "emotion": "intense",
+      "next_node": "BREAK_SUCCESS_CORE"
+    },
+    {
+      "id": "BREAK_BALANCED_001",
+      "speaker": "system",
+      "text": "你将灵石中的纯净灵气与剑骨碎片的力量相结合，两股能量相辅相成。\n\n灵石提供了温和的支撑，剑骨碎片则负责冲击瓶颈。\n\n在两种力量的协同作用下，灵脉顺利贯通。",
+      "next_node": "BREAK_SUCCESS_CORE"
+    },
+    {
+      "id": "BREAK_SUCCESS_CORE",
+      "speaker": "system",
+      "text": "你缓缓睁开双眼，修炼室中的灵气浓度已经下降了三成有余——全部被你的身体吸收。\n\n[b]境界突破：炼气期 → 筑基期[/b]\n\n体内灵气的质变令你惊叹。如果说炼气期的灵气是溪流，那筑基期的灵气便是江河——更加浑厚，更加凝练。\n\n剑骨碎片已经完全融入了你的身体，你能感受到一种前所未有的力量正在血脉中涌动。",
+      "next_node": "BREAK_SUCCESS_002"
+    },
+    {
+      "id": "BREAK_SUCCESS_002",
+      "speaker": "system",
+      "text": "你站起身，推开修炼室的门。清晨的阳光洒在脸上，整个青云镇在你眼中都变得不同了——你能清晰地感知到每一缕灵气的流动，每一声虫鸣的韵律。\n\n筑基期，意味着你真正踏入了修真的门槛。\n\n[b]获得：剑骨传承被动（修炼速度+15%，剑法伤害+20%）[/b]\n\n云中鹤的遗愿，你承载了。而前方，九州风云已起。",
+      "next_node": "END"
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "id": "ACT2_EVENT4_DEMONIC_INVASION",
+  "title": "第二幕事件四 — 魔教入侵",
+  "description": "大比进行中魔教突然袭击试炼场，玩家面临艰难抉择",
+  "start_node": "INVASION_001",
+  "metadata": { "npc_id": "demonic_leader", "event": "act2_event4" },
+  "nodes": [
+    {
+      "id": "INVASION_001",
+      "speaker": "system",
+      "text": "宗门大比进行到第三日。\n\n太华山各座擂台上，战斗正酣。观众们的欢呼声此起彼伏，空气中弥漫着灵力碰撞的余波。\n\n然而——\n\n天空，突然变了颜色。\n\n原本晴朗的天际被一层漆黑的乌云笼罩，乌云中隐隐有血色闪电划过。一股令人窒息的邪气从云层中倾泻而下，令在场的所有修士都感到一阵心悸。",
+      "next_node": "INVASION_002"
+    },
+    {
+      "id": "INVASION_002",
+      "speaker": "system",
+      "text": "[color=#dc2626]乌云猛然裂开，数十道黑影从天而降。[/color]\n\n黑袍修士如同陨石般砸落在试炼场各处，巨大的冲击波将数座擂台瞬间摧毁。尖叫声、爆炸声此起彼伏。\n\n试炼场——被包围了。",
+      "next_node": "INVASION_003"
+    },
+    {
+      "id": "INVASION_003",
+      "speaker": "demonic_leader",
+      "text": "一个体型高大的黑袍人悬浮于试炼场上空。他的面容隐藏在兜帽之下，只有两点猩红的光芒在黑暗中闪烁。\n\n正道修士们，你们的大比到此为止了！\n\n他的声音如同万鬼齐哭，令在场众人无不毛骨悚然。\n\n我们今天来，只为一个人。把他交出来，我便饶你们不死！",
+      "emotion": "menacing",
+      "next_node": "INVASION_004"
+    },
+    {
+      "id": "INVASION_004",
+      "speaker": "demonic_leader",
+      "text": "他抬起一只枯瘦的手，指向人群——\n\n云中鹤！我知道你在这里！当年那一战，你毁了我教三座分坛。今天，你的命，我要亲手来取！\n\n黑袍人放声狂笑，身后的魔教修士们齐声呼应，声浪震天。\n\n交出云中鹤，或者——整个太华山陪葬！",
+      "emotion": "crazy",
+      "next_node": "INVASION_005"
+    },
+    {
+      "id": "INVASION_005",
+      "speaker": "system",
+      "text": "试炼场一片混乱。\n\n正道修士们匆忙组织抵抗，但魔教显然有备而来。他们各自占据要位，形成了一个巨大的合围之势。\n\n你被夹在人群之中，面临着一个可能改变一切的抉择——",
+      "next_node": "INVASION_006"
+    },
+    {
+      "id": "INVASION_006",
+      "speaker": "system",
+      "text": "你决定——",
+      "choices": [
+        {
+          "id": "join_battle",
+          "text": "正面参战，与正道修士并肩抗敌",
+          "effects": [
+            { "type": "reputation_change", "target": "righteous_path", "value": 15 },
+            { "type": "quest_trigger", "target": "invasion_battle_route", "value": true }
+          ],
+          "next_node": "INVASION_007_A"
+        },
+        {
+          "id": "find_target",
+          "text": "趁乱寻找魔教真正要追捕的目标",
+          "effects": [
+            { "type": "quest_trigger", "target": "invasion_mystery_route", "value": true }
+          ],
+          "next_node": "INVASION_007_B"
+        },
+        {
+          "id": "protect_yun",
+          "text": "撤退保护云中鹤，确保他的安全",
+          "effects": [
+            { "type": "relationship_change", "target": "yun_zhonghe", "value": 10 },
+            { "type": "quest_trigger", "target": "invasion_protect_route", "value": true }
+          ],
+          "next_node": "INVASION_007_C"
+        }
+      ]
+    },
+    {
+      "id": "INVASION_007_A",
+      "speaker": "player",
+      "text": "你拔出长剑，毫不犹豫地加入了战斗。\n\n灵气在剑锋上燃烧，你冲向了最近的一名魔教修士。剑光与魔气碰撞，火花四溅。\n\n身边的正道修士们看到了你的勇气，纷纷振奋起来。\n\n[i]有人带头了！一起上！[/i]",
+      "next_node": "INVASION_RESULT"
+    },
+    {
+      "id": "INVASION_007_B",
+      "speaker": "player",
+      "text": "你注意到魔教首领虽然叫嚣着追捕云中鹤，但他的目光——并不在人群之中，而是在试炼场下方的某处。\n\n那里有什么东西，是魔教真正想要的。\n\n你趁着混乱悄悄脱离了人群，朝那个方向摸去。",
+      "next_node": "INVASION_RESULT"
+    },
+    {
+      "id": "INVASION_007_C",
+      "speaker": "player",
+      "text": "你逆着人流，朝着古松方向奔去。\n\n云中鹤果然还坐在那里，面对漫天魔气，他面色平静，但苍白的脸色和微微颤抖的手出卖了他的虚弱。\n\n前辈，跟我走！这里不安全！",
+      "next_node": "INVASION_RESULT"
+    },
+    {
+      "id": "INVASION_RESULT",
+      "speaker": "system",
+      "text": "战斗全面爆发。\n\n太华山的天空被灵力和魔气染成了诡异的颜色。正与邪的碰撞，在这一刻达到了白热化。\n\n然而你注意到——魔教此次入侵的目的，似乎远不止报仇这么简单。\n\n在战场的某个角落，有什么东西正在悄然改变着这一切的走向。\n\n[b]——前往事件五：上古秘境探索[/b]",
+      "next_node": "END"
+    }
+  ]
+}

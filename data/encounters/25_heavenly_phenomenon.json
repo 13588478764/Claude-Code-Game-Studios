@@ -1,0 +1,128 @@
+{
+  "id": "encounter_25_heavenly_phenomenon",
+  "title": "仙缘天象 — 天地异变",
+  "description": "天空中突然出现奇异的灵气漩涡，天地异象昭示着某种重大事件即将发生",
+  "type": "exploration",
+  "probability": 0.05,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "foundation_establishing_mid",
+    "cooldown_minutes": 30
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "HEAVENLY_PHENOMENON_START",
+  "nodes": [
+    {
+      "id": "HEAVENLY_PHENOMENON_START",
+      "speaker": "system",
+      "text": "你抬头望向天空，只见天际出现了一个巨大的灵气漩涡。\n\n漩涡中心电闪雷鸣，五色光芒交织，散发着令人心悸的气息...\n\n周围的修士纷纷驻足观望，窃窃私语声此起彼伏。\n\n[b]这是...天劫？还是某种天地异象？[/b]",
+      "next_node": "HEAVENLY_PHENOMENON_CHOICE"
+    },
+    {
+      "id": "HEAVENLY_PHENOMENON_CHOICE",
+      "speaker": "system",
+      "text": "天象异变愈演愈烈，你需要做出选择。",
+      "choices": [
+        {
+          "id": "observe_closely",
+          "text": "运转灵力，仔细观察天象的变化规律",
+          "effects": [
+            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 15},
+            {"type": "dao_heart_change", "value": 3}
+          ],
+          "next_node": "HEAVENLY_OBSERVE_CHECK"
+        },
+        {
+          "id": "approach_center",
+          "text": "靠近异象中心，看能否获得更多机缘",
+          "effects": [
+            {"type": "skill_check", "target": "courage", "operator": ">=", "value": 18},
+            {"type": "dao_heart_change", "value": -3}
+          ],
+          "next_node": "HEAVENLY_APPROACH_CHECK"
+        },
+        {
+          "id": "keep_distance",
+          "text": "保持安全距离，等待异象自然消散",
+          "effects": [
+            {"type": "time_advance", "value": 20}
+          ],
+          "next_node": "HEAVENLY_WAIT_END"
+        }
+      ]
+    },
+    {
+      "id": "HEAVENLY_OBSERVE_CHECK",
+      "speaker": "system",
+      "text": "你运转灵力仔细感知，发现这不是天劫，而是一种罕见的天地异象——\n\n[b]\"灵气化龙\"[/b]\n\n传说中，当某处天地灵气浓郁到极致时，会化为龙形灵气，其中蕴含着突破瓶颈的机缘！",
+      "next_node": "HEAVENLY_OBSERVE_RESULT"
+    },
+    {
+      "id": "HEAVENLY_OBSERVE_RESULT",
+      "speaker": "system",
+      "text": "你观察到灵气化龙的运行轨迹，发现它正朝着某个方向飞去。\n\n[b]获得：[/b]灵气化龙的行进方向信息\n[b]道心：[/b]+3\n\n若能追踪这股灵气，或许能发现一处灵气汇聚之地。",
+      "next_node": "HEAVENLY_TRACK_CHOICE"
+    },
+    {
+      "id": "HEAVENLY_APPROACH_CHECK",
+      "speaker": "system",
+      "text": "你冒险靠近异象中心，强大的灵气压迫让你几乎无法呼吸。\n\n就在你即将支撑不住时，一道精纯的灵气精华落入你的体内...\n\n[b]获得：[/b]灵气精华 x1（可用于突破境界）",
+      "next_node": "HEAVENLY_APPROACH_END"
+    },
+    {
+      "id": "HEAVENLY_WAIT_END",
+      "speaker": "system",
+      "text": "你远远观望，只见灵气漩涡逐渐缩小，最终消散于天地之间。\n\n虽然没有获得直接的机缘，但观看了这场天地异象，你对天道运转有了更深的感悟。\n\n[b]时间流逝：[/b]20分钟",
+      "next_node": "HEAVENLY_WATCH_RESULT"
+    },
+    {
+      "id": "HEAVENLY_TRACK_CHOICE",
+      "speaker": "system",
+      "text": "你沿着灵气化龙的轨迹追踪而去，最终来到了一个灵气充盈的山谷。\n\n这里似乎是一处天然的灵脉节点。",
+      "choices": [
+        {
+          "id": "meditate_here",
+          "text": "在此地打坐修炼，借助浓郁灵气提升修为",
+          "effects": [
+            {"type": "dao_heart_change", "value": 5},
+            {"type": "time_advance", "value": 60}
+          ],
+          "next_node": "HEAVENLY_MEDITATE_END"
+        },
+        {
+          "id": "search_treasures",
+          "text": "在灵脉附近搜寻天材地宝",
+          "effects": [
+            {"type": "item_give", "target": "spirit_herb", "value": 3},
+            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 10}
+          ],
+          "next_node": "HEAVENLY_SEARCH_END"
+        }
+      ]
+    },
+    {
+      "id": "HEAVENLY_MEDITATE_END",
+      "speaker": "system",
+      "text": "你在此灵脉节点处打坐修炼，浓郁的灵气源源不断地涌入体内。\n\n[b]修为提升：[/b]灵气吸收效率大幅提升\n[b]道心：[/b]+5\n[b]时间流逝：[/b]60分钟\n\n这是一次难得的修炼良机。",
+      "next_node": "END"
+    },
+    {
+      "id": "HEAVENLY_SEARCH_END",
+      "speaker": "system",
+      "text": "你在灵脉附近仔细搜寻，发现了几株生长在灵气充沛之地的灵草。\n\n[b]获得：[/b]灵草 x3\n\n这些灵草是炼制丹药的上好材料。",
+      "next_node": "END"
+    },
+    {
+      "id": "HEAVENLY_WATCH_RESULT",
+      "speaker": "system",
+      "text": "异象完全消散后，你感到自己的心境有所提升。\n\n虽然没有获得实质的宝物，但对天道的感悟本身就是一种机缘。\n\n[b]获得：[/b]天道感悟",
+      "next_node": "END"
+    },
+    {
+      "id": "HEAVENLY_APPROACH_END",
+      "speaker": "system",
+      "text": "你成功从异象中心获得灵气精华，冒险得到了回报。\n\n这股精纯的灵气足以帮助你在关键时刻突破瓶颈。\n\n[b]灵气精华已收入储物袋中。[/b]",
+      "next_node": "END"
+    }
+  ]
+}

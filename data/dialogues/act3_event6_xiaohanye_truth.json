@@ -1,0 +1,117 @@
+{
+  "id": "ACT3_EVENT6_XIAOHANYE",
+  "title": "第三幕事件六 — 萧寒夜的真相",
+  "description": "萧寒夜现身，讲述自己的故事与动机，玩家必须理解但判断其方法",
+  "start_node": "XIAO_TRUTH_001",
+  "metadata": { "npc_id": "xiaohanye", "event": "act3_event6" },
+  "nodes": [
+    {
+      "id": "XIAO_TRUTH_001",
+      "speaker": "system",
+      "text": "你从上古战场返回，刚回到驻地，一道黑影便从窗外掠入。\n\n萧寒夜站在你的面前。与上次见面相比，他显得更加疲惫，眼中的疯狂也更加明显。\n\n萧寒夜：\"你去过战场了。看到了三百年前的真相。\"\n\n这不是疑问句，而是陈述。",
+      "emotion": "intense",
+      "next_node": "XIAO_TRUTH_002"
+    },
+    {
+      "id": "XIAO_TRUTH_002",
+      "speaker": "player",
+      "text": "你是萧天风的后人。你想打破封印，是为了救出你的先祖。",
+      "next_node": "XIAO_TRUTH_003"
+    },
+    {
+      "id": "XIAO_TRUTH_003",
+      "speaker": "xiaohanye",
+      "text": "他的眼神复杂，有认可，也有一丝悲凉。\n\n没错。萧天风是我的先祖。萧家的族人世世代代都在等待他的归来。\n\n三百年了……我的家族等得太久了。",
+      "emotion": "sorrowful",
+      "next_node": "XIAO_TRUTH_004"
+    },
+    {
+      "id": "XIAO_TRUTH_004",
+      "speaker": "xiaohanye",
+      "text": "我知道正道怎么看我——一个追求力量的疯子，一个投靠魔道的叛徒。\n\n但他们不知道的是——\n\n我追求力量，不是为了征服，也不是为了毁灭。我只是想救出被困了三百年的先祖！",
+      "emotion": "passionate",
+      "next_node": "XIAO_CHOICE_001"
+    },
+    {
+      "id": "XIAO_CHOICE_001",
+      "speaker": "player",
+      "text": "但通道彼端存在一个远古威胁。破除封印会释放它——你难道不知道吗？",
+      "next_node": "XIAO_RESPONSE_001"
+    },
+    {
+      "id": "XIAO_RESPONSE_001",
+      "speaker": "xiaohanye",
+      "text": "他沉默了。\n\n我知道。慕容雪告诉过我了。\n\n但她没有告诉你全部——那个存在的力量正在衰退。三百年的封印，不仅困住了萧天风，也削弱了那个存在。\n\n现在正是最好的时机——它的力量还没有完全恢复。",
+      "emotion": "calculating",
+      "next_node": "XIAO_TRUTH_005"
+    },
+    {
+      "id": "XIAO_TRUTH_005",
+      "speaker": "xiaohanye",
+      "text": "我的计划很简单——\n\n在我力量达到巅峰的那一刻，我会打破封印，冲入通道彼端。\n\n以我全部的力量，可以在那个存在完全恢复之前消灭它。\n\n然后救出先祖，完成萧家三百年的夙愿。",
+      "emotion": "determined",
+      "next_node": "XIAO_CHOICE_002"
+    },
+    {
+      "id": "XIAO_CHOICE_002",
+      "speaker": "system",
+      "text": "萧寒夜的计划听起来有道理，但你从中察觉到了一丝不安。\n\n他过于执着于救出先祖，可能忽略了某些风险。\n\n你决定——",
+      "choices": [
+        {
+          "id": "warn_gentle",
+          "text": "你的计划有风险。也许我们可以合作，找到更稳妥的方法",
+          "effects": [
+            { "type": "relationship_change", "target": "xiaohanye", "value": 15 },
+            { "type": "dao_heart_change", "value": 10 }
+          ],
+          "next_node": "XIAO_ALLIANCE"
+        },
+        {
+          "id": "oppose",
+          "text": "你太偏执了。如果你的判断有误，整个九州都会为你陪葬",
+          "effects": [
+            { "type": "relationship_change", "target": "xiaohanye", "value": -20 },
+            { "type": "dao_heart_change", "value": 5 }
+          ],
+          "next_node": "XIAO_CONFRONT"
+        },
+        {
+          "id": "understand",
+          "text": "我理解你的执念。但请给一点时间，我们一起找到完美的方案",
+          "effects": [
+            { "type": "relationship_change", "target": "xiaohanye", "value": 10 },
+            { "type": "dao_heart_change", "value": 5 }
+          ],
+          "next_node": "XIAO_WAIT"
+        }
+      ]
+    },
+    {
+      "id": "XIAO_ALLIANCE",
+      "speaker": "xiaohanye",
+      "text": "他看着你，目光中少了几分敌意。\n\n合作？你愿意和我这个魔道中人合作？\n\n……好。我愿意听你的方案。但我有一个条件——无论最终选择哪条路，救出萧天风是底线。",
+      "emotion": "cautious",
+      "next_node": "XIAO_END"
+    },
+    {
+      "id": "XIAO_CONFRONT",
+      "speaker": "xiaohanye",
+      "text": "他的眼中闪过一丝怒火。\n\n陪我陪葬？正道之人都是这样，满口大义，却从不理解别人的痛苦！\n\n……罢了。我不会阻止你。但当你需要力量的时候，别来找我。",
+      "emotion": "angry",
+      "next_node": "XIAO_END"
+    },
+    {
+      "id": "XIAO_WAIT",
+      "speaker": "xiaohanye",
+      "text": "他点了点头。\n\n时间不多。封印松动的速度在加快。你最好快一点。\n\n……我不会放弃救出先祖。这是我的使命。",
+      "emotion": "resolute",
+      "next_node": "XIAO_END"
+    },
+    {
+      "id": "XIAO_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\n\n• 萧寒夜的真相已揭示\n• 萧家三百年等待的执念\n• 萧寒夜计划：在威胁恢复前打破封印\n• 合作/对立关系已确定\n• 下一事件：剑骨觉醒\n\n[b]—— 每个人都有自己的正义。但九州只有一个。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

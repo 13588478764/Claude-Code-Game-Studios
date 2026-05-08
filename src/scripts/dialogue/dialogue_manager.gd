@@ -9,6 +9,9 @@ signal node_displayed(node: DialogueData.DialogueNode)
 signal choice_selected(choice: DialogueData.Choice)
 signal dialogue_error(error_message: String)
 
+## 对话-战斗联动信号
+signal combat_trigger_requested(encounter_id: String, config: Dictionary, callback_node: String)
+
 ## 对话树数据库 {dialogue_id: DialogueTree}
 var _dialogue_trees: Dictionary = {}
 
@@ -31,10 +34,57 @@ var _is_in_dialogue: bool = false
 ## 关系管理器引用
 var _relationship_manager: RelationshipManager = null
 
+## 对话-战斗桥接器引用
+var _dialogue_combat_bridge = null
+
 func _ready() -> void:
 	# 尝试获取关系管理器
 	if has_node("/root/RelationshipManager"):
 		_relationship_manager = get_node("/root/RelationshipManager")
+	
+	# 尝试获取对话-战斗桥接器
+	if has_node("/root/DialogueCombatBridge"):
+		_dialogue_combat_bridge = get_node("/root/DialogueCombatBridge")
+	
+	# 自动加载data/dialogues目录下所有对话JSON文件
+	_load_all_dialogues()
+
+## 自动加载所有对话JSON文件（包括子目录）
+func _load_all_dialogues() -> void:
+	var loaded_count := _load_dialogues_recursive("res://data/dialogues/")
+	print("[DialogueManager] Auto-loaded %d dialogue files from res://data/dialogues/" % loaded_count)
+
+## 递归加载对话文件
+func _load_dialogues_recursive(dir_path: String) -> int:
+	var dir := DirAccess.open(dir_path)
+	if dir == null:
+		print("[DialogueManager] No dialogues directory found: %s, skipping auto-load" % dir_path)
+		return 0
+	
+	var sub_dirs: Array[String] = []
+	var loaded_count := 0
+	
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	
+	while file_name != "":
+		if dir.current_is_dir():
+			sub_dirs.append(dir_path + file_name + "/")
+		elif file_name.ends_with(".json"):
+			var file_path := dir_path + file_name
+			if load_dialogue_from_json(file_path):
+				loaded_count += 1
+			else:
+				push_warning("[DialogueManager] Failed to load dialogue: %s" % file_path)
+		file_name = dir.get_next()
+	
+	dir.list_dir_end()
+	
+	# 递归加载子目录
+	for sub_dir in sub_dirs:
+		loaded_count += _load_dialogues_recursive(sub_dir)
+	
+	return loaded_count
 
 ## 注册对话树
 func register_dialogue_tree(tree: DialogueData.DialogueTree) -> bool:
@@ -107,7 +157,8 @@ func _parse_dialogue_node(data: Dictionary) -> DialogueData.DialogueNode:
 		data.get("text", "")
 	)
 	
-	node.next_node = data.get("next_node", "")
+	var next_val: Variant = data.get("next_node", "")
+	node.next_node = next_val if next_val != null else ""
 	node.audio_cue = data.get("audio_cue", "")
 	node.emotion = data.get("emotion", "neutral")
 	node.priority = data.get("priority", 1)
@@ -168,14 +219,17 @@ func _parse_condition(data: Dictionary) -> DialogueData.Condition:
 	var type_str: String = data.get("type", "custom")
 	var condition: DialogueData.Condition = null
 	
+	# 统一格式：支持设计文档中的别名
 	match type_str:
-		"relationship":
+		# 关系值条件（支持 relationship 和 relationship_check）
+		"relationship", "relationship_check":
 			condition = DialogueData.RelationshipCondition.new(
 				data.get("target", ""),
 				data.get("value", 0),
 				data.get("operator", ">=")
 			)
-		"dao_heart":
+		# 道心值条件（支持 dao_heart 和 dao_heart_check）
+		"dao_heart", "dao_heart_check":
 			condition = DialogueData.DaoHeartCondition.new(
 				data.get("value", 0),
 				data.get("operator", ">=")
@@ -209,23 +263,28 @@ func _parse_effect(data: Dictionary) -> DialogueData.Effect:
 	var type_str: String = data.get("type", "custom")
 	var effect: DialogueData.Effect = null
 	
+	# 统一格式：同时支持旧格式和设计文档中的新格式
 	match type_str:
-		"modify_relationship":
+		# 关系值变化（支持 modify_relationship 和 relationship_change）
+		"modify_relationship", "relationship_change":
 			effect = DialogueData.ModifyRelationshipEffect.new(
 				data.get("target", ""),
 				data.get("value", 0),
 				data.get("reason", "")
 			)
-		"modify_dao_heart":
+		# 道心值变化（支持 modify_dao_heart 和 dao_heart_change）
+		"modify_dao_heart", "dao_heart_change":
 			effect = DialogueData.ModifyDaoHeartEffect.new(
 				data.get("value", 0),
 				data.get("reason", "")
 			)
-		"unlock_quest":
+		# 解锁任务（支持 unlock_quest 和 quest_trigger）
+		"unlock_quest", "quest_trigger":
 			effect = DialogueData.UnlockQuestEffect.new(
 				data.get("target", "")
 			)
-		"give_item":
+		# 给予物品（支持 give_item 和 item_give）
+		"give_item", "item_give":
 			effect = DialogueData.GiveItemEffect.new(
 				data.get("target", ""),
 				data.get("value", 1)
@@ -234,17 +293,75 @@ func _parse_effect(data: Dictionary) -> DialogueData.Effect:
 			effect = DialogueData.GiveExpEffect.new(
 				data.get("value", 0)
 			)
+		# 设置标志位
 		"set_flag":
 			effect = DialogueData.SetFlagEffect.new(
 				data.get("target", ""),
 				data.get("value", true)
+			)
+		# 声望变化（新增）
+		"reputation_change":
+			effect = DialogueData.ChangeReputationEffect.new(
+				data.get("target", ""),
+				data.get("value", 0)
+			)
+		# 给予技能（新增）
+		"skill_give":
+			effect = DialogueData.GiveSkillEffect.new(
+				data.get("target", ""),
+				data.get("value", 1)
+			)
+		# 消耗物品/灵气（新增）
+		"item_cost", "spirit_cost":
+			effect = DialogueData.ConsumeItemEffect.new(
+				data.get("target", ""),
+				data.get("value", 1)
+			)
+		# 时间消耗（新增）
+		"time_cost":
+			effect = DialogueData.ConsumeTimeEffect.new(
+				data.get("value", 0)
+			)
+		# 体力消耗（新增）
+		"strength_cost":
+			effect = DialogueData.ConsumeStrengthEffect.new(
+				data.get("value", 0)
+			)
+		# 地图标记（新增）
+		"map_mark":
+			effect = DialogueData.MapMarkEffect.new(
+				data.get("target", ""),
+				true
+			)
+		# 商店打开（新增）
+		"shop_open":
+			effect = DialogueData.OpenShopEffect.new(
+				data.get("target", "")
+			)
+		# 功法解锁（新增）
+		"martial_art_unlock", "quest_complete":
+			effect = DialogueData.UnlockQuestEffect.new(
+				data.get("target", "")
+			)
+		# 被动技能给予
+		"passive_give":
+			effect = DialogueData.GiveSkillEffect.new(
+				data.get("target", ""),
+				1
+			)
+		# 触发战斗（对话-战斗联动）
+		"trigger_combat":
+			effect = DialogueData.TriggerCombatEffect.new(
+				data.get("target", ""),
+				data.get("config", {}),
+				data.get("callback_node", "")
 			)
 		_:
 			effect = DialogueData.Effect.new()
 	
 	return effect
 
-## 开始对话
+## 开始对话（通过对话ID）
 func start_dialogue(dialogue_id: String) -> bool:
 	if _is_in_dialogue:
 		push_warning("已经在对话中，无法开始新对话")
@@ -275,6 +392,31 @@ func start_dialogue(dialogue_id: String) -> bool:
 	_display_current_node()
 	
 	return true
+
+## 检查对话树是否存在
+func has_dialogue(dialogue_id: String) -> bool:
+	return _dialogue_trees.has(dialogue_id)
+
+## 是否正在对话中
+func is_in_dialogue() -> bool:
+	return _is_in_dialogue
+
+## 获取当前对话ID
+func get_current_dialogue_id() -> String:
+	if _current_dialogue == null:
+		return ""
+	return _current_dialogue.id
+
+## 通过NPC ID触发对应对话（用于NPC交互触发）
+func start_dialogue_with_npc(npc_id: String) -> bool:
+	# 遍历所有已加载的对话，查找与NPC匹配的对话树
+	for dialogue_id in _dialogue_trees:
+		var tree: DialogueData.DialogueTree = _dialogue_trees[dialogue_id]
+		if tree.metadata.has("npc_id") and tree.metadata.npc_id == npc_id:
+			return start_dialogue(dialogue_id)
+	
+	push_warning("没有找到NPC %s 的对话树" % npc_id)
+	return false
 
 ## 显示当前节点
 func _display_current_node() -> void:
@@ -310,7 +452,9 @@ func _display_current_node() -> void:
 	if _current_node.choices.is_empty():
 		if not _current_node.next_node.is_empty():
 			# 延迟跳转，给UI时间显示
-			await get_tree().create_timer(0.5).timeout
+			var scene_tree := get_tree()
+			if scene_tree != null:
+				await scene_tree.create_timer(0.5).timeout
 			_goto_node(_current_node.next_node)
 		else:
 			end_dialogue()
@@ -405,10 +549,6 @@ func get_available_choices() -> Array[DialogueData.Choice]:
 	if _current_node == null:
 		return []
 	return _current_node.get_available_choices()
-
-## 是否在对话中
-func is_in_dialogue() -> bool:
-	return _is_in_dialogue
 
 ## 获取对话历史
 func get_dialogue_history() -> Array[String]:

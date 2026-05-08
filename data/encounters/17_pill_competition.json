@@ -1,0 +1,71 @@
+{
+  "id": "encounter_17_pill_competition",
+  "title": "丹药争夺 — 稀有灵丹现世",
+  "description": "多名修士为争夺一枚罕见丹药展开激战，空气中弥漫着浓郁的药香与灵力波动",
+  "type": "combat",
+  "probability": 0.08,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_mid",
+    "cooldown_minutes": 10
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "PILL_START",
+  "nodes": [
+    {
+      "id": "PILL_START",
+      "speaker": "system",
+      "text": "你正赶路时，远处传来阵阵灵力波动和喊杀声。靠近一看，三名修士正在为一枚散发奇异香气的丹药争斗不休。\n\n那枚丹药灵气浓郁，显然是极为珍稀的灵丹妙药。三人各施手段，打得不可开交。",
+      "next_node": "PILL_CHOICE"
+    },
+    {
+      "id": "PILL_CHOICE",
+      "speaker": "system",
+      "text": "丹药的争夺愈发激烈，你需要做出选择。",
+      "choices": [
+        {
+          "id": "join_fight",
+          "text": "加入战斗，凭实力抢夺丹药",
+          "effects": [
+            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 25}
+          ],
+          "next_node": "PILL_FIGHT_CHECK"
+        },
+        {
+          "id": "wait_and_sneak",
+          "text": "等他们两败俱伤后暗中取走丹药",
+          "effects": [
+            {"type": "skill_check", "target": "stealth", "operator": ">=", "value": 20}
+          ],
+          "next_node": "PILL_STEALTH_CHECK"
+        },
+        {
+          "id": "help_weakest",
+          "text": "帮助最弱的那名修士，以善意为他争取生机",
+          "effects": [
+            {"type": "skill_check", "target": "charisma", "operator": ">=", "value": 15}
+          ],
+          "next_node": "PILL_CHARISMA_CHECK"
+        }
+      ]
+    },
+    {
+      "id": "PILL_FIGHT_CHECK",
+      "speaker": "system",
+      "text": "你运起真气，果断加入战局。\n\n三人见又有外人插手，竟默契地先联手攻向你！好在你修为不弱，几经周折后终于击退三人。\n\n[b]获得：[/b]凝元丹\n[b]消耗：[/b]灵力大幅消耗",
+      "next_node": "END"
+    },
+    {
+      "id": "PILL_STEALTH_CHECK",
+      "speaker": "system",
+      "text": "你潜伏在暗处，耐心等待三人拼斗。\n\n终于，其中两人重伤倒地，第三人也在踉跄之际被你悄无声息地夺走了丹药。\n\n[b]获得：[/b]凝元丹\n[b]声望：[/b]-5（若被发现将身败名裂）",
+      "next_node": "END"
+    },
+    {
+      "id": "PILL_CHARISMA_CHECK",
+      "speaker": "system",
+      "text": "你挺身而出，挡在那名最弱的年轻修士面前，厉声喝道：\"以多欺少，非君子所为！\"\n\n另外两人见你气势不凡，又忌惮你的修为，犹豫片刻后拂袖离去。\n\n那名修士感激涕零：\"多谢道友救命之恩！在下无以为报，这枚丹药愿与道友平分。\"\n\n[b]获得：[/b]凝元丹（半枚）\n[b]道心：[/b]+8\n[b]人际关系：[/b]获得一名感恩的修士盟友",
+      "next_node": "END"
+    }
+  ]
+}

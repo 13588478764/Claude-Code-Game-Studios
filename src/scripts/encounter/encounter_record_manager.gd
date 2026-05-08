@@ -93,10 +93,10 @@ func get_encounter_history() -> Array[Dictionary]:
 	return encounter_history.duplicate()
 
 # 获取特定类型的历史记录
-func get_encounters_by_type(encounter_type: String) -> Array[Dictionary]:
-	var result = []
+func get_encounters_by_type(encounter_type: String) -> Array:
+	var result: Array[Dictionary] = []
 	for entry in encounter_history:
-		if entry.type == encounter_type:
+		if entry.get("type", "") == encounter_type:
 			result.append(entry)
 	return result
 
@@ -154,13 +154,17 @@ func load_records() -> bool:
 		print("错误：存档数据缺少版本信息")
 		return false
 	
-	# 加载数据
+	# 加载数据（JSON解析的数组需要转换为正确类型）
 	if save_data.has("completed_encounters"):
-		completed_encounters = save_data.completed_encounters
+		completed_encounters.clear()
+		for eid in save_data.completed_encounters:
+			completed_encounters.append(eid)
 	if save_data.has("consecutive_failures"):
 		consecutive_failures = save_data.consecutive_failures
 	if save_data.has("encounter_history"):
-		encounter_history = save_data.encounter_history
+		encounter_history.clear()
+		for entry in save_data.encounter_history:
+			encounter_history.append(entry)
 	
 	print("从 %s 加载了 %d 个完成的奇遇记录和 %d 条历史记录" % [
 		SAVE_FILE_PATH, 

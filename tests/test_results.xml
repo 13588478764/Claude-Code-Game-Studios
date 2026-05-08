@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="GutTests" failures="17" tests="46" >
+  <testsuite name="tests/unit/test_dialogue_system.gd" tests="12" failures="11" skipped="0" time="0.921573" >
+      <testcase name="test_register_dialogue_tree" assertions="1" status="pass" classname="tests/unit/test_dialogue_system.gd" time="0.000075" >
+      </testcase>
+      <testcase name="test_dialogue_tree_validation_failure" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000204" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <push_error>对话树 invalid_dialogue 缺少起始节点
+      [2] <push_error>对话树 invalid_dialogue 验证失败
+            at line -1]]></failure></testcase>
+      <testcase name="test_start_dialogue" assertions="4" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000306" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+      <testcase name="test_end_dialogue" assertions="3" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000258" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+      <testcase name="test_node_displayed" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000261" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+      <testcase name="test_select_choice" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000293" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+      <testcase name="test_dialogue_loop_detection" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.917974" >
+      <failure message="failed"><![CDATA[Expected object <Node#90982844706>(dialogue_manager.gd) to have emitted signal [dialogue_error]:  应该检测到循环并触发错误信号 (Signals emitted: ["dialogue_started", "node_displayed"])
+            at line 94]]></failure></testcase>
+      <testcase name="test_condition_check" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000578" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+      <testcase name="test_get_available_choices" assertions="1" status="pass" classname="tests/unit/test_dialogue_system.gd" time="0.00018" >
+      </testcase>
+      <testcase name="test_dialogue_history" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000446" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+      <testcase name="test_dialogue_queue" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000516" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+      <testcase name="test_save_and_load" assertions="2" status="fail" classname="tests/unit/test_dialogue_system.gd" time="0.000482" >
+      <failure message="failed"><![CDATA[Unexpected Errors:
+      [1] <engine-0>Parameter "data.tree" is null.
+      [2] <engine-2>Cannot call method 'create_timer' on a null value.
+            at line -1]]></failure></testcase>
+  </testsuite>
+  <testsuite name="tests/unit/test_martial_art_database.gd" tests="21" failures="10" skipped="0" time="0.335353" >
+      <testcase name="test_database_loads_successfully" assertions="2" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.022556" >
+      </testcase>
+      <testcase name="test_correct_number_of_martial_arts_loaded" assertions="1" status="fail" classname="tests/unit/test_martial_art_database.gd" time="0.016748" >
+      <failure message="failed"><![CDATA[[48] expected to equal [13]:  应该加载了13个功法
+            at line 26]]></failure></testcase>
+      <testcase name="test_generic_martial_arts_loaded" assertions="3" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.016282" >
+      </testcase>
+      <testcase name="test_tianjian_martial_arts_loaded" assertions="3" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015675" >
+      </testcase>
+      <testcase name="test_shaolin_martial_arts_loaded" assertions="2" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015925" >
+      </testcase>
+      <testcase name="test_wudang_martial_arts_loaded" assertions="2" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.016177" >
+      </testcase>
+      <testcase name="test_gaibang_martial_arts_loaded" assertions="2" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015539" >
+      </testcase>
+      <testcase name="test_get_martial_art_data" assertions="3" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015323" >
+      </testcase>
+      <testcase name="test_martial_art_properties" assertions="4" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015614" >
+      </testcase>
+      <testcase name="test_query_by_type" assertions="3" status="fail" classname="tests/unit/test_martial_art_database.gd" time="0.016213" >
+      <failure message="failed"><![CDATA[[3] expected to equal [1]:  应该有1个移动型功法
+            at line 76]]></failure></testcase>
+      <testcase name="test_query_by_grade" assertions="2" status="fail" classname="tests/unit/test_martial_art_database.gd" time="0.015371" >
+      <failure message="failed"><![CDATA[[12] expected to equal [3]:  应该有3个普通品阶功法
+            at line 82]]></failure></testcase>
+      <testcase name="test_query_by_school" assertions="2" status="fail" classname="tests/unit/test_martial_art_database.gd" time="0.015867" >
+      <failure message="failed"><![CDATA[[5] expected to equal [2]:  少林寺应该有2个功法
+            at line 90]]></failure></testcase>
+      <testcase name="test_query_by_weapon" assertions="2" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015523" >
+      </testcase>
+      <testcase name="test_query_by_unlock_level" assertions="2" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.014297" >
+      </testcase>
+      <testcase name="test_multi_condition_query" assertions="2" status="fail" classname="tests/unit/test_martial_art_database.gd" time="0.014459" >
+      <failure message="failed"><![CDATA[[3] expected to equal [1]:  应该只有1个符合条件的功法
+            at line 119]]></failure></testcase>
+      <testcase name="test_martial_art_data_validation" assertions="48" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.016442" >
+      </testcase>
+      <testcase name="test_combo_chain" assertions="3" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015374" >
+      </testcase>
+      <testcase name="test_database_statistics" assertions="3" status="fail" classname="tests/unit/test_martial_art_database.gd" time="0.014161" >
+      <failure message="failed"><![CDATA[[48] expected to equal [13]:  总功法数应该是13
+            at line 138]]></failure></testcase>
+      <testcase name="test_advanced_martial_art_properties" assertions="5" status="fail" classname="tests/unit/test_martial_art_database.gd" time="0.016359" >
+      <failure message="failed"><![CDATA[[50] expected to equal [45]:  天剑九式解锁等级应该是45
+            at line 146]]></failure></testcase>
+      <testcase name="test_defense_martial_art" assertions="3" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.01607" >
+      </testcase>
+      <testcase name="test_buff_martial_art" assertions="3" status="pass" classname="tests/unit/test_martial_art_database.gd" time="0.015378" >
+      </testcase>
+  </testsuite>
+  <testsuite name="tests/unit/test_relationship_system.gd" tests="13" failures="0" skipped="0" time="0.001225" >
+      <testcase name="test_relationship_value_clamping" assertions="2" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000078" >
+      </testcase>
+      <testcase name="test_relationship_level_judgment" assertions="6" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000109" >
+      </testcase>
+      <testcase name="test_dao_heart_value_clamping" assertions="2" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000054" >
+      </testcase>
+      <testcase name="test_dao_heart_level_judgment" assertions="5" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000081" >
+      </testcase>
+      <testcase name="test_modify_relationship" assertions="2" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000077" >
+      </testcase>
+      <testcase name="test_modify_dao_heart" assertions="2" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000085" >
+      </testcase>
+      <testcase name="test_shop_discount" assertions="4" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000086" >
+      </testcase>
+      <testcase name="test_npc_attitude_modifier" assertions="3" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000067" >
+      </testcase>
+      <testcase name="test_relationship_level_change_signal" assertions="1" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000197" >
+      </testcase>
+      <testcase name="test_dao_heart_level_change_signal" assertions="1" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000151" >
+      </testcase>
+      <testcase name="test_save_and_load" assertions="4" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000096" >
+      </testcase>
+      <testcase name="test_relationship_history" assertions="3" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000079" >
+      </testcase>
+      <testcase name="test_dao_heart_history" assertions="3" status="pass" classname="tests/unit/test_relationship_system.gd" time="0.000065" >
+      </testcase>
+  </testsuite>
+</testsuites>

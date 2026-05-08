@@ -1,0 +1,186 @@
+{
+  "id": "ACT3_EVENT10_FINAL_BATTLE",
+  "title": "第三幕事件十 — 九州之门决战",
+  "description": "九州之门前的最终对决，与试图垄断飞升通道的幕后黑手对决",
+  "start_node": "BATTLE_001",
+  "metadata": { "npc_id": "system", "event": "act3_event10" },
+  "nodes": [
+    {
+      "id": "BATTLE_001",
+      "speaker": "system",
+      "text": "黎明。\\n\\n九州之门前的天空被一股诡异的力量撕裂。一半是朝阳，一半是黑暗。\\n\\n门后传来的力量已经不再是隐隐约约的压迫感——那是真实存在的、令人窒息的远古意志。\\n\\n它正在试图突破最后的封印。",
+      "next_node": "BATTLE_002"
+    },
+    {
+      "id": "BATTLE_002",
+      "speaker": "system",
+      "text": "各方势力齐聚九州之门。\\n\\n天剑盟的修士们在柳如烟的指挥下布下了防御法阵。\\n魔道势力在萧寒夜的带领下占据了侧翼。\\n慕容雪站在九州之门的正前方，手中紧握着那枚古老的玉简。\\n\\n所有人的目光，最终都落在了你的身上。",
+      "next_node": "BATTLE_003"
+    },
+    {
+      "id": "BATTLE_003",
+      "speaker": "system",
+      "text": "就在这时，九州之门突然剧烈震动。\\n\\n门中央的裂缝骤然扩大，一股黑暗的能量从中涌出。\\n\\n那不是普通的灵力——那是一种吞噬一切的、远古的存在。",
+      "next_node": "BATTLE_004"
+    },
+    {
+      "id": "BATTLE_004",
+      "speaker": "system",
+      "text": "黑暗中，一道模糊的身影开始凝聚。\\n\\n它没有具体的形态，但你能感受到它的意志——那种饥饿、贪婪、永无止境的渴望。\\n\\n它在吞噬飞升之路上的每一丝灵力，试图将整个通道据为己有。",
+      "next_node": "BATTLE_005"
+    },
+    {
+      "id": "BATTLE_005",
+      "speaker": "system",
+      "text": "远古存在（通过心灵感应）：\\\"三百年了……你们以为封印能困住我吗？\\\"\\n\\n\\\"飞升之路的力量，本就该属于我。那些飞升者，他们的修为、他们的道——都将成为我的养料。\\\"\\n\\n\\\"而现在，封印即将崩溃。九州，将重新回到我的掌控之中。\"",
+      "emotion": "menacing",
+      "next_node": "BATTLE_RESPONSE"
+    },
+    {
+      "id": "BATTLE_RESPONSE",
+      "speaker": "system",
+      "text": "所有人的脸色都变了。\\n\\n慕容雪：\\\"它比三百年前更强了。三百年的积蓄，让它的力量远超从前。\\\"\\n\\n萧寒夜：\\\"管它多强！今天，我要打破这个封印，救出我的先祖！\\\"\\n\\n柳如烟：\\\"不行！如果现在打破封印，它会彻底降临！\\\"",
+      "next_node": "BATTLE_PLAYER_STAND"
+    },
+    {
+      "id": "BATTLE_PLAYER_STAND",
+      "speaker": "player",
+      "text": "你向前走出一步。\\n\\n体内的剑骨碎片开始共鸣，一股温暖而坚定的力量从你的体内涌出。\\n\\n你感受到——剑骨的力量，正是克制这个远古存在的关键。",
+      "next_node": "BATTLE_CHOICE"
+    },
+    {
+      "id": "BATTLE_CHOICE",
+      "speaker": "system",
+      "text": "现在，你必须做出决定。\\n\\n这不仅是一个战术上的选择，更是一个道心上的抉择。\\n\\n你的选择将决定九州的命运。",
+      "choices": [
+        {
+          "id": "seal_repair",
+          "text": "以剑骨为核心，重新封印九州之门",
+          "condition": { "type": "dao_heart_check", "min": 0 },
+          "effects": [
+            { "type": "dao_heart_change", "value": 10 },
+            { "type": "trigger_combat", "target": "final_battle_seal", "config": { "battle_type": "seal", "enemies": [{"id": "ancient_entity_core", "speed": 8, "hp": 150, "max_hp": 150, "internal_energy": 80, "max_internal_energy": 100, "stance": 80, "attributes": {"force": 15, "constitution": 12, "wisdom": 10}}] }, "callback_node": "BATTLE_SEAL_PATH" }
+          ],
+          "next_node": "BATTLE_SEAL_PATH"
+        },
+        {
+          "id": "destroy_gate",
+          "text": "以剑骨之力斩断九州之门，彻底封闭飞升通道",
+          "condition": { "type": "dao_heart_check", "min": -30 },
+          "effects": [
+            { "type": "dao_heart_change", "value": -10 },
+            { "type": "trigger_combat", "target": "final_battle_destroy", "config": { "battle_type": "destroy", "enemies": [{"id": "ancient_entity_wrath", "speed": 12, "hp": 180, "max_hp": 180, "internal_energy": 100, "max_internal_energy": 120, "stance": 60, "attributes": {"force": 20, "constitution": 10, "wisdom": 8}}] }, "callback_node": "BATTLE_DESTROY_PATH" }
+          ],
+          "next_node": "BATTLE_DESTROY_PATH"
+        },
+        {
+          "id": "purify",
+          "text": "以云鹤九剑第九式'归一'，净化远古存在，重开飞升之路",
+          "condition": { "type": "skill_check", "target": "yunhe_sword_9", "min": 1 },
+          "effects": [
+            { "type": "dao_heart_change", "value": 20 },
+            { "type": "trigger_combat", "target": "final_battle_purify", "config": { "battle_type": "purify", "enemies": [{"id": "ancient_entity_corrupted", "speed": 10, "hp": 200, "max_hp": 200, "internal_energy": 120, "max_internal_energy": 150, "stance": 100, "attributes": {"force": 18, "constitution": 15, "wisdom": 12}}] }, "callback_node": "BATTLE_PURE_PATH" }
+          ],
+          "next_node": "BATTLE_PURE_PATH"
+        }
+      ]
+    },
+    {
+      "id": "BATTLE_SEAL_PATH",
+      "speaker": "player",
+      "text": "以剑骨为核，重铸封印！\\n\\n你高举双手，体内的剑骨碎片释放出耀眼的光芒。\\n\\n光芒汇聚成一道封印之力，将九州之门的裂缝逐渐修复。",
+      "next_node": "BATTLE_SEAL_PROCESS"
+    },
+    {
+      "id": "BATTLE_SEAL_PROCESS",
+      "speaker": "system",
+      "text": "远古存在发出愤怒的咆哮，试图阻止封印的修复。\\n\\n但它的光芒在剑骨面前显得黯淡。三百年前，九人合力才完成的封印，今天，将以剑骨为核心，变得更加强大。\\n\\n慕容雪举起了手中的玉简，与你的力量产生了共鸣。\\n\\n慕容雪：\\\"封印正在加强！但——剑骨的力量正在被消耗！\\\"",
+      "next_node": "BATTLE_SEAL_RESULT"
+    },
+    {
+      "id": "BATTLE_SEAL_RESULT",
+      "speaker": "system",
+      "text": "封印完成了。\\n\\n九州之门恢复了平静，远古存在的意志被重新封印在通道彼端。\\n\\n但你感受到——体内的剑骨碎片变得冰冷。它的力量已经被封印消耗殆尽。\\n\\n你失去了剑骨的大部分力量。但九州，获得了和平。\\n\\n[b]封印修复完成。剑骨力量大幅削弱。[/b]",
+      "next_node": "BATTLE_RESULT_CHECK"
+    },
+    {
+      "id": "BATTLE_DESTROY_PATH",
+      "speaker": "player",
+      "text": "以剑为引，斩断通道！\\n\\n你使出了云鹤九剑第八式——'断天'。\\n\\n一道璀璨的剑光从你手中斩出，直直地劈向九州之门。",
+      "next_node": "BATTLE_DESTROY_PROCESS"
+    },
+    {
+      "id": "BATTLE_DESTROY_PROCESS",
+      "speaker": "system",
+      "text": "剑光斩中了九州之门。\\n\\n远古存在发出痛苦的咆哮，试图阻止剑光的扩散。\\n\\n但'断天'的威力远超它的想象。这道剑式，本就是为斩断不应存在的枷锁而创造的。\\n\\n九州之门开始崩塌。飞升通道，正在被永久封闭。\\n\\n萧寒夜：\\\"不——！你在做什么！我的先祖——！\\\"",
+      "next_node": "BATTLE_DESTROY_RESULT"
+    },
+    {
+      "id": "BATTLE_DESTROY_RESULT",
+      "speaker": "system",
+      "text": "九州之门彻底崩塌了。\\n\\n远古存在发出了最后一声咆哮，随后被永久地困在了通道的彼端。飞升之路，从此断绝。\\n\\n萧天风——三百年前失踪的英雄——永远地留在了通道的另一侧。\\n\\n但你阻止了远古存在的降临。九州，获得了安全。\\n\\n[b]九州之门已崩塌。飞升之路断绝。[/b]",
+      "next_node": "BATTLE_RESULT_CHECK"
+    },
+    {
+      "id": "BATTLE_PURE_PATH",
+      "speaker": "player",
+      "text": "以己身为剑，以道心为锋——\\n\\n云鹤九剑，第九式，'归一'！",
+      "next_node": "BATTLE_PURE_PROCESS"
+    },
+    {
+      "id": "BATTLE_PURE_PROCESS",
+      "speaker": "system",
+      "text": "你使出了云鹤九剑的最后一式。\\n\\n这不是攻击的剑式——而是选择的剑式。\\n\\n你的意识飞升至一个更高的维度。在那里，你看到了九州命运的无数条可能道路。\\n\\n远古存在——它并非生来邪恶。它曾经也是飞升之路上的一个修行者，被无尽的贪婪吞噬了理智。\\n\\n你看到了它的本源——那是一颗堕落的道心。",
+      "next_node": "BATTLE_PURE_CHOICE"
+    },
+    {
+      "id": "BATTLE_PURE_CHOICE",
+      "speaker": "system",
+      "text": "现在，你面临最后的选择。\\n\\n归一之剑，让你看到了两条路：",
+      "choices": [
+        {
+          "id": "purify_existence",
+          "text": "净化远古存在的堕落，恢复它的本心",
+          "condition": { "type": "dao_heart_check", "min": 30 },
+          "effects": [
+            { "type": "dao_heart_change", "value": 25 }
+          ],
+          "next_node": "BATTLE_PURE_RESULT"
+        },
+        {
+          "id": "absorb_existence",
+          "text": "吸收远古存在的力量，将其据为己有",
+          "condition": { "type": "dao_heart_check", "max": -10 },
+          "effects": [
+            { "type": "dao_heart_change", "value": -30 }
+          ],
+          "next_node": "BATTLE_ABSORB_RESULT"
+        }
+      ]
+    },
+    {
+      "id": "BATTLE_PURE_RESULT",
+      "speaker": "system",
+      "text": "你选择了净化。\\n\\n归一之剑的力量涌入远古存在的本源，将它堕落的道心重新修复。\\n\\n远古存在的意志发出了最后一声叹息——\\n\\n远古存在：\\\"三百年了……我终于……解脱了。\\\"\\n\\n它的身影逐渐消散。飞升之路上的黑暗被清除，通道重新恢复了光明。\\n\\n飞升之路——重开了。\\n\\n[b]远古存在已净化。飞升之路重开。隐藏结局条件达成。[/b]",
+      "next_node": "BATTLE_RESULT_CHECK"
+    },
+    {
+      "id": "BATTLE_ABSORB_RESULT",
+      "speaker": "system",
+      "text": "你选择了吸收。\\n\\n归一之剑改变了方向——从净化变成了掠夺。\\n\\n远古存在的力量涌入你的体内，你的修为在一瞬间暴涨到了前所未有的高度。\\n\\n但你感受到——你的道心正在被这股力量侵蚀。\\n\\n你成为了新的远古存在。\\n\\n飞升之路——落入了你的掌控之中。\\n\\n[b]远古存在已吸收。飞升之路被玩家掌控。魔道极致结局路线。[/b]",
+      "next_node": "BATTLE_RESULT_CHECK"
+    },
+    {
+      "id": "BATTLE_RESULT_CHECK",
+      "speaker": "system",
+      "text": "九州之门前的战斗已经结束。\\n\\n远古存在的威胁被解除——以某种方式。\\n\\n各方势力的目光再次落在你的身上。\\n\\n现在，九州的未来，将由你来定义。\\n\\n[b]—— 决战已结束。结局的时刻，即将到来。——[/b]",
+      "next_node": "BATTLE_END"
+    },
+    {
+      "id": "BATTLE_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\\n\\n• 九州之门决战已完成\\n• 你的最终选择已确定\\n• 远古存在的命运已决定\\n• 道心值已最终锁定\\n• 下一事件：结局分支\\n\\n[b]—— 战斗已毕，结局将至。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

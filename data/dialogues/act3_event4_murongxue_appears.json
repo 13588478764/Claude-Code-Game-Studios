@@ -1,0 +1,206 @@
+{
+  "id": "ACT3_EVENT4_MURONGXUE",
+  "title": "第三幕事件四 — 慕容雪初现",
+  "description": "在神秘遗迹中首次与慕容雪直接对话，揭示部分封印真相",
+  "start_node": "MURONG_001",
+  "metadata": { "npc_id": "murongxue", "event": "act3_event4" },
+  "nodes": [
+    {
+      "id": "MURONG_001",
+      "speaker": "system",
+      "text": "你按照碑文中的线索，来到了上古战场遗迹的边缘。\n\n这里曾经是三百年前大战的核心区域。地面上到处是残破的武器和断裂的剑痕，空气中还残留着令人窒息的灵力波动。\n\n就在你准备深入遗迹时，一个清冷的声音在你身后响起。",
+      "next_node": "MURONG_002"
+    },
+    {
+      "id": "MURONG_002",
+      "speaker": "murongxue",
+      "text": "你来了。我一直在等你。\n\n你转过身，看到一位白衣女子。她的容貌极美，却带着一种不属于这个时代的沧桑感。\n\n那双眼睛——你知道，她就是慕容雪。",
+      "emotion": "calm",
+      "next_node": "MURONG_003"
+    },
+    {
+      "id": "MURONG_003",
+      "speaker": "player",
+      "text": "你就是慕容雪？三百年前封印飞升通道的九人之一？\n\n云中鹤让我小心你。",
+      "next_node": "MURONG_004"
+    },
+    {
+      "id": "MURONG_004",
+      "speaker": "murongxue",
+      "text": "她的嘴角露出一丝苦涩的微笑。\n\n云中鹤……他终究还是把你卷进来了。\n\n小心我是应该的。毕竟，三百年前那场大战，我也参与了。\n\n但我不是你的敌人。",
+      "emotion": "bitter",
+      "next_node": "MURONG_005"
+    },
+    {
+      "id": "MURONG_005",
+      "speaker": "player",
+      "text": "那你为什么要在云中鹤的遗言中留下你的名字？你知道他会死。",
+      "next_node": "MURONG_CHOICE"
+    },
+    {
+      "id": "MURONG_CHOICE",
+      "speaker": "murongxue",
+      "text": "她沉默了很久。\n\n因为——我欠他一个解释。也欠你一个真相。",
+      "emotion": "sad",
+      "next_node": "MURONG_TRUTH_001"
+    },
+    {
+      "id": "MURONG_TRUTH_001",
+      "speaker": "murongxue",
+      "text": "三百年前，飞升通道出现了异常。原本正常的飞升之路，开始被一股神秘的力量侵蚀。\n\n有人——或者说某个存在——试图垄断飞升通道，将所有飞升者的力量据为己有。\n\n如果不加以阻止，整个九州修真界都会沦为那个存在的养料。",
+      "emotion": "serious",
+      "next_node": "MURONG_TRUTH_002"
+    },
+    {
+      "id": "MURONG_TRUTH_002",
+      "speaker": "player",
+      "text": "所以你和其他八人一起封印了飞升通道。",
+      "next_node": "MURONG_TRUTH_003"
+    },
+    {
+      "id": "MURONG_TRUTH_003",
+      "speaker": "murongxue",
+      "text": "是的。但我们九人的立场并不相同。\n\n玄天、清虚、明慧、素问——他们是为了守护九州。\n\n凌虚、玄微——他们是被动卷入的。\n\n萧天风……他是最先发现异常的人，却在一场战斗中被卷入了通道彼端，至今生死不明。\n\n玄机——他是封印的发起者，但后来消失了。\n\n而我——",
+      "emotion": "contemplative",
+      "next_node": "MURONG_CHOICE_2"
+    },
+    {
+      "id": "MURONG_CHOICE_2",
+      "speaker": "murongxue",
+      "text": "你想知道我的立场，对吗？\n\n我参与封印，不是为了守护九州，也不是为了飞升。\n\n我是为了——",
+      "emotion": "hesitant",
+      "choices": [
+        {
+          "id": "ask_direct",
+          "text": "直接说出你的目的",
+          "effects": [
+            { "type": "dao_heart_change", "value": 5 }
+          ],
+          "next_node": "MURONG_REVEAL"
+        },
+        {
+          "id": "press_hard",
+          "text": "你最好别隐瞒，否则我不会相信你",
+          "effects": [
+            { "type": "relationship_change", "target": "murongxue", "value": -10 },
+            { "type": "dao_heart_change", "value": 5 }
+          ],
+          "next_node": "MURONG_REVEAL_FORCED"
+        },
+        {
+          "id": "show_empathy",
+          "text": "你一定承受了很多。如果愿意，可以说出来",
+          "effects": [
+            { "type": "relationship_change", "target": "murongxue", "value": 20 },
+            { "type": "dao_heart_change", "value": 10 }
+          ],
+          "next_node": "MURONG_REVEAL_GENTLE"
+        }
+      ]
+    },
+    {
+      "id": "MURONG_REVEAL",
+      "speaker": "murongxue",
+      "text": "她深吸了一口气。\n\n我是为了找到萧天风。他是我最重要的人。我不能让他独自困在通道彼端。\n\n封印是我参与建立的，但我也一直在寻找解除封印的方法——不是为了垄断力量，而是为了救人。",
+      "emotion": "earnest",
+      "next_node": "MURONG_REVEAL_ALL"
+    },
+    {
+      "id": "MURONG_REVEAL_FORCED",
+      "speaker": "murongxue",
+      "text": "她的眼中闪过一丝怒意，但很快消散。\n\n好吧，我告诉你——我的目的很单纯，就是找到萧天风。\n\n他是三百年前大战中被卷入通道的人。我要救他回来。",
+      "emotion": "frustrated",
+      "next_node": "MURONG_REVEAL_ALL"
+    },
+    {
+      "id": "MURONG_REVEAL_GENTLE",
+      "speaker": "murongxue",
+      "text": "她的眼眶微微泛红。\n\n三百年了……你是第一个愿意听我说这些的人。\n\n我参与封印，是为了找到萧天风。他在战斗中被卷入了通道彼端，我必须救他回来。\n\n但我不能贸然行动。因为通道彼端……确实存在着极其危险的东西。",
+      "emotion": "touched",
+      "next_node": "MURONG_REVEAL_ALL"
+    },
+    {
+      "id": "MURONG_REVEAL_ALL",
+      "speaker": "murongxue",
+      "text": "三百年前的那场大战，我们都付出了太多。\n\n萧天风失踪了。玄机和萧寒夜——他们是萧天风的后人，一个在暗中调查真相，一个走上了极端的道路。\n\n萧寒夜之所以追求力量，不是因为他邪恶。而是因为他相信，只有足够强大，才能打破封印，救出他的先祖。\n\n但他不知道的是——",
+      "emotion": "sad",
+      "next_node": "MURONG_WARNING"
+    },
+    {
+      "id": "MURONG_WARNING",
+      "speaker": "murongxue",
+      "text": "通道彼端的存在，比我们想象的要可怕得多。\n\n那是……一个吞噬飞升者力量的远古存在。它蛰伏在通道彼端，等待着足够的力量来突破封印，降临九州。\n\n如果我们贸然破封，释放的不是飞升的希望，而是毁灭。",
+      "emotion": "urgent",
+      "next_node": "MURONG_PLEA"
+    },
+    {
+      "id": "MURONG_PLEA",
+      "speaker": "murongxue",
+      "text": "所以我需要你的帮助。\n\n封印不能简单破除，也不能放任它松动。我们需要找到第三条路——\n\n彻底解决通道彼端的存在，然后才能安全地开放飞升之路。\n\n你愿意帮我吗？",
+      "emotion": "hopeful",
+      "next_node": "MURONG_PLAYER_CHOICE"
+    },
+    {
+      "id": "MURONG_PLAYER_CHOICE",
+      "speaker": "player",
+      "text": "信息量太大了。我需要时间消化。\n\n但至少，我现在明白了一件事——事情远比正道和魔道的对立要复杂。",
+      "choices": [
+        {
+          "id": "agree_cooperate",
+          "text": "我愿意帮助你。为了九州的命运，我们一起找到第三条路",
+          "effects": [
+            { "type": "relationship_change", "target": "murongxue", "value": 25 },
+            { "type": "dao_heart_change", "value": 10 },
+            { "type": "quest_trigger", "target": "murongxue_alliance", "value": true }
+          ],
+          "next_node": "MURONG_AGREE"
+        },
+        {
+          "id": "cautious_agree",
+          "text": "我可以帮忙，但我需要自己调查真相。不会只听你一面之词",
+          "effects": [
+            { "type": "relationship_change", "target": "murongxue", "value": 10 },
+            { "type": "dao_heart_change", "value": 5 }
+          ],
+          "next_node": "MURONG_CAUTIOUS"
+        },
+        {
+          "id": "refuse",
+          "text": "抱歉，我不能相信你。毕竟你和封印有关，我没法完全信任你",
+          "effects": [
+            { "type": "relationship_change", "target": "murongxue", "value": -20 },
+            { "type": "dao_heart_change", "value": 5 }
+          ],
+          "next_node": "MURONG_REFUSE"
+        }
+      ]
+    },
+    {
+      "id": "MURONG_AGREE",
+      "speaker": "murongxue",
+      "text": "她的眼中闪烁着感激的光芒。\n\n谢谢你。我不会让你失望的。\n\n下一步，我们需要去上古战场的核心区域。那里残留着三百年前大战的记忆，或许能帮助我们找到解决之道。",
+      "emotion": "grateful",
+      "next_node": "MURONG_END"
+    },
+    {
+      "id": "MURONG_CAUTIOUS",
+      "speaker": "murongxue",
+      "text": "她点了点头。\n\n谨慎是应该的。我不怪你。\n\n但至少，请去上古战场的核心区域看看。真相就在那里。",
+      "emotion": "understanding",
+      "next_node": "MURONG_END"
+    },
+    {
+      "id": "MURONG_REFUSE",
+      "speaker": "murongxue",
+      "text": "她的表情黯淡了下来。\n\n我理解。三百年的因果，不是一两句话就能化解的。\n\n但请记住——时间不多了。封印松动的速度在加快。当你准备好面对真相的时候，来上古战场的核心找我。",
+      "emotion": "resigned",
+      "next_node": "MURONG_END"
+    },
+    {
+      "id": "MURONG_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\n\n• 慕容雪首次直接对话\n• 封印真相初步揭示\n• 萧天风失踪于通道彼端\n• 通道彼端存在远古威胁\n• 萧寒夜的动机获得新的解读\n• 下一事件：上古战场遗迹\n\n[b]—— 真相，远比想象的更复杂。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

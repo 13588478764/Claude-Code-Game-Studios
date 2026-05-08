@@ -359,9 +359,9 @@ func test_event_ready_signal_after_warning():
 		trigger_data = data
 	)
 	
-	# When: 手动触发预警并等待超时
+	# When: 手动触发预警并模拟超时
 	trigger._start_warning("distance")
-	await wait_seconds(3.0)  # 等待预警时间结束
+	trigger._on_warning_timeout()  # 直接调用超时处理，避免等待 Timer
 	
 	# Then: 应该发出事件准备触发信号
 	assert_true(event_ready, "应该发出事件准备触发信号")
@@ -380,7 +380,8 @@ func test_warning_cancelled_in_safe_zone():
 	# When: 触发预警后立即进入安全区
 	trigger._start_warning("distance")
 	trigger.set_current_region("village")
-	await wait_seconds(3.0)
+	# 进入安全区会取消预警，直接调用超时处理验证
+	trigger._on_warning_timeout()
 	
 	# Then: 事件不应该触发
 	assert_false(event_ready, "进入安全区后事件不应触发")

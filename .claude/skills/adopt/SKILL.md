@@ -6,7 +6,14 @@ user-invocable: true
 allowed-tools: Read, Glob, Grep, Write, AskUserQuestion
 agent: technical-director
 ---
+# 🌏 Language & Communication Protocol (语言与沟通协议)
 
+**CRITICAL RULE**: All interactions, explanations, documentation, and comments MUST be in **Simplified Chinese (简体中文)**.
+
+1. **Conversation Language**: Always respond to the user in Simplified Chinese.
+2. **Code Comments**: All code comments must be in Simplified Chinese.
+3. **Documentation**: All GDD and narrative texts must be in Simplified Chinese.
+4. **Technical Terms**: Keep code classes/keywords in English; translate game concepts per Terminology Standards.
 # Adopt — Brownfield Template Adoption
 
 This skill audits an existing project's artifacts for **format compliance** with
@@ -86,14 +93,14 @@ For each GDD file found, check for the 8 required sections by scanning headings:
 
 | Required Section | Heading pattern to look for |
 |---|---|
-| Overview | `## Overview` |
-| Player Fantasy | `## Player Fantasy` |
-| Detailed Rules / Design | `## Detailed` or `## Core Rules` or `## Detailed Design` |
-| Formulas | `## Formulas` or `## Formula` |
-| Edge Cases | `## Edge Cases` |
-| Dependencies | `## Dependencies` or `## Depends` |
-| Tuning Knobs | `## Tuning` |
-| Acceptance Criteria | `## Acceptance` |
+| Overview | `## Overview` or `## 概述` |
+| Player Fantasy | `## Player Fantasy` or `## 玩家幻想` |
+| Detailed Rules / Design | `## Detailed` or `## Core Rules` or `## Detailed Design` or `## 详细设计` |
+| Formulas | `## Formulas` or `## Formula` or `## 公式` |
+| Edge Cases | `## Edge Cases` or `## 边缘情况` |
+| Dependencies | `## Dependencies` or `## Depends` or `## 依赖关系` |
+| Tuning Knobs | `## Tuning` or `## 调优` |
+| Acceptance Criteria | `## Acceptance` or `## 验收标准` |
 
 For each GDD, record:
 - Which sections are present

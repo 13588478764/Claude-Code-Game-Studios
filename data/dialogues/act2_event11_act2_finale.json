@@ -1,0 +1,98 @@
+{
+  "id": "ACT2_EVENT11_FINALE",
+  "title": "第二幕终章 — 九州之门",
+  "description": "第二幕结束，玩家突破筑基后面对九州风云，选择前进方向",
+  "start_node": "FINALE_001",
+  "metadata": { "npc_id": "player", "event": "act2_event11" },
+  "nodes": [
+    {
+      "id": "FINALE_001",
+      "speaker": "system",
+      "text": "你站在青云镇外的山岗上，俯瞰这座你曾经熟悉的小镇。\n\n一切都变了。城镇已经重建，百姓安居乐业。然而，你的目光却被远方的天际线吸引——那里风云涌动，仿佛有什么巨大的变化正在酝酿。",
+      "next_node": "FINALE_002"
+    },
+    {
+      "id": "FINALE_002",
+      "speaker": "system",
+      "text": "回望这一路走来的点点滴滴——\n\n从青云镇危机到遗迹探索，从宗门大比到战场伏击。\n\n你见证了飞升之路被封印的真相，目睹了三百年前的那场惊天大战留下的痕迹。\n\n而此刻，云中鹤已经不在了。\n\n古松之下，新坟孤零。曾经那个执剑而立的身影，再也看不到了。",
+      "next_node": "FINALE_003"
+    },
+    {
+      "id": "FINALE_003",
+      "speaker": "system",
+      "text": "但你知道，悲伤与缅怀并不能阻止真相的扩散。\n\n飞升之路为何被封印？三百年前究竟发生了什么？\n\n慕容雪——这个名字出现在云中鹤最后的遗言中。她是谁？与封印又有什么关联？\n\n更令你不安的是，那道封印正在缓缓松动。一旦封印完全崩溃，九州修真界将面临不可想象的变故。",
+      "next_node": "FINALE_004"
+    },
+    {
+      "id": "FINALE_004",
+      "speaker": "system",
+      "text": "你握紧手中的剑，感受着体内筑基期真气的涌动。\n\n你已经不再是那个初入修真的少年了。剑骨碎片融入了你的血脉，云中鹤的意志与你同在。\n\n是时候做出选择了——面对这风云变幻的九州修真界，你将何去何从？",
+      "next_node": "FINALE_PATH_CHOICE"
+    },
+    {
+      "id": "FINALE_PATH_CHOICE",
+      "speaker": "system",
+      "text": "你的道心之路，将指引你下一步的方向。",
+      "choices": [
+        {
+          "id": "path_righteous_finale",
+          "text": "前往天剑盟，联合正道力量，查明封印真相",
+          "effects": [
+            { "type": "dao_heart_change", "value": 5 },
+            { "type": "reputation_change", "target": "tianjian", "value": 20 },
+            { "type": "quest_trigger", "target": "tianjian_faction_hub", "value": true }
+          ],
+          "next_node": "FINALE_RIGHT_001"
+        },
+        {
+          "id": "path_demonic_finale",
+          "text": "追寻魔道线索，寻找萧寒夜，揭开力量的真相",
+          "effects": [
+            { "type": "dao_heart_change", "value": -5 },
+            { "type": "quest_trigger", "target": "dark_faction_hub", "value": true }
+          ],
+          "next_node": "FINALE_DEMON_001"
+        },
+        {
+          "id": "path_independent_finale",
+          "text": "自己的路自己走，九州之大，亲自去看看",
+          "effects": [
+            { "type": "dao_heart_change", "value": 5 },
+            { "type": "quest_trigger", "target": "free_exploration_act3", "value": true }
+          ],
+          "next_node": "FINALE_INDEP_001"
+        }
+      ]
+    },
+    {
+      "id": "FINALE_RIGHT_001",
+      "speaker": "system",
+      "text": "你转身向着东方望去——天剑盟的旗帜在远方飘扬。\n\n正道宗门虽然各自为政，但封印松动之事绝非一宗一派可以应对。唯有联合正道之力，方能查清真相，守护九州。\n\n[b]天剑盟宗门枢纽已解锁。[/b]\n\n你迈开步伐，向着新的征程走去。",
+      "next_node": "FINALE_TEASER"
+    },
+    {
+      "id": "FINALE_DEMON_001",
+      "speaker": "system",
+      "text": "你望向西南方向——那是魔道势力的腹地。萧寒夜的名字在暗处流传，关于他的力量、他的野心、他与三百年前那场大战的关联……\n\n或许答案就在黑暗中等待着你。\n\n[b]魔道势力枢纽已解锁。[/b]\n\n你深吸一口气，向着未知走去。",
+      "next_node": "FINALE_TEASER"
+    },
+    {
+      "id": "FINALE_INDEP_001",
+      "speaker": "system",
+      "text": "你不属于任何宗门，也不追随任何势力。你的道，由你自己来走。\n\n九州之大，四极八荒，有无数的秘境、遗迹、强者在等待着你。\n\n[b]自由探索模式已解锁。[/b]\n\n你迈步向前，天地之间，海阔天空。",
+      "next_node": "FINALE_TEASER"
+    },
+    {
+      "id": "FINALE_TEASER",
+      "speaker": "system",
+      "text": "[b]第三幕预告[/b]\n\n新的地域正在等待你的探索——\n\n• 天剑盟总部：九州正道第一宗门\n• 魔道腹地：萧寒夜的势力范围\n• 上古战场遗迹：三百年前大战之地\n• 慕容雪的踪迹：她与封印的秘密\n• 九州之门：封印的核心，一切真相的终点\n\n新的强者即将登场——\n各宗门宗主、上古遗修、隐藏在暗处的神秘人……\n\n而那道正在松动的封印，将成为悬在九州修真界头顶的一把利剑。\n\n时间不多了。",
+      "next_node": "FINALE_END"
+    },
+    {
+      "id": "FINALE_END",
+      "speaker": "system",
+      "text": "[color=#ffd700][b]—— 第二幕：九州风云 完 ——[/b][/color]\n\n[b]本幕总结：[/b]\n• 境界突破：炼气期 → 筑基期\n• 获得：剑骨碎片（剑骨传承被动）\n• 解锁：筑基期功法、剑法进阶\n• 关键信息：飞升之路被封印、慕容雪的线索\n• [b]失去：云中鹤（导师关系线结束）[/b]\n\n[b]—— 准备进入第三幕：九州之门 ——[/b]\n\n第二幕已落幕。但真正的修真之路，此刻才刚刚开始……",
+      "next_node": "END"
+    }
+  ]
+}

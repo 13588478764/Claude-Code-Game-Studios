@@ -1,0 +1,79 @@
+{
+  "id": "encounter_05_conflict",
+  "title": "修真争斗 — 宗门摩擦",
+  "description": "远远看到天剑盟和丐帮修士对峙，双方起了争执",
+  "type": "sect_conflict",
+  "probability": 0.10,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_early",
+    "cooldown_minutes": 5
+  },
+  "dao_heart_alignment": "reputation_impact",
+  "start_node": "CONFLICT_START",
+  "nodes": [
+    {
+      "id": "CONFLICT_START",
+      "speaker": "system",
+      "text": "你远远看到两名修士正在对峙，一人穿着天剑盟服饰，另一人穿着丐帮服饰。\n双方似乎起了争执，气氛紧张。",
+      "next_node": "CONFLICT_CHOICE"
+    },
+    {
+      "id": "CONFLICT_CHOICE",
+      "speaker": "system",
+      "text": "你需要决定是否介入，以及站在哪一方。",
+      "choices": [
+        {
+          "id": "mediate",
+          "text": "上前劝和双方",
+          "effects": [
+            {"type": "skill_check", "target": "charisma", "operator": ">=", "value": 12}
+          ],
+          "next_node": "CONFLICT_MEDIATE_CHECK"
+        },
+        {
+          "id": "support_sword",
+          "text": "站在天剑盟一方",
+          "effects": [
+            {"type": "reputation_change", "target": "tianjian", "value": 10},
+            {"type": "reputation_change", "target": "gaibang", "value": -5}
+          ],
+          "next_node": "CONFLICT_SUPPORT_SWORD"
+        },
+        {
+          "id": "support_beggar",
+          "text": "站在丐帮一方",
+          "effects": [
+            {"type": "reputation_change", "target": "gaibang", "value": 10},
+            {"type": "reputation_change", "target": "tianjian", "value": -5}
+          ],
+          "next_node": "CONFLICT_SUPPORT_BEGGAR"
+        }
+      ]
+    },
+    {
+      "id": "CONFLICT_MEDIATE_CHECK",
+      "speaker": "system",
+      "text": "你走上前，试图调解这场纷争。",
+      "next_node": "CONFLICT_MEDIATE_RESULT"
+    },
+    {
+      "id": "CONFLICT_MEDIATE_RESULT",
+      "speaker": "system",
+      "text": "[b]调解成功：[/b]你晓以利害，双方最终和解。\n\n天剑盟修士：\"看在你的面子上，今日算了。\"\n丐帮弟子：\"哼，下次再遇到，可没这么简单。\"\n\n[b]获得：[/b]天剑盟声望+5，丐帮声望+5",
+      "next_node": "END"
+    },
+    {
+      "id": "CONFLICT_SUPPORT_SWORD",
+      "speaker": "system",
+      "text": "你站在天剑盟一方，丐帮弟子见有人插手，冷哼一声离去。\n\n天剑盟修士拱手道谢：\"多谢道友相助。\"\n\n[b]天剑盟声望：[/b]+10\n[b]丐帮声望：[/b]-5",
+      "next_node": "END"
+    },
+    {
+      "id": "CONFLICT_SUPPORT_BEGGAR",
+      "speaker": "system",
+      "text": "你站在丐帮一方，天剑盟修士脸色一沉，拂袖离去。\n\n丐帮弟子抱拳道谢：\"兄弟够意思！\"\n\n[b]丐帮声望：[/b]+10\n[b]天剑盟声望：[/b]-5",
+      "next_node": "END"
+    }
+  ]
+}

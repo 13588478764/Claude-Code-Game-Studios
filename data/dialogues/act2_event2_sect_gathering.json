@@ -1,0 +1,108 @@
+{
+  "id": "ACT2_EVENT2_SECT_GATHERING",
+  "title": "第二幕事件二 — 宗门大比公告",
+  "description": "天剑盟使者来到青云镇宣布宗门大比消息，玩家决定是否参加",
+  "start_node": "SECT_001",
+  "metadata": { "npc_id": "tianjian_messenger", "event": "act2_event2" },
+  "nodes": [
+    {
+      "id": "SECT_001",
+      "speaker": "system",
+      "text": "青云镇广场上，今日格外热闹。\n\n镇中心的公告台前围满了人，人群中心站着一位身穿天剑盟制式服饰的青年修士。他手持一卷金色公告，灵力灌注于声，声音洪亮如钟，传遍了整个广场。\n\n周围的修士和平民都屏息凝神，生怕错过任何一个字。",
+      "next_node": "SECT_002"
+    },
+    {
+      "id": "SECT_002",
+      "speaker": "tianjian_messenger",
+      "text": "诸位修士听好了！\n\n他展开公告，金光四溢。\n\n天剑盟将于三月之后，在太华山举办百年一度的宗门大比！凡九州修真界内，炼气期至筑基期的修士，皆可报名参加！\n\n大比设九重擂台，通过层层选拔，最终决出十强！",
+      "emotion": "proud",
+      "next_node": "SECT_003"
+    },
+    {
+      "id": "SECT_003",
+      "speaker": "tianjian_messenger",
+      "text": "听清楚奖励——\n\n前三名，每人可获得[b]玄阶功法[/b]一部，并赐下筑基丹一枚！\n\n前十名，可[b]直接拜入大宗门[/b]，天剑盟、青云宗、丹霞谷，任君选择！\n\n此外，所有参赛者在报名处可领取试炼令牌一块，凭此令牌可在太华山试炼场中免费修炼一月！",
+      "emotion": "excited",
+      "next_node": "SECT_004"
+    },
+    {
+      "id": "SECT_004",
+      "speaker": "tianjian_messenger",
+      "text": "他目光扫过人群，最后停留在你身上片刻。\n\n报名条件只有一个——年满十六，修为不限。但我要提醒各位，擂台之上刀剑无眼，实力不足者，莫要逞强。\n\n报名期限：三十日内。地点：太华山山门。有意者，尽早启程！",
+      "next_node": "SECT_005"
+    },
+    {
+      "id": "SECT_005",
+      "speaker": "system",
+      "text": "使者收起公告，转身离去。广场上顿时议论纷纷。\n\n有人兴奋不已，跃跃欲试；有人面露惧色，悄悄退出了人群。\n\n而你站在原地，心中翻涌——\n\n云中鹤的话在耳边回响：[i]你必须变强。[/i]\n\n现在，机会就在眼前。",
+      "next_node": "SECT_006"
+    },
+    {
+      "id": "SECT_006",
+      "speaker": "system",
+      "text": "你做出了决定——",
+      "choices": [
+        {
+          "id": "register_now",
+          "text": "立刻报名，踏上太华山",
+          "effects": [
+            { "type": "dao_heart_change", "value": 5 },
+            { "type": "quest_trigger", "target": "sect_gathering_registered", "value": true }
+          ],
+          "next_node": "SECT_007_A"
+        },
+        {
+          "id": "ask_details",
+          "text": "追上使者，询问更多详情",
+          "effects": [
+            { "type": "quest_trigger", "target": "sect_gathering_info", "value": true }
+          ],
+          "next_node": "SECT_007_B"
+        },
+        {
+          "id": "hesitate",
+          "text": "先回去考虑考虑，暂时犹豫",
+          "effects": [],
+          "next_node": "SECT_007_C"
+        }
+      ]
+    },
+    {
+      "id": "SECT_007_A",
+      "speaker": "player",
+      "text": "我报名参加！无论前路多么艰险，我都要去太华山走一遭！\n\n你走向使者，在公告上写下了自己的名字。金色的光芒从你笔尖划过，烙印在公告之上——无法反悔，也无法逃避。",
+      "next_node": "SECT_END_A"
+    },
+    {
+      "id": "SECT_007_B",
+      "speaker": "player",
+      "text": "这位前辈，请问大比的具体规则是什么？擂台战斗有何限制？\n\n使者耐心地为你解释了大比的详细规则，你一一记在心中。",
+      "next_node": "SECT_008_B"
+    },
+    {
+      "id": "SECT_007_C",
+      "speaker": "player",
+      "text": "三个月后……时间还来得及。我需要先做一些准备。\n\n你转身离开广场，但心中已经隐隐做出了决定。",
+      "next_node": "SECT_END_C"
+    },
+    {
+      "id": "SECT_008_B",
+      "speaker": "tianjian_messenger",
+      "text": "他停下脚步，看了你一眼。\n\n规则很简单——擂台之上，点到为止，但允许使用一切武学手段。禁止使用毒药、暗器、召唤外援。\n\n他顿了顿，压低声音。\n\n不过……历届大比中，总有人会无视规则。你若参加，务必小心。",
+      "emotion": "serious",
+      "next_node": "SECT_END_A"
+    },
+    {
+      "id": "SECT_END_A",
+      "speaker": "system",
+      "text": "太华山——百年一度的宗门大比，将成为你修行路上最重要的一战。\n\n[b]——前往事件三：初次试炼[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "SECT_END_C",
+      "speaker": "system",
+      "text": "三十天的期限如同悬在头顶的利剑。你知道，犹豫不决也是一种选择——\n\n一个可能让你错失良机的选择。\n\n[b]——前往事件三：初次试炼[/b]",
+      "next_node": "END"
+    }
+  ]
+}

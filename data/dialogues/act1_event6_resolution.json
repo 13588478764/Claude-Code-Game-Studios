@@ -1,0 +1,191 @@
+{
+  "id": "ACT6_RESOLUTION_001",
+  "title": "事件六 — 青云镇重生与结局分支",
+  "description": "凯旋归来，伙伴告别，根据道心值触发不同结局路线",
+  "start_node": "VICTORY_001",
+  "nodes": [
+    {
+      "id": "VICTORY_001",
+      "speaker": "system",
+      "text": "你们带着获救的村民回到青云镇。\n\n镇门口早已聚集了大量镇民，看到归来的人群，爆发出热烈的欢呼声。",
+      "next_node": "VICTORY_002"
+    },
+    {
+      "id": "VICTORY_002",
+      "speaker": "town_leader",
+      "text": "{player_name}！你是青云镇的大英雄！\n若不是你，我们全镇都要遭殃啊！",
+      "emotion": "grateful",
+      "effects": [
+        {"type": "reputation_change", "target": "qingyun_town", "value": 50}
+      ],
+      "next_node": "VICTORY_003"
+    },
+    {
+      "id": "VICTORY_003",
+      "speaker": "system",
+      "text": "镇长亲自为你和团队举办了庆功宴。\n整个青云镇张灯结彩，比过年还要热闹。",
+      "next_node": "PARTNER_FAREWELL"
+    },
+    {
+      "id": "PARTNER_FAREWELL",
+      "speaker": "system",
+      "text": "庆功宴后，伙伴们开始告别。",
+      "next_node": "TIE_FAREWELL_001"
+    },
+    {
+      "id": "TIE_FAREWELL_001",
+      "speaker": "tiewushuang",
+      "text": "兄弟，这一战痛快！我铁无双认你这个兄弟了！\n以后有事，到丐帮分舵找我！",
+      "emotion": "excited",
+      "effects": [
+        {"type": "relationship_change", "target": "tiewushuang", "value": 30}
+      ],
+      "next_node": "TIE_FAREWELL_002"
+    },
+    {
+      "id": "TIE_FAREWELL_002",
+      "speaker": "player",
+      "text": "铁兄保重！他日再聚！",
+      "next_node": "YUN_FAREWELL_001"
+    },
+    {
+      "id": "YUN_FAREWELL_001",
+      "speaker": "yunzhonghe",
+      "text": "你进步神速，基础我已没什么可教的了。\n但记住，修炼之路，道心比天赋更重要。",
+      "emotion": "serious",
+      "next_node": "YUN_FAREWELL_002"
+    },
+    {
+      "id": "YUN_FAREWELL_002",
+      "speaker": "yunzhonghe",
+      "text": "我的时间不多了...但在离开之前，有些话必须告诉你。",
+      "emotion": "contemplative",
+      "next_node": "YUN_FAREWELL_003"
+    },
+    {
+      "id": "YUN_FAREWELL_003",
+      "speaker": "yunzhonghe",
+      "text": "你的体质非同寻常，'剑骨'的传说，远比你想的更复杂。\n也许...你就是那个人。",
+      "effects": [
+        {"type": "quest_trigger", "target": "yunzhonghe_mystery", "value": true}
+      ],
+      "next_node": "ENDING_BRANCH_CHECK"
+    },
+    {
+      "id": "ENDING_BRANCH_CHECK",
+      "speaker": "system",
+      "text": "根据你在整个第一幕中的选择，将触发不同的结局路线...",
+      "next_node": "ENDING_PATH_CHECK"
+    },
+    {
+      "id": "ENDING_PATH_CHECK",
+      "speaker": "system",
+      "text": "你的道心值和之前的选择将决定你的结局路线。",
+      "choices": [
+        {
+          "id": "righteous_path",
+          "text": "（正道路线：道心值 > 20）",
+          "condition": {"type": "dao_heart_check", "value": 20, "operator": ">"},
+          "effects": [],
+          "next_node": "RIGHTEOUS_PATH_001"
+        },
+        {
+          "id": "neutral_path",
+          "text": "（中立路线：道心值 -20 到 20）",
+          "condition": {"type": "dao_heart_check", "value": 20, "operator": "<="},
+          "effects": [],
+          "next_node": "NEUTRAL_PATH_001"
+        },
+        {
+          "id": "dark_path",
+          "text": "（邪道路线：道心值 < -20）",
+          "condition": {"type": "dao_heart_check", "value": -20, "operator": "<"},
+          "effects": [],
+          "next_node": "DARK_PATH_001"
+        }
+      ]
+    },
+    {
+      "id": "RIGHTEOUS_PATH_001",
+      "speaker": "yunzhonghe",
+      "text": "你的道心坚定，正道才是你的归宿。\n带着这封推荐信，去少林或武当吧。",
+      "emotion": "approving",
+      "effects": [
+        {"type": "item_give", "target": "righteous_recommendation", "value": 1},
+        {"type": "quest_trigger", "target": "sect_questline", "value": true}
+      ],
+      "next_node": "RIGHTEOUS_PATH_002"
+    },
+    {
+      "id": "RIGHTEOUS_PATH_002",
+      "speaker": "system",
+      "text": "[b]获得：少林/武当推荐信[/b]\n[b]解锁：正道宗门任务线[/b]\n\n你获得了加入正道大宗门的资格。\n未来可以选择加入少林、武当等正道势力。",
+      "next_node": "ACT1_COMPLETE"
+    },
+    {
+      "id": "NEUTRAL_PATH_001",
+      "speaker": "yunzhonghe",
+      "text": "你不愿被任何束缚，也罢。\n这枚青霜剑碎片是上古遗物，或许你能修复它。",
+      "emotion": "sighing",
+      "effects": [
+        {"type": "item_give", "target": "qingshuang_sword_fragment", "value": 1},
+        {"type": "quest_trigger", "target": "free_exploration", "value": true}
+      ],
+      "next_node": "NEUTRAL_PATH_002"
+    },
+    {
+      "id": "NEUTRAL_PATH_002",
+      "speaker": "system",
+      "text": "[b]获得：青霜剑碎片（可修复武器）[/b]\n[b]解锁：自由探索路线[/b]\n\n你选择了自由修真之路，不被任何宗门束缚。\n可以游历九州，探索各地秘境。",
+      "next_node": "ACT1_COMPLETE"
+    },
+    {
+      "id": "DARK_PATH_001",
+      "speaker": "yunzhonghe",
+      "text": "你的道心已经偏向邪道...但我不会强迫你回头。\n这枚令牌你拿着，日后自会有人联系你。",
+      "emotion": "sighing",
+      "effects": [
+        {"type": "item_give", "target": "dark_path_token", "value": 1},
+        {"type": "quest_trigger", "target": "dark_cult_questline", "value": true}
+      ],
+      "next_node": "DARK_PATH_002"
+    },
+    {
+      "id": "DARK_PATH_002",
+      "speaker": "system",
+      "text": "[b]获得：神秘令牌[/b]\n[b]解锁：邪教任务线[/b]\n\n你踏入了邪道的门槛，未来将被卷入更大的阴谋。\n但你的选择，也许会改变一切...",
+      "next_node": "ACT1_COMPLETE"
+    },
+    {
+      "id": "ACT1_COMPLETE",
+      "speaker": "system",
+      "text": "[color=#ffd700][b]—— 第一幕：青云镇危机 完 ——[/b][/color]\n\n[b]本幕总结：[/b]\n• 境界突破：凡人 → 炼气中期/后期\n• 获得：基础剑诀、父亲的旧剑\n• 解锁：战斗系统、修炼系统、奇遇系统\n• 伙伴：云中鹤（师父）、铁无双（挚友）\n• 主线任务：飞升之谜\n• 青云镇声望：大幅提升",
+      "choices": [
+        {
+          "id": "enter_act2",
+          "text": "进入第二幕：九州风云",
+          "effects": [],
+          "next_node": "ACT2_TRANSITION"
+        },
+        {
+          "id": "continue_explore",
+          "text": "暂时停留，继续探索",
+          "effects": [],
+          "next_node": "ACT1_CONTINUE"
+        }
+      ]
+    },
+    {
+      "id": "ACT2_TRANSITION",
+      "speaker": "system",
+      "text": "[color=#ffd700][b]数月之后...[/b][/color]\n\n九州风云渐起，各大宗门纷纷出动。\n一个更大的阴谋正在酝酿...\n\n[b]—— 第二幕：九州风云 开启 ——[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "ACT1_CONTINUE",
+      "speaker": "system",
+      "text": "你决定暂时留在青云镇。\n\n或许应该先去拜访一下镇上的老人，或者修炼一下新学的剑诀...\n\n[b]提示：随时可以与云中鹤对话进入下一幕[/b]",
+      "next_node": "END"
+    }
+  ]
+}

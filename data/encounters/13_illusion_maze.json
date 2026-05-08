@@ -1,0 +1,77 @@
+{
+  "id": "encounter_13_cultivation",
+  "title": "幻境迷阵",
+  "description": "误入一座古老的幻境阵法，四周景物虚实难辨，唯有跟随本心方能破阵而出",
+  "type": "cultivation",
+  "probability": 0.07,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_late",
+    "cooldown_minutes": 5
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "ILLUSION_START",
+  "nodes": [
+    {
+      "id": "ILLUSION_START",
+      "speaker": "system",
+      "text": "你不知不觉走进了一片迷雾笼罩的林地，四周的景物开始扭曲变形。\n\n你意识到自己已误入一座古老的幻境阵法——幻境迷阵。\n\n阵中虚实难辨，唯有跟随本心方能破阵而出。",
+      "next_node": "ILLUSION_CHOICE"
+    },
+    {
+      "id": "ILLUSION_CHOICE",
+      "speaker": "system",
+      "text": "迷雾中出现了三条若隐若现的小路，每条路都通向不同的方向。\n你必须做出选择。",
+      "choices": [
+        {
+          "id": "follow_heart",
+          "text": "静心凝神，跟随内心指引前行",
+          "effects": [
+            {"type": "skill_check", "target": "willpower", "operator": ">=", "value": 15}
+          ],
+          "next_node": "ILLUSION_HEART_CHECK"
+        },
+        {
+          "id": "seek_guidance",
+          "text": "通过传讯符联系云中鹤前辈，寻求破阵之法",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 5}
+          ],
+          "next_node": "ILLUSION_GUIDANCE"
+        },
+        {
+          "id": "force_through",
+          "text": "以灵力强行破除迷雾，硬闯出去",
+          "effects": [
+            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 18}
+          ],
+          "next_node": "ILLUSION_FORCE_CHECK"
+        }
+      ]
+    },
+    {
+      "id": "ILLUSION_HEART_CHECK",
+      "speaker": "system",
+      "text": "你盘膝坐下，摒弃一切杂念，将心神完全沉浸在内视之中。\n\n渐渐地，迷雾在你眼中变得透明起来，一条散发着微光的小路浮现而出。\n\n你跟随内心的指引，稳步向前走去——\n\n[b]意志检定通过：[/b]幻境在你坚定的道心面前土崩瓦解。\n\n[b]道心：[/b]+10\n你感到自己的心境更加澄明，对大道的领悟又深了一层。",
+      "next_node": "END"
+    },
+    {
+      "id": "ILLUSION_GUIDANCE",
+      "speaker": "yunzhonghe",
+      "text": "「哼，区区幻境迷阵也敢困住你？」\n\n云中鹤的声音从传讯符中传来，带着几分不屑但更多的是关切。\n\n「听好了——幻境之术，核心在于迷惑人心。你只需闭上双眼，感受脚下灵气的流动，跟随那股最纯净的灵力前行即可。」\n\n你依言而行，果然在迷雾中找到了一条出路。\n\n[b]云中鹤关系：[/b]+5",
+      "next_node": "END"
+    },
+    {
+      "id": "ILLUSION_FORCE_CHECK",
+      "speaker": "system",
+      "text": "你运转全身灵力，双手结印，一道雄浑的灵力冲击波向四周扩散开来。\n\n迷雾被强行撕开了一道缺口，但幻境的力量也开始反噬——",
+      "next_node": "ILLUSION_FORCE_RESULT"
+    },
+    {
+      "id": "ILLUSION_FORCE_RESULT",
+      "speaker": "system",
+      "text": "[b]灵力冲击成功：[/b]幻境阵法的阵眼被你一击震碎，整个迷阵瞬间崩溃。\n\n然而，强行的灵力冲击也让你消耗了不少元气。\n\n虽然成功脱困，但你的修为因此损耗了几分。\n\n[b]灵力消耗：[/b]较大\n[b]获得经验：[/b]对阵法之道的领悟 +3",
+      "next_node": "END"
+    }
+  ]
+}

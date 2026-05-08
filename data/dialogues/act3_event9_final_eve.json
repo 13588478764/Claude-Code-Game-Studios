@@ -1,0 +1,164 @@
+{
+  "id": "ACT3_EVENT9_FINAL_EVE",
+  "title": "第三幕事件九 — 最终抉择前夜",
+  "description": "决战前夜，与各NPC的最后对话，根据关系值触发不同分支",
+  "start_node": "FINAL_EVE_001",
+  "metadata": { "npc_id": "system", "event": "act3_event9" },
+  "nodes": [
+    {
+      "id": "FINAL_EVE_001",
+      "speaker": "system",
+      "text": "九州之门前的营地，夜色深沉。\\n\\n明日，便是决定九州命运的时刻。各方势力已经部署完毕，所有人都进入了最后的准备。\\n\\n你独自走出营地，来到一处高地，仰望星空。\\n\\n三百年的因果，将要在明日终结。",
+      "next_node": "FINAL_EVE_002"
+    },
+    {
+      "id": "FINAL_EVE_002",
+      "speaker": "system",
+      "text": "你回想起这一路走来的一切——\\n\\n云中鹤的牺牲、慕容雪的真相、萧寒夜的执念、柳如烟的坚守……\\n\\n每一个选择，每一次对话，都把你带到了这里。\\n\\n现在，轮到你做出最终的决定。",
+      "next_node": "FINAL_EVE_VISITORS"
+    },
+    {
+      "id": "FINAL_EVE_VISITORS",
+      "speaker": "system",
+      "text": "夜深了。但你知道，今晚不会孤单。\\n\\n那些与你结下羁绊的人，会在最后时刻来到你身边。",
+      "next_node": "FINAL_EVE_LIURUYAN_CHECK"
+    },
+    {
+      "id": "FINAL_EVE_LIURUYAN_CHECK",
+      "speaker": "system",
+      "text": "你听到身后传来轻微的脚步声。\\n\\n柳如烟御剑而来，落在你的身边。",
+      "condition": { "type": "relationship_check", "target": "liuruyan", "min": 20 },
+      "next_node": "FINAL_EVE_LIURUYAN"
+    },
+    {
+      "id": "FINAL_EVE_LIURUYAN",
+      "speaker": "liuruyan",
+      "text": "她站在你身旁，与你一同仰望星空。\\n\\n柳如烟：\\\"明天之后，九州将是怎样的面貌？\\\"\\n\\n她没有等你回答，继续说道：\\n\\n柳如烟：\\\"不管你的选择是什么，天剑盟都会尊重。但请记住——正道的大义，是守护，不是征服。\\\"\\n\\n她转过头，看着你的眼睛：\\n\\n柳如烟：\\\"这一路走来，你证明了自己的道心。我相信，你的选择会是正确的。\"",
+      "emotion": "calm",
+      "effects": [
+        { "type": "dao_heart_change", "value": 5 }
+      ],
+      "next_node": "FINAL_EVE_LIURUYAN_FAREWELL"
+    },
+    {
+      "id": "FINAL_EVE_LIURUYAN_FAREWELL",
+      "speaker": "player",
+      "text": "柳姑娘，多谢你的信任。\\n\\n不管明天结果如何，这一路有你的陪伴，是我的荣幸。",
+      "next_node": "FINAL_EVE_LIURUYAN_RESPONSE"
+    },
+    {
+      "id": "FINAL_EVE_LIURUYAN_RESPONSE",
+      "speaker": "liuruyan",
+      "text": "她微微一笑。\\n\\n柳如烟：\\\"荣幸的是我。能在有生之年，见证一位真正的剑修成长。\\\"\\n\\n她站起身来：\\n\\n柳如烟：\\\"休息吧。明天，我会站在你的身边。\"",
+      "emotion": "warm",
+      "next_node": "FINAL_EVE_XIAOHANYE_CHECK"
+    },
+    {
+      "id": "FINAL_EVE_XIAOHANYE_CHECK",
+      "speaker": "system",
+      "text": "柳如烟离去后，一道黑影从暗处走出。\\n\\n萧寒夜。",
+      "condition": { "type": "relationship_check", "target": "xiaohanye", "min": 0 },
+      "next_node": "FINAL_EVE_XIAOHANYE"
+    },
+    {
+      "id": "FINAL_EVE_XIAOHANYE",
+      "speaker": "xiaohanye",
+      "text": "他的表情比往常更加平静。\\n\\n萧寒夜：\\\"我不来虚的。明天，我需要你的答案。\\\"\\n\\n萧寒夜：\\\"三百年了。萧家的等待，该有个结果了。\\\"\\n\\n他看着你：\\n\\n萧寒夜：\\\"我不知道先祖在通道彼端经历了什么。但我知道——他一定在等着有人去救他。\\\"\\n\\n萧寒夜：\\\"你可以选择拯救他，也可以选择阻止我。但我不会放弃。这一点，永远不会变。\"",
+      "emotion": "resolute",
+      "next_node": "FINAL_EVE_XIAOHANYE_RESPONSE"
+    },
+    {
+      "id": "FINAL_EVE_XIAOHANYE_RESPONSE",
+      "speaker": "player",
+      "text": "你的执念，我理解。但九州不只是你一个人的。\\n\\n明天，我会做出对所有人最公平的选择。",
+      "next_node": "FINAL_EVE_XIAOHANYE_FAREWELL"
+    },
+    {
+      "id": "FINAL_EVE_XIAOHANYE_FAREWELL",
+      "speaker": "xiaohanye",
+      "text": "他冷哼一声，但眼中没有怒意。\\n\\n萧寒夜：\\\"公平？这世上从来没有公平的事。\\\"\\n\\n他转身离去，留下一句话：\\n\\n萧寒夜：\\\"但你有公平的心。这一点，我认可。\"",
+      "emotion": "grudging_respect",
+      "next_node": "FINAL_EVE_MURONGXUE_CHECK"
+    },
+    {
+      "id": "FINAL_EVE_MURONGXUE_CHECK",
+      "speaker": "system",
+      "text": "一阵轻风吹过。\\n\\n慕容雪不知何时出现在你的身后。",
+      "condition": { "type": "relationship_check", "target": "murongxue", "min": 10 },
+      "next_node": "FINAL_EVE_MURONGXUE"
+    },
+    {
+      "id": "FINAL_EVE_MURONGXUE",
+      "speaker": "murongxue",
+      "text": "她的眼中带着复杂的情感——期待、恐惧、坚定。\\n\\n慕容雪：\\\"三百年了。明天，一切都将结束。\\\"\\n\\n她深吸一口气：\\n\\n慕容雪：\\\"有件事，我没有告诉任何人。\\\"\\n\\n慕容雪：\\\"当年封印完成的时候，我留下了一道后手。一道只有剑骨才能激活的封印。\\\"\\n\\n慕容雪：\\\"如果你选择修复封印，剑骨会成为新的封印核心。但那样——你的剑骨可能会被永久封印。\"",
+      "emotion": "hesitant",
+      "next_node": "FINAL_EVE_MURONGXUE_CHOICE"
+    },
+    {
+      "id": "FINAL_EVE_MURONGXUE_CHOICE",
+      "speaker": "player",
+      "text": "……你为什么不早说？",
+      "next_node": "FINAL_EVE_MURONGXUE_EXPLAIN"
+    },
+    {
+      "id": "FINAL_EVE_MURONGXUE_EXPLAIN",
+      "speaker": "murongxue",
+      "text": "慕容雪：\\\"因为我不想影响你的判断。\\\"\\n\\n慕容雪：\\\"这是你的选择，你的道路。我不应该用这个来左右你的决定。\\\"\\n\\n她的眼眶微微泛红：\\n\\n慕容雪：\\\"但我必须告诉你。因为明天——你可能需要付出比你想象的更大的代价。\"",
+      "emotion": "sincere",
+      "effects": [
+        { "type": "dao_heart_change", "value": 10 },
+        { "type": "quest_trigger", "target": "sword_bone_sacrifice_info", "value": true }
+      ],
+      "next_node": "FINAL_EVE_MURONGXUE_FAREWELL"
+    },
+    {
+      "id": "FINAL_EVE_MURONGXUE_FAREWELL",
+      "speaker": "murongxue",
+      "text": "她伸出手，轻轻触碰了一下你的剑骨碎片。\\n\\n慕容雪：\\\"不管你选择什么，我都会支持你。\\\"\\n\\n慕容雪：\\\"因为——你是云中鹤选中的人。我相信他的眼光。\"",
+      "emotion": "gentle",
+      "next_node": "FINAL_EVE_YUNZHONGHE_CHECK"
+    },
+    {
+      "id": "FINAL_EVE_YUNZHONGHE_CHECK",
+      "speaker": "system",
+      "text": "所有人离去后，你独自站在高地上。\\n\\n体内的剑骨碎片突然产生了一丝微弱的共鸣。",
+      "condition": { "type": "passive_check", "target": "sword_bone_complete", "value": true },
+      "next_node": "FINAL_EVE_YUNZHONGHE"
+    },
+    {
+      "id": "FINAL_EVE_YUNZHONGHE",
+      "speaker": "yunzhonghe",
+      "text": "一个熟悉的声音在你的心中响起——\\n\\n不是真实的对话，而是剑骨中残存的意志。\\n\\n云中鹤（心声）：\\\"孩子，明天就是你做出最终选择的时刻。\\\"\\n\\n云中鹤（心声）：\\\"我不会告诉你该怎么做。因为你的道心，已经足够坚定。\\\"\\n\\n云中鹤（心声）：\\\"我只想说——不管明天的结果如何，我为你骄傲。\"",
+      "emotion": "final",
+      "effects": [
+        { "type": "dao_heart_change", "value": 15 }
+      ],
+      "next_node": "FINAL_EVE_YUNZHONGHE_REPLY"
+    },
+    {
+      "id": "FINAL_EVE_YUNZHONGHE_REPLY",
+      "speaker": "player",
+      "text": "前辈……\\n\\n我会做出正确的选择。不会辜负您的教导。",
+      "next_node": "FINAL_EVE_YUNZHONGHE_FINAL"
+    },
+    {
+      "id": "FINAL_EVE_YUNZHONGHE_FINAL",
+      "speaker": "yunzhonghe",
+      "text": "剑骨碎片的共鸣渐渐减弱。\\n\\n云中鹤（心声）：\\\"记住——剑修的剑，不是为了杀戮。\\\"\\n\\n云中鹤（心声）：\\\"而是为了守护心中最珍贵的东西。\\\"\\n\\n共鸣消失了。但这一次，你感受到的不再是孤独——\\n\\n而是一种前所未有的坚定。",
+      "emotion": "peaceful",
+      "next_node": "FINAL_EVE_NIGHT_END"
+    },
+    {
+      "id": "FINAL_EVE_NIGHT_END",
+      "speaker": "system",
+      "text": "你回到了营地。\\n\\n夜色深沉，但东方已经露出了一丝曙光。\\n\\n新的一天即将到来。九州之门的命运，也将迎来最终的抉择。\\n\\n你闭上眼，调整呼吸，让自己的心境达到最平静的状态。\\n\\n[b]道心已定，静候黎明。[/b]",
+      "next_node": "FINAL_EVE_END"
+    },
+    {
+      "id": "FINAL_EVE_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\\n\\n• 与各NPC的最后对话已完成\\n• 剑骨牺牲的真相已揭示\\n• 云中鹤的最终祝福已接收\\n• 道心值已最终确认\\n• 明日：九州之门决战\\n\\n[b]—— 黎明将至，命运的时刻。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

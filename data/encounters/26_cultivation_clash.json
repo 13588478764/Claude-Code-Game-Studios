@@ -1,0 +1,84 @@
+{
+  "id": "encounter_26_cultivation_clash",
+  "title": "仙缘奇遇 — 宗门冲突",
+  "description": "路遇两名不同宗门的弟子正在激斗，双方伤势不轻，气氛剑拔弩张",
+  "type": "combat",
+  "probability": 0.09,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_late",
+    "cooldown_minutes": 10
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "CLASH_START",
+  "nodes": [
+    {
+      "id": "CLASH_START",
+      "speaker": "system",
+      "text": "你在路上听到前方传来激烈的打斗声。走近一看，发现两名不同宗门的弟子正在激斗。\n其中一人身穿青云门服饰，另一人则是血煞宗的打扮。\n双方都已受伤，但谁也不肯退让。\n\n你注意到他们争夺的似乎是一件发光的法宝碎片...",
+      "next_node": "CLASH_CHOICE"
+    },
+    {
+      "id": "CLASH_CHOICE",
+      "speaker": "system",
+      "text": "两人察觉到你的到来，同时向你投来求助的目光。\n你需要做出选择。",
+      "choices": [
+        {
+          "id": "intervene",
+          "text": "出手制止双方，强行介入战斗",
+          "effects": [
+            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 15}
+          ],
+          "next_node": "CLASH_INTERVENE_CHECK"
+        },
+        {
+          "id": "help_weak",
+          "text": "帮助处于劣势的那一方",
+          "effects": [
+            {"type": "reputation_change", "target": "righteous", "value": 8},
+            {"type": "reputation_change", "target": "dark", "value": -5}
+          ],
+          "next_node": "CLASH_HELP_WEAK"
+        },
+        {
+          "id": "report",
+          "text": "暂时旁观，记录双方信息后回报各自宗门",
+          "effects": [
+            {"type": "skill_check", "target": "diplomacy", "operator": ">=", "value": 12}
+          ],
+          "next_node": "CLASH_REPORT_CHECK"
+        }
+      ]
+    },
+    {
+      "id": "CLASH_INTERVENE_CHECK",
+      "speaker": "system",
+      "text": "你运起灵力，强行介入两人之间的战斗！",
+      "next_node": "CLASH_INTERVENE_RESULT"
+    },
+    {
+      "id": "CLASH_INTERVENE_RESULT",
+      "speaker": "system",
+      "text": "[b]制止成功：[/b]你以绝对实力将双方分开，两人惊疑不定地退开。\n\n你调解了这场冲突，双方各自离去。\n作为感谢你调解，青云门弟子将法宝碎片的一半交予你。\n\n[b]获得：[/b]法宝碎片（半块）\n[b]道心：[/b]+8",
+      "next_node": "END"
+    },
+    {
+      "id": "CLASH_HELP_WEAK",
+      "speaker": "system",
+      "text": "你选择帮助处于劣势的青云门弟子，联手击退了血煞宗修士。\n\n青云门弟子感激地向你行礼：\"多谢道友出手相助！\"\n\n[b]获得：[/b]青云门好感\n[b]声望：[/b]正道 +8\n[b]失去：[/b]血煞宗好感",
+      "next_node": "END"
+    },
+    {
+      "id": "CLASH_REPORT_CHECK",
+      "speaker": "system",
+      "text": "你冷静地观察了整场战斗，记下双方的武功路数和宗门特征。",
+      "next_node": "CLASH_REPORT_RESULT"
+    },
+    {
+      "id": "CLASH_REPORT_RESULT",
+      "speaker": "system",
+      "text": "[b]外交成功：[/b]你将战斗详情分别告知两宗高层。\n两宗对你的公正态度表示赞赏，各送你一份谢礼。\n\n[b]获得：[/b]青云门谢礼、血煞宗谢礼\n[b]声望：[/b]中立 +5",
+      "next_node": "END"
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "id": "ACT2_EVENT7_MURONGXUE_MEMORY",
+  "title": "第二幕事件七 — 慕容雪记忆恢复",
+  "description": "慕容雪在短暂的平静中恢复了关于飞升之战的片段记忆，揭示了血无痕、封印大阵与背叛的惊人真相",
+  "start_node": "MEM_001",
+  "metadata": { "npc_id": "murongxue", "event": "act2_event7" },
+  "nodes": [
+    {
+      "id": "MEM_001",
+      "speaker": "system",
+      "text": "秘境风波渐息，你暂时寻得一处安静的山洞歇息。\n\n慕容雪独自坐在洞穴深处，双手抱着头，身体微微颤抖。她的呼吸急促而紊乱，额头上布满了细密的汗珠。\n\n你注意到她的双眼时而清明，时而迷离，仿佛在经历某种剧烈的内心挣扎。",
+      "next_node": "MEM_002"
+    },
+    {
+      "id": "MEM_002",
+      "speaker": "murongxue",
+      "text": "不……不对……那些画面……\n\n她猛地抬起头，眼神中带着从未有过的恐惧与困惑。\n\n我想起来了……一部分。那场战争……飞升之战……不是传说，是真的。我都看到了。",
+      "emotion": "distressed",
+      "next_node": "MEM_CHOICE"
+    },
+    {
+      "id": "MEM_CHOICE",
+      "speaker": "system",
+      "text": "慕容雪的状态极其不稳定，她的记忆正在如潮水般涌来，但显然这个过程令她极为痛苦。\n\n[b]你需要决定如何应对她的状况。[/b]",
+      "choices": [
+        {
+          "id": "comfort",
+          "text": "别急，慢慢来。我在这里陪着你",
+          "effects": [
+            { "type": "relationship_change", "target": "murongxue", "value": 15 }
+          ],
+          "next_node": "MEM_COMFORT_001"
+        },
+        {
+          "id": "press_info",
+          "text": "你看到了什么？飞升之战到底发生了什么？",
+          "effects": [
+            { "type": "relationship_change", "target": "murongxue", "value": 5 }
+          ],
+          "next_node": "MEM_PRESS_001"
+        },
+        {
+          "id": "give_space",
+          "text": "你需要独自静一静。我就在外面，有事叫我",
+          "effects": [
+            { "type": "dao_heart_change", "target": "dao_heart", "value": 5 },
+            { "type": "relationship_change", "target": "murongxue", "value": 10 }
+          ],
+          "next_node": "MEM_SPACE_001"
+        }
+      ]
+    },
+    {
+      "id": "MEM_COMFORT_001",
+      "speaker": "player",
+      "text": "别急，慢慢来。我在这里陪着你。\n\n你走到慕容雪身旁，轻轻拍了拍她的肩膀。你的手掌传来一股温和的灵气，帮助她稳定体内紊乱的气息。",
+      "next_node": "MEM_REVELATION_A"
+    },
+    {
+      "id": "MEM_PRESS_001",
+      "speaker": "player",
+      "text": "你看到了什么？飞升之战到底发生了什么？\n\n你意识到这可能是了解真相的关键时机，尽管慕容雪的状态令人担忧。",
+      "next_node": "MEM_REVELATION_B"
+    },
+    {
+      "id": "MEM_SPACE_001",
+      "speaker": "player",
+      "text": "你需要独自静一静。我就在外面，有事叫我。\n\n你退出洞穴，在洞口盘膝坐下，为她留出一片安静的空间。",
+      "next_node": "MEM_REVELATION_C"
+    },
+    {
+      "id": "MEM_REVELATION_A",
+      "speaker": "murongxue",
+      "text": "慕容雪渐渐平复下来，她望向你，眼中的恐惧被一种深沉的悲伤所取代。\n\n有一个人……他的名字是血无痕。他是那场战争的主导者。三百年前，就是他布下了封印大阵，斩断了飞升之路。\n\n她攥紧了拳头，声音微微发颤。\n\n但不是所有修士都同意这么做。有人反对他——然后被……被自己人出卖了。背叛……内鬼……封印之所以能成功，是因为有人从内部破坏了防御。",
+      "emotion": "sorrowful",
+      "next_node": "MEM_IDENTITY_HINT_A"
+    },
+    {
+      "id": "MEM_REVELATION_B",
+      "speaker": "murongxue",
+      "text": "慕容雪被你的追问刺痛了，但她还是咬着牙说了出来。\n\n血无痕……他布下了封印大阵。飞升之路——是被他亲手斩断的。三百年前那场战争，不是为了飞升，而是为了——阻止飞升。\n\n她闭上眼睛，努力回忆着那些破碎的画面。\n\n反对他的人……被出卖了。有人从内部打开了防线。如果没有那个叛徒，封印根本不可能成功。",
+      "emotion": "strained",
+      "next_node": "MEM_IDENTITY_HINT_B"
+    },
+    {
+      "id": "MEM_REVELATION_C",
+      "speaker": "murongxue",
+      "text": "你在洞口坐了约莫一个时辰，洞内终于恢复了平静。\n\n慕容雪缓缓走出，脸色苍白但神色已定。她在你身旁坐下，沉默许久之后开口。\n\n我想起了一些事。关于三百年前的飞升之战。一个名叫血无痕的人布下了封印大阵，斩断了飞升之路。\n\n她的声音很轻，但每个字都带着分量。\n\n封印之所以成功，是因为有人从内部出卖了反对者。那个叛徒……我认得他的气息。",
+      "emotion": "calm",
+      "next_node": "MEM_IDENTITY_HINT_C"
+    },
+    {
+      "id": "MEM_IDENTITY_HINT_A",
+      "speaker": "murongxue",
+      "text": "慕容雪忽然握住了自己的手腕，像是想确认什么。\n\n还有一件事。那些被封印的修士中……有我。不，准确地说——有三百年前的我。\n\n她抬头看着你，目光复杂。\n\n我不知道自己为什么会变成现在这样。但我和那场战争——有着无法逃避的联系。",
+      "emotion": "uncertain",
+      "next_node": "MEM_END_A"
+    },
+    {
+      "id": "MEM_IDENTITY_HINT_B",
+      "speaker": "murongxue",
+      "text": "慕容雪睁开眼，目光忽然变得锐利。\n\n你知道最令我不安的是什么吗？——那些画面中，有一个身影非常熟悉。熟悉到……令我害怕。\n\n她深吸一口气。\n\n三百年前，我也在那里。我不确定自己是什么身份，但我确实在那场战争中。这意味着——我比我自己想象的要古老得多。",
+      "emotion": "fearful",
+      "next_node": "MEM_END_B"
+    },
+    {
+      "id": "MEM_IDENTITY_HINT_C",
+      "speaker": "murongxue",
+      "text": "慕容雪的声音忽然低了下去。\n\n那个叛徒……我认得他的气息。但我还不能确定他是谁。我需要更多记忆——或者说，更多证据。\n\n她顿了顿，望向你。\n\n还有一件事。我和三百年前的那场战争有着某种联系。我说不清楚是什么，但我的身体……记得那场战斗。",
+      "emotion": "reflective",
+      "next_node": "MEM_END_C"
+    },
+    {
+      "id": "MEM_END_A",
+      "speaker": "system",
+      "text": "慕容雪的回忆暂时平息了，但你从她断断续续的叙述中拼凑出了关键的线索：\n\n[b]• 血无痕 —— 三百年前布下封印大阵的核心人物\n• 封印大阵 —— 斩断了飞升之路，至今仍在运转\n• 背叛者 —— 从内部破坏了修士防线，使封印得以成功\n• 慕容雪的身份 —— 她可能与三百年前的飞升之战有直接关联[/b]\n\n[b]——慕容雪记忆恢复结束，飞升之谜初现端倪——[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "MEM_END_B",
+      "speaker": "system",
+      "text": "慕容雪的回忆暂时平息了，但你从她断断续续的叙述中拼凑出了关键的线索：\n\n[b]• 血无痕 —— 三百年前布下封印大阵的核心人物\n• 封印大阵 —— 斩断了飞升之路，至今仍在运转\n• 背叛者 —— 从内部破坏了修士防线，使封印得以成功\n• 慕容雪的身份 —— 她可能在三百年前就已存在[/b]\n\n[b]——慕容雪记忆恢复结束，飞升之谜初现端倪——[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "MEM_END_C",
+      "speaker": "system",
+      "text": "慕容雪的回忆暂时平息了，但你从她断断续续的叙述中拼凑出了关键的线索：\n\n[b]• 血无痕 —— 三百年前布下封印大阵的核心人物\n• 封印大阵 —— 斩断了飞升之路，至今仍在运转\n• 背叛者 —— 从内部破坏了修士防线，使封印得以成功\n• 慕容雪的身份 —— 她的身体记得三百年前的战斗[/b]\n\n[b]——慕容雪记忆恢复结束，飞升之谜初现端倪——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

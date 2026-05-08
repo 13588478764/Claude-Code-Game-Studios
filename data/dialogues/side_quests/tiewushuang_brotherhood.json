@@ -1,0 +1,213 @@
+{
+  "id": "TIE_QUEST_LINE",
+  "title": "铁无双支线 — 丐帮兄弟",
+  "description": "帮助铁无双解决丐帮分舵的麻烦，建立深厚兄弟情谊",
+  "npc_id": "tiewushuang",
+  "quest_line": "tiewushuang_brotherhood",
+  "min_realm": "qi_refining_early",
+  "start_node": "TIE_QUEST_001",
+  "nodes": [
+    {
+      "id": "TIE_QUEST_001",
+      "speaker": "tiewushuang",
+      "text": "兄弟！我丐帮在青云镇有个分舵，最近有些麻烦，你能帮个忙吗？",
+      "emotion": "excited",
+      "next_node": "TIE_QUEST_002"
+    },
+    {
+      "id": "TIE_QUEST_002",
+      "speaker": "tiewushuang",
+      "text": "分舵主赵长老被一个叫王霸的筑基期恶霸威胁，\n那家伙天天带人来闹事，抢夺修炼资源。",
+      "emotion": "angry",
+      "next_node": "TIE_QUEST_CHOICE_001"
+    },
+    {
+      "id": "TIE_QUEST_CHOICE_001",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "help",
+          "text": "兄弟的事就是我的事，走吧",
+          "effects": [
+            {"type": "relationship_change", "target": "tiewushuang", "value": 15},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "TIE_QUEST_ACCEPT"
+        },
+        {
+          "id": "negotiate",
+          "text": "具体情况如何？先了解一下",
+          "effects": [
+            {"type": "relationship_change", "target": "tiewushuang", "value": 5}
+          ],
+          "next_node": "TIE_QUEST_INFO"
+        }
+      ]
+    },
+    {
+      "id": "TIE_QUEST_ACCEPT",
+      "speaker": "tiewushuang",
+      "text": "哈哈，痛快！我铁无双就喜欢跟爽快人打交道！走，咱们去丐帮分舵！",
+      "emotion": "excited",
+      "effects": [
+        {"type": "quest_trigger", "target": "beggar_sect_trouble", "value": true}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "TIE_QUEST_INFO",
+      "speaker": "tiewushuang",
+      "text": "王霸是个筑基初期的匪修，带着一群手下，专门欺压小门派和散修。\n这次盯上了我们丐帮分舵的灵脉。",
+      "emotion": "serious",
+      "next_node": "TIE_QUEST_ACCEPT"
+    },
+    {
+      "id": "BEGGAR_SECT_ARRIVE",
+      "speaker": "system",
+      "text": "丐帮分舵位于青云镇破庙地下。你跟随铁无双来到分舵入口，\n听到里面传来嘈杂的打斗声。",
+      "next_node": "BEGGAR_SECT_SCENE"
+    },
+    {
+      "id": "BEGGAR_SECT_SCENE",
+      "speaker": "system",
+      "text": "分舵内，赵长老和几名弟子正在苦苦抵挡王霸的手下。\n\n王霸（筑基初期匪修）：\"哈哈，丐帮的穷鬼们，今天不把灵脉交出来，我就拆了你们的分舵！\"",
+      "next_node": "BEGGAR_SECT_CHOICE"
+    },
+    {
+      "id": "BEGGAR_SECT_CHOICE",
+      "speaker": "tiewushuang",
+      "text": "兄弟，怎么办？直接动手还是先看看情况？",
+      "emotion": "calm",
+      "choices": [
+        {
+          "id": "fight_directly",
+          "text": "直接动手，教训这个恶霸",
+          "effects": [
+            {"type": "relationship_change", "target": "tiewushuang", "value": 10}
+          ],
+          "next_node": "FIGHT_DIRECTLY"
+        },
+        {
+          "id": "negotiate_peace",
+          "text": "先尝试劝退，避免流血",
+          "effects": [
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "NEGOTIATE_PEACE"
+        }
+      ]
+    },
+    {
+      "id": "FIGHT_DIRECTLY",
+      "speaker": "system",
+      "text": "你拔出武器，铁无双紧随其后，两人冲入战局。\n\n铁无双：\"王霸！欺负丐帮的弟兄，先问问我铁某的拳头答不答应！\"\n\n王霸：\"哼，两个小辈，找死！\"",
+      "next_node": "FIGHT_BEGGAR_RESULT"
+    },
+    {
+      "id": "FIGHT_BEGGAR_RESULT",
+      "speaker": "system",
+      "text": "经过一番激战，王霸被你击败，他的手下四散逃跑。\n\n王霸（口吐鲜血）：\"咳...算你狠！给我记住...\"\n\n铁无双：\"滚！再敢来丐帮闹事，我打断你的腿！\"",
+      "effects": [
+        {"type": "relationship_change", "target": "tiewushuang", "value": 15},
+        {"type": "reputation_change", "target": "beggar_sect", "value": 10}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "NEGOTIATE_PEACE",
+      "speaker": "player",
+      "text": "王霸兄，何必动怒？不如坐下来谈谈。",
+      "next_node": "NEGOTIATE_RESULT"
+    },
+    {
+      "id": "NEGOTIATE_RESULT",
+      "speaker": "system",
+      "text": "王霸：\"谈？没什么好谈的！灵脉我要定了！\"\n\n他毫不理会你的劝告，直接发动攻击。\n谈判破裂，战斗不可避免。",
+      "next_node": "FIGHT_BEGGAR_RESULT"
+    },
+    {
+      "id": "BEGGAR_SECRET_ART_CHECK",
+      "speaker": "tiewushuang",
+      "text": "兄弟，丐帮分舵的事多亏了你！赵长老一直想当面感谢你。\n\n不如我们去分舵坐坐，喝杯茶？",
+      "emotion": "excited",
+      "condition": {"type": "relationship_check", "target": "tiewushuang", "min": 50},
+      "next_node": "BEGGAR_SECRET_ART"
+    },
+    {
+      "id": "BEGGAR_SECRET_ART",
+      "speaker": "system",
+      "text": "你跟随铁无双来到丐帮分舵内堂。赵长老早已等候多时。\n\n赵长老：\"{player_name}少侠，老朽代表丐帮分舵，向你表达最诚挚的感谢。\"\n\n铁无双：\"赵长老，兄弟之间不必客气。不过……您之前提过的那件事……\"",
+      "next_node": "BEGGAR_SECRET_ART_OFFER"
+    },
+    {
+      "id": "BEGGAR_SECRET_ART_OFFER",
+      "speaker": "tiewushuang",
+      "text": "赵长老点了点头，从怀中取出一本古朴的秘籍。\n\n赵长老：\"少侠身手不凡，老朽无以为报。这本《降龙掌法》乃是我丐帮秘传武学，虽不是最高深的武功，但威力不俗，少侠若不嫌弃，便收下吧。\"\n\n铁无双在一旁笑着点头：\"兄弟，这可是好东西，拿着拿着！\"",
+      "emotion": "grateful",
+      "effects": [
+        {"type": "skill_give", "target": "xianglong_palm_basic", "value": 1},
+        {"type": "relationship_change", "target": "tiewushuang", "value": 10}
+      ],
+      "next_node": "BEGGAR_SECRET_ART_END"
+    },
+    {
+      "id": "BEGGAR_SECRET_ART_END",
+      "speaker": "system",
+      "text": "[b]获得：[/b]降龙掌法（黄阶上品）\n[b]丐帮声望：[/b]+15\n\n[b]支线场景三完成：[/b]丐帮秘传\n\n[b]下一场景：[/b]生死兄弟（关系值70解锁）",
+      "next_node": "END"
+    },
+    {
+      "id": "BROTHERHOOD_FINAL_CHECK",
+      "speaker": "tiewushuang",
+      "text": "兄弟！今天我来找你，有件重要的事情。",
+      "emotion": "serious",
+      "condition": {"type": "relationship_check", "target": "tiewushuang", "min": 70},
+      "next_node": "BROTHERHOOD_FINAL_START"
+    },
+    {
+      "id": "BROTHERHOOD_FINAL_START",
+      "speaker": "tiewushuang",
+      "text": "我铁无双这辈子没几个真正认可的人。但你，是其中一个。\n\n从我第一次在青云镇见到你，就觉得你这人——重情重义，不像那些满嘴仁义道德的伪君子。\n\n所以，我丐帮决定授予你一项殊荣。",
+      "emotion": "sincere",
+      "next_node": "BROTHERHOOD_CEREMONY"
+    },
+    {
+      "id": "BROTHERHOOD_CEREMONY",
+      "speaker": "system",
+      "text": "三天后，丐帮分舵举行了一场隆重的仪式。\n\n赵长老亲自主持，分舵内所有弟子齐聚一堂。\n\n铁无双站在你身旁，脸上洋溢着自豪的笑容。\n\n赵长老：\"{player_name}少侠多次相助丐帮，义薄云天。经丐帮长老会一致决定，特授予'荣誉长老'称号！\"",
+      "next_node": "BROTHERHOOD_GIFT"
+    },
+    {
+      "id": "BROTHERHOOD_GIFT",
+      "speaker": "tiewushuang",
+      "text": "仪式结束后，铁无双单独叫住了你。\n\n兄弟，还有一样东西要给你。\n\n他从背后取出一根泛着幽光的竹棒——打狗棒。\n\n铁无双：\"这打狗棒虽然不是传说中的那根，但也是用千年寒竹打造，坚韧无比。配上降龙掌法，威力更胜。\"\n\n铁无双：\"另外，有了荣誉长老的身份，你在丐帮的所有交易都享受八折优惠。\"",
+      "emotion": "excited",
+      "effects": [
+        {"type": "item_give", "target": "beggar_elder_title", "value": 1},
+        {"type": "item_give", "target": "dagou_stick", "value": 1},
+        {"type": "relationship_change", "target": "tiewushuang", "value": 15}
+      ],
+      "next_node": "BROTHERHOOD_PROMISE"
+    },
+    {
+      "id": "BROTHERHOOD_PROMISE",
+      "speaker": "tiewushuang",
+      "text": "他的表情变得严肃起来。\n\n铁无双：\"兄弟，有一句话我一直没说出口——\"\n\n铁无双：\"如果有一天，你遇到了危险，不管天涯海角，丐帮的弟兄们都会赶到你身边。\"\n\n铁无双：\"这是承诺，不是客套话。\"",
+      "emotion": "solemn",
+      "next_node": "BROTHERHOOD_PLAYER_REPLY"
+    },
+    {
+      "id": "BROTHERHOOD_PLAYER_REPLY",
+      "speaker": "player",
+      "text": "铁大哥，这份情义我记下了。他日若有需要，我也定会为丐帮赴汤蹈火。",
+      "next_node": "BROTHERHOOD_FINAL_END"
+    },
+    {
+      "id": "BROTHERHOOD_FINAL_END",
+      "speaker": "system",
+      "text": "铁无双哈哈大笑，用力拍了拍你的肩膀。\n\n[b]获得：[/b]丐帮荣誉长老称号（交易8折）\n[b]获得：[/b]打狗棒（玄阶下品武器）\n[b]获得：[/b]铁无双的承诺（最终战协助概率+30%）\n\n[b]支线完成：[/b]铁无双 — 丐帮兄弟\n\n[b]—— 丐帮有情义，兄弟重如山。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

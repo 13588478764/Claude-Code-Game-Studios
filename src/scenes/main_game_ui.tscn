@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://wpj7g66ovgec" path="res://src/scripts/quest/quest_manager.gd" id="6"]
 [ext_resource type="Script" uid="uid://cubqffjuuxiqe" path="res://src/scripts/world/world_system.gd" id="7"]
 [ext_resource type="Script" uid="uid://ct02kuwt81anl" path="res://src/scripts/audio/audio_system.gd" id="8"]
+[ext_resource type="PackedScene" uid="uid://c7m9kn2p8qx4r" path="res://src/scenes/ui/encounter_ui.tscn" id="9"]
 
 [node name="MainGameUI" type="Node2D" unique_id=73997892]
 script = ExtResource("1")
@@ -104,3 +105,13 @@ offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "测试所有系统"
+
+[node name="HUDLayer" type="CanvasLayer" parent="." unique_id=1000000001]
+layer = 1
+
+[node name="HUDManager" type="CanvasLayer" parent="HUDLayer" unique_id=1000000002]
+script = ExtResource("5")
+
+[node name="EncounterUI" parent="HUDLayer" instance=ExtResource("9")]
+
+[node name="DialogueBoxInstance" parent="HUDLayer" instance=ExtResource("9")]

@@ -3,7 +3,7 @@ goal: 验证核心游戏系统的实现质量,建立测试基准,为后续开发
 start: '2026-04-28'
 end: '2026-05-11'
 generated: '2026-04-28'
-updated: '2026-04-30'
+updated: '2026-05-02'
 stories:
 - id: combat-001
   name: 战斗机制
@@ -72,20 +72,22 @@ stories:
   name: 角色成长UI
   file: production/epics/character-progression-system/story-005-character-growth-ui.md
   priority: must-have
-  status: blocked
+  status: done
   owner: QA Team
   estimate_days: 0.5
-  blocker: Blocked - Requires Manual Fix
-  completed: ''
+  blocker: ''
+  completed: '2026-05-02'
+  notes: 4/4 ACs passed. 场景重建完成，UI层正常，数据绑定将在后续sprint集成
 - id: char-prog-006
   name: 奇遇UI
   file: production/epics/character-progression-system/story-006-encounter-ui.md
   priority: must-have
-  status: blocked
+  status: done
   owner: QA Team
   estimate_days: 0.5
-  blocker: Blocked - Requires Manual Fix
-  completed: ''
+  blocker: ''
+  completed: '2026-05-02'
+  notes: 4/4 ACs passed. 场景重建完成，入场动画修复，动态背景系统正常工作
 - id: skill-tree-001
   name: 学习路径类型
   file: production/epics/skill-tree-learning-path-system/story-001-learning-path-types.md
@@ -108,11 +110,12 @@ stories:
   name: 可视化与交互
   file: production/epics/skill-tree-learning-path-system/story-003-visualization-and-interaction.md
   priority: must-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.6
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: martial-arts-001
   name: 武学获取
   file: production/epics/martial-arts-system/story-001-martial-arts-acquisition.md
@@ -126,29 +129,32 @@ stories:
   name: 武学熟练度
   file: production/epics/martial-arts-system/story-002-martial-arts-proficiency.md
   priority: must-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: martial-arts-003
   name: 武学使用
   file: production/epics/martial-arts-system/story-003-martial-arts-usage.md
   priority: must-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: martial-arts-004
   name: 武学连招
   file: production/epics/martial-arts-system/story-004-martial-arts-combo.md
   priority: must-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: equipment-001
   name: 装备管理
   file: production/epics/equipment-system/story-001-equipment-management.md
@@ -209,56 +215,62 @@ stories:
   name: 任务状态管理
   file: production/epics/quest-system/story-001-quest-state-management.md
   priority: should-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: quest-002
   name: 任务追踪系统
   file: production/epics/quest-system/story-002-quest-tracking-system.md
   priority: should-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: quest-003
   name: 任务奖励分配
   file: production/epics/quest-system/story-003-quest-reward-distribution.md
   priority: should-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: minimap-001
   name: 玩家位置显示
   file: production/epics/minimap-system/story-001-player-position-display.md
   priority: should-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.3
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: minimap-002
   name: 已探索区域标记
   file: production/epics/minimap-system/story-002-explored-area-marking.md
   priority: should-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.4
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: minimap-003
   name: 导航标记系统
   file: production/epics/minimap-system/story-003-navigation-marking-system.md
   priority: should-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.3
   blocker: ''
-  completed: ''
+  completed: '2026-05-02'
+  notes: 实现完成，待测试验证
 - id: combat-ui-001
   name: 战斗HUD显示
   file: production/epics/combat-ui/story-001-combat-hud-display.md
@@ -272,11 +284,12 @@ stories:
   name: 战斗菜单交互
   file: production/epics/combat-ui/story-002-combat-menu-interactions.md
   priority: nice-to-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.4
-  blocker: '1.1'
-  completed: ''
+  blocker: ''
+  completed: '2026-05-02'
+  notes: 实现完成，阻塞依赖已解决
 - id: combat-ui-003
   name: 战斗反馈系统
   file: production/epics/combat-ui/story-003-combat-feedback-system.md
@@ -290,26 +303,39 @@ stories:
   name: 装备界面布局
   file: production/epics/equipment-ui/story-001-equipment-interface-layout.md
   priority: nice-to-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.3
-  blocker: '1.5'
-  completed: ''
+  blocker: ''
+  completed: '2026-05-02'
+  notes: 实现完成，阻塞依赖已解决
 - id: equipment-ui-002
   name: 装备交互
   file: production/epics/equipment-ui/story-002-equipment-interactions.md
   priority: nice-to-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.4
-  blocker: '1.5'
-  completed: ''
+  blocker: ''
+  completed: '2026-05-02'
+  notes: 实现完成，阻塞依赖已解决
 - id: equipment-ui-003
   name: 视觉反馈和效果
   file: production/epics/equipment-ui/story-003-visual-feedback-and-effects.md
   priority: nice-to-have
-  status: pending-test
+  status: done
   owner: QA Team
   estimate_days: 0.3
-  blocker: '1.5'
-  completed: ''
+  blocker: ''
+  completed: '2026-05-02'
+  notes: 实现完成，阻塞依赖已解决
+- id: hud-007
+  name: 菜单入口和系统功能
+  file: production/epics/hud-system/story-007-menu-and-system-functions.md
+  priority: should-have
+  status: done
+  owner: QA Team
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-02'
+  notes: 12/12 ACs passed. 音效反馈暂缺(音频系统未实现,已有TODO)

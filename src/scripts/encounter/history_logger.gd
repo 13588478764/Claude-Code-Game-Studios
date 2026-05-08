@@ -55,7 +55,7 @@ func log_encounter(encounter_data: Dictionary) -> String:
 		return ""
 	
 	if not encounter_data.has("id") or encounter_data.get("id", "").is_empty():
-		push_error("HistoryLogger: encounter_data 缺少有效的 'id' 字段")
+		push_warning("HistoryLogger: encounter_data 缺少有效的 'id' 字段")
 		return ""
 	
 	# 检查记录数量限制

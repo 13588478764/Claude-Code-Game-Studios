@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "description": "战斗系统配置文件",
+  "last_updated": "2026-05-04",
+
+  "resource_defaults": {
+    "description": "默认资源数值",
+    "max_hp": 100,
+    "max_internal_energy": 100,
+    "internal_energy_start": 50,
+    "stance_max": 100,
+    "stance_start": 100,
+    "combo_max": 100,
+    "combo_start": 0,
+    "link_gauge_max": 100,
+    "link_gauge_start": 0,
+    "speed_default": 10
+  },
+
+  "resource_recovery": {
+    "description": "每回合资源自然回复量",
+    "internal_energy_recovery": 5,
+    "stance_recovery": 5,
+    "link_gauge_recovery": 3,
+    "combo_decay_non_attack": 5
+  },
+
+  "combat_action_values": {
+    "description": "战斗行动数值",
+    "attack_combo_increase": 10,
+    "defend_stance_increase": 20,
+    "skill_link_gauge_increase": 15,
+    "base_damage": 10,
+    "damage_random_range": 5
+  },
+
+  "damage_formulas": {
+    "description": "伤害计算公式参数",
+    "force_coefficient": 0.02,
+    "force_divisor": 50.0,
+    "stance_defense_divisor": 10.0,
+    "max_combo_bonus": 0.5,
+    "min_damage": 1
+  },
+
+  "attribute_weights": {
+    "description": "六维属性在伤害中的权重",
+    "force": 1.0,
+    "agility": 0.3,
+    "constitution": 0.2,
+    "wisdom": 0.4,
+    "stability": 0.5,
+    "luck": 0.1
+  }
+}

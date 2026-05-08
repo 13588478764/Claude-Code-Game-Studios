@@ -94,6 +94,12 @@ func _ready():
 	# 获取条件评估器实例
 	condition_evaluator = load("res://src/scripts/encounter/condition_evaluator.gd").new()
 
+# 清理资源
+func _exit_tree():
+	if is_instance_valid(condition_evaluator):
+		condition_evaluator.queue_free()
+		condition_evaluator = null
+
 # ============================================================================
 # 公共方法
 # ============================================================================

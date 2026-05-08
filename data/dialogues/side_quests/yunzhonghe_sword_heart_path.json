@@ -1,0 +1,339 @@
+{
+  "id": "YUN_QUEST_LINE",
+  "title": "云中鹤支线 — 剑心之路",
+  "description": "云中鹤的旧伤之谜，寻找治疗方法和剑道传承",
+  "npc_id": "yunzhonghe",
+  "quest_line": "yunzhonghe_sword_heart",
+  "min_realm": "qi_refining_mid",
+  "start_node": "YUN_QUEST_001",
+  "nodes": [
+    {
+      "id": "YUN_QUEST_001",
+      "speaker": "yunzhonghe",
+      "text": "{player_name}，你剑骨初成，该学习更高深的剑诀了。不过在此之前...有些事情我需要告诉你。",
+      "emotion": "serious",
+      "next_node": "YUN_QUEST_002"
+    },
+    {
+      "id": "YUN_QUEST_002",
+      "speaker": "yunzhonghe",
+      "text": "三百年前，我参与过一场大战...在那场战斗中，我受了无法治愈的内伤。\n我的时间确实不多了。",
+      "emotion": "sighing",
+      "next_node": "YUN_QUEST_CHOICE_001"
+    },
+    {
+      "id": "YUN_QUEST_CHOICE_001",
+      "speaker": "yunzhonghe",
+      "text": "但在死之前，我必须将剑道传承下去。你是我最信任的弟子...",
+      "choices": [
+        {
+          "id": "concerned",
+          "text": "前辈，有什么方法可以治疗您的伤？",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 10}
+          ],
+          "next_node": "YUN_QUEST_003A"
+        },
+        {
+          "id": "determined",
+          "text": "我会继承您的剑道，绝不辜负期望",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 15},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "YUN_QUEST_003B"
+        },
+        {
+          "id": "pragmatic",
+          "text": "您还有多少时间？我需要准备什么？",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 5}
+          ],
+          "next_node": "YUN_QUEST_003C"
+        }
+      ]
+    },
+    {
+      "id": "YUN_QUEST_003A",
+      "speaker": "yunzhonghe",
+      "text": "治疗？哈哈...（苦笑）\n这伤蕴含特殊剑意，非一般灵药能愈。但我记得，北山有一处废弃药园，\n或许还留存着上古灵药。你若能找到，也许有一线希望。",
+      "emotion": "bitter_smile",
+      "effects": [
+        {"type": "quest_trigger", "target": "yun_old_wound_search", "value": true}
+      ],
+      "next_node": "YUN_QUEST_003_END"
+    },
+    {
+      "id": "YUN_QUEST_003B",
+      "speaker": "yunzhonghe",
+      "text": "（眼中闪过一丝欣慰）\n好孩子。剑道如人生，重在一个'悟'字。\n我会在接下来的日子里，将毕生所学传授于你。",
+      "emotion": "approving",
+      "next_node": "YUN_QUEST_003_END"
+    },
+    {
+      "id": "YUN_QUEST_003C",
+      "speaker": "yunzhonghe",
+      "text": "时间...不多了。也许一年，也许只有几个月。\n你需要的，是坚定的道心和扎实的基本功。\n不要急功近利，稳扎稳打才是正途。",
+      "emotion": "serious",
+      "next_node": "YUN_QUEST_003_END"
+    },
+    {
+      "id": "YUN_QUEST_003_END",
+      "speaker": "system",
+      "text": "[b]支线场景一完成：[/b]旧伤之谜\n\n云中鹤透露了自己的过去和伤势。\n你需要寻找治疗他旧伤的方法，或者继承他的剑道传承。\n\n[b]下一场景：[/b]废弃药园探索（关系值45解锁）",
+      "next_node": "END"
+    },
+    {
+      "id": "HERB_GARDEN_START",
+      "speaker": "system",
+      "text": "根据云中鹤提供的线索，你在青云镇北山发现了一处废弃的药园。\n\n这里曾经种植着珍贵的灵药，但现在大多枯萎，只剩下残垣断壁。\n一座石碑矗立在药园入口，上面刻着古老的文字。",
+      "next_node": "HERB_GARDEN_EXPLORE"
+    },
+    {
+      "id": "HERB_GARDEN_EXPLORE",
+      "speaker": "system",
+      "text": "药园内有三个值得注意的地方：\n\n1. 石碑上记载着药园的历史\n2. 三株枯萎的灵药，似乎可以用灵气复苏\n3. 角落有一个隐藏的储物袋\n\n你要先调查什么？",
+      "choices": [
+        {
+          "id": "read_stele",
+          "text": "阅读石碑上的文字",
+          "effects": [],
+          "next_node": "HERB_GARDEN_STELE"
+        },
+        {
+          "id": "revive_herbs",
+          "text": "用灵气复苏枯萎的灵药",
+          "effects": [],
+          "next_node": "HERB_GARDEN_REVIVE_CHOICE"
+        },
+        {
+          "id": "find_bag",
+          "text": "寻找隐藏的储物袋",
+          "effects": [],
+          "next_node": "HERB_GARDEN_BAG"
+        }
+      ]
+    },
+    {
+      "id": "HERB_GARDEN_STELE",
+      "speaker": "system",
+      "text": "石碑上刻着：\n\n[i]\"此园建于天启历三二七年，种植回春草、凝露花等珍贵灵药。\n园主李百草，一生致力于炼丹制药。\n今灵气衰退，药园将废，望后来者能重现生机。\"[/i]\n\n这座药园已有近三百年历史了。",
+      "next_node": "HERB_GARDEN_EXPLORE"
+    },
+    {
+      "id": "HERB_GARDEN_REVIVE_CHOICE",
+      "speaker": "system",
+      "text": "三株枯萎的灵药分别呈现出水、木、火三种属性。\n你需要用灵气浇灌它们，让它们复苏。",
+      "next_node": "HERB_GARDEN_REVIVE_PUZZLE"
+    },
+    {
+      "id": "HERB_GARDEN_REVIVE_PUZZLE",
+      "speaker": "system",
+      "text": "按照五行相生的顺序，你依次注入灵气：水→木→火→土→金。\n\n随着最后一缕灵气注入，三株灵药竟然同时复苏，\n散发出柔和的光芒。药园的生机仿佛被唤醒了。",
+      "effects": [
+        {"type": "item_give", "target": "huichun_grass", "value": 3},
+        {"type": "item_give", "target": "alchemy_notes_fragment", "value": 1},
+        {"type": "skill_give", "target": "herb_garden_passive", "value": 1}
+      ],
+      "next_node": "HERB_GARDEN_REVIVE_SUCCESS"
+    },
+    {
+      "id": "HERB_GARDEN_REVIVE_SUCCESS",
+      "speaker": "system",
+      "text": "[b]获得：[/b]回春草×3（可炼制回春丹）\n[b]获得：[/b]炼丹笔记（残篇）\n[b]获得：[/b]药园传承（被动：灵药种植+10%）\n\n这些回春草应该是治疗云中鹤伤势的关键材料。",
+      "next_node": "END"
+    },
+    {
+      "id": "HERB_GARDEN_BAG",
+      "speaker": "system",
+      "text": "你在药园的角落发现了一个隐藏的储物袋。\n里面装着一些基础的炼丹工具和几块下品灵石。\n\n[b]获得：[/b]炼丹工具套装\n[b]获得：[/b]下品灵石×5",
+      "effects": [
+        {"type": "item_give", "target": "alchemy_toolkit", "value": 1},
+        {"type": "item_give", "target": "spirit_stones_low", "value": 5}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "ALCHEMY_REFINE_START",
+      "speaker": "system",
+      "text": "你回到住处，准备好回春草×3和灵气结晶×5，开始炼制回春丹。\n\n炼丹过程分为两个阶段：\n1. 控制火候（需要精确时机）\n2. 凝丹阶段（引导灵气凝聚）",
+      "next_node": "ALCHEMY_REFINE_STEP1"
+    },
+    {
+      "id": "ALCHEMY_REFINE_STEP1",
+      "speaker": "system",
+      "text": "你将回春草投入丹炉，开始控制火候。\n\n丹炉的温度逐渐升高，药草开始融化，散发出绿色的光芒...\n\n保持火候稳定，不要让丹药过火！",
+      "next_node": "ALCHEMY_REFINE_STEP2"
+    },
+    {
+      "id": "ALCHEMY_REFINE_STEP2",
+      "speaker": "system",
+      "text": "火候控制完美！药液在丹炉中心凝聚成丹。\n\n你引导周围的灵气，将其包裹在丹药外层，完成最后的凝丹。\n\n[b]轰！[/b]\n\n一颗散发着清香的丹药从丹炉中飞出，落入你的掌心。\n\n[b]获得：[/b]回春丹×1\n[b]炼丹经验：[/b]+20",
+      "effects": [
+        {"type": "item_give", "target": "huichun_pill", "value": 1}
+      ],
+      "next_node": "ALCHEMY_REFINE_GIVE"
+    },
+    {
+      "id": "ALCHEMY_REFINE_GIVE",
+      "speaker": "yunzhonghe",
+      "text": "这是...回春丹！你竟然真的炼成了。\n好，好！{player_name}，你没有让我失望。",
+      "emotion": "surprised",
+      "effects": [
+        {"type": "relationship_change", "target": "yunzhonghe", "value": 20}
+      ],
+      "next_node": "ALCHEMY_REFINE_RESULT"
+    },
+    {
+      "id": "ALCHEMY_REFINE_RESULT",
+      "speaker": "yunzhonghe",
+      "text": "（服下丹药后，神色稍缓）\n虽然不能完全治愈我的伤，但已缓解了不少。\n作为回报，我将进阶剑诀传授于你。",
+      "effects": [
+        {"type": "skill_give", "target": "advanced_sword_art", "value": 1}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "SWORD_LEGACY_CHECK",
+      "speaker": "yunzhonghe",
+      "text": "{player_name}，你的剑道已有小成。回春丹虽未能治愈我的伤，但也让我延了些时日。\n\n现在，是时候将我一生的剑道传承交托给你了。",
+      "emotion": "solemn",
+      "condition": {"type": "relationship_check", "target": "yunzhonghe", "min": 75},
+      "next_node": "SWORD_LEGACY_START"
+    },
+    {
+      "id": "SWORD_LEGACY_START",
+      "speaker": "yunzhonghe",
+      "text": "我的剑道，名为'云鹤九剑'。九剑之后，可斩天地。\n但我只悟了七剑，剩下的两剑，需你自己领悟。",
+      "emotion": "serious",
+      "next_node": "SWORD_LEGACY_TRIAL"
+    },
+    {
+      "id": "SWORD_LEGACY_TRIAL",
+      "speaker": "yunzhonghe",
+      "text": "传承之前，你必须通过最后一道考验——\n\n不是力量的考验，而是心境的考验。\n\n云鹤九剑的最后两式，不是用来杀人的剑法。它们是我一生对剑道的理解与体悟。\n\n只有真正懂得'为何而剑'的人，才能掌握它们。",
+      "emotion": "solemn",
+      "next_node": "SWORD_LEGACY_QUESTION"
+    },
+    {
+      "id": "SWORD_LEGACY_QUESTION",
+      "speaker": "yunzhonghe",
+      "text": "告诉我——你为何而剑？",
+      "choices": [
+        {
+          "id": "sword_protect",
+          "text": "为守护而剑。守护心中重要之人与事物",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 15},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "SWORD_LEGACY_PROTECT"
+        },
+        {
+          "id": "sword_strength",
+          "text": "为力量而剑。只有足够强大，才能掌控自己的命运",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 5},
+            {"type": "dao_heart_change", "value": -5}
+          ],
+          "next_node": "SWORD_LEGACY_STRENGTH"
+        },
+        {
+          "id": "sword_dao",
+          "text": "为道而剑。剑即是道，求的是剑道的极致",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 20},
+            {"type": "dao_heart_change", "value": 15}
+          ],
+          "next_node": "SWORD_LEGACY_DAO"
+        }
+      ]
+    },
+    {
+      "id": "SWORD_LEGACY_PROTECT",
+      "speaker": "yunzhonghe",
+      "text": "他点了点头。\n\n守护……这是我听过最多的答案。但也是最真诚的。\n\n我当年学剑，也是为了守护。只不过，我没能守护住所有想守护的人。\n\n所以，我希望你能做得更好。",
+      "emotion": "nostalgic",
+      "next_node": "SWORD_LEGACY_GIFT"
+    },
+    {
+      "id": "SWORD_LEGACY_STRENGTH",
+      "speaker": "yunzhonghe",
+      "text": "他沉默了片刻。\n\n力量……不错，力量确实重要。但若只为力量而剑，终有一天会被力量所反噬。\n\n希望你早日找到力量之外的意义。",
+      "emotion": "warning",
+      "effects": [
+        {"type": "dao_heart_change", "value": -5}
+      ],
+      "next_node": "SWORD_LEGACY_GIFT"
+    },
+    {
+      "id": "SWORD_LEGACY_DAO",
+      "speaker": "yunzhonghe",
+      "text": "他的眼中闪过一丝惊喜。\n\n好！好一个'剑即是道'！\n\n三百年了，你是第一个给出这个答案的人。\n\n也许……你真的能领悟那最后两式。",
+      "emotion": "excited",
+      "effects": [
+        {"type": "dao_heart_change", "value": 10}
+      ],
+      "next_node": "SWORD_LEGACY_GIFT"
+    },
+    {
+      "id": "SWORD_LEGACY_GIFT",
+      "speaker": "yunzhonghe",
+      "text": "今天，我将这七剑全部传授于你。还有——\n这柄青霜剑，跟了我五百年，如今传给你。",
+      "emotion": "contemplative",
+      "effects": [
+        {"type": "skill_give", "target": "yunhe_nine_swords_7", "value": 1},
+        {"type": "item_give", "target": "qingshuang_sword", "value": 1},
+        {"type": "skill_give", "target": "sword_training_bonus", "value": 1}
+      ],
+      "next_node": "SWORD_LEGACY_END"
+    },
+    {
+      "id": "SWORD_LEGACY_MEDITATION",
+      "speaker": "yunzhonghe",
+      "text": "他盘膝而坐，闭目凝神。\n\n接下来，我会以神识之力，将云鹤九剑的剑意直接注入你的意识之中。\n\n这个过程可能会有些痛苦，但你要记住——不要抵抗，让剑意自然融入你的道心。",
+      "emotion": "calm",
+      "next_node": "SWORD_LEGACY_INJECTION"
+    },
+    {
+      "id": "SWORD_LEGACY_INJECTION",
+      "speaker": "system",
+      "text": "云中鹤双掌抵住你的后背，一股温暖的神识之力涌入你的体内。\n\n你感受到七道不同的剑意依次流入你的意识——\n\n第一式'破风'：迅捷如风，一剑破万法\n第二式'断水'：连绵不绝，剑气化长河\n第三式'裂石'：刚猛无俦，一剑碎金石\n第四式'惊雷'：雷霆万钧，快若闪电\n第五式'凝霜'：寒气逼人，剑气凝冰\n第六式'燎原'：烈火焚天，剑气化炎\n第七式'归藏'：收剑于内，蓄而不发\n\n七剑之意，尽数融入你的道心。",
+      "effects": [
+        {"type": "skill_give", "target": "yunhe_sword_1_to_7", "value": 1}
+      ],
+      "next_node": "SWORD_LEGACY_AWAKENING"
+    },
+    {
+      "id": "SWORD_LEGACY_AWAKENING",
+      "speaker": "system",
+      "text": "剑意注入完成后，你感受到体内剑骨碎片的共鸣。\n\n七道剑意与剑骨产生了奇妙的化学反应，你的剑道感悟瞬间提升了一个层次。\n\n[b]剑道感悟已提升！\n剑诀修炼速度永久加成！[/b]",
+      "next_node": "SWORD_LEGACY_FAREWELL"
+    },
+    {
+      "id": "SWORD_LEGACY_FAREWELL",
+      "speaker": "yunzhonghe",
+      "text": "他缓缓睁开眼，脸上露出一丝疲惫但欣慰的笑容。\n\n好了。云鹤九剑的前七式，你已经全部掌握了。\n\n至于第八式和第九式……那是我自己都没有领悟的剑境。\n\n但我相信，以你的资质和道心，终有一天会找到的。",
+      "emotion": "peaceful",
+      "next_node": "SWORD_LEGACY_GIFT"
+    },
+    {
+      "id": "SWORD_LEGACY_GIFT",
+      "speaker": "yunzhonghe",
+      "text": "他站起身来，从腰间解下一柄古剑。\n\n这柄青霜剑，跟了我五百年。它见证了我一生中的荣耀与遗憾。\n\n如今，我将它传给你。希望它能陪你走得更远。",
+      "emotion": "contemplative",
+      "effects": [
+        {"type": "skill_give", "target": "yunhe_nine_swords_7", "value": 1},
+        {"type": "item_give", "target": "qingshuang_sword", "value": 1},
+        {"type": "skill_give", "target": "sword_training_bonus", "value": 1}
+      ],
+      "next_node": "SWORD_LEGACY_END"
+    },
+    {
+      "id": "SWORD_LEGACY_END",
+      "speaker": "system",
+      "text": "[b]获得：[/b]云鹤九剑（1-7式，玄阶上品）\n[b]获得：[/b]青霜剑（可成长武器）\n[b]获得：[/b]云中鹤的信任（被动：所有剑诀修炼速度+15%）\n\n[b]支线完成：[/b]云中鹤 — 剑心之路\n\n云中鹤在最终战中协助概率+20%",
+      "next_node": "END"
+    }
+  ]
+}

@@ -21,47 +21,79 @@ extends Node
 class_name CombatManager
 
 # ============================================================================
-# 常量定义
+# 战斗配置（从 data/combat_config.json 加载）
+# ============================================================================
+
+## 战斗配置数据
+var _combat_config: Dictionary = {}
+
+## 资源回复配置
+var _resource_recovery: Dictionary = {}
+
+## 战斗行动数值配置
+var _combat_action_values: Dictionary = {}
+
+## 伤害公式配置
+var _damage_formulas: Dictionary = {}
+
+## 资源上限配置
+var _resource_defaults: Dictionary = {}
+
+# ============================================================================
+# 配置访问属性（保持向后兼容）
 # ============================================================================
 
 ## 内力自然回复量
-const INTERNAL_ENERGY_RECOVERY: int = 5
+var internal_energy_recovery: int:
+	get: return _resource_recovery.get("internal_energy_recovery", 5)
 
 ## 架势自然回复量
-const STANCE_RECOVERY: int = 5
+var stance_recovery: int:
+	get: return _resource_recovery.get("stance_recovery", 5)
 
 ## 连携槽自然回复量
-const LINK_GAUGE_RECOVERY: int = 3
+var link_gauge_recovery: int:
+	get: return _resource_recovery.get("link_gauge_recovery", 3)
 
 ## 连击值衰减量
-const COMBO_VALUE_DECAY: int = 5
+var combo_value_decay: int:
+	get: return _resource_recovery.get("combo_decay_non_attack", 5)
 
 ## 攻击连击值增加量
-const ATTACK_COMBO_INCREASE: int = 10
+var attack_combo_increase: int:
+	get: return _combat_action_values.get("attack_combo_increase", 10)
 
 ## 防御架势值增加量
-const DEFEND_STANCE_INCREASE: int = 20
+var defend_stance_increase: int:
+	get: return _combat_action_values.get("defend_stance_increase", 20)
 
 ## 技能连携槽增加量
-const SKILL_LINK_GAUGE_INCREASE: int = 15
+var skill_link_gauge_increase: int:
+	get: return _combat_action_values.get("skill_link_gauge_increase", 15)
 
 ## 基础伤害值
-const BASE_DAMAGE: int = 10
+var base_damage: int:
+	get: return _damage_formulas.get("base_damage", 10)
 
 ## 伤害随机范围
-const DAMAGE_RANDOM_RANGE: int = 5
+var damage_random_range: int:
+	get: return _damage_formulas.get("damage_random_range", 5)
 
 ## 连击最大加成比例
-const MAX_COMBO_BONUS: float = 0.5
+var max_combo_bonus: float:
+	get: return _damage_formulas.get("max_combo_bonus", 0.5)
 
 ## 最大架势值
-const MAX_STANCE: int = 100
+var max_stance: int:
+	get: return _resource_defaults.get("stance_max", 100)
 
 ## 最大连击值
-const MAX_COMBO: int = 100
+var max_combo: int:
+	get: return _resource_defaults.get("combo_max", 100)
 
 ## 最大连携槽
-const MAX_LINK_GAUGE: int = 100
+var max_link_gauge: int:
+	get: return _resource_defaults.get("link_gauge_max", 100)
 
 # ============================================================================
 # 信号定义
@@ -174,6 +206,15 @@ var current_turn_unit: BattleUnit = null
 ## 战斗日志
 var battle_log: Array[String] = []
 
+## 伤害计算器（依赖注入）
+var _damage_calculator: DamageCalculator = null
+
+## GameEvents 全局信号总线（依赖注入）
+var _game_events: Node = null
+
+## 回合计数器（用于 GameEvents 信号）
+var _turn_counter: int = 0
+
 # ============================================================================
 # 生命周期方法
 # ============================================================================
@@ -184,7 +225,71 @@ func _ready() -> void:
 
 ## 初始化战斗管理器
 func _initialize_combat_manager() -> void:
+	_load_combat_config()
+	_initialize_dependencies()
 	print("CombatManager: 战斗管理器已初始化")
+
+## 初始化依赖注入
+func _initialize_dependencies() -> void:
+	# 获取伤害计算器
+	if has_node("/root/DamageCalculator"):
+		_damage_calculator = get_node("/root/DamageCalculator") as DamageCalculator
+	else:
+		_damage_calculator = DamageCalculator.new()
+		add_child(_damage_calculator)
+		print("CombatManager: 创建了本地 DamageCalculator 实例")
+	
+	# 获取 GameEvents 全局信号总线
+	if has_node("/root/GameEvents"):
+		_game_events = get_node("/root/GameEvents")
+	
+	# 连接战斗信号到 GameEvents（如果可用）
+	_connect_global_signals()
+
+## 加载战斗配置文件
+func _load_combat_config() -> void:
+	var config_path := "res://data/combat_config.json"
+	if not FileAccess.file_exists(config_path):
+		push_warning("CombatManager: 战斗配置文件不存在: %s，使用默认值" % config_path)
+		return
+	
+	var file := FileAccess.open(config_path, FileAccess.READ)
+	if file == null:
+		push_error("CombatManager: 无法打开战斗配置文件: %s" % config_path)
+		return
+	
+	var json_text := file.get_as_text()
+	file.close()
+	
+	var json := JSON.new()
+	var parse_result := json.parse(json_text)
+	
+	if parse_result != OK:
+		push_error("CombatManager: 战斗配置文件 JSON 解析失败: %s" % config_path)
+		return
+	
+	_combat_config = json.data
+	_resource_recovery = _combat_config.get("resource_recovery", {})
+	_combat_action_values = _combat_config.get("combat_action_values", {})
+	_damage_formulas = _combat_config.get("damage_formulas", {})
+	_resource_defaults = _combat_config.get("resource_defaults", {})
+	
+	print("CombatManager: 战斗配置已从 %s 加载" % config_path)
+
+## 连接局部信号到全局 GameEvents（P0-3 修复）
+func _connect_global_signals() -> void:
+	if _game_events == null:
+		return
+	
+	# 局部信号转发到 GameEvents
+	battle_started.connect(func(): _game_events.combat_started.emit())
+	battle_ended.connect(func(result): _game_events.combat_ended.emit(result.get("victory", false), result))
+	turn_started.connect(_on_turn_started_global)
+
+## 回合开始全局信号转发
+func _on_turn_started_global(_unit: BattleUnit) -> void:
+	_turn_counter += 1
+	_game_events.combat_turn_changed.emit(_turn_counter)
 
 # ============================================================================
 # 战斗流程管理
@@ -202,8 +307,8 @@ func start_battle(units: Array) -> void:
 	generate_action_queue()
 	
 	battle_state = BattleState.PREPARATION
-	emit_signal("battle_state_changed", battle_state)
-	emit_signal("battle_started")
+	battle_state_changed.emit(battle_state)
+	battle_started.emit()
 	
 	# 进入战斗回合
 	start_next_turn()
@@ -213,6 +318,7 @@ func _reset_battle_state() -> void:
 	battle_units.clear()
 	action_queue.clear()
 	battle_log.clear()
+	_turn_counter = 0
 
 ## 初始化战斗单位
 ## @param units: 参战单位数组
@@ -252,8 +358,8 @@ func start_next_turn() -> void:
 	current_turn_unit = action_queue.pop_front()
 	
 	battle_state = BattleState.BATTLE_TURN
-	emit_signal("battle_state_changed", battle_state)
-	emit_signal("turn_started", current_turn_unit)
+	battle_state_changed.emit(battle_state)
+	turn_started.emit(current_turn_unit)
 	
 	# 这里会等待玩家或AI选择行动
 	# 在实际实现中，这里会等待输入
@@ -261,7 +367,7 @@ func start_next_turn() -> void:
 ## 结束当前回合
 func end_current_turn() -> void:
 	if current_turn_unit:
-		emit_signal("turn_ended", current_turn_unit)
+		turn_ended.emit(current_turn_unit)
 	
 	# 开始下一回合
 	start_next_turn()
@@ -269,16 +375,16 @@ func end_current_turn() -> void:
 ## 结束战斗
 func end_battle() -> void:
 	battle_state = BattleState.CLEANUP
-	emit_signal("battle_state_changed", battle_state)
+	battle_state_changed.emit(battle_state)
 	
 	# 检查战斗结果
 	var result: Dictionary = _calculate_battle_result()
 	
-	emit_signal("battle_ended", result)
+	battle_ended.emit(result)
 	
 	# 重置状态
 	battle_state = BattleState.IDLE
-	emit_signal("battle_state_changed", battle_state)
+	battle_state_changed.emit(battle_state)
 	_reset_battle_state()
 
 ## 计算战斗结果
@@ -312,7 +418,7 @@ func execute_action(action_data: Dictionary) -> Dictionary:
 	update_resources(current_turn_unit, action_data)
 	
 	# 发射行动执行信号
-	emit_signal("action_executed", result)
+	action_executed.emit(result)
 	
 	# 结束当前回合
 	end_current_turn()
@@ -355,12 +461,12 @@ func execute_attack(attack_data: Dictionary) -> Dictionary:
 	# 应用伤害
 	var old_hp: int = target.current_hp
 	target.current_hp = max(0, target.current_hp - damage)
-	emit_signal("unit_hp_changed", target, old_hp, target.current_hp)
+	unit_hp_changed.emit(target, old_hp, target.current_hp)
 	
 	# 更新连击值
 	var old_combo: int = attacker.combo_value
-	attacker.combo_value = min(MAX_COMBO, attacker.combo_value + ATTACK_COMBO_INCREASE)
-	emit_signal("unit_resource_changed", attacker, "combo", old_combo, attacker.combo_value)
+	attacker.combo_value = min(max_combo, attacker.combo_value + attack_combo_increase)
+	unit_resource_changed.emit(attacker, "combo", old_combo, attacker.combo_value)
 	
 	# 记录战斗日志
 	_log_battle_action("%s 对 %s 造成了 %d 点伤害" % [str(attacker.unit_node), str(target.unit_node), damage])
@@ -380,8 +486,8 @@ func execute_defend(defend_data: Dictionary) -> Dictionary:
 	
 	# 增加架势值
 	var old_stance: int = defender.stance
-	defender.stance = min(MAX_STANCE, defender.stance + DEFEND_STANCE_INCREASE)
-	emit_signal("unit_resource_changed", defender, "stance", old_stance, defender.stance)
+	defender.stance = min(max_stance, defender.stance + defend_stance_increase)
+	unit_resource_changed.emit(defender, "stance", old_stance, defender.stance)
 	
 	# 记录战斗日志
 	_log_battle_action("%s 进入防御状态，架势值增加" % str(defender.unit_node))
@@ -389,7 +495,7 @@ func execute_defend(defend_data: Dictionary) -> Dictionary:
 	return {
 		"success": true,
 		"type": "defend",
-		"stance_increased": DEFEND_STANCE_INCREASE
+		"stance_increased": defend_stance_increase
 	}
 
 ## 执行技能行动
@@ -407,15 +513,15 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 	# 消耗内力
 	var old_energy: int = user.current_internal_energy
 	user.current_internal_energy -= skill_cost
-	emit_signal("unit_resource_changed", user, "internal_energy", old_energy, user.current_internal_energy)
+	unit_resource_changed.emit(user, "internal_energy", old_energy, user.current_internal_energy)
 	
 	# 根据技能类型执行不同效果
 	var effect_result: Dictionary = apply_skill_effect(user, skill_data)
 	
 	# 更新连携槽
 	var old_link: int = user.link_gauge
-	user.link_gauge = min(MAX_LINK_GAUGE, user.link_gauge + SKILL_LINK_GAUGE_INCREASE)
-	emit_signal("unit_resource_changed", user, "link_gauge", old_link, user.link_gauge)
+	user.link_gauge = min(max_link_gauge, user.link_gauge + skill_link_gauge_increase)
+	unit_resource_changed.emit(user, "link_gauge", old_link, user.link_gauge)
 	
 	# 记录战斗日志
 	_log_battle_action("%s 使用了技能 %s" % [str(user.unit_node), skill_data.get("name", "未知技能")])
@@ -431,28 +537,74 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 # 伤害计算
 # ============================================================================
 
-## 计算伤害
+## 计算伤害（委托给 DamageCalculator）
 ## @param attacker: 攻击方战斗单位
 ## @param target: 目标战斗单位
 ## @param attack_data: 攻击数据字典
 ## @return 最终伤害值
 func calculate_damage(attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
-	# 基础伤害计算
-	var base_damage: int = BASE_DAMAGE + randi_range(0, DAMAGE_RANDOM_RANGE)
+	# 确定伤害类型（默认物理伤害，可通过 attack_data 指定）
+	var damage_type: int = attack_data.get("damage_type", DamageCalculator.DamageType.PHYSICAL)
 	
-	# 考虑攻击方属性
+	# 委托给 DamageCalculator 计算基础伤害
+	var base_dmg: int = 1
+	if _damage_calculator != null:
+		# 需要创建临时的 Node 包装器来适配 BattleUnit
+		var attacker_node := _create_damage_node(attacker, attack_data)
+		var target_node := _create_damage_node(target, {})
+		base_dmg = _damage_calculator.calculate_base_damage(attacker_node, target_node, damage_type)
+		attacker_node.queue_free()
+		target_node.queue_free()
+	else:
+		# 回退：使用本地简化计算
+		base_dmg = _calculate_damage_fallback(attacker, target, attack_data)
+	
+	# 应用连击值加成（战斗系统特有逻辑）
+	var combo_bonus: float = 1.0 + (float(attacker.combo_value) / float(max_combo) * max_combo_bonus)
+	base_dmg = int(base_dmg * combo_bonus)
+	
+	return base_dmg
+
+## 创建伤害计算适配节点
+## @param unit: 战斗单位
+## @param attack_data: 攻击数据
+## @return 临时 Node，用于 DamageCalculator 计算
+func _create_damage_node(unit: BattleUnit, attack_data: Dictionary) -> Node:
+	var node := Node.new()
+	
+	# 设置元数据（DamageCalculator 通过 has_meta/get_meta 读取）
+	node.set_meta("strength", unit.attributes.get("force", 10))
+	node.set_meta("constitution", unit.attributes.get("constitution", 10))
+	node.set_meta("wisdom", unit.attributes.get("wisdom", 10))
+	node.set_meta("weapon_attack", attack_data.get("weapon_attack", 0))
+	node.set_meta("armor", max_stance - unit.stance)  # 架势越低， armor 越高
+	node.set_meta("qi_power", unit.current_internal_energy / 10)
+	node.set_meta("qi_resistance", unit.stance / 10)
+	
+	return node
+
+## 回退伤害计算（当 DamageCalculator 不可用时）
+## @param attacker: 攻击方战斗单位
+## @param target: 目标战斗单位
+## @param attack_data: 攻击数据字典
+## @return 基础伤害值
+func _calculate_damage_fallback(attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
+	var base_dmg: int = base_damage + randi_range(0, damage_random_range)
+	
 	var attack_attr: int = attacker.attributes.get("force", 10)
-	base_damage += int(base_damage * attack_attr / 50.0)
+	var force_div: float = _damage_formulas.get("force_divisor", 50.0)
+	base_dmg += int(base_dmg * attack_attr / force_div)
 	
-	# 考虑防御方架势
-	var defense_reduction: int = int((MAX_STANCE - target.stance) / 10.0)
-	base_damage = max(1, base_damage - defense_reduction)
+	var stance_def_div: float = _damage_formulas.get("stance_defense_divisor", 10.0)
+	var defense_reduction: int = int((max_stance - target.stance) / stance_def_div)
+	base_dmg = max(1, base_dmg - defense_reduction)
 	
-	# 考虑连击值加成
-	var combo_bonus: float = 1.0 + (float(attacker.combo_value) / float(MAX_COMBO) * MAX_COMBO_BONUS)
-	base_damage = int(base_damage * combo_bonus)
-	
-	return base_damage
+	return base_dmg
+
+## 设置伤害计算器（依赖注入）
+## @param calc: 伤害计算器实例
+func set_damage_calculator(calc: DamageCalculator) -> void:
+	_damage_calculator = calc
 
 ## 应用技能效果
 ## @param user: 使用者战斗单位
@@ -475,29 +627,29 @@ func update_resources(unit: BattleUnit, action_data: Dictionary) -> void:
 	var old_energy: int = unit.current_internal_energy
 	unit.current_internal_energy = min(
 		unit.max_internal_energy,
-		unit.current_internal_energy + INTERNAL_ENERGY_RECOVERY
+		unit.current_internal_energy + internal_energy_recovery
 	)
 	if old_energy != unit.current_internal_energy:
-		emit_signal("unit_resource_changed", unit, "internal_energy", old_energy, unit.current_internal_energy)
+		unit_resource_changed.emit(unit, "internal_energy", old_energy, unit.current_internal_energy)
 	
 	# 更新架势（每回合少量回复）
 	var old_stance: int = unit.stance
-	unit.stance = min(MAX_STANCE, unit.stance + STANCE_RECOVERY)
+	unit.stance = min(max_stance, unit.stance + stance_recovery)
 	if old_stance != unit.stance:
-		emit_signal("unit_resource_changed", unit, "stance", old_stance, unit.stance)
+		unit_resource_changed.emit(unit, "stance", old_stance, unit.stance)
 	
 	# 更新连击值（非攻击行动会逐渐减少）
 	if action_data.get("type", "") != "attack":
 		var old_combo: int = unit.combo_value
-		unit.combo_value = max(0, unit.combo_value - COMBO_VALUE_DECAY)
+		unit.combo_value = max(0, unit.combo_value - combo_value_decay)
 		if old_combo != unit.combo_value:
-			emit_signal("unit_resource_changed", unit, "combo", old_combo, unit.combo_value)
+			unit_resource_changed.emit(unit, "combo", old_combo, unit.combo_value)
 	
 	# 更新连携槽（每回合少量回复）
 	var old_link: int = unit.link_gauge
-	unit.link_gauge = min(MAX_LINK_GAUGE, unit.link_gauge + LINK_GAUGE_RECOVERY)
+	unit.link_gauge = min(max_link_gauge, unit.link_gauge + link_gauge_recovery)
 	if old_link != unit.link_gauge:
-		emit_signal("unit_resource_changed", unit, "link_gauge", old_link, unit.link_gauge)
+		unit_resource_changed.emit(unit, "link_gauge", old_link, unit.link_gauge)
 
 # ============================================================================
 # 战斗状态查询

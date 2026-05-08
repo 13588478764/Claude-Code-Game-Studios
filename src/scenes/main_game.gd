@@ -307,30 +307,61 @@ func validate_encounter_system():
 	
 	var character_system = get_node_or_null("/root/CharacterSystem")
 	var encounter_system = get_node_or_null("/root/EncounterSystem")
+	var encounter_event_handler = get_node_or_null("/root/EncounterEventHandler")
 	
 	if character_system == null or encounter_system == null:
 		print("❌ 奇遇系统未找到")
 		return false
 	
+	# 测试奇遇触发管理器
 	character_system.level = 10
-	character_system.attributes.luck = 50
+	if character_system.attributes != null:
+		character_system.attributes.luck = 50
 	
-	# 测试触发概率
-	var can_trigger = encounter_system.can_trigger_encounter(
-		encounter_system.TriggerContext.MAP_MOVEMENT, 
-		50
-	)
+	# 测试触发检查
+	encounter_system.trigger_encounter_check("MAP_MOVE", 50)
 	
 	# 测试保底机制
 	encounter_system.consecutive_failures = 20
-	var guaranteed_trigger = encounter_system.can_trigger_encounter(
-		encounter_system.TriggerContext.MAP_MOVEMENT, 
-		0
-	)
+	var encounter_triggered = false
 	
-	if not guaranteed_trigger:
+	# 使用 signal 连接来捕获触发
+	var on_triggered = func(encounter_type, encounter_id):
+		encounter_triggered = true
+		encounter_system.consecutive_failures = 0
+		encounter_system.encounter_triggered.disconnect(on_triggered)
+	
+	encounter_system.encounter_triggered.connect(on_triggered)
+	
+	# 触发检查（保底应该触发）
+	encounter_system.trigger_encounter_check("MAP_MOVE", 50)
+	
+	if not encounter_triggered:
 		print("❌ 奇遇系统保底机制失效")
 		return false
+	
+	# 验证奇遇事件处理器
+	if encounter_event_handler != null:
+		print("  - EncounterEventHandler: 已注册")
+		var status = encounter_event_handler.get_encounter_status_info()
+		if status.get("initialized", false):
+			print("  - EncounterEventHandler: 已初始化")
+		else:
+			print("⚠️  EncounterEventHandler: 未初始化")
+	
+	# 验证奇遇记录管理器
+	var record_manager = get_node_or_null("/root/EncounterRecordManager")
+	if record_manager != null:
+		print("  - EncounterRecordManager: 已注册")
+	else:
+		print("⚠️  EncounterRecordManager: 未注册")
+	
+	# 验证奇遇奖励管理器
+	var reward_manager = get_node_or_null("/root/EncounterRewardManager")
+	if reward_manager != null:
+		print("  - EncounterRewardManager: 已注册")
+	else:
+		print("⚠️  EncounterRewardManager: 未注册")
 	
 	print("✅ 奇遇系统验证通过")
 	return true

@@ -1,0 +1,115 @@
+{
+  "id": "ACT3_EVENT8_GATE",
+  "title": "第三幕事件八 — 九州之门开启",
+  "description": "封印完全崩溃，九州之门显现，各方势力争夺控制权",
+  "start_node": "GATE_001",
+  "metadata": { "npc_id": "system", "event": "act3_event8" },
+  "nodes": [
+    {
+      "id": "GATE_001",
+      "speaker": "system",
+      "text": "那一天，终于来了。\n\n北方天际，一道巨大的光柱冲天而起。封印——彻底崩溃了。\n\n九州之门的轮廓在光柱之中显现——那是一扇古老的石门，门上刻满了封印符文。如今，符文正在一个一个地熄灭。",
+      "next_node": "GATE_002"
+    },
+    {
+      "id": "GATE_002",
+      "speaker": "system",
+      "text": "整个九州修真界都感受到了这股力量。\n\n各大宗门纷纷出动。天剑盟召集正道联盟，魔道势力也在暗中调兵遣将。\n\n所有人都知道——九州之门一旦完全开启，飞升之路将重新出现。\n\n而谁控制了九州之门，谁就掌握了九州的命脉。",
+      "next_node": "GATE_003"
+    },
+    {
+      "id": "GATE_003",
+      "speaker": "system",
+      "text": "你站在九州之门的前方，感受着门后传来的力量。\n\n那是一种令人窒息的压迫感——门后确实存在着某个东西。\n\n它正在苏醒。",
+      "next_node": "GATE_ARRIVALS"
+    },
+    {
+      "id": "GATE_ARRIVALS",
+      "speaker": "system",
+      "text": "各方势力陆续抵达九州之门。\n\n天剑盟的代表柳如烟御剑而来，面色凝重。\n魔道势力的萧寒夜从阴影中现身，目光锁定在门上。\n慕容雪从另一个方向走来，手中握着一枚古老的玉简——那是封印的钥匙。\n\n所有人的目光，最终都落在了你的身上。\n\n因为你拥有剑骨。因为你是唯一一个在三百年后重新获得完整剑骨传承的人。",
+      "next_node": "GATE_CONVERGENCE"
+    },
+    {
+      "id": "GATE_CONVERGENCE",
+      "speaker": "system",
+      "text": "九州之门的中央，一道裂缝正在缓缓扩大。\n\n门后的存在已经察觉到了外界的动静，开始试图突破最后的封印。\n\n你必须做出决定——在各方势力之间，你将选择哪条路？",
+      "next_node": "GATE_CHOICE"
+    },
+    {
+      "id": "GATE_CHOICE",
+      "speaker": "system",
+      "text": "九州之门的命运，取决于你的选择。",
+      "choices": [
+        {
+          "id": "unite_factions",
+          "text": "联合各方，共同对抗门后的存在，找到彻底解决之道",
+          "effects": [
+            { "type": "dao_heart_change", "value": 15 },
+            { "type": "quest_trigger", "target": "united_front", "value": true }
+          ],
+          "next_node": "GATE_UNITE"
+        },
+        {
+          "id": "solo_action",
+          "text": "独自进入九州之门，以剑骨之力面对门后的存在",
+          "effects": [
+            { "type": "dao_heart_change", "value": 5 },
+            { "type": "quest_trigger", "target": "solo_path", "value": true }
+          ],
+          "next_node": "GATE_SOLO"
+        },
+        {
+          "id": "wait_observe",
+          "text": "暂时按兵不动，观察各方动向后再做决定",
+          "effects": [
+            { "type": "dao_heart_change", "value": 0 },
+            { "type": "quest_trigger", "target": "wait_and_see", "value": true }
+          ],
+          "next_node": "GATE_WAIT"
+        }
+      ]
+    },
+    {
+      "id": "GATE_UNITE",
+      "speaker": "player",
+      "text": "各位，门后的存在是我们共同的敌人。正道、魔道、散修——在此刻，我们都是九州的一员。\n\n让我们放下成见，联手面对它。",
+      "next_node": "GATE_UNITE_RESPONSE"
+    },
+    {
+      "id": "GATE_UNITE_RESPONSE",
+      "speaker": "system",
+      "text": "短暂的沉默后——\n\n柳如烟点了点头：\"我同意。天剑盟愿为联盟效力。\"\n\n萧寒夜冷哼一声：\"我不管什么联盟。但那个东西，必须死。\"\n\n慕容雪举起了手中的玉简：\"封印的钥匙在我手中。但要彻底消灭它，需要剑骨的力量。\"\n\n所有人的目光再次看向你。\n\n[b]九州联盟已组建。[/b]",
+      "next_node": "GATE_END"
+    },
+    {
+      "id": "GATE_SOLO",
+      "speaker": "player",
+      "text": "你们都在等。但门后的存在不会等。\n\n我进去。剑骨的力量足以面对它。你们在外围策应即可。",
+      "next_node": "GATE_SOLO_RESPONSE"
+    },
+    {
+      "id": "GATE_SOLO_RESPONSE",
+      "speaker": "system",
+      "text": "慕容雪想要说什么，但看到你坚定的眼神，最终点了点头。\n\n慕容雪：\"剑骨的第八式'断天'，可以斩断通道。但你需要足够的力量支撑它。\"\n\n她递给你那枚玉简。\n\n慕容雪：\"带着这个。它可以在关键时刻给你争取时间。\"\n\n[b]封印钥匙已获取。独自行动路线开启。[/b]",
+      "next_node": "GATE_END"
+    },
+    {
+      "id": "GATE_WAIT",
+      "speaker": "player",
+      "text": "你没有说话，只是静静地看着各方势力的动向。\n\n柳如烟在联络天剑盟的援军。萧寒夜在暗中布置魔道势力。慕容雪在研究玉简中的封印术法。\n\n每个人都有自己的算盘。但至少，没有人试图抢先破门。",
+      "next_node": "GATE_WAIT_RESULT"
+    },
+    {
+      "id": "GATE_WAIT_RESULT",
+      "speaker": "system",
+      "text": "时间在流逝。九州之门的裂缝在扩大，但尚未完全开启。\n\n你利用这段时间，与各方势力分别沟通，了解他们的真实意图。\n\n柳如烟：守护九州，正道义不容辞。但她担心宗门内部的鹰派会采取过激行动。\n\n萧寒夜：打破封印，救出先祖。但他承认，如果门后的存在真的威胁到九州，他会暂时放下执念。\n\n慕容雪：她唯一的愿望是救出萧天风。但她也明白，如果不能消灭门后的存在，一切都无从谈起。\n\n[b]情报收集完成。各方意图已明晰。[/b]",
+      "next_node": "GATE_END"
+    },
+    {
+      "id": "GATE_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\n\n• 九州之门已开启\n• 各方势力集结\n• 你的选择已确定\n• 决战前夜即将到来\n• 下一事件：最终抉择前夜\n\n[b]—— 九州之门已开。命运的时刻，即将来临。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

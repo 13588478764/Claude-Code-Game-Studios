@@ -43,7 +43,61 @@ last_updated: "2026-04-30"
 # interface: how other systems access this state (read-only property, method call,
 #   signal, shared resource, etc.) — this is the contract other ADRs depend on.
 
-state_ownership: []
+state_ownership:
+  - state: player_hp
+    status: active
+    owner_system: combat-system
+    adr: docs/architecture/adr-005-combat-system-architecture.md
+    interface: "CombatManager.unit_hp_changed(unit_id: StringName, new_hp: int, max_hp: int, delta: int) — signal (batch, per-action)"
+    write_access: combat-system-only
+    referenced_by:
+      - docs/architecture/adr-005-combat-system-architecture.md
+    added: 2026-05-04
+    revised: ""
+
+  - state: enemy_hp
+    status: active
+    owner_system: combat-system
+    adr: docs/architecture/adr-005-combat-system-architecture.md
+    interface: "CombatManager.unit_hp_changed(unit_id: StringName, new_hp: int, max_hp: int, delta: int) — signal (batch, per-action)"
+    write_access: combat-system-only
+    referenced_by:
+      - docs/architecture/adr-005-combat-system-architecture.md
+    added: 2026-05-04
+    revised: ""
+
+  - state: qi_resource
+    status: active
+    owner_system: combat-system
+    adr: docs/architecture/adr-005-combat-system-architecture.md
+    interface: "CombatSystem.resources_changed(participant) — signal; QiManager manages Qi pool"
+    write_access: combat-system-only
+    referenced_by:
+      - docs/architecture/adr-005-combat-system-architecture.md
+    added: 2026-05-04
+    revised: ""
+
+  - state: poise_resource
+    status: active
+    owner_system: combat-system
+    adr: docs/architecture/adr-005-combat-system-architecture.md
+    interface: "CombatSystem.resources_changed(participant) — signal; HealthPoiseManager manages Poise pool"
+    write_access: combat-system-only
+    referenced_by:
+      - docs/architecture/adr-005-combat-system-architecture.md
+    added: 2026-05-04
+    revised: ""
+
+  - state: combat_phase
+    status: active
+    owner_system: combat-system
+    adr: docs/architecture/adr-005-combat-system-architecture.md
+    interface: "CombatSystem.phase_changed(new_phase: CombatPhase) — signal"
+    write_access: combat-system-only
+    referenced_by:
+      - docs/architecture/adr-005-combat-system-architecture.md
+    added: 2026-05-04
+    revised: ""
 
 # Example:
 #

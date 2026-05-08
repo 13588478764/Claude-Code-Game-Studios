@@ -1,0 +1,84 @@
+{
+  "id": "encounter_16_exploration",
+  "title": "仙人洞府",
+  "description": "在一处悬崖峭壁上发现了古代仙人洞府的蛛丝马迹，其中或许藏着珍贵的传承和宝物",
+  "type": "exploration",
+  "probability": 0.06,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "foundation_establishment_early",
+    "cooldown_minutes": 5
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "IMMORTAL_CAVE_START",
+  "nodes": [
+    {
+      "id": "IMMORTAL_CAVE_START",
+      "speaker": "system",
+      "text": "你在探索一处险峻的悬崖峭壁时，忽然注意到岩壁上有一道极其隐蔽的裂缝。\n\n裂缝中隐隐传来一股古老而强大的灵力波动——\n\n这绝非天然形成！你仔细观察，发现裂缝周围刻满了精密的阵法纹路。\n\n根据你的判断，这极有可能是一座古代仙人留下的洞府入口！",
+      "next_node": "IMMORTAL_CAVE_CHOICE"
+    },
+    {
+      "id": "IMMORTAL_CAVE_CHOICE",
+      "speaker": "system",
+      "text": "面对这座神秘的仙人洞府，你需要决定如何进入。\n\n古代修士的洞府往往布有重重机关陷阱，贸然进入风险极大。",
+      "choices": [
+        {
+          "id": "enter_immediately",
+          "text": "事不宜迟，立刻进入洞府",
+          "effects": [
+            {"type": "skill_check", "target": "luck", "operator": ">=", "value": 15}
+          ],
+          "next_node": "IMMORTAL_ENTER_CHECK"
+        },
+        {
+          "id": "search_mechanism",
+          "text": "仔细搜索入口周围的机关和阵法",
+          "effects": [
+            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 16}
+          ],
+          "next_node": "IMMORTAL_SEARCH_CHECK"
+        },
+        {
+          "id": "return_expert",
+          "text": "先离开，等找到云中鹤前辈后再来探索",
+          "effects": [
+            {"type": "quest_trigger", "target": "explore_cave_with_yunzhonghe", "value": true},
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 5}
+          ],
+          "next_node": "IMMORTAL_RETURN_LATER"
+        }
+      ]
+    },
+    {
+      "id": "IMMORTAL_ENTER_CHECK",
+      "speaker": "system",
+      "text": "你不再犹豫，身形一闪便钻入了裂缝之中。\n\n然而，洞府中的守护阵法立刻被触发了——\n\n一道道凌厉的剑气从四面八方袭来！",
+      "next_node": "IMMORTAL_ENTER_RESULT"
+    },
+    {
+      "id": "IMMORTAL_ENTER_RESULT",
+      "speaker": "system",
+      "text": "[b]幸运过关：[/b]\n\n你在剑气阵中左躲右闪，险之又险地避开了大部分攻击。\n\n虽然受了几道剑气擦伤，但你最终闯过了第一道关卡。\n\n洞府深处有一间石室，其中摆放着一个古朴的玉盒。\n\n你小心翼翼地打开玉盒——里面是一卷古老的功法和几颗丹药。\n\n[b]获得：[/b]古代功法残卷 × 1，聚气丹 × 2\n[b]状态：[/b]轻微受伤",
+      "next_node": "END"
+    },
+    {
+      "id": "IMMORTAL_SEARCH_CHECK",
+      "speaker": "system",
+      "text": "你收敛心神，运起灵气感知，沿着洞口周围仔细搜索每一寸岩壁。\n\n渐渐地，阵法纹路的规律在你眼中变得清晰起来——",
+      "next_node": "IMMORTAL_SEARCH_RESULT"
+    },
+    {
+      "id": "IMMORTAL_SEARCH_RESULT",
+      "speaker": "system",
+      "text": "[b]感知成功：[/b]\n\n你发现了洞府入口阵法的破解之法——这是一个以灵气流动为密钥的机关。\n\n你按照正确的顺序和位置注入灵气，石门缓缓开启，没有任何警报被触发。\n\n你安全地进入了洞府，完整地获得了其中的所有宝藏：\n\n[b]获得：[/b]古代完整功法 × 1，灵石 × 5，法器碎片 × 3，聚气丹 × 3\n[b]经验：[/b]对阵法之道的领悟 +10",
+      "next_node": "END"
+    },
+    {
+      "id": "IMMORTAL_RETURN_LATER",
+      "speaker": "system",
+      "text": "你谨慎地决定暂时不进入洞府，而是先标记好位置，离开后去找云中鹤前辈。\n\n云中鹤听闻此事后，眼中闪过一丝精光：\n\n「哦？仙人洞府？好小子，你的运气倒是不错。那等地方，凭你现在的修为贸然进去，十有八九要交代在里面。」\n\n他捋了捋胡须，继续说道：\n\n「等你准备好了，老夫陪你走一趟。有老夫在，至少那些雕虫小技的阵法伤不到你。」\n\n[b]解锁任务：[/b]与云中鹤共探仙人洞府\n[b]云中鹤关系：[/b]+5",
+      "next_node": "END"
+    }
+  ]
+}

@@ -1,0 +1,329 @@
+{
+  "id": "LIU_QUEST_LINE",
+  "title": "柳如烟支线 — 正道少侠",
+  "description": "天剑盟少主柳如烟的邀请，揭露宗门内部权力斗争",
+  "npc_id": "liuruyan",
+  "quest_line": "liuruyan_righteous",
+  "min_realm": "qi_refining_late",
+  "start_node": "LIU_QUEST_001",
+  "nodes": [
+    {
+      "id": "LIU_QUEST_001",
+      "speaker": "liuruyan",
+      "text": "你就是云中鹤的弟子？剑骨体质确实罕见。我乃天剑盟柳如烟，奉长老之命调查青云镇灵气异动。",
+      "emotion": "confident",
+      "next_node": "LIU_QUEST_CHOICE_001"
+    },
+    {
+      "id": "LIU_QUEST_CHOICE_001",
+      "speaker": "liuruyan",
+      "text": "你实力不俗，可愿加入天剑盟？以你的天赋，必能有所作为。",
+      "choices": [
+        {
+          "id": "interested",
+          "text": "天剑盟是怎样的宗门？",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 10}
+          ],
+          "next_node": "LIU_INFO_SECT"
+        },
+        {
+          "id": "decline",
+          "text": "我暂时不想加入任何宗门",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": -5}
+          ],
+          "next_node": "LIU_DECLINE"
+        }
+      ]
+    },
+    {
+      "id": "LIU_INFO_SECT",
+      "speaker": "liuruyan",
+      "text": "天剑盟是中原正道第一大宗，以剑道立派，门下弟子数千。\\n\\n我父亲是盟主，但近年来...宗门内出现了一些问题。一些长老权力膨胀，甚至暗中打压异己。\\n\\n我来青云镇，明面上是调查灵气异动，实际上是在收集证据。",
+      "emotion": "serious",
+      "next_node": "LIU_QUEST_ACCEPT"
+    },
+    {
+      "id": "LIU_DECLINE",
+      "speaker": "liuruyan",
+      "text": "理解你的选择。不过若你改变主意，随时可以来天剑盟找我。\\n\\n（她微微皱眉，似乎有些失望）",
+      "emotion": "disappointed",
+      "next_node": "END"
+    },
+    {
+      "id": "LIU_QUEST_ACCEPT",
+      "speaker": "liuruyan",
+      "text": "太好了！有你的帮助，我相信一定能查清真相。\\n\\n首先，我需要你帮我收集一些线索。",
+      "emotion": "excited",
+      "effects": [
+        {"type": "quest_trigger", "target": "tianjian_investigation", "value": true}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "SPARRING_START",
+      "speaker": "liuruyan",
+      "text": "你的剑道修为如何？不如我们切磋一下，让我见识见识。\\n\\n放心，只是点到为止。",
+      "emotion": "confident",
+      "next_node": "SPARRING_CHOICE"
+    },
+    {
+      "id": "SPARRING_CHOICE",
+      "speaker": "player",
+      "text": "选择切磋态度",
+      "choices": [
+        {
+          "id": "accept_sparring",
+          "text": "恭敬不如从命，请指教",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 10},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "SPARRING_FIGHT"
+        },
+        {
+          "id": "reluctant",
+          "text": "我实力有限，怕不是前辈对手",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 5}
+          ],
+          "next_node": "SPARRING_FIGHT"
+        }
+      ]
+    },
+    {
+      "id": "SPARRING_FIGHT",
+      "speaker": "system",
+      "text": "柳如烟拔剑而出，剑光如虹。\\n\\n她虽然有所保留，但剑法精妙，攻势如潮。\\n\\n你必须全力应对，坚持十回合即为胜利。\\n\\n[b]切磋目标：[/b]坚持10回合或击败对手",
+      "next_node": "SPARRING_RESULT"
+    },
+    {
+      "id": "SPARRING_RESULT",
+      "speaker": "liuruyan",
+      "text": "好剑法！（她收剑而立，眼中闪过赞赏）\\n\\n你的剑道天赋确实不凡，假以时日必成大器。\\n\\n这套御剑术基础，算是见面礼。",
+      "emotion": "approving",
+      "effects": [
+        {"type": "skill_give", "target": "sword_control_basic", "value": 1},
+        {"type": "relationship_change", "target": "liuruyan", "value": 15}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "FAMILY_CRISIS_START",
+      "speaker": "liuruyan",
+      "text": "（神色凝重地递来一枚传讯符）\\n\\n家族传来消息，天剑盟内部出现权力斗争。几位长老联合起来，企图架空我父亲的盟主之位。",
+      "emotion": "worried",
+      "next_node": "FAMILY_CRISIS_CHOICE"
+    },
+    {
+      "id": "FAMILY_CRISIS_CHOICE",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "help_investigate",
+          "text": "我帮你收集证据，揭露他们的阴谋",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 20},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "FAMILY_CRISIS_ACCEPT"
+        },
+        {
+          "id": "cautious",
+          "text": "此事关系重大，需谨慎行事",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 10}
+          ],
+          "next_node": "FAMILY_CRISIS_PLAN"
+        }
+      ]
+    },
+    {
+      "id": "FAMILY_CRISIS_ACCEPT",
+      "speaker": "liuruyan",
+      "text": "谢谢你的信任！我需要你潜入天剑盟藏书阁，找到那些长老与外部势力勾结的证据。",
+      "emotion": "grateful",
+      "effects": [
+        {"type": "quest_trigger", "target": "tianjian_library_infiltration", "value": true}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "FAMILY_CRISIS_PLAN",
+      "speaker": "liuruyan",
+      "text": "你说得对。我已经制定了一个计划：\\n\\n1. 先收集那些长老的活动情报\\n2. 潜入藏书阁查找历史记录\\n3. 找到他们勾结魔教的证据\\n\\n你愿意帮我吗？",
+      "emotion": "determined",
+      "next_node": "FAMILY_CRISIS_ACCEPT"
+    },
+    {
+      "id": "LIBRARY_INFILTRATE",
+      "speaker": "system",
+      "text": "你趁夜色潜入天剑盟藏书阁。这里戒备森严，巡逻弟子每半个时辰经过一次。\\n\\n你需要在巡逻间隙中查找证据。\\n\\n[b]潜入目标：[/b]找到勾结证据，避开巡逻",
+      "next_node": "LIBRARY_SEARCH"
+    },
+    {
+      "id": "LIBRARY_SEARCH",
+      "speaker": "system",
+      "text": "经过一番搜寻，你在一本古老的天剑盟历史中发现了问题——\\n\\n几页被刻意撕掉，但残留的墨迹显示，这些页面记载着几位长老与魔教交易的记录。\\n\\n[b]获得：[/b]残缺的交易记录（关键证据）",
+      "effects": [
+        {"type": "item_give", "target": "evidence_tianjian_betrayal", "value": 1}
+      ],
+      "next_node": "LIBRARY_ESCAPE"
+    },
+    {
+      "id": "LIBRARY_ESCAPE",
+      "speaker": "system",
+      "text": "突然，门外传来脚步声——巡逻队提前回来了！\\n\\n你必须迅速撤离。",
+      "next_node": "LIBRARY_ESCAPE_CHOICE"
+    },
+    {
+      "id": "LIBRARY_ESCAPE_CHOICE",
+      "speaker": "player",
+      "text": "选择撤离方式",
+      "choices": [
+        {
+          "id": "stealth_escape",
+          "text": "从后窗悄悄离开",
+          "effects": [
+            {"type": "skill_check", "target": "stealth", "operator": ">=", "value": 15}
+          ],
+          "next_node": "STEALTH_SUCCESS"
+        },
+        {
+          "id": "fight_escape",
+          "text": "强行突破",
+          "effects": [],
+          "next_node": "FIGHT_ESCAPE"
+        }
+      ]
+    },
+    {
+      "id": "STEALTH_SUCCESS",
+      "speaker": "system",
+      "text": "你悄无声息地从后窗翻出，消失在夜色中。\\n\\n巡逻队毫无察觉，证据完好无损地带出。\\n\\n[b]潜入成功：[/b]未被发现",
+      "next_node": "END"
+    },
+    {
+      "id": "FIGHT_ESCAPE",
+      "speaker": "system",
+      "text": "你决定强行突破，与巡逻弟子发生冲突。\\n\\n虽然成功逃离，但打草惊蛇，那些长老必然有所防备。\\n\\n[b]潜入部分成功：[/b]证据获得，但行踪暴露",
+      "effects": [
+        {"type": "reputation_change", "target": "tianjian_alliance", "value": -10}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_CHECK",
+      "speaker": "liuruyan",
+      "text": "{player_name}，我有重要的事情想对你说。\\n\\n关于天剑盟的未来……以及我自己的道路。",
+      "emotion": "serious",
+      "condition": {"type": "relationship_check", "target": "liuruyan", "min": 70},
+      "next_node": "RIGHTEOUS_HEART_START"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_START",
+      "speaker": "liuruyan",
+      "text": "（激动地接过证据）\\n\\n太好了！有了这些证据，我就能在盟主大会上揭露那些长老的真面目！\\n\\n谢谢你，{player_name}。",
+      "emotion": "grateful",
+      "next_node": "RIGHTEOUS_HEART_TRIAL"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_TRIAL",
+      "speaker": "system",
+      "text": "三个月后，天剑盟盟主大会召开。\\n\\n柳如烟站在大殿中央，当众出示了你收集的证据。几位长老面色铁青，无从狡辩。\\n\\n最终，盟主下令将涉案长老革职查办。天剑盟内部的一场危机，就此化解。\\n\\n但柳如烟知道，这只是开始——天剑盟需要真正的改革。",
+      "next_node": "RIGHTEOUS_HEART_REFLECTION"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_REFLECTION",
+      "speaker": "liuruyan",
+      "text": "大会结束后，柳如烟单独找到了你。\\n\\n柳如烟：\"这次的事情，让我想了很多。\"\\n\\n柳如烟：\"我以前总以为，只要维护正道的大义，一切就会好起来。但当我看到那些长老的真面目时……\"\\n\\n柳如烟：\"我突然明白，所谓的正道和魔道，并不像表面上那样黑白分明。\"",
+      "emotion": "contemplative",
+      "next_node": "RIGHTEOUS_HEART_QUESTION"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_QUESTION",
+      "speaker": "liuruyan",
+      "text": "柳如烟：\"{player_name}，你走过那么多路，见过那么多人——\"\\n\\n柳如烟：\"你觉得，什么才是真正的'正道'？\"",
+      "choices": [
+        {
+          "id": "dao_protect",
+          "text": "正道不是门派，而是一种选择——选择守护弱者，选择在大义面前不退缩",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 20},
+            {"type": "dao_heart_change", "value": 15}
+          ],
+          "next_node": "RIGHTEOUS_HEART_AGREE"
+        },
+        {
+          "id": "dao_middle",
+          "text": "正道与魔道的区别不在名号，而在行为。名门正派也可以做恶事",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 15},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "RIGHTEOUS_HEART_THINK"
+        },
+        {
+          "id": "dao_power",
+          "text": "正道的意义在于维护秩序。没有秩序，九州将陷入混乱",
+          "effects": [
+            {"type": "relationship_change", "target": "liuruyan", "value": 10},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "RIGHTEOUS_HEART_CONSIDER"
+        }
+      ]
+    },
+    {
+      "id": "RIGHTEOUS_HEART_AGREE",
+      "speaker": "liuruyan",
+      "text": "她的眼中闪烁着坚定的光芒。\\n\\n柳如烟：\"守护弱者……在大义面前不退缩……\"\\n\\n柳如烟：\"你说的对。这才是我一直追求的正道。\"\\n\\n柳如烟：\"谢谢你，{player_name}。是你让我看清了自己的道路。\"",
+      "emotion": "resolved",
+      "effects": [
+        {"type": "dao_heart_change", "value": 5}
+      ],
+      "next_node": "RIGHTEOUS_HEART_REWARD"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_THINK",
+      "speaker": "liuruyan",
+      "text": "她沉默了片刻，然后点了点头。\\n\\n柳如烟：\"你说得有道理。名门正派的恶，也许比魔道的恶更危险——因为它披着一层大义的外衣。\"\\n\\n柳如烟：\"我会牢记这一点。天剑盟的改革，必须从铲除这种虚伪开始。\"",
+      "emotion": "thoughtful",
+      "next_node": "RIGHTEOUS_HEART_REWARD"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_CONSIDER",
+      "speaker": "liuruyan",
+      "text": "她微微蹙眉，似乎在思考你的话。\\n\\n柳如烟：\"秩序……确实，没有秩序的江湖会变得更加混乱。\"\\n\\n柳如烟：\"但秩序本身，也必须建立在正义之上。否则，就只是强权罢了。\"",
+      "emotion": "serious",
+      "next_node": "RIGHTEOUS_HEART_REWARD"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_REWARD",
+      "speaker": "liuruyan",
+      "text": "她从腰间解下一柄剑，递给你。\\n\\n柳如烟：\"这把青霜剑，是我父亲年轻时用过的。它见证了我父亲的荣耀与遗憾。\"\\n\\n柳如烟：\"现在，我把它传给你。希望它能陪伴你走得更远。\"\\n\\n柳如烟：\"还有——这是天剑盟少主的推荐信。凭此信，你可以在天剑盟获得一切便利。\"",
+      "emotion": "sincere",
+      "effects": [
+        {"type": "item_give", "target": "tianjian_recommendation", "value": 1},
+        {"type": "item_give", "target": "qingshuang_sword_liu", "value": 1},
+        {"type": "relationship_change", "target": "liuruyan", "value": 25}
+      ],
+      "next_node": "RIGHTEOUS_HEART_PROMISE"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_PROMISE",
+      "speaker": "liuruyan",
+      "text": "她认真地看着你的眼睛。\\n\\n柳如烟：\"{player_name}，不管将来你的道路通向何方——\"\\n\\n柳如烟：\"天剑盟永远是你的朋友。如果有一天你需要帮助，我柳如烟必定全力以赴。\"",
+      "emotion": "earnest",
+      "next_node": "RIGHTEOUS_HEART_END"
+    },
+    {
+      "id": "RIGHTEOUS_HEART_END",
+      "speaker": "system",
+      "text": "[b]获得：[/b]天剑盟少主推荐信\\n[b]获得：[/b]青霜剑（玄阶中品）\\n[b]获得：[/b]柳如烟的承诺（最终战协助概率+25%）\\n\\n[b]支线完成：[/b]柳如烟 — 正道少侠\\n\\n[b]—— 正道之心，不在门派，而在选择。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

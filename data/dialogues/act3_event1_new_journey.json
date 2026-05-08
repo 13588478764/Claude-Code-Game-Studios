@@ -1,0 +1,120 @@
+{
+  "id": "ACT3_EVENT1_JOURNEY",
+  "title": "第三幕事件一 — 新征途",
+  "description": "Act 2 结束数日后，玩家来到新的地域，接触新势力",
+  "start_node": "JOURNEY_001",
+  "metadata": { "npc_id": "system", "event": "act3_event1" },
+  "nodes": [
+    {
+      "id": "JOURNEY_001",
+      "speaker": "system",
+      "text": "数日的旅途，你穿过了层层山岭，终于来到了新的地域。\n\n眼前的景象令人心旷神怡——灵雾缭绕，仙鹤翱翔，远处的宗门建筑若隐若现。\n\n但你的心中没有片刻的松懈。封印松动的阴影时刻萦绕在心头。",
+      "next_node": "JOURNEY_002"
+    },
+    {
+      "id": "JOURNEY_002",
+      "speaker": "system",
+      "text": "你低头看了一眼手中的剑骨碎片。自从云中鹤将它交给你之后，它已经与你的血脉融为一体。\n\n剑骨的脉动时断时续，仿佛在感应着什么——这里的力量，比青云镇强了不知多少倍。",
+      "next_node": "JOURNEY_PATH_BRANCH"
+    },
+    {
+      "id": "JOURNEY_PATH_BRANCH",
+      "speaker": "system",
+      "text": "你的道心之路，决定了你此行的目的地。",
+      "choices": [
+        {
+          "id": "go_tianjian",
+          "text": "（正道路线：前往天剑盟）",
+          "condition": { "type": "dao_heart_check", "value": 20, "operator": ">" },
+          "effects": [],
+          "next_node": "TIANJIAN_ARRIVAL"
+        },
+        {
+          "id": "go_demonic",
+          "text": "（魔道路线：前往魔道腹地）",
+          "condition": { "type": "dao_heart_check", "value": -20, "operator": "<" },
+          "effects": [],
+          "next_node": "DEMONIC_ARRIVAL"
+        },
+        {
+          "id": "go_free",
+          "text": "（独立路线：九州游历）",
+          "effects": [],
+          "next_node": "FREE_EXPLORATION"
+        }
+      ]
+    },
+    {
+      "id": "TIANJIAN_ARRIVAL",
+      "speaker": "system",
+      "text": "天剑盟的山门巍峨壮观，两座巨峰之间以虹桥相连，气势恢宏。\n\n山门前，两名外门弟子正在值守。看到你走近，他们微微一愣。\n\n弟子甲：\"阁下是何人？来天剑盟有何贵干？\"",
+      "next_node": "TIANJIAN_MEET"
+    },
+    {
+      "id": "TIANJIAN_MEET",
+      "speaker": "player",
+      "text": "在下从青云镇来。封印松动之事，想必天剑盟已有所察觉。我是来提供情报的。",
+      "next_node": "TIANJIAN_GUARD"
+    },
+    {
+      "id": "TIANJIAN_GUARD",
+      "speaker": "system",
+      "text": "两名弟子对视一眼，神色凝重。\n\n弟子乙：\"封印之事……确实不是小事。你且稍等，我去禀告执事。\"\n\n片刻后，一名身着青色长袍的中年男子御剑而来。\n\n执事：\"我是外门执事陆明远。你说封印松动？可有证据？\"",
+      "next_node": "JOURNEY_END_TIANJIAN"
+    },
+    {
+      "id": "JOURNEY_END_TIANJIAN",
+      "speaker": "system",
+      "text": "你将从青云镇一路所见、遗迹中的发现、以及云中鹤的遗言全盘告知。\n\n陆明远听完，沉默良久。\n\n陆明远：\"此事非同小可，我需上报内门。你先在外门驿站安顿下来，等候消息。\"\n\n[b]天剑盟外门驿站已解锁。[/b]",
+      "next_node": "JOURNEY_END"
+    },
+    {
+      "id": "DEMONIC_ARRIVAL",
+      "speaker": "system",
+      "text": "西南方向的魔道腹地，终年笼罩在灰黑色的魔雾之中。\n\n你穿过一片荒芜的沼泽，前方出现了一座由黑色巨石建成的城堡。\n\n城堡大门敞开，门楣上刻着四个血色大字——万魔殿。",
+      "next_node": "DEMONIC_GUARD"
+    },
+    {
+      "id": "DEMONIC_GUARD",
+      "speaker": "system",
+      "text": "门口站着两名气息凶悍的魔修，看到你时眼中闪过一丝警惕。\n\n魔修甲：\"生面孔。萧长老带来的人？\"\n\n你摇了摇头。\n\n魔修乙：\"那你是来投靠的？还是来找死的？\"",
+      "next_node": "JOURNEY_END_DEMONIC"
+    },
+    {
+      "id": "JOURNEY_END_DEMONIC",
+      "speaker": "player",
+      "text": "我带着封印松动的消息而来。若你们还想继续活下去，就该听听。",
+      "next_node": "DEMONIC_RESPONSE"
+    },
+    {
+      "id": "DEMONIC_RESPONSE",
+      "speaker": "system",
+      "text": "魔修们面面相觑。其中一人转身走入城堡。\n\n片刻后，一个沙哑的声音从城堡深处传来。\n\n神秘声音：\"让他进来。萧长老已经等候多时了。\"\n\n[b]万魔殿已解锁。萧寒夜在等待你。[/b]",
+      "next_node": "JOURNEY_END"
+    },
+    {
+      "id": "FREE_EXPLORATION",
+      "speaker": "system",
+      "text": "你不属于任何宗门，也不追随任何势力。九州之大，你选择亲自去探索。\n\n你来到了一处繁华的修真集市——千宝阁。\n\n这里是九州最大的交易集散地，来自各宗各派的修士在此交易物品、交换情报。",
+      "next_node": "FREE_MARKET"
+    },
+    {
+      "id": "FREE_MARKET",
+      "speaker": "system",
+      "text": "集市中人来人往，你听到了不少传言——\n\n\"听说了吗？北边那座古封印又裂了！\"\n\"何止，南边的魔道那边也出了大事……\"\n\"嘘！小声点，这种事可不能乱说！\"\n\n你心中一动。封印松动的事，看来已经不是秘密了。",
+      "next_node": "JOURNEY_END_FREE"
+    },
+    {
+      "id": "JOURNEY_END_FREE",
+      "speaker": "system",
+      "text": "你在集市中找到了一个安静的角落，开始整理思绪。\n\n云中鹤的遗言、慕容雪的名字、飞升之路的真相……这些线索如同一团乱麻，需要一一理清。\n\n也许，在千宝阁中能找到一些有用的情报。\n\n[b]千宝阁集市已解锁。自由探索模式开启。[/b]",
+      "next_node": "JOURNEY_END"
+    },
+    {
+      "id": "JOURNEY_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\n\n• 已到达新的地域\n• 新势力接触已建立\n• 封印松动的消息已传达\n• 下一事件：宗门/势力试炼\n\n[b]—— 新的征程，由此开始 ——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

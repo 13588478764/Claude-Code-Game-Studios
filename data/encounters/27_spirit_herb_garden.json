@@ -1,0 +1,84 @@
+{
+  "id": "encounter_27_spirit_herb_garden",
+  "title": "仙缘奇遇 — 灵草园",
+  "description": "在一处隐秘山谷中发现了一座灵气充沛的灵草园，园中生长着多种珍稀灵草",
+  "type": "item",
+  "probability": 0.10,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_mid",
+    "cooldown_minutes": 8
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "HERB_START",
+  "nodes": [
+    {
+      "id": "HERB_START",
+      "speaker": "system",
+      "text": "你在山谷中穿行时，忽然闻到一股异香。循着香气寻去，发现一处隐秘的灵草园。\n\n园中灵气充沛，生长着数种珍稀灵草：\n- 千年灵芝（红色，散发温热灵气）\n- 冰心雪莲（蓝色，寒气逼人）\n- 紫蕴丹参（紫色，蕴含精纯灵力）\n\n四周隐约有阵法波动，这座灵草园显然有人精心照料...",
+      "next_node": "HERB_CHOICE"
+    },
+    {
+      "id": "HERB_CHOICE",
+      "speaker": "system",
+      "text": "你面对这片灵草园，需要决定如何处理。",
+      "choices": [
+        {
+          "id": "harvest",
+          "text": "立即采摘灵草，获取最大收益",
+          "effects": [
+            {"type": "skill_check", "target": "herb_skill", "operator": ">=", "value": 12}
+          ],
+          "next_node": "HERB_HARVEST_CHECK"
+        },
+        {
+          "id": "study",
+          "text": "先研究灵草园的生长环境和阵法结构",
+          "effects": [
+            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 10}
+          ],
+          "next_node": "HERB_STUDY_CHECK"
+        },
+        {
+          "id": "mark",
+          "text": "标记位置，暂不采摘，回去报告给可靠的修士",
+          "effects": [
+            {"type": "relationship_change", "target": "trusted_sect", "value": 10},
+            {"type": "map_mark", "target": "spirit_herb_garden", "value": true}
+          ],
+          "next_node": "HERB_MARK"
+        }
+      ]
+    },
+    {
+      "id": "HERB_HARVEST_CHECK",
+      "speaker": "system",
+      "text": "你小心翼翼地靠近灵草，施展采药手法开始采摘。",
+      "next_node": "HERB_HARVEST_RESULT"
+    },
+    {
+      "id": "HERB_HARVEST_RESULT",
+      "speaker": "system",
+      "text": "[b]采药成功：[/b]你凭借精湛的手法，成功采下了园中最珍贵的几株灵草。\n\n千年灵芝和紫蕴丹参完好无损地收入储物袋中。\n虽然冰心雪莲因寒气过强未能完全保存，但你仍获得了大半药效。\n\n[b]获得：[/b]千年灵芝×1、紫蕴丹参×2、冰心雪莲残片×3\n[b]道心：[/b]+3",
+      "next_node": "END"
+    },
+    {
+      "id": "HERB_STUDY_CHECK",
+      "speaker": "system",
+      "text": "你没有急于采摘，而是仔细观察园中的阵法纹路和灵气流转。",
+      "next_node": "HERB_STUDY_RESULT"
+    },
+    {
+      "id": "HERB_STUDY_RESULT",
+      "speaker": "system",
+      "text": "[b]感知成功：[/b]你发现这座灵草园是一座'聚灵阵法'的产物。\n\n更重要的是，你找到了阵法的核心枢纽，学会了如何维持和扩展这种阵法。\n\n[b]获得：[/b]聚灵阵法·基础篇\n[b]获得：[/b]灵草培育知识\n[b]道心：[/b]+8",
+      "next_node": "END"
+    },
+    {
+      "id": "HERB_MARK",
+      "speaker": "system",
+      "text": "你在地图上标记了灵草园的位置，并在入口处留下了隐秘的记号。\n\n虽然放弃了眼前的收益，但你相信将此事报告给宗门会带来更大的回报。\n\n[b]获得：[/b]灵草园位置标记\n[b]关系：[/b]可信宗门 +10\n[b]道心：[/b]+5",
+      "next_node": "END"
+    }
+  ]
+}

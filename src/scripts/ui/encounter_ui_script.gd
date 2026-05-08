@@ -75,11 +75,16 @@ func _ready() -> void:
 	else:
 		push_warning("[EncounterUI] EncounterIntegration not found!")
 	
-	# 自动测试：延迟0.5秒后显示测试奇遇（仅用于测试场景）
-	# 注意：在实际游戏中，奇遇应该由EncounterTriggerManager触发
-	# 如果不需要自动测试，可以注释掉以下代码
-	# await get_tree().create_timer(0.5).timeout
-	# _show_test_encounter()
+	# 连接奇遇事件处理器信号，实现奇遇触发时自动显示UI
+	var encounter_event_handler = get_node_or_null("/root/EncounterEventHandler")
+	if encounter_event_handler:
+		if encounter_event_handler.has_signal("encounter_event_processed"):
+			encounter_event_handler.encounter_event_processed.connect(_on_encounter_event_processed)
+			print("[EncounterUI] Connected to EncounterEventHandler")
+		else:
+			push_warning("[EncounterUI] EncounterEventHandler missing encounter_event_processed signal")
+	else:
+		push_warning("[EncounterUI] EncounterEventHandler not found!")
 
 # ============================================================================
 # 测试辅助方法（仅用于开发和测试）
@@ -199,7 +204,6 @@ func _on_encounter_triggered(encounter_type: String, encounter_id: String, proba
 	"""奇遇触发事件"""
 	print("[EncounterUI] Encounter triggered: %s (ID: %s, Probability: %.2f%%)" % [encounter_type, encounter_id, probability * 100])
 	
-	# 构建奇遇数据
 	var encounter_data = {
 		"title": ENCOUNTER_TYPE_NAMES.get(encounter_type, "奇遇事件"),
 		"description": ENCOUNTER_DESCRIPTIONS.get(encounter_type, "你遇到了一个奇遇事件..."),
@@ -209,10 +213,24 @@ func _on_encounter_triggered(encounter_type: String, encounter_id: String, proba
 		"encounter_id": encounter_id
 	}
 	
-	# 保存当前奇遇数据
 	current_encounter_data = encounter_data
+	show_encounter(encounter_data)
+
+func _on_encounter_event_processed(encounter_type: String, encounter_id: String, reward_data: Dictionary) -> void:
+	"""奇遇事件处理完成，显示UI"""
+	print("[EncounterUI] Encounter event processed: %s (ID: %s)" % [encounter_type, encounter_id])
 	
-	# 显示奇遇UI
+	var encounter_data = {
+		"title": ENCOUNTER_TYPE_NAMES.get(encounter_type, "奇遇事件"),
+		"description": ENCOUNTER_DESCRIPTIONS.get(encounter_type, "你遇到了一个奇遇事件..."),
+		"type": ENCOUNTER_BACKGROUNDS.get(encounter_type, "default"),
+		"player_luck": character_system.attributes.luck if character_system else 0,
+		"encounter_type": encounter_type,
+		"encounter_id": encounter_id,
+		"reward_data": reward_data
+	}
+	
+	current_encounter_data = encounter_data
 	show_encounter(encounter_data)
 
 func _on_reward_granted(reward_type: String, amount: int) -> void:

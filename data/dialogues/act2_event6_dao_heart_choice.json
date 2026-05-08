@@ -1,0 +1,138 @@
+{
+  "id": "ACT2_EVENT6_DAO_HEART_CHOICE",
+  "title": "第二幕事件六 — 道心抉择",
+  "description": "秘境探险之后，玩家站在正道与魔道的十字路口，萧寒夜与柳如烟同时现身，逼迫玩家做出影响命运走向的抉择",
+  "start_node": "DAO_001",
+  "metadata": { "npc_id": "system", "event": "act2_event6" },
+  "nodes": [
+    {
+      "id": "DAO_001",
+      "speaker": "system",
+      "text": "秘境之门在你身后缓缓关闭，灵气的余波仍在空气中回荡。\n\n你独自站在一片荒凉的峡谷之中，四周是上古修士留下的残碑断柱。秘境中所得的机缘令你丹田真气充盈，但你的内心却无法平静。\n\n前方有三条道路延伸向不同的方向——正道、魔道、以及一条无人涉足的独行之路。\n\n就在你犹豫之际，两道气息从相反的方向同时逼近。",
+      "next_node": "DAO_002"
+    },
+    {
+      "id": "DAO_002",
+      "speaker": "xiaohanye",
+      "text": "你终于出来了。\n\n一道黑影从左侧的崖壁上掠下，萧寒夜落在了你面前。他浑身散发着凌厉的杀气，但看向你的目光却带着一丝难得的认可。\n\n你在秘境中的表现，令我刮目相看。可惜——如此天赋，若被那些正道伪君子所束缚，终究不过是他们手中的一把剑而已。",
+      "emotion": "intense",
+      "next_node": "DAO_003"
+    },
+    {
+      "id": "DAO_003",
+      "speaker": "liuruyan",
+      "text": "萧寒夜，你还是这般冥顽不灵。\n\n右侧传来一声清冷的叱喝。柳如烟一袭白衣飘然而至，面容端庄，眉宇间却藏着深深的忧虑。\n\n{xiaohanye}，莫要在此蛊惑人心。\n\n她转向你，语气柔和下来。\n\n你在秘境中的所作所为，正道诸宗皆有耳闻。你的天赋与品性，值得更好的归宿。正道虽然规矩繁多，但那是为了守护苍生，而非束缚个人。",
+      "emotion": "earnest",
+      "next_node": "DAO_004"
+    },
+    {
+      "id": "DAO_004",
+      "speaker": "xiaohanye",
+      "text": "守护苍生？柳如烟，你自己信吗？\n\n萧寒夜冷笑一声，目光如刀。\n\n正道诸宗为了争夺资源，暗中做过多少见不得人的勾当？天剑盟的宗门大比，看似公平，实则是他们笼络人才、排除异己的手段。\n\n他转向你，语气变得低沉而真挚。\n\n我不会向你许诺什么大义名分。我只说一句话——跟我走，你的力量将完全属于你自己。没有规矩，没有束缚，只有真正的自由。",
+      "emotion": "passionate",
+      "next_node": "DAO_005"
+    },
+    {
+      "id": "DAO_005",
+      "speaker": "liuruyan",
+      "text": "自由？萧寒夜口中的自由，不过是放纵欲望的借口。\n\n柳如烟上前一步，目光直视你的双眼。\n\n我知道你心中有自己的判断。但请你记住——正道并非完美，但它是无数先辈用血肉铸就的秩序。若无正道维系，修真界早已沦为弱肉强食的地狱。\n\n她取出一枚玉牌，递到你面前。\n\n这是天剑盟的入门令。加入正道，你将获得最顶级的资源与指导。你的天赋不会被埋没，你的信念——我们可以一起守护。",
+      "emotion": "sincere",
+      "next_node": "DAO_CHOICE"
+    },
+    {
+      "id": "DAO_CHOICE",
+      "speaker": "system",
+      "text": "两人的目光同时落在你身上。\n\n萧寒夜代表着力量与自由，但那条路注定与天下正道为敌。\n柳如烟代表着秩序与守护，但你必须接受规矩的约束和宗门的意志。\n\n而你心中，还有第三条路——独行于天地之间，不依附任何一方。\n\n[b]这是你修道以来最重要的抉择。你的选择将决定你的道心走向。[/b]",
+      "choices": [
+        {
+          "id": "choose_righteous",
+          "text": "我选择正道。守护苍生，方为修道之本",
+          "effects": [
+            { "type": "dao_heart_change", "target": "dao_heart", "value": 25 },
+            { "type": "reputation_change", "target": "righteous", "value": 30 },
+            { "type": "relationship_change", "target": "liuruyan", "value": 20 }
+          ],
+          "next_node": "DAO_RIGHT_001"
+        },
+        {
+          "id": "choose_demonic",
+          "text": "我选择魔道。我的力量，只由我自己掌控",
+          "effects": [
+            { "type": "dao_heart_change", "target": "dao_heart", "value": -25 },
+            { "type": "relationship_change", "target": "xiaohanye", "value": 20 },
+            { "type": "unlock", "target": "dark_martial_arts", "value": 1 }
+          ],
+          "next_node": "DAO_DEMO_001"
+        },
+        {
+          "id": "choose_independent",
+          "text": "我谁也不跟。我的道，由我自己走",
+          "effects": [
+            { "type": "dao_heart_change", "target": "dao_heart", "value": 10 },
+            { "type": "relationship_change", "target": "liuruyan", "value": 5 },
+            { "type": "relationship_change", "target": "xiaohanye", "value": 5 },
+            { "type": "unlock", "target": "unique_path", "value": 1 }
+          ],
+          "next_node": "DAO_IND_001"
+        }
+      ]
+    },
+    {
+      "id": "DAO_RIGHT_001",
+      "speaker": "player",
+      "text": "我选择正道。守护苍生，方为修道之本。\n\n你接过柳如烟手中的玉牌，感受到其中蕴含的浩然正气。\n\n萧寒夜，我尊重你的选择，但我的道不在你那里。",
+      "next_node": "DAO_RIGHT_RESULT"
+    },
+    {
+      "id": "DAO_RIGHT_RESULT",
+      "speaker": "liuruyan",
+      "text": "柳如烟的脸上露出了欣慰的笑容。\n\n好。从今日起，你便是正道的一员。前路或许艰险，但你不会孤单。\n\n萧寒夜冷哼一声，转身化为黑影消失在峡谷之中。\n\n柳如烟低声道：他会回来的。当魔道的路走到尽头，他终会明白自己失去了什么。",
+      "emotion": "hopeful",
+      "next_node": "DAO_RIGHT_END"
+    },
+    {
+      "id": "DAO_RIGHT_END",
+      "speaker": "system",
+      "text": "你正式加入了正道阵营。\n\n[b]道心 +25 | 正道声望 +30 | 柳如烟关系 +20[/b]\n\n柳如烟带你踏上了前往天剑盟的旅途。宗门大比的日子越来越近，而你的心中隐隐感到——更大的风波正在酝酿。\n\n[b]——道心抉择结束，正道之路开启——[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "DAO_DEMO_001",
+      "speaker": "player",
+      "text": "我选择魔道。我的力量，只由我自己掌控。\n\n萧寒夜的眼中闪过一丝异样的光彩，但他很快收敛了情绪。\n\n柳如烟，你看到了吗？这就是人心的选择。",
+      "next_node": "DAO_DEMO_RESULT"
+    },
+    {
+      "id": "DAO_DEMO_RESULT",
+      "speaker": "xiaohanye",
+      "text": "萧寒夜点了点头，语气罕见地郑重。\n\n好。从今以后，你就是我萧寒夜认可的人。\n\n他抬手之间，一道黑色的灵气注入你的体内。你感到一股狂暴而强大的力量在经脉中涌动——那是魔道功法的入门引气。\n\n这股力量不会温柔待你。它能让你变强，也会不断侵蚀你的心智。你若能驾驭它，便是真正的高手。若不能——\n\n他顿了顿。\n\n那便死在这条路上，也算修道者的归宿。",
+      "emotion": "solemn",
+      "next_node": "DAO_DEMO_END"
+    },
+    {
+      "id": "DAO_DEMO_END",
+      "speaker": "system",
+      "text": "你选择了魔道之路。\n\n[b]道心 -25 | 萧寒夜关系 +20 | 已解锁暗系武学[/b]\n\n萧寒夜带你消失在峡谷之中。柳如烟望着你们的背影，良久，轻叹一声，转身离去。\n\n你体内那股黑色的灵气仍在翻涌，你的道心——正在被重新塑造。\n\n[b]——道心抉择结束，魔道之路开启——[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "DAO_IND_001",
+      "speaker": "player",
+      "text": "我谁也不跟。我的道，由我自己走。\n\n你后退一步，同时看向两人。\n\n萧寒夜，你的自由我认同。柳姑娘，你的大义我敬佩。但这两条路都不适合我。\n\n我修道，不为任何人，也不为任何宗门。我只为我心中的道。",
+      "next_node": "DAO_IND_RESULT"
+    },
+    {
+      "id": "DAO_IND_RESULT",
+      "speaker": "system",
+      "text": "沉默。长久的沉默。\n\n萧寒夜先笑了。好一个只为自己心中的道。有趣。\n\n柳如烟望着你，眼中既有遗憾也有敬意。\n\n你可知——独行之路最为艰险。没有宗门庇护，没有资源支撑，你将在正道与魔道的夹缝中求生存。\n\n她顿了顿，将玉牌收回怀中。\n\n但如果你有一天改变了主意，天剑盟的大门不会对你关闭。",
+      "emotion": "respectful",
+      "next_node": "DAO_IND_END"
+    },
+    {
+      "id": "DAO_IND_END",
+      "speaker": "system",
+      "text": "你选择了独行之路。\n\n[b]道心 +10 | 各NPC关系小幅提升 | 已解锁独特路线[/b]\n\n两人各自离去，峡谷中只剩下你一人。\n\n三条道路在你脚下交汇，而你选择了不属于任何一方的那一条。前方的路注定孤独，但你的道心因此更加坚定。\n\n[b]——道心抉择结束，独行之路开启——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

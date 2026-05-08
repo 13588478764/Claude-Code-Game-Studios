@@ -1,0 +1,86 @@
+{
+  "id": "encounter_22_inner_demon",
+  "title": "仙缘心魔 — 内心劫难",
+  "description": "修炼途中突然心神不宁，心魔趁虚而入，在意识中构建出一片幻境",
+  "type": "cultivation",
+  "probability": 0.12,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "foundation_establishing_early",
+    "cooldown_minutes": 20
+  },
+  "dao_heart_alignment": "righteous",
+  "start_node": "INNER_DEMON_START",
+  "nodes": [
+    {
+      "id": "INNER_DEMON_START",
+      "speaker": "system",
+      "text": "你正运转灵力修炼，突然心神一阵剧震。\n\n四周景象开始扭曲，你发现自己置身于一片诡异的幻境中...\n\n前方出现了一个与你一模一样的人影，正冷笑着看着你。\n\n[b]\"我就是你的心魔，今日要你道心崩溃！\"[/b]",
+      "next_node": "INNER_DEMON_CHOICE"
+    },
+    {
+      "id": "INNER_DEMON_CHOICE",
+      "speaker": "system",
+      "text": "心魔在你面前不断幻化，试图勾起你内心最深处的恐惧和执念。",
+      "choices": [
+        {
+          "id": "confront_directly",
+          "text": "直面心魔，以坚定道心将其击破",
+          "effects": [
+            {"type": "skill_check", "target": "dao_heart", "operator": ">=", "value": 20},
+            {"type": "dao_heart_change", "value": 10}
+          ],
+          "next_node": "INNER_DEMON_CONFRONT_CHECK"
+        },
+        {
+          "id": "meditate",
+          "text": "闭目冥想，静心守一，等待心魔自行消散",
+          "effects": [
+            {"type": "time_advance", "value": 30},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "INNER_DEMON_MEDITATE"
+        },
+        {
+          "id": "listen_to_demon",
+          "text": "倾听心魔的话语，了解内心深处的执念",
+          "effects": [
+            {"type": "dao_heart_change", "value": -5},
+            {"type": "reputation_change", "target": "risky_path", "value": 3}
+          ],
+          "next_node": "INNER_DEMON_LISTEN"
+        }
+      ]
+    },
+    {
+      "id": "INNER_DEMON_CONFRONT_CHECK",
+      "speaker": "system",
+      "text": "你大喝一声，运转全部灵力，道心之光从体内绽放！\n\n心魔在你坚定的意志面前节节败退，最终化为一道精纯的精神之力。\n\n[b]道心大进：[/b]+10\n[b]获得：[/b]心魔精华（可用于提升神识）",
+      "next_node": "INNER_DEMON_VICTORY_END"
+    },
+    {
+      "id": "INNER_DEMON_MEDITATE",
+      "speaker": "system",
+      "text": "你盘膝而坐，运转清心诀，不为心魔所动。\n\n经过一段时间的冥想，心魔逐渐消散，你的道心变得更加纯净。\n\n[b]道心：[/b]+5\n[b]时间流逝：[/b]30分钟\n\n[b]获得：[/b]清心境界提升",
+      "next_node": "END"
+    },
+    {
+      "id": "INNER_DEMON_LISTEN",
+      "speaker": "system",
+      "text": "你放下防备，倾听心魔的话语。\n\n它诉说着你内心深处的恐惧——害怕修为停滞不前，害怕无法守护在意之人...\n\n[b]道心受损：[/b]-5\n\n但你因此了解了自己的弱点，日后修行可以有针对性地弥补。\n\n[b]获得：[/b]内心执念线索",
+      "next_node": "INNER_DEMON_UNDERSTAND_END"
+    },
+    {
+      "id": "INNER_DEMON_VICTORY_END",
+      "speaker": "system",
+      "text": "你成功击破心魔，幻境随之崩塌。\n\n回到现实后，你感到神识清明，修为似乎也有所松动。\n\n[b]心魔劫难已过，道心更加坚定！[/b]",
+      "next_node": "END"
+    },
+    {
+      "id": "INNER_DEMON_UNDERSTAND_END",
+      "speaker": "system",
+      "text": "幻境散去，你重新回到现实。\n\n虽然道心受到了一些影响，但你对自身执念有了更深的理解。\n\n[b]获得：[/b]自我认知提升\n\n日后若能化解这些执念，修为必将更进一步。",
+      "next_node": "END"
+    }
+  ]
+}

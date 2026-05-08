@@ -101,7 +101,7 @@ func _ready():
 # 计算最大生命值
 func calculate_max_hp() -> int:
 	var hp_coefficient: float = 2.0  # 每点根骨提供的生命值加成
-	var calculated_max_hp: int = base_hp + con_stat * hp_coefficient + equipment_hp_bonus
+	var calculated_max_hp: int = BASE_HP + con_stat * hp_coefficient + equipment_hp_bonus
 	
 	# 限制在GDD定义的范围内
 	return clamp(calculated_max_hp, 100, 2000)
@@ -109,7 +109,7 @@ func calculate_max_hp() -> int:
 # 计算最大架势值
 func calculate_max_poise() -> int:
 	var poise_coefficient: float = 1.5  # 每点定力提供的架势值加成
-	var calculated_max_poise: int = base_poise + wil_stat * poise_coefficient + equipment_poise_bonus
+	var calculated_max_poise: int = BASE_POISE + wil_stat * poise_coefficient + equipment_poise_bonus
 	
 	# 限制在GDD定义的范围内
 	return clamp(calculated_max_poise, 50, 800)
@@ -174,7 +174,7 @@ func trigger_break_state():
 		return
 	
 	status = STATUS_BREAK
-	break_timer = break_duration
+	break_timer = BREAK_DURATION
 	
 	emit_signal("break_triggered")
 	emit_signal("status_changed", STATUS_BREAK)
@@ -256,5 +256,5 @@ func is_dead() -> bool:
 
 # 处理破防后受到的伤害
 func apply_damage_after_break(damage: int) -> int:
-	var amplified_damage = int(damage * break_multiplier)
+	var amplified_damage = int(damage * BREAK_MULTIPLIER)
 	return apply_damage_to_hp(amplified_damage)

@@ -1,0 +1,71 @@
+{
+  "id": "encounter_11_bottleneck",
+  "title": "修炼瓶颈",
+  "description": "修炼时感觉境界提升受阻，体内灵力停滞不前",
+  "type": "cultivation",
+  "probability": 0.10,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_mid",
+    "cooldown_minutes": 8
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "BOTTLENECK_START",
+  "nodes": [
+    {
+      "id": "BOTTLENECK_START",
+      "speaker": "system",
+      "text": "你盘膝运转功法，却感觉灵力停滞不前，始终无法突破瓶颈。\n\n体内的灵气在经脉中缓缓流转，却始终差那么一点。",
+      "next_node": "BOTTLENECK_CHOICE"
+    },
+    {
+      "id": "BOTTLENECK_CHOICE",
+      "speaker": "system",
+      "text": "你需要做出选择来突破当前的修炼瓶颈。",
+      "choices": [
+        {
+          "id": "meditate_deeper",
+          "text": "深入静坐，强行冲击瓶颈",
+          "effects": [
+            {"type": "skill_check", "target": "cultivation_skill", "operator": ">=", "value": 12}
+          ],
+          "next_node": "BOTTLENECK_MEDITATE"
+        },
+        {
+          "id": "take_pill",
+          "text": "服用聚气丹，借助丹药之力突破",
+          "effects": [
+            {"type": "item_cost", "target": "spirit_gathering_pill", "value": 1}
+          ],
+          "next_node": "BOTTLENECK_PILL"
+        },
+        {
+          "id": "walk_around",
+          "text": "暂时放下修炼，出去走走散心",
+          "effects": [
+            {"type": "dao_heart_change", "value": 3}
+          ],
+          "next_node": "BOTTLENECK_WALK"
+        }
+      ]
+    },
+    {
+      "id": "BOTTLENECK_MEDITATE",
+      "speaker": "system",
+      "text": "你闭目凝神，将全部灵力集中在瓶颈处。\n\n经过数个时辰的苦修，终于感觉到灵力微微一动...\n\n[b]修炼成功：[/b]获得修炼经验+20",
+      "next_node": "END"
+    },
+    {
+      "id": "BOTTLENECK_PILL",
+      "speaker": "system",
+      "text": "你取出一枚聚气丹，缓缓服下。\n\n丹药入口即化，精纯的灵气在体内迅速流转，瓶颈开始松动。\n\n[b]获得：[/b]修炼经验+30\n[b]消耗：[/b]聚气丹×1",
+      "next_node": "END"
+    },
+    {
+      "id": "BOTTLENECK_WALK",
+      "speaker": "system",
+      "text": "你起身走出洞府，漫步在山林之间。\n\n清新的空气和宁静的环境让你的心境突然开朗，修炼上的困惑也迎刃而解。\n\n[b]道心+3，心境提升",
+      "next_node": "END"
+    }
+  ]
+}

@@ -301,6 +301,92 @@ class SetFlagEffect extends Effect:
 		# 需要访问游戏状态管理器
 		print("[对话效果] 设置标志位: %s = %s" % [target, value])
 
+## 声望变化效果（新增）
+class ChangeReputationEffect extends Effect:
+	func _init(faction_id: String = "", delta: int = 0, cause: String = "") -> void:
+		super._init(EffectType.CUSTOM)
+		target = faction_id
+		value = delta
+		reason = cause
+	
+	func execute() -> void:
+		print("[对话效果] 声望变化: %s %+d (%s)" % [target, value, reason])
+
+## 给予技能效果（新增）
+class GiveSkillEffect extends Effect:
+	func _init(skill_id: String = "", skill_level: int = 1) -> void:
+		super._init(EffectType.CUSTOM)
+		target = skill_id
+		value = skill_level
+	
+	func execute() -> void:
+		print("[对话效果] 获得技能: %s (等级%d)" % [target, value])
+
+## 消耗物品效果（新增）
+class ConsumeItemEffect extends Effect:
+	func _init(item_id: String = "", count: int = 1) -> void:
+		super._init(EffectType.CUSTOM)
+		target = item_id
+		value = count
+	
+	func execute() -> void:
+		print("[对话效果] 消耗物品: %s x%d" % [target, value])
+
+## 时间消耗效果（新增）
+class ConsumeTimeEffect extends Effect:
+	func _init(minutes: int = 0) -> void:
+		super._init(EffectType.CUSTOM)
+		value = minutes
+	
+	func execute() -> void:
+		print("[对话效果] 时间流逝: %d分钟" % value)
+
+## 体力消耗效果（新增）
+class ConsumeStrengthEffect extends Effect:
+	func _init(amount: int = 0) -> void:
+		super._init(EffectType.CUSTOM)
+		value = amount
+	
+	func execute() -> void:
+		print("[对话效果] 体力消耗: %d" % value)
+
+## 地图标记效果（新增）
+class MapMarkEffect extends Effect:
+	func _init(mark_id: String = "", mark_value: bool = true) -> void:
+		super._init(EffectType.CUSTOM)
+		target = mark_id
+		value = mark_value
+	
+	func execute() -> void:
+		print("[对话效果] 地图标记: %s = %s" % [target, value])
+
+## 打开商店效果（新增）
+class OpenShopEffect extends Effect:
+	func _init(shop_id: String = "") -> void:
+		super._init(EffectType.CUSTOM)
+		target = shop_id
+	
+	func execute() -> void:
+		print("[对话效果] 打开商店: %s" % target)
+
+## 触发战斗效果（对话-战斗联动）
+class TriggerCombatEffect extends Effect:
+	var encounter_config: Dictionary = {}
+	var callback_node: String = ""
+	
+	func _init(encounter_id: String = "", config: Dictionary = {}, cb: String = "") -> void:
+		super._init(EffectType.CUSTOM)
+		target = encounter_id
+		encounter_config = config
+		callback_node = cb
+	
+	func execute() -> void:
+		print("[对话效果] 触发战斗: %s" % target)
+		# 通过DialogueManager的信号总线转发战斗触发请求
+		var dialogue_mgr = Engine.get_main_loop().get_root().get_node("DialogueManager")
+		if dialogue_mgr != null and dialogue_mgr.has_signal("combat_trigger_requested"):
+			dialogue_mgr.combat_trigger_requested.emit(target, encounter_config, callback_node)
+
 ## 对话树数据
 class DialogueTree:
 	var id: String = ""  # 对话树ID
@@ -340,17 +426,19 @@ class DialogueTree:
 		for node_id in nodes.keys():
 			var node: DialogueNode = nodes[node_id]
 			
-			# 检查next_node
-			if not node.next_node.is_empty() and node.next_node != "END":
-				if not nodes.has(node.next_node):
-					push_error("节点 %s 的next_node %s 不存在" % [node_id, node.next_node])
+			# 检查next_node（处理null值）
+			var next: String = node.next_node if node.next_node != null else ""
+			if not next.is_empty() and next != "END":
+				if not nodes.has(next):
+					push_error("节点 %s 的next_node %s 不存在" % [node_id, next])
 					return false
 			
 			# 检查选择的next_node
 			for choice in node.choices:
-				if not choice.next_node.is_empty() and choice.next_node != "END":
-					if not nodes.has(choice.next_node):
-						push_error("节点 %s 的选择 %s 的next_node %s 不存在" % [node_id, choice.id, choice.next_node])
+				var choice_next: String = choice.next_node if choice.next_node != null else ""
+				if not choice_next.is_empty() and choice_next != "END":
+					if not nodes.has(choice_next):
+						push_error("节点 %s 的选择 %s 的next_node %s 不存在" % [node_id, choice.id, choice_next])
 						return false
 		
 		return true

@@ -22,19 +22,26 @@ GameEvents="*res://src/scripts/core/game_events.gd"
 CharacterSystem="*res://src/scripts/character/character_system.gd"
 CombatSystem="res://src/scripts/combat/combat_manager.gd"
 EncounterSystem="res://src/scripts/encounter/encounter_trigger_manager.gd"
+EncounterRecordManager="res://src/scripts/encounter/encounter_record_manager.gd"
+EncounterRewardManager="res://src/scripts/encounter/encounter_reward_manager.gd"
+HistoryLogger="res://src/scripts/encounter/history_logger.gd"
+HistoryPersistenceManager="res://src/scripts/encounter/history_persistence_manager.gd"
+EncounterEventHandler="*uid://ab6bd6cb048e460"
 AudioSystem="res://src/scripts/audio/audio_system.gd"
 QuestSystem="res://src/scripts/quest/quest_manager.gd"
+QuestTriggerManager="*res://src/scripts/quest/quest_trigger_manager.gd"
 EncounterIntegration="*uid://bjiekx7cgnfyw"
 RelationshipManager="*res://src/scripts/relationship/relationship_manager.gd"
 DialogueManager="*res://src/scripts/dialogue/dialogue_manager.gd"
 DialogueLoader="*res://src/scripts/dialogue/dialogue_loader.gd"
+DialogueCombatBridge="*res://src/scripts/dialogue/dialogue_combat_bridge.gd"
+ActManager="*res://src/scripts/story/act_manager.gd"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 
 [gut]
-
 dirs=["res://tests/unit/"]
 include_subdirs=true
 log_level=1

@@ -1,0 +1,134 @@
+{
+  "id": "ACT2_EVENT9_SACRIFICE",
+  "title": "第二幕事件九 — 云中鹤牺牲",
+  "description": "魔修伏击中云中鹤以命相救，留下最后遗言与剑骨传承",
+  "start_node": "SACRIFICE_001",
+  "metadata": { "npc_id": "yunzhonghe", "event": "act2_event9" },
+  "nodes": [
+    {
+      "id": "SACRIFICE_001",
+      "speaker": "system",
+      "text": "伏击来得猝不及防。\n\n你正在搜索战场遗迹，一道漆黑的魔光骤然从废墟深处射出，直奔你的后心！\n\n电光火石之间，一道身影挡在了你的面前。\n\n剑光与魔光轰然相撞，剧烈的冲击波将你掀飞出去。当你挣扎着爬起来时，眼前的景象令你如坠冰窟——",
+      "next_node": "SACRIFICE_002"
+    },
+    {
+      "id": "SACRIFICE_002",
+      "speaker": "system",
+      "text": "云中鹤跪倒在地，黑色的魔气在他胸口不断侵蚀扩散。\n\n那名魔修一击未能得手，见云中鹤虽受重创却仍执剑在手，忌惮地冷笑一声，转身没入了黑暗之中。\n\n战场上只剩下你和他。秋风卷起地上的落叶，空气中弥漫着令人窒息的血腥味。",
+      "next_node": "SACRIFICE_003"
+    },
+    {
+      "id": "SACRIFICE_003",
+      "speaker": "yunzhonghe",
+      "text": "他缓缓抬起头，嘴角溢出的鲜血已经变成了暗黑色。\n\n别过来……魔气未散，小心被波及。\n\n他试图站起来，却再次重重地摔倒在地。这一次，他的声音微弱了许多。\n\n看来……我这次……是真的撑不过去了。",
+      "emotion": "weak",
+      "next_node": "SACRIFICE_004"
+    },
+    {
+      "id": "SACRIFICE_004",
+      "speaker": "player",
+      "text": "前辈！您不能……我用灵气为您疗伤！",
+      "next_node": "SACRIFICE_005"
+    },
+    {
+      "id": "SACRIFICE_005",
+      "speaker": "yunzhonghe",
+      "text": "他轻轻摇了摇头，目光中透着一种你从未见过的平静。\n\n没用的。这一击已经震碎了我的本命经脉。这些年靠丹药压制的旧伤，此刻正在全面反噬。\n\n他顿了顿，声音虽弱，却字字清晰。\n\n你能活下来……便够了。",
+      "emotion": "peaceful",
+      "next_node": "SACRIFICE_CHOICE"
+    },
+    {
+      "id": "SACRIFICE_CHOICE",
+      "speaker": "system",
+      "text": "云中鹤的生命正在飞速流逝。你知道，此刻你必须做出选择——这将是你与他的最后一次对话。",
+      "next_node": "DAO_HEART_BRANCH"
+    },
+    {
+      "id": "DAO_HEART_BRANCH",
+      "speaker": "system",
+      "text": "你的道心之路，将决定云中鹤最后的遗言。",
+      "choices": [
+        {
+          "id": "path_righteous",
+          "text": "（正道之路：此前道心偏向正途）",
+          "condition": { "type": "dao_heart_check", "value": 20, "operator": ">=" },
+          "effects": [],
+          "next_node": "SACRIFICE_RIGHT_001"
+        },
+        {
+          "id": "path_demonic",
+          "text": "（魔道之路：此前道心偏向邪途）",
+          "condition": { "type": "dao_heart_check", "value": -20, "operator": "<" },
+          "effects": [],
+          "next_node": "SACRIFICE_DEMON_001"
+        },
+        {
+          "id": "path_independent",
+          "text": "（独立之路：此前走出了自己的道）",
+          "condition": { "type": "dao_heart_check", "value": 20, "operator": "<" },
+          "effects": [],
+          "next_node": "SACRIFICE_INDEP_001"
+        }
+      ]
+    },
+    {
+      "id": "SACRIFICE_RIGHT_001",
+      "speaker": "yunzhonghe",
+      "text": "他的眼中泛起一丝欣慰的光，颤抖的手缓缓抬了起来。\n\n你选择了正道……我很欣慰。这条路会很艰难，比今日之险更难千倍万倍。\n\n他的声音越来越轻，却带着一种不容置疑的力量。\n\n但你不会孤单……九州之大，正道之中，总有人与你同行。\n\n答应我……不要放弃。",
+      "emotion": "grateful",
+      "effects": [
+        { "type": "relationship_change", "target": "yunzhonghe", "value": 10 }
+      ],
+      "next_node": "SACRIFICE_LEGACY_001"
+    },
+    {
+      "id": "SACRIFICE_DEMON_001",
+      "speaker": "yunzhonghe",
+      "text": "他的目光复杂，有叹息，却没有责备。\n\n你选择了力量……我不怪你。修行之路，每个人都有自己要走的道。\n\n他艰难地喘了一口气，嘴角露出一丝苦涩的笑。\n\n但记住——无论正道魔道，守住本心。力量从来不是目的，而是手段。\n\n莫要被力量吞噬……",
+      "emotion": "bittersweet",
+      "effects": [
+        { "type": "relationship_change", "target": "yunzhonghe", "value": 5 }
+      ],
+      "next_node": "SACRIFICE_LEGACY_001"
+    },
+    {
+      "id": "SACRIFICE_INDEP_001",
+      "speaker": "yunzhonghe",
+      "text": "他的眼中闪过一丝异样的光彩，仿佛看到了某种他从未预料到的可能性。\n\n你选择了自己的路……这很好。不依附正道，不沉沦魔道，以己之心，行己之道。\n\n他轻轻咳嗽了两声，声音愈发微弱。\n\n记住……真正的力量来自内心。不是灵气，不是法宝，是你心中那道永不熄灭的光。\n\n别让任何人替你决定……你的道。",
+      "emotion": "proud",
+      "effects": [
+        { "type": "relationship_change", "target": "yunzhonghe", "value": 10 },
+        { "type": "dao_heart_change", "value": 5 }
+      ],
+      "next_node": "SACRIFICE_LEGACY_001"
+    },
+    {
+      "id": "SACRIFICE_LEGACY_001",
+      "speaker": "yunzhonghe",
+      "text": "他的身体开始发出微弱的剑鸣——那是剑骨正在崩解的征兆。\n\n听着……我有一件东西要交给你。\n\n他用尽最后的力量，从胸口取出一块散发着凛冽剑意的碎片。碎片入手冰冷，却蕴含着令人窒息的强大力量。\n\n这是……剑骨碎片。我一生修为的结晶。拿着它……它会成为你的力量。\n\n他的手臂缓缓垂落，剑鸣声渐渐消散在风中。",
+      "emotion": "final",
+      "effects": [
+        { "type": "item_give", "target": "sword_bone_fragment", "value": 1 },
+        { "type": "quest_trigger", "target": "ascension_mystery_update", "value": true }
+      ],
+      "next_node": "SACRIFICE_LEGACY_002"
+    },
+    {
+      "id": "SACRIFICE_LEGACY_002",
+      "speaker": "yunzhonghe",
+      "text": "他的目光开始涣散，嘴唇微微动着，你凑近才能听到他最后的低语。\n\n飞升之谜……三百年前……真相在……九州之门……\n\n他深吸了一口气，用最后的力气说出了几个字。\n\n小心……慕容雪……\n\n说完这句话，他的手彻底垂落了。眼中的光芒消散于风中，只余一具渐渐冰冷的身躯。\n\n战场归于寂静。唯有秋风，呜咽如泣。",
+      "emotion": "fading",
+      "effects": [
+        { "type": "passive_give", "target": "sword_bone_passive", "value": true },
+        { "type": "quest_trigger", "target": "yunzhonghe_legacy_quest", "value": true }
+      ],
+      "next_node": "SACRIFICE_END"
+    },
+    {
+      "id": "SACRIFICE_END",
+      "speaker": "system",
+      "text": "[b]事件结算[/b]\n\n• 云中鹤牺牲，获得剑骨碎片\n• 获得永久被动：剑骨传承（修炼速度+15%，剑法伤害+20%）\n• 飞升之谜任务更新\n• 线索：慕容雪与三百年前事件有关\n• [b]关系系统：云中鹤关系线永久关闭[/b]\n\n[b]你握紧手中的剑骨碎片，感受到一股冰冷而强大的力量正在融入你的经脉。[/b]\n\n[b]从今以后，他的意志将与你同在。[/b]",
+      "next_node": "END"
+    }
+  ]
+}

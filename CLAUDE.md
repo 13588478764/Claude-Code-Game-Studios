@@ -14,6 +14,16 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 > **Note**: Engine-specialist agents exist for Godot, Unity, and Unreal with
 > dedicated sub-specialists. Use the set matching your engine.
 
+## 🌏 Language & Communication Protocol (语言与沟通协议)
+
+**CRITICAL RULE**: All interactions, explanations, documentation, and comments MUST be in **Simplified Chinese (简体中文)**.
+
+1. **Conversation Language**: Always respond to the user in Simplified Chinese.
+2. **Code Comments**: All code comments must be in Simplified Chinese.
+3. **Documentation**: All GDD and narrative texts must be in Simplified Chinese.
+4. **Technical Terms**: Keep code classes/keywords in English; translate game concepts per Terminology Standards.
+
+
 ## Project Structure
 
 @.claude/docs/directory-structure.md

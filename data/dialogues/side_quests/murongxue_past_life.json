@@ -1,0 +1,227 @@
+{
+  "id": "MU_QUEST_LINE",
+  "title": "慕容雪支线 — 前世之谜",
+  "description": "神秘少女慕容雪的身世之谜，与飞升之战的关联",
+  "npc_id": "murongxue",
+  "quest_line": "murongxue_past_life",
+  "min_realm": "qi_refining_late",
+  "start_node": "MU_QUEST_001",
+  "nodes": [
+    {
+      "id": "MU_QUEST_001",
+      "speaker": "system",
+      "text": "青云镇街头，一位白衣少女突然出现在你面前。\\n\\n她目光空洞，似乎失去了记忆，但看到你时眼中闪过一丝奇异的光芒。",
+      "next_node": "MU_QUEST_002"
+    },
+    {
+      "id": "MU_QUEST_002",
+      "speaker": "murongxue",
+      "text": "这个符文...我好像在哪里见过...\\n\\n（她指着你的记忆水晶，神色痛苦）\\n\\n头好痛...这些画面...为什么这么熟悉...",
+      "emotion": "confused",
+      "effects": [
+        {"type": "quest_trigger", "target": "murong_memory", "value": true}
+      ],
+      "next_node": "MU_QUEST_CHOICE_001"
+    },
+    {
+      "id": "MU_QUEST_CHOICE_001",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "concerned",
+          "text": "你没事吧？需要帮助吗？",
+          "effects": [
+            {"type": "relationship_change", "target": "murongxue", "value": 10},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "MU_ACCEPT_HELP"
+        },
+        {
+          "id": "curious",
+          "text": "你认识这个符文？",
+          "effects": [
+            {"type": "relationship_change", "target": "murongxue", "value": 5}
+          ],
+          "next_node": "MU_RECOGNIZE"
+        }
+      ]
+    },
+    {
+      "id": "MU_ACCEPT_HELP",
+      "speaker": "murongxue",
+      "text": "我...我叫慕容雪。但我记不得自己是谁了。\\n\\n只记得一些零碎的画面...一个很高的塔...很多人在战斗...\\n\\n你能帮我找回记忆吗？",
+      "emotion": "hopeful",
+      "next_node": "END"
+    },
+    {
+      "id": "MU_RECOGNIZE",
+      "speaker": "murongxue",
+      "text": "不认识...但是看到这个符文，脑海裡就会涌现一些画面。\\n\\n好像...是我经历过的事情，但又不像...\\n\\n（她摇了摇头）\\n\\n太混乱了。",
+      "emotion": "confused",
+      "next_node": "END"
+    },
+    {
+      "id": "MEMORY_FRAGMENT_01",
+      "speaker": "system",
+      "text": "根据慕容雪的描述，你在青云镇废弃古井底部找到了第一个记忆碎片。\\n\\n碎片是一个透明水晶，裡面封印着一段记忆画面：\\n\\n[b]画面内容：[/b]一位白衣女子站在高塔之上，俯瞰着大地。她面容与慕容雪相同，但气质迥异——威严、冷峻。",
+      "effects": [
+        {"type": "item_give", "target": "memory_fragment_1", "value": 1}
+      ],
+      "next_node": "MEMORY_FRAGMENT_01_REACT"
+    },
+    {
+      "id": "MEMORY_FRAGMENT_01_REACT",
+      "speaker": "murongxue",
+      "text": "（触摸碎片后，眼中闪过一丝明悟）\\n\\n那个女子...是我吗？可是...为什么我完全记不起来？\\n\\n她看起来好孤独...\\n\\n还有两个碎片在别的地方...我能感觉到。",
+      "emotion": "sad",
+      "next_node": "END"
+    },
+    {
+      "id": "MEMORY_FRAGMENT_02",
+      "speaker": "system",
+      "text": "在青云镇老槐树下的密室中，你找到了第二个记忆碎片。\\n\\n[b]画面内容：[/b]白衣女子与一位黑衣男子并肩而立。两人之间似有某种特殊的情感联系。\\n\\n黑衣男子背后，是一扇散发着恐怖气息的金色大门。",
+      "effects": [
+        {"type": "item_give", "target": "memory_fragment_2", "value": 1}
+      ],
+      "next_node": "MEMORY_FRAGMENT_02_REACT"
+    },
+    {
+      "id": "MEMORY_FRAGMENT_02_REACT",
+      "speaker": "murongxue",
+      "text": "（碎片融入后，她闭上眼睛良久）\\n\\n那个男子...血无痕...\\n\\n我...我前世竟然与他有关...\\n\\n那扇金色大门...飞升通道...\\n\\n（她的声音有些颤抖）",
+      "emotion": "disturbed",
+      "next_node": "END"
+    },
+    {
+      "id": "MEMORY_FRAGMENT_03",
+      "speaker": "system",
+      "text": "最后一个碎片在云中鹤的旧物之中。云中鹤得知后，沉默许久，将其交给你。\\n\\n[b]画面内容：[/b]白衣女子与血无痕在飞升通道前对峙。\\n\\n血无痕：\"飞升机缘只有一个，你我只能有一人飞升！\"\\n\\n白衣女子：\"若必须如此，我选择等待。也许将来，会有破局之人。\"\\n\\n随后，她施展转世之术，化为光芒消散。",
+      "effects": [
+        {"type": "item_give", "target": "memory_fragment_3", "value": 1}
+      ],
+      "next_node": "MEMORY_FRAGMENT_03_REACT"
+    },
+    {
+      "id": "MEMORY_FRAGMENT_03_REACT",
+      "speaker": "murongxue",
+      "text": "（三个碎片融合，大量记忆涌入）\\n\\n我想起来了...全部想起来了...\\n\\n我前世是逍遥派掌门慕容雪，与血无痕共同发现飞升通道。\\n\\n但他为独占飞升机缘，封锁了通道。\\n\\n我选择转世，等待一个能破除封印的人...\\n\\n那个人，就是你，{player_name}。",
+      "emotion": "resolved",
+      "effects": [
+        {"type": "relationship_change", "target": "murongxue", "value": 30}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "SEAL_TRUTH_CHECK",
+      "speaker": "murongxue",
+      "text": "{player_name}，三块记忆碎片已经集齐。但我还需要一些时间，将前世的记忆完全消化。\\n\\n等一切准备好了，我会告诉你封印的真相。",
+      "emotion": "calm",
+      "condition": {"type": "relationship_check", "target": "murongxue", "min": 60},
+      "next_node": "SEAL_TRUTH_START"
+    },
+    {
+      "id": "SEAL_TRUTH_START",
+      "speaker": "murongxue",
+      "text": "她闭目片刻，再睁开眼时，目光中多了一份历经沧桑的沉稳。\\n\\n慕容雪：\\\"飞升通道的封印，是血无痕以自身修为布下的。\\\"\\n\\n慕容雪：\\\"要破除它，需要三样东西：\\\"\\n\\n\\\"其一，剑骨体质——也就是你。剑骨是唯一能够承受封印反噬的力量。\\\"\\n\\n\\\"其二，逍遥派功法传承——也就是我。我的前世是逍遥派掌门，只有我的传承才能引导封印之力。\\\"\\n\\n\\\"其三，上古灵药炼制的神魂丹——用来保护你的神魂不被封印的反噬所吞噬。\\\"",
+      "emotion": "serious",
+      "next_node": "SEAL_TRUTH_WARNING"
+    },
+    {
+      "id": "SEAL_TRUTH_WARNING",
+      "speaker": "murongxue",
+      "text": "她看着你的眼睛，语气沉重。\\n\\n慕容雪：\\\"但是……我必须告诉你一件事。\\\"\\n\\n慕容雪：\\\"破除封印的过程极其危险。稍有不慎，便会神魂俱灭。\\\"\\n\\n慕容雪：\\\"即使是剑骨，也未必能承受得住。\\\"\\n\\n慕容雪：\\\"所以……我不会强迫你做任何事。这个选择，只能由你自己来做。\\\"",
+      "emotion": "concerned",
+      "next_node": "SEAL_TRUTH_CHOICE"
+    },
+    {
+      "id": "SEAL_TRUTH_CHOICE",
+      "speaker": "player",
+      "text": "选择回应",
+      "choices": [
+        {
+          "id": "determined",
+          "text": "既然命运选择了我，我不会退缩",
+          "effects": [
+            {"type": "relationship_change", "target": "murongxue", "value": 20},
+            {"type": "dao_heart_change", "value": 15}
+          ],
+          "next_node": "SEAL_TRUTH_ACCEPT"
+        },
+        {
+          "id": "cautious",
+          "text": "我需要时间准备，确保万无一失",
+          "effects": [
+            {"type": "relationship_change", "target": "murongxue", "value": 10}
+          ],
+          "next_node": "SEAL_TRUTH_ACCEPT"
+        },
+        {
+          "id": "ask_risk",
+          "text": "如果失败了，会有什么后果？",
+          "effects": [
+            {"type": "relationship_change", "target": "murongxue", "value": 5}
+          ],
+          "next_node": "SEAL_TRUTH_RISK"
+        }
+      ]
+    },
+    {
+      "id": "SEAL_TRUTH_ACCEPT",
+      "speaker": "murongxue",
+      "text": "她深吸一口气，目光中闪过一丝释然。\\n\\n慕容雪：\\\"很好。我会将逍遥派最高深的功法传授于你。\\\"\\n\\n慕容雪：\\\"北冥神功，以海纳百川之势，容纳天地灵气。\\\"\\n\\n慕容雪：\\\"修炼至大成，可破除一切封印。\\\"\\n\\n慕容雪：\\\"但在此之前，你还需要做好充分的准备。\"",
+      "emotion": "approving",
+      "effects": [
+        {"type": "skill_give", "target": "beiming_divine_art", "value": 1},
+        {"type": "skill_give", "target": "murong_trust", "value": 1}
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "SEAL_TRUTH_RISK",
+      "speaker": "murongxue",
+      "text": "她沉默了片刻。\\n\\n慕容雪：\\\"如果失败……封印会被触发更强的反噬。飞升通道将被永久锁死。\\\"\\n\\n慕容雪：\\\"而你……你的剑骨会碎裂，神魂也会受到不可逆的损伤。\\\"\\n\\n慕容雪：\\\"最坏的情况——你会死。\\\"\\n\\n她看着你，眼中没有隐瞒。\\n\\n慕容雪：\\\"这就是为什么我说，这个选择只能由你自己来做。\\\"\\n\\n慕容雪：\\\"但如果你准备好了……我会一直在这里。\"",
+      "emotion": "honest",
+      "next_node": "SEAL_TRUTH_CHOICE"
+    },
+    {
+      "id": "DESTINY_AWAKE_CHECK",
+      "speaker": "murongxue",
+      "text": "{player_name}，是时候了。\\n\\n我的前世记忆已经完全觉醒。现在，我将今生的意识与前世的修为融合。",
+      "emotion": "solemn",
+      "condition": {"type": "relationship_check", "target": "murongxue", "min": 80},
+      "next_node": "DESTINY_AWAKE_START"
+    },
+    {
+      "id": "DESTINY_AWAKE_START",
+      "speaker": "system",
+      "text": "慕容雪盘膝而坐，周身灵气涌动。前世的记忆与今生的意识逐渐融合。\\n\\n一道柔和的光芒从她的体内散发出来，照亮了整个房间。\\n\\n渐渐地，她的眼眸中多了一份历经沧桑的从容——那是三百年前的慕容雪，与今生的她合为一体。\\n\\n[b]慕容雪记忆恢复：[/b]部分前世修为觉醒",
+      "next_node": "DESTINY_AWAKE_REFLECTION"
+    },
+    {
+      "id": "DESTINY_AWAKE_REFLECTION",
+      "speaker": "murongxue",
+      "text": "她缓缓睁开眼，气质已经与之前截然不同。\\n\\n不再是那个迷茫的少女——而是经历过三百年沧桑的逍遥派掌门。\\n\\n慕容雪：\\\"我想起来了。前世的一切，包括血无痕的封印术。\\\"\\n\\n慕容雪：\\\"他的封印并非不可破解。但需要一个拥有剑骨之人，配合我的传承之力，共同完成。\\\"\\n\\n慕容雪：\\\"{player_name}，你准备好了吗？\"",
+      "emotion": "resolved",
+      "next_node": "DESTINY_AWAKE_PROMISE"
+    },
+    {
+      "id": "DESTINY_AWAKE_PROMISE",
+      "speaker": "murongxue",
+      "text": "她的目光变得无比坚定。\\n\\n慕容雪：\\\"无论前方是什么，我都会与你并肩作战。\\\"\\n\\n慕容雪：\\\"三百年前，我选择了逃避——转世等待。\\\"\\n\\n慕容雪：\\\"但这一次，我不会再逃。\\\"\\n\\n慕容雪：\\\"让我们一起，面对那个属于我们的命运。\\\"\\n\\n她从怀中取出一卷古朴的秘籍，递给你。\\n\\n慕容雪：\\\"北冥神功的完整篇章。这是我能给你的，全部心意。\"",
+      "emotion": "resolute",
+      "effects": [
+        {"type": "skill_give", "target": "beiming_divine_art_complete", "value": 1},
+        {"type": "quest_trigger", "target": "murong_final_battle", "value": true},
+        {"type": "relationship_change", "target": "murongxue", "value": 15}
+      ],
+      "next_node": "DESTINY_AWAKE_END"
+    },
+    {
+      "id": "DESTINY_AWAKE_END",
+      "speaker": "system",
+      "text": "[b]获得：[/b]北冥神功（完整篇，天阶上品）\\n[b]获得：[/b]慕容雪的承诺（最终战协助概率+30%）\\n[b]获得：[/b]逍遥派传承（被动：灵气恢复速度+15%）\\n\\n[b]支线完成：[/b]慕容雪 — 前世之谜\\n\\n[b]—— 三百年等待，只为今日并肩。——[/b]",
+      "next_node": "END"
+    }
+  ]
+}

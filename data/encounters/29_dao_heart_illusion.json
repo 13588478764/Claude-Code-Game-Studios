@@ -1,0 +1,119 @@
+{
+  "id": "encounter_29_dao_heart_illusion",
+  "title": "仙缘奇遇 — 道心幻境",
+  "description": "你误入一处上古幻境，幻境中映照出你内心深处的执念与恐惧",
+  "type": "cultivation",
+  "probability": 0.08,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "foundation_establishment_early",
+    "cooldown_minutes": 12
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "ILLUSION_START",
+  "nodes": [
+    {
+      "id": "ILLUSION_START",
+      "speaker": "system",
+      "text": "你在修炼时忽然感到一阵头晕目眩，周围的景象开始扭曲变化。\n\n等你回过神来，发现自己身处一个完全陌生的空间。\n天空中悬浮着两面巨大的镜子，一面映照出你过往的记忆，另一面则显示着你内心最渴望的画面。\n\n一个空灵的声音响起：\n\n\"此乃道心幻境，映照修士本心。过则道心稳固，败则心境受损。\"\n\n\"选择你的道路吧——\"",
+      "next_node": "ILLUSION_CHOICE"
+    },
+    {
+      "id": "ILLUSION_CHOICE",
+      "speaker": "system",
+      "text": "你站在两面镜子之间，需要做出抉择。",
+      "choices": [
+        {
+          "id": "observe",
+          "text": "保持冷静，观察幻境的变化规律",
+          "effects": [
+            {"type": "skill_check", "target": "willpower", "operator": ">=", "value": 15}
+          ],
+          "next_node": "ILLUSION_OBSERVE_CHECK"
+        },
+        {
+          "id": "embrace",
+          "text": "主动走入渴望之镜，直面内心执念",
+          "effects": [
+            {"type": "dao_heart_change", "value": -5}
+          ],
+          "next_node": "ILLUSION_EMBRACE_CHOICE"
+        },
+        {
+          "id": "break_free",
+          "text": "以自身修为强行破除幻境",
+          "effects": [
+            {"type": "skill_check", "target": "cultivation", "operator": ">=", "value": 16}
+          ],
+          "next_node": "ILLUSION_BREAK_CHECK"
+        }
+      ]
+    },
+    {
+      "id": "ILLUSION_OBSERVE_CHECK",
+      "speaker": "system",
+      "text": "你盘膝坐下，运转心法，冷静地观察着幻境的运作方式。",
+      "next_node": "ILLUSION_OBSERVE_RESULT"
+    },
+    {
+      "id": "ILLUSION_OBSERVE_RESULT",
+      "speaker": "system",
+      "text": "[b]意志坚定：[/b]你识破了幻境的核心机制。\n\n两面镜子并非考验，而是机缘——记忆之镜可以帮助你看清自己的修行误区，渴望之镜则能让你提前预览突破后的境界。\n\n你在幻境中获得了宝贵的领悟。\n\n[b]道心：[/b]+15\n[b]修为感悟：[/b]境界突破概率提升",
+      "next_node": "END"
+    },
+    {
+      "id": "ILLUSION_EMBRACE_CHOICE",
+      "speaker": "system",
+      "text": "你深吸一口气，主动走入了渴望之镜。",
+      "next_node": "ILLUSION_EMBRACE_PATH"
+    },
+    {
+      "id": "ILLUSION_EMBRACE_PATH",
+      "speaker": "system",
+      "text": "镜中世界展现出了你内心最深的渴望——\n\n你看到了自己修为大成的模样，看到了曾经失去的亲人，看到了梦寐以求的一切。\n\n你面临最后的抉择：",
+      "choices": [
+        {
+          "id": "let_go",
+          "text": "明白这是幻象，主动放下执念",
+          "effects": [
+            {"type": "dao_heart_change", "value": 12}
+          ],
+          "next_node": "ILLUSION_LET_GO"
+        },
+        {
+          "id": "stay",
+          "text": "沉溺于幻境之中，不愿醒来",
+          "effects": [
+            {"type": "dao_heart_change", "value": -15},
+            {"type": "time_advance", "value": 30}
+          ],
+          "next_node": "ILLUSION_STAY"
+        }
+      ]
+    },
+    {
+      "id": "ILLUSION_LET_GO",
+      "speaker": "system",
+      "text": "你看着镜中的美好画面，轻声道：\"这些都是假的。\"\n\n幻境开始崩塌，但你的道心却因此变得更加纯粹。\n\n[b]道心：[/b]+12\n[b]境界：[/b]心境突破",
+      "next_node": "END"
+    },
+    {
+      "id": "ILLUSION_STAY",
+      "speaker": "system",
+      "text": "你沉浸在幻境的美好中，不知过了多久...\n\n等你终于清醒过来时，发现外界已经过去了很长时间。\n\n虽然从幻境中脱身，但你的道心因此受到了损伤。\n\n[b]道心：[/b]-15\n[b]时间流逝：[/b]30分钟",
+      "next_node": "END"
+    },
+    {
+      "id": "ILLUSION_BREAK_CHECK",
+      "speaker": "system",
+      "text": "你运转全身灵力，试图以修为强行冲破幻境的束缚。",
+      "next_node": "ILLUSION_BREAK_RESULT"
+    },
+    {
+      "id": "ILLUSION_BREAK_RESULT",
+      "speaker": "system",
+      "text": "[b]破除成功：[/b]你以强大的修为之力将幻境撕裂，重新回到了现实世界。\n\n虽然方式粗暴，但你的修为因此得到了一次淬炼。\n\n[b]修为：[/b]灵力小幅提升\n[b]道心：[/b]+5",
+      "next_node": "END"
+    }
+  ]
+}

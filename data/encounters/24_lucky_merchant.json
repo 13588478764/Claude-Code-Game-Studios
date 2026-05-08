@@ -1,0 +1,134 @@
+{
+  "id": "encounter_24_lucky_merchant",
+  "title": "仙缘奇商 — 神秘散修摊位",
+  "description": "路边出现一个不起眼的摊位，摊主是一位神秘的散修商人，贩卖着各种奇珍异宝",
+  "type": "merchant",
+  "probability": 0.06,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "min_realm": "qi_refining_early",
+    "cooldown_minutes": 25
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "LUCKY_MERCHANT_START",
+  "nodes": [
+    {
+      "id": "LUCKY_MERCHANT_START",
+      "speaker": "system",
+      "text": "你在路边看到一个不起眼的摊位，摊主是一位面容模糊的散修。\n\n摊位上摆放着各种物品，虽然看起来杂乱无章，但隐约能感受到其中有些物品散发着不凡的气息...\n\n[b]\"道友，有缘相见，来看看老朽这些珍藏吧。\"[/b]",
+      "next_node": "LUCKY_MERCHANT_CHOICE"
+    },
+    {
+      "id": "LUCKY_MERCHANT_CHOICE",
+      "speaker": "system",
+      "text": "神秘商人微笑着看着你，等待你的回应。",
+      "choices": [
+        {
+          "id": "browse_carefully",
+          "text": "仔细浏览摊位上的物品，寻找有价值的东西",
+          "effects": [
+            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 8},
+            {"type": "time_advance", "value": 5}
+          ],
+          "next_node": "LUCKY_MERCHANT_BROWSE"
+        },
+        {
+          "id": "ask_about_rare",
+          "text": "询问是否有稀世珍宝",
+          "effects": [
+            {"type": "item_cost", "target": "spirit_stones", "value": 50}
+          ],
+          "next_node": "LUCKY_MERCHANT_ASK"
+        },
+        {
+          "id": "bargain",
+          "text": "尝试与商人讨价还价",
+          "effects": [
+            {"type": "skill_check", "target": "charisma", "operator": ">=", "value": 12}
+          ],
+          "next_node": "LUCKY_MERCHANT_BARGAIN_CHECK"
+        }
+      ]
+    },
+    {
+      "id": "LUCKY_MERCHANT_BROWSE",
+      "speaker": "system",
+      "text": "你仔细浏览摊位上的物品，凭借敏锐的感知力发现了隐藏其中的宝物。\n\n在那些普通物品之下，有一块不起眼的石头正散发着微弱的灵力波动。\n\n[b]感知成功：[/b]你发现了一块灵石原石！",
+      "next_node": "LUCKY_MERCHANT_BUY_CHOICE"
+    },
+    {
+      "id": "LUCKY_MERCHANT_ASK",
+      "speaker": "system",
+      "text": "商人眼中闪过一丝精光：\"稀世珍宝自然是有，但价格可不便宜...\"\n\n他从摊位下方取出一个精致的木盒，里面放着一颗散发着浓郁灵气的丹药。\n\n[b]\"此乃筑基丹，可助你顺利突破筑基期。价格：50灵石。\"[/b]",
+      "next_node": "LUCKY_MERCHANT_BUY_CHOICE"
+    },
+    {
+      "id": "LUCKY_MERCHANT_BARGAIN_CHECK",
+      "speaker": "system",
+      "text": "你与商人一番唇枪舌剑，最终商人被你说服，愿意以更低的价格出售物品。\n\n[b]讨价还价成功：[/b]所有物品价格降低30%！",
+      "next_node": "LUCKY_MERCHANT_BUY_CHOICE"
+    },
+    {
+      "id": "LUCKY_MERCHANT_BUY_CHOICE",
+      "speaker": "system",
+      "text": "摊位上可供购买的物品：\n\n[b]1.[/b] 灵石原石 — 10灵石\n[b]2.[/b] 筑基丹 — 50灵石\n[b]3.[/b] 黄阶功法残卷 — 30灵石\n[b]4.[/b] 神秘古玉 — 20灵石",
+      "choices": [
+        {
+          "id": "buy_stone",
+          "text": "购买灵石原石",
+          "effects": [
+            {"type": "item_cost", "target": "spirit_stones", "value": 10},
+            {"type": "item_give", "target": "spirit_stone_raw", "value": 1}
+          ],
+          "next_node": "LUCKY_MERCHANT_PURCHASE_END"
+        },
+        {
+          "id": "buy_pill",
+          "text": "购买筑基丹",
+          "effects": [
+            {"type": "item_cost", "target": "spirit_stones", "value": 50},
+            {"type": "item_give", "target": "foundation_pill", "value": 1}
+          ],
+          "next_node": "LUCKY_MERCHANT_PURCHASE_END"
+        },
+        {
+          "id": "buy_manual",
+          "text": "购买功法残卷",
+          "effects": [
+            {"type": "item_cost", "target": "spirit_stones", "value": 30},
+            {"type": "item_give", "target": "martial_art_fragment_yellow", "value": 1}
+          ],
+          "next_node": "LUCKY_MERCHANT_PURCHASE_END"
+        },
+        {
+          "id": "buy_jade",
+          "text": "购买神秘古玉",
+          "effects": [
+            {"type": "item_cost", "target": "spirit_stones", "value": 20},
+            {"type": "item_give", "target": "mysterious_jade", "value": 1},
+            {"type": "quest_trigger", "target": "investigate_jade_origin", "value": true}
+          ],
+          "next_node": "LUCKY_MERCHANT_PURCHASE_END"
+        },
+        {
+          "id": "leave_merchant",
+          "text": "暂时不购买，离开摊位",
+          "effects": [],
+          "next_node": "LUCKY_MERCHANT_LEAVE_END"
+        }
+      ]
+    },
+    {
+      "id": "LUCKY_MERCHANT_PURCHASE_END",
+      "speaker": "system",
+      "text": "交易完成后，商人微笑着收起物品。\n\n[b]\"道友好眼力，日后若有机缘，我们还会再见的。\"[/b]\n\n说完，摊位和商人一起消失在雾气中，仿佛从未出现过一般...",
+      "next_node": "END"
+    },
+    {
+      "id": "LUCKY_MERCHANT_LEAVE_END",
+      "speaker": "system",
+      "text": "你决定暂时不购买任何物品，转身离去。\n\n身后传来商人的声音：\"道友若有需要，随时可以来此寻找老朽...\"\n\n回头一看，摊位已经消失不见，仿佛一切只是一场幻梦。",
+      "next_node": "END"
+    }
+  ]
+}

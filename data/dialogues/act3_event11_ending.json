@@ -1,0 +1,142 @@
+{
+  "id": "ACT3_EVENT11_ENDING",
+  "title": "第三幕事件十一 — 结局分支",
+  "description": "根据道心值和最终选择，触发不同结局",
+  "start_node": "ENDING_ROUTE_CHECK",
+  "metadata": { "npc_id": "system", "event": "act3_event11" },
+  "nodes": [
+    {
+      "id": "ENDING_ROUTE_CHECK",
+      "speaker": "system",
+      "text": "九州之门的决战已经结束。\\n\\n现在，九州迎来了新的黎明。\\n\\n但你的故事，尚未终结。",
+      "next_node": "ENDING_CHECK_DAO_HEART"
+    },
+    {
+      "id": "ENDING_CHECK_DAO_HEART",
+      "speaker": "system",
+      "text": "你的道心值决定了九州的命运走向。",
+      "next_node": "ENDING_ROUTE_DETERMINE"
+    },
+    {
+      "id": "ENDING_ROUTE_DETERMINE",
+      "speaker": "system",
+      "text": "根据你在整个游戏中的选择和道心积累，九州的命运将走向不同的结局。",
+      "choices": [
+        {
+          "id": "route_hidden",
+          "text": "隐藏结局：第三条路（道心值=0 且完成净化）",
+          "condition": { "type": "dao_heart_check", "min": 0, "max": 0 },
+          "next_node": "ENDING_HIDDEN_001"
+        },
+        {
+          "id": "route_righteous",
+          "text": "正道结局：修复封印（道心值>30）",
+          "condition": { "type": "dao_heart_check", "min": 31 },
+          "next_node": "ENDING_RIGHT_001"
+        },
+        {
+          "id": "route_demonic",
+          "text": "魔道结局：掌控飞升（道心值<-30）",
+          "condition": { "type": "dao_heart_check", "max": -31 },
+          "next_node": "ENDING_DEMONIC_001"
+        },
+        {
+          "id": "route_independent",
+          "text": "独立结局：自由守护（道心值介于两者之间）",
+          "next_node": "ENDING_INDEPENDENT_001"
+        }
+      ]
+    },
+    {
+      "id": "ENDING_HIDDEN_001",
+      "speaker": "system",
+      "text": "远古存在被净化后，飞升之路重新焕发了生机。\\n\\n但这一次，飞升之路不再是单一的通道——\\n\\n它变成了一座桥梁，连接着九州与更高维度的世界。\\n\\n每一个有资格飞升的修士，都可以通过这座桥梁，前往他们向往的世界。\\n\\n而这一切的基石，是你——一个拥有剑骨的修士，以归一之剑，重铸了飞升之路。",
+      "next_node": "ENDING_HIDDEN_002"
+    },
+    {
+      "id": "ENDING_HIDDEN_002",
+      "speaker": "system",
+      "text": "柳如烟：\\\"你做到了……我们所有人都未能做到的事。\\\"\\n\\n萧寒夜：\\\"……先祖，您终于可以安息了。\\n\\n他对着九州之门深深一拜。\\n\\n萧寒夜：\\\"萧家三百年的等待，终于有了结果。\\\"",
+      "next_node": "ENDING_HIDDEN_003"
+    },
+    {
+      "id": "ENDING_HIDDEN_003",
+      "speaker": "murongxue",
+      "text": "慕容雪站在九州之门前，泪如雨下。\\n\\n慕容雪：\\\"三百年了……我终于可以对你有个交代了。\\\"\\n\\n她转过头，看着你：\\n\\n慕容雪：\\\"谢谢你。不仅是为了飞升之路，更是——你让我相信，人心中的善，永远能够战胜恶。\\\"",
+      "emotion": "tearful",
+      "next_node": "ENDING_HIDDEN_004"
+    },
+    {
+      "id": "ENDING_HIDDEN_004",
+      "speaker": "system",
+      "text": "飞升之路重开后的数年里，九州修真界迎来了前所未有的繁荣。\\n\\n天剑盟与魔道势力放下了成见，共同守护着飞升之路。\\n\\n而你——拒绝了所有势力的邀请，选择独自游历九州。\\n\\n有人说你成了新一代的剑仙，也有人说你隐居于某处深山之中。\\n\\n但每一个踏上飞升之路的修士都知道——\\n\\n是一个拥有剑骨的修士，以归一之剑，为他们开辟了这条道路。\\n\\n[b]—— 隐藏结局：第三条路 ——[/b]\\n\\n[b]飞升之路重开，九州迎来了真正的和平。\\n而你，成为了九州历史上最伟大的剑修。——[/b]",
+      "next_node": "ENDING_EPILOGUE"
+    },
+    {
+      "id": "ENDING_RIGHT_001",
+      "speaker": "system",
+      "text": "封印修复完成。\\n\\n远古存在被重新封印在飞升通道的彼端，九州再次获得了和平。\\n\\n但这个和平，是以牺牲剑骨的力量为代价的。",
+      "next_node": "ENDING_RIGHT_002"
+    },
+    {
+      "id": "ENDING_RIGHT_002",
+      "speaker": "system",
+      "text": "柳如烟：\\\"你以剑骨为代价，守护了九州。这份大义，天剑盟将永远铭记。\\\"\\n\\n她深深地看着你：\\n\\n柳如烟：\\\"从今天起，你就是天剑盟最尊贵的客人。任何资源，任何支持，天剑盟都将全力提供。\\\"",
+      "next_node": "ENDING_RIGHT_003"
+    },
+    {
+      "id": "ENDING_RIGHT_003",
+      "speaker": "system",
+      "text": "封印后的岁月里，九州恢复了平静。\\n\\n但飞升之路依然封闭，后世修士再无飞升的可能。\\n\\n你成为了正道联盟的核心人物，守护着这个你用剑骨换来的和平。\\n\\n虽然失去了大部分剑骨的力量，但你的道心却比以往任何时候都要坚定。\\n\\n[b]—— 正道结局：封印守护者 ——[/b]\\n\\n[b]九州重归和平，飞升之路依然封闭。\\n你以剑骨为代价，成为了九州的守护者。——[/b]",
+      "next_node": "ENDING_EPILOGUE"
+    },
+    {
+      "id": "ENDING_DEMONIC_001",
+      "speaker": "system",
+      "text": "你吸收了远古存在的全部力量。\\n\\n飞升之路落入了你的掌控之中。\\n\\n你的修为超越了所有人的想象——但你的道心，已经被这股力量彻底改变。",
+      "next_node": "ENDING_DEMONIC_002"
+    },
+    {
+      "id": "ENDING_DEMONIC_002",
+      "speaker": "system",
+      "text": "柳如烟：\\\"你……变成了你曾经对抗的存在。\\\"\\n\\n她的声音中带着失望和恐惧。\\n\\n萧寒夜：\\\"……原来如此。你和那些人，并无不同。\\\"\\n\\n他转身离去，不再回头。",
+      "next_node": "ENDING_DEMONIC_003"
+    },
+    {
+      "id": "ENDING_DEMONIC_003",
+      "speaker": "system",
+      "text": "飞升之路的力量让你变得前所未有地强大。\\n\\n但你发现——你再也无法回到过去了。\\n\\n那些曾经与你并肩的伙伴，都离你而去。\\n\\n你掌控着飞升之路，却成为了整个九州最孤独的存在。\\n\\n[b]—— 魔道结局：飞升之主的掌控 ——[/b]\\n\\n[b]你掌握了飞升之路，但失去了所有伙伴。\\n力量与孤独，成为了你的宿命。——[/b]",
+      "next_node": "ENDING_EPILOGUE"
+    },
+    {
+      "id": "ENDING_INDEPENDENT_001",
+      "speaker": "system",
+      "text": "你没有选择任何一方的极端道路。\\n\\n九州之门在你的力量下被重新塑造——既不完全封闭，也不完全开放。\\n\\n飞升之路变成了一条受控的通道，只有真正有资格的修士才能通过。\\n\\n而你，成为了这条通道的守护者。",
+      "next_node": "ENDING_INDEPENDENT_002"
+    },
+    {
+      "id": "ENDING_INDEPENDENT_002",
+      "speaker": "system",
+      "text": "柳如烟：\\\"你选择了一条最难的路——既不偏向正道，也不倒向魔道。\\\"\\n\\n萧寒夜：\\\"……但至少，你没有背叛自己的道心。\\\"\\n\\n慕容雪：\\\"这才是你真正的选择。不依赖任何势力，只跟随自己的心。\"",
+      "next_node": "ENDING_INDEPENDENT_003"
+    },
+    {
+      "id": "ENDING_INDEPENDENT_003",
+      "speaker": "system",
+      "text": "你独自守护在九州之门旁，既不归属于天剑盟，也不加入魔道势力。\\n\\n你成为了一个传说——一个游走在正邪之间的剑修，守护着飞升之路的平衡。\\n\\n有人说你是疯子，也有人说你是英雄。\\n\\n但你不在乎。因为你知道——这是你自己的选择，自己的道路。\\n\\n[b]—— 独立结局：飞升之门的自由守护者 ——[/b]\\n\\n[b]你不依附任何势力，独自守护着九州的平衡。\\n自由与坚定，成为了你的道心。——[/b]",
+      "next_node": "ENDING_EPILOGUE"
+    },
+    {
+      "id": "ENDING_EPILOGUE",
+      "speaker": "system",
+      "text": "九州修真界的传说，将永远流传下去。\\n\\n而你——{player_name}——的故事，也将在九州的每一个角落被传颂。\\n\\n从凡人到剑修，从炼气到金丹。\\n\\n从云中鹤的弟子，到九州命运的抉择者。\\n\\n你的道心，将指引后来的修士。\\n\\n你的剑，将守护你心中最珍贵的东西。",
+      "next_node": "ENDING_CREDITS"
+    },
+    {
+      "id": "ENDING_CREDITS",
+      "speaker": "system",
+      "text": "—— 第一幕至第三幕，完 ——\\n\\n感谢游玩。\\n\\n本作由 Claude Code Game Studios 开发。\\n修真武侠RPG — 九州剑骨传",
+      "next_node": "END"
+    }
+  ]
+}

@@ -30,12 +30,12 @@ func distribute_rewards(quest_id: String) -> bool:
 		return false
 	
 	var quest_info = quest_manager.get_quest_info(quest_id)
-	if quest_info.empty():
+	if quest_info.is_empty():
 		print("Quest not found: ", quest_id)
 		return false
 	
 	var rewards = quest_info.rewards
-	if rewards.empty():
+	if rewards.is_empty():
 		print("No rewards defined for quest: ", quest_id)
 		# 即使没有奖励，也算作成功完成任务
 		return true
@@ -221,7 +221,7 @@ func get_temporary_storage_status() -> Dictionary:
 # 保存奖励数据
 func save_reward_data() -> Dictionary:
 	var save_data = {
-		"temporary_storage": temporary_storage
+		"temporary_storage": temporary_storage.duplicate(true)
 	}
 	
 	return save_data

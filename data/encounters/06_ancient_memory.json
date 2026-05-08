@@ -1,0 +1,79 @@
+{
+  "id": "encounter_06_memory",
+  "title": "上古记忆 — 飞升之战回响",
+  "description": "修炼时突然看到飞升之战的记忆碎片画面",
+  "type": "memory_fragment",
+  "probability": 0.12,
+  "trigger_conditions": {
+    "region": "zhongyuan",
+    "prerequisite_quest": "event5_ruins_completed",
+    "cooldown_minutes": 5
+  },
+  "dao_heart_alignment": "neutral",
+  "start_node": "MEMORY_START",
+  "nodes": [
+    {
+      "id": "MEMORY_START",
+      "speaker": "system",
+      "text": "你在修炼时突然看到一段模糊的画面：\n数十名修士在飞升台前战斗，天空中降下雷霆...\n\n这段记忆碎片似乎在引导你去某个地方。",
+      "next_node": "MEMORY_CHOICE"
+    },
+    {
+      "id": "MEMORY_CHOICE",
+      "speaker": "system",
+      "text": "记忆碎片在你的意识中回荡，你需要做出回应。",
+      "choices": [
+        {
+          "id": "follow",
+          "text": "跟随记忆碎片的指引",
+          "effects": [
+            {"type": "quest_trigger", "target": "memory_fragment_002", "value": true},
+            {"type": "dao_heart_change", "value": 5}
+          ],
+          "next_node": "MEMORY_FOLLOW"
+        },
+        {
+          "id": "resist",
+          "text": "集中精神，抵抗这段记忆",
+          "effects": [
+            {"type": "skill_check", "target": "willpower", "operator": ">=", "value": 15}
+          ],
+          "next_node": "MEMORY_RESIST_CHECK"
+        },
+        {
+          "id": "record",
+          "text": "记录下记忆细节，找云中鹤分析",
+          "effects": [
+            {"type": "relationship_change", "target": "yunzhonghe", "value": 5},
+            {"type": "item_give", "target": "memory_notes", "value": 1}
+          ],
+          "next_node": "MEMORY_RECORD"
+        }
+      ]
+    },
+    {
+      "id": "MEMORY_FOLLOW",
+      "speaker": "system",
+      "text": "你放任记忆碎片引导你的意识...\n\n一幅更清晰的画面展开：你看到了封印阵法的细节，\n以及那个主持仪式的黑衣人的轮廓。\n\n[b]解锁任务：[/b]记忆碎片·第二片\n[b]推进主线：[/b]飞升之谜\n[b]道心：[/b]+5",
+      "next_node": "END"
+    },
+    {
+      "id": "MEMORY_RESIST_CHECK",
+      "speaker": "system",
+      "text": "你紧闭双眼，集中全部精神抵抗记忆的入侵。",
+      "next_node": "MEMORY_RESIST_RESULT"
+    },
+    {
+      "id": "MEMORY_RESIST_RESULT",
+      "speaker": "system",
+      "text": "[b]意志坚定：[/b]你成功压制了记忆碎片，\n但灵气因此波动，修为略有增长。\n\n[b]获得：[/b]灵气+10",
+      "next_node": "END"
+    },
+    {
+      "id": "MEMORY_RECORD",
+      "speaker": "system",
+      "text": "你迅速将记忆细节记录在玉简上，返回青云镇找云中鹤。\n\n云中鹤看完记录后，神色凝重：\n\"这些画面...比我想象的更详细。也许你真的与那场战争有缘。\"\n\n他提供了一些额外信息。\n\n[b]获得：[/b]记忆笔记\n[b]云中鹤关系：[/b]+5",
+      "next_node": "END"
+    }
+  ]
+}

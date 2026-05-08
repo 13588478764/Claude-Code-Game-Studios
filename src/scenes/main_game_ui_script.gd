@@ -104,6 +104,71 @@ func initialize_game_systems():
 	if economy_system != null:
 		economy_system.add_silver(100)  # 给一点初始银两
 		print("经济系统就绪")
+	
+	# 初始化幕次管理器
+	var act_manager = get_node_or_null("/root/ActManager")
+	if act_manager != null:
+		print("[ActManager] 当前幕次: %s" % act_manager.get_current_act_title())
+	
+	# 触发开场对话
+	call_deferred("_trigger_opening_dialogue")
+
+func _trigger_opening_dialogue():
+	"""触发开场对话（Act 1 事件一）"""
+	var dialogue_manager = get_node_or_null("/root/DialogueManager")
+	if dialogue_manager == null:
+		push_warning("[主游戏UI] DialogueManager未找到")
+		return
+	
+	# 连接对话结束信号
+	if not dialogue_manager.dialogue_ended.is_connected(_on_dialogue_ended):
+		dialogue_manager.dialogue_ended.connect(_on_dialogue_ended)
+	
+	# 检查对话是否存在
+	if dialogue_manager.has_dialogue("ACT1_OPENING_001"):
+		print("[主游戏UI] 触发开场对话...")
+		dialogue_manager.start_dialogue("ACT1_OPENING_001")
+		
+		# 注册NPC个人线触发条件
+		var quest_trigger = get_node_or_null("/root/QuestTriggerManager")
+		if quest_trigger != null:
+			quest_trigger.register_all_npc_questlines()
+		
+		# 初始化Act 1状态
+		var act_manager = get_node_or_null("/root/ActManager")
+		if act_manager != null:
+			act_manager.trigger_event("act_1", "act1_event1_opening")
+	else:
+		push_warning("[主游戏UI] 开场对话不存在: ACT1_OPENING_001")
+
+func _on_dialogue_ended(dialogue_id: String) -> void:
+	"""对话结束回调，处理幕次过渡"""
+	print("[主游戏UI] 对话结束: %s" % dialogue_id)
+	
+	var act_manager = get_node_or_null("/root/ActManager")
+	if act_manager == null:
+		return
+	
+	# Act 1 事件完成标记
+	if dialogue_id == "ACT6_RESOLUTION_001":
+		act_manager.complete_event("act1_event6_resolution")
+		act_manager.complete_event("act1_event5_ruins")
+		act_manager.complete_event("act1_event4_boss")
+		act_manager.complete_event("act1_event3_crisis")
+		act_manager.complete_event("act1_event2_cultivation")
+		act_manager.complete_event("act1_event1_opening")
+		
+		# 自动过渡到 Act 2
+		print("[主游戏UI] 触发 Act 1 → Act 2 过渡...")
+		act_manager.transition_act1_to_act2()
+		
+		# 加载 Act 2 开场对话
+		var dialogue_manager = get_node_or_null("/root/DialogueManager")
+		if dialogue_manager != null and dialogue_manager.has_dialogue("ACT2_EVENT1_RETURN"):
+			print("[主游戏UI] 触发 Act 2 开场对话...")
+			await get_tree().create_timer(1.0).timeout
+			dialogue_manager.start_dialogue("ACT2_EVENT1_RETURN")
+			act_manager.trigger_event("act_2", "act2_event1_return")
 
 func show_character_panel():
 	"""显示角色面板"""
