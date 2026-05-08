@@ -1,8 +1,8 @@
 # UX Spec: 角色面板 (Character Panel)
 
-> **Status**: In Review (UX Review #1 — 6 issues identified, fix in progress)
+> **Status**: Approved (UX Review Complete — 2026-05-08)
 > **Author**: 用户 + ux-designer
-> **Last Updated**: 2026-05-06
+> **Last Updated**: 2026-05-08
 > **Journey Phase(s)**: 大地图探索、战斗间隙、休息/存档时
 > **Template**: UX Spec
 
@@ -840,7 +840,7 @@ DerivedStatsCalculator ←── (计算衍生数值)
 - [ ] 天赋Tab中，点击天赋节点可查看详情，点亮按钮激活
 - [ ] 天赋点不足时，点亮按钮灰色禁用，显示"升级或奇遇可获得天赋点"提示
 - [ ] 天赋重置弹出确认对话框，确认后所有天赋重置，天赋点退还
-- [ ] 点击关闭按钮/按Escape/点击面板外区域可关闭面板
+- [ ] 点击关闭按钮/按Escape/C键可关闭面板（半模态定义：点击遮罩区域不关闭面板，必须通过关闭按钮/Escape/C键退出）
 
 ### 状态变体
 

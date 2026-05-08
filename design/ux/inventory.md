@@ -1,8 +1,8 @@
 # UX Spec: 背包面板 (Inventory Panel)
 
-> **Status**: Ready for Implementation
+> **Status**: Approved (UX Review Complete — 2026-05-08)
 > **Author**: ux-designer
-> **Last Updated**: 2026-05-06 (UX Review Revision)
+> **Last Updated**: 2026-05-08
 > **Journey Phase(s)**: 大地图探索、战斗结束后、休息/存档时
 > **Template**: UX Spec
 

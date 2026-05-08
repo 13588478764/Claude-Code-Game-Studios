@@ -1,8 +1,8 @@
 # UX Spec: 主菜单 (Main Menu)
 
-> **Status**: In Design
+> **Status**: Approved (UX Review Complete — 2026-05-08)
 > **Author**: ux-designer
-> **Last Updated**: 2026-05-06
+> **Last Updated**: 2026-05-08
 > **Journey Phase**: 游戏启动入口
 > **Template**: UX Spec
 

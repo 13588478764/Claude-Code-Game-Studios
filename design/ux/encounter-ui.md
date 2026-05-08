@@ -1,8 +1,8 @@
 # UX Spec: 奇遇UI面板 (Encounter UI Panel)
 
-> **Status**: In Design
+> **Status**: Approved (UX Review Complete — 2026-05-08)
 > **Author**: 用户 + ux-designer
-> **Last Updated**: 2026-05-06
+> **Last Updated**: 2026-05-08
 > **Journey Phase(s)**: 大地图探索、战斗胜利后、休息/存档时
 > **Template**: UX Spec
 
@@ -724,8 +724,7 @@ EncounterManager.detects_encounter()
 
 ## Open Questions
 
-1. **敌人3D预览实现**：Web平台下SubViewportContainer渲染敌人3D模型的性能开销是否可接受？备选方案是使用敌人2D立绘。
-2. **首次引导显示频率**：当前设计为"全局永久仅一次"。如果玩家开启新周目（New Game+），是否重新显示？建议在周目首次显示，但文本调整为新的引导语。
+（全部已解决）
 
 ## Resolved Questions
 
@@ -733,3 +732,5 @@ EncounterManager.detects_encounter()
 2. ~~奖励物品Tooltip复杂度~~ — 已定义：显示物品名称+简要描述+核心属性，不显示完整属性面板
 3. ~~多个奖励物品时的滚动~~ — 已定义：>4个奖励时启用垂直滚动，焦点遍历时自动滚动确保可视
 4. ~~奇遇面板打断~~ — 已定义：面板为模态且不可打断，所有游戏事件延迟或排队处理
+5. ~~敌人3D预览实现~~ — 采用2D立绘方案。Web平台SubViewportContainer渲染3D模型性能开销不可控，秘境挑战中的敌人使用2D立绘展示，避免渲染管线负担。✅
+6. ~~首次引导显示频率~~ — 新周目(New Game+)重新显示，引导语调整为"新的修炼之旅，点击确认按钮继续"。每个周目首次奇遇仅显示一次。✅
