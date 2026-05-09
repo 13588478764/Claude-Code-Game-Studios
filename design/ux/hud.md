@@ -5,7 +5,7 @@
 **最后更新**: 2026-05-08  
 **状态**: 已审核 ✅ (2026-05-08, APPROVED)  
 **负责人**: UX设计师  
-**平台目标**: Web/Browser  
+**平台目标**: Steam (PC)  
 **可访问性层级**: Standard（WCAG 2.1 AA）  
 **输入方法**: 键盘/鼠标（主要）、手柄（部分支持）  
 
@@ -70,7 +70,7 @@
 
 4. **功能至上，形式服务**
    - 美学设计不能牺牲可读性和可用性
-   - 所有UI元素必须在Web平台上清晰可辨
+   - 所有UI元素必须在PC平台上清晰可辨
    - 交互反馈明确，避免玩家困惑
    - 性能优化优先，确保60FPS流畅体验
 
@@ -92,7 +92,7 @@
    - 任务追踪、地图等探索信息可折叠
 
 3. **性能** > 视觉效果
-   - Web平台性能预算严格（<2000 draw calls）
+   - PC平台性能预算：<5000 draw calls
    - 动画和特效不能影响帧率
    - 必要时简化视觉效果以保证流畅度
 
@@ -104,8 +104,8 @@
 **设计约束**：
 
 **技术约束**：
-- 目标平台：Web/Browser（Godot 4.6 Web导出）
-- 性能预算：<2000 draw calls，<2GB内存
+- 目标平台：Steam PC（Godot 4.6 Steam导出）
+- 性能预算：<5000 draw calls，<8GB内存
 - 帧率目标：60FPS稳定
 - 分辨率适配：1280x720 至 1920x1080（主流）
 - 输入方式：键盘+鼠标（主要），手柄（部分支持）
@@ -634,19 +634,19 @@
 
 确保所有可交互元素都在易于点击/选择的区域：
 
-- **最小点击区域**：48x48px（符合Web可访问性标准）
+- **最小点击区域**：48x48px（符合无障碍可访问性标准）
 - **按钮间距**：至少8px
 - **边缘交互元素**：距离屏幕边缘至少16px
 - **鼠标悬停区域**：比视觉元素大10%，便于精确定位
 
 **平台特定考虑**：
 
-**目标平台**：Web/Browser
+**目标平台**：Steam (PC)
 
 **分辨率范围**：
 - **最低支持**：1280x720（720p）
 - **推荐**：1920x1080（1080p）
-- **最高支持**：2560x1440（1440p）
+- **最高支持**：3840x2160（4K，固定尺寸模式）
 - **超宽屏**：21:9宽高比部分支持（侧边留黑边）
 
 **宽高比支持**：
@@ -2794,7 +2794,7 @@ Error State > Loading State > Empty State > Normal State
 
 **屏幕阅读器支持（基础）**：
 
-由于 Godot 4.6 Web 导出对屏幕阅读器的支持有限，当前实现提供基础级别的支持：
+由于 Godot 4.6 在 PC 平台对屏幕阅读器的原生支持有限，当前实现提供基础级别的支持：
 
 **支持的功能**：
 - **焦点元素朗读**：当前焦点的 UI 元素名称和类型
@@ -2828,17 +2828,9 @@ Error State > Loading State > Empty State > Normal State
          hp_bar.notification(NOTIFICATION_ACCESSIBILITY_CHANGED)
      ```
 
-3. **Web 平台增强**（通过 JavaScript 桥接）：
-   - 在 HTML 导出模板中添加 ARIA 标签支持
-   - 使用 `JavaScriptBridge` 调用浏览器的 Accessibility API
-   - 示例代码：
-     ```gdscript
-     # 仅在 Web 平台执行
-     if OS.has_feature("web"):
-         JavaScriptBridge.eval("""
-             document.getElementById('canvas').setAttribute('aria-label', '游戏画面');
-         """)
-     ```
+3. **Steam集成**（通过 Steamworks SDK）：
+   - 使用 Steam 成就和统计系统记录无障碍选项
+   - 在 Steam 社区指南中提供无障碍操作说明
 
 4. **重要事件语音提示**：
    - 升级时：播放语音提示 "升级！当前等级 25"
@@ -2854,25 +2846,10 @@ extends Node
 
 func announce(message: String):
     """向屏幕阅读器发送通知"""
-    if OS.has_feature("web"):
-        # Web 平台：使用 ARIA live region
-        JavaScriptBridge.eval("""
-            var liveRegion = document.getElementById('aria-live-region');
-            if (!liveRegion) {
-                liveRegion = document.createElement('div');
-                liveRegion.id = 'aria-live-region';
-                liveRegion.setAttribute('aria-live', 'polite');
-                liveRegion.style.position = 'absolute';
-                liveRegion.style.left = '-10000px';
-                document.body.appendChild(liveRegion);
-            }
-            liveRegion.textContent = '%s';
-        """ % message)
-    else:
-        # 桌面平台：使用 Godot 原生通知
-        var notification_label = Label.new()
-        notification_label.text = message
-        notification_label.notification(NOTIFICATION_ACCESSIBILITY_CHANGED)
+    # 使用 Godot 原生通知
+    var notification_label = Label.new()
+    notification_label.text = message
+    notification_label.notification(NOTIFICATION_ACCESSIBILITY_CHANGED)
 
 func update_element_description(element: Control, description: String):
     """更新 UI 元素的可访问描述"""
@@ -2881,10 +2858,8 @@ func update_element_description(element: Control, description: String):
 ```
 
 **限制**：
-- 不支持完整的屏幕阅读器导航（如 JAWS/NVDA 的所有功能）
+- Godot 对 Windows 屏幕阅读器（JAWS/NVDA/Narrator）的原生支持有限
 - 复杂的战斗信息（如行动队列）可能难以通过语音完整传达
-- 依赖浏览器和操作系统的屏幕阅读器支持
-- Web 平台的 ARIA 支持依赖于浏览器实现
 
 **替代方案**：
 - 提供详细的键盘快捷键列表（可打印）
@@ -2896,7 +2871,7 @@ func update_element_description(element: Control, description: String):
 - 使用 NVDA（Windows）或 VoiceOver（macOS）测试焦点导航
 - 验证所有关键 UI 元素都有正确的 `accessible_name` 和 `accessible_description`
 - 测试数值变化时屏幕阅读器是否正确朗读
-- 在 Chrome/Firefox 中测试 ARIA live region 是否工作
+- 在 Windows 平台测试屏幕阅读器（JAWS/NVDA/Narrator）是否工作
 
 **注意**：完整的屏幕阅读器支持需要等待 Godot 引擎的进一步改进，当前实现仅为基础辅助功能。建议在 MVP 阶段实现基础支持，在后续版本中根据用户反馈逐步完善。
 
@@ -3586,7 +3561,7 @@ func _update_hp_bar(current: int, max_value: int):
 | 指标 | 目标值 | 测量方式 | 通过标准 |
 |------|--------|----------|----------|
 | HUD Draw Calls | < 100 | Godot Monitor | ≤ 100 |
-| 总 Draw Calls | < 2000 | Godot Monitor | ≤ 2000 |
+| 总 Draw Calls | < 5000 | Godot Monitor | ≤ 5000 |
 | HUD帧时 | < 1ms（战斗）| OS.get_ticks_msec() | ≤ 1ms |
 | HUD帧时 | < 0.5ms（探索）| OS.get_ticks_msec() | ≤ 0.5ms |
 | 节点数量 | < 500 | get_tree().get_node_count() | ≤ 500 |
@@ -3871,8 +3846,8 @@ func _update_hp_bar(current: int, max_value: int):
 **预计工时**：1-3天
 
 7. **性能优化**
-   - Draw calls优化（<2000）
-   - 内存占用优化（<2GB）
+   - Draw calls优化（<5000）
+   - 内存占用优化（<8GB）
    - 动画性能优化
    - 资源加载优化
    - 低端设备适配
@@ -3891,7 +3866,7 @@ func _update_hp_bar(current: int, max_value: int):
    - 动态布局调整
 
 **验收标准**：
-- 性能达标：60FPS稳定，<2000 draw calls
+- 性能达标：60FPS稳定，<5000 draw calls
 - 通过WCAG AA可访问性标准
 - 在所有支持的分辨率下正常工作
 

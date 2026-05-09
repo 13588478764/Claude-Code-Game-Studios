@@ -15,12 +15,12 @@
 <!-- Written by /setup-engine. Read by /ux-design, /ux-review, /test-setup, /team-ui, and /dev-story -->
 <!-- to scope interaction specs, test helpers, and implementation to the correct input methods. -->
 
-- **Target Platforms**: Web / Browser
+- **Target Platforms**: Steam (PC)
 - **Input Methods**: Keyboard/Mouse, Gamepad
 - **Primary Input**: Keyboard/Mouse
 - **Gamepad Support**: Partial (recommended)
 - **Touch Support**: None
-- **Platform Notes**: All UI must be responsive to keyboard/mouse navigation. Web performance optimization is critical.
+- **Platform Notes**: Steam PC发行。UI需适配常见PC分辨率（1920x1080, 2560x1440, 3840x2160）。集成Steam SDK（成就、云存档、社区）。
 
 ## Naming Conventions
 
@@ -35,8 +35,8 @@
 
 - **Target Framerate**: 60 FPS
 - **Frame Budget**: 16.6 ms
-- **Draw Calls**: < 2000 for web deployment
-- **Memory Ceiling**: 2GB for web deployment
+- **Draw Calls**: < 5000 for PC deployment
+- **Memory Ceiling**: 8GB for PC deployment
 
 ## Testing
 

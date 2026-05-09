@@ -489,16 +489,16 @@ ASCII线框图已在 Layout Zones 章节中提供（整体布局、各Tab内容�
 
 > **注**：背包按钮在HUD上的具体位置和样式详见 `design/ux/hud.md`。背包面板与角色面板共享相同的侧边滑出形态，详见 `design/ux/character-panel.md`。
 
-## 低端设备降级策略（Web平台补充说明）
+## 低端设备降级策略（PC配置补充说明）
 
-> **注**：Web平台的可用内存检测和GPU性能检测存在以下限制：
-> - `OS.get_static_memory_usage()` 在WebExport中可能返回不准确的值
-> - `RenderingDevice` API在Web平台受浏览器沙盒限制
+> **注**：PC平台的可用内存检测和GPU性能检测：
+> - `OS.get_static_memory_usage()` 在桌面平台返回较准确值
+> - `RenderingServer.get_video_adapter_name()` 可检测GPU型号
 >
 > **替代降级方案**：
 > - **方案A**：基于帧率的动态降级 — 面板打开后监测3秒内平均帧率，若<30FPS则禁用批量动画。通过 `Engine.get_frames_per_second()` 实现。
 > - **方案B**：基于预设质量的降级 — 在设置中读取 `GraphicsSettings.quality_preset`，若为"低"则直接禁用批量动画。
-> - **方案C**：浏览器内存API — 使用JavaScript桥接读取 `performance.memory`（仅Chrome支持），通过 `JavaScript.eval()` 调用。
+> - **方案C**：系统内存检测 — 使用 `OS.get_static_memory_usage()` 获取系统可用内存，若低于4GB则降级。
 >
 > **推荐**：V1.0采用方案B（基于预设），后续版本叠加方案A（基于帧率）。降级阈值配置保留为待实现状态。
 
@@ -611,7 +611,7 @@ ASCII线框图已在 Layout Zones 章节中提供（整体布局、各Tab内容�
 - Reduce Motion选项通过全局设置读取，面板内组件统一遵守
 
 **低端设备降级策略**：
-- 当检测到Web平台可用内存<512MB或GPU性能低于Godot RenderingDevice Tier 1时，批量出售/拆解动画自动降级为"直接显示结果"（无级联动画）
+- 当检测到系统可用内存<4GB或GPU性能低于最低要求时，批量出售/拆解动画自动降级为"直接显示结果"（无级联动画）
 - 降级判定在面板打开时执行一次，结果缓存至本次会话
 - 玩家可在设置中手动开启"显示批量动画"覆盖自动降级
 - 降级阈值可配置：`PerformanceConfig.low_memory_threshold_mb = 512`，`PerformanceConfig.low_gpu_tier = 1`
@@ -953,7 +953,7 @@ ASCII线框图已在 Layout Zones 章节中提供（整体布局、各Tab内容�
 23. ~~**排序弹出菜单焦点管理（UX Review #7）**~~ —— 已定义排序菜单弹出/导航/确认/关闭行为，键盘焦点陷阱确保Tab不跳出菜单。✅
 24. ~~**确认对话框"不再显示"选项（UX Review #8）**~~ —— 已定义单个物品出售支持"不再显示"，拆解/批量操作不支持。设置面板提供重置选项。✅
 25. ~~**HUD交叉引用（UX Review #9）**~~ —— 已添加导航交叉引用段落，链接至hud.md和character-panel.md。✅
-26. ~~**Web平台性能检测（UX Review #10）**~~ —— 已补充低端设备降级策略替代方案：方案A（基于帧率）、方案B（基于预设，推荐V1.0）、方案C（浏览器内存API）。✅
+26. ~~**PC平台性能检测（UX Review #10）**~~ —— 已补充低端设备降级策略替代方案：方案A（基于帧率）、方案B（基于预设，推荐V1.0）、方案C（系统内存检测）。✅
 27. ~~**NEW角标计时起点（UX Review #11）**~~ —— 已明确定义为"从面板打开时开始计时2秒后淡出"。✅
 28. ~~**容量指示硬编码（UX Review #12）**~~ —— 已修正为"容量: N/XX"（XX为动态值），背包满状态描述修正为"物品数量达到当前容量上限"，非增加操作仍可用。✅
 
