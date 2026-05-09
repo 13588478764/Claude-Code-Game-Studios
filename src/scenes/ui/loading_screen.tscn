@@ -1,0 +1,176 @@
+[gd_scene load_steps=3 format=3 uid="uid://loading_screen_scene"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/loading_screen.gd" id="1_script"]
+
+[sub_resource type="Gradient" id="Gradient_progress"]
+colors = PackedColorArray(0.18, 0.545, 0.341, 1, 0.235, 0.702, 0.443, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cancel_btn"]
+bg_color = Color(0, 0, 0, 0.3)
+border_color = Color(0.961, 0.961, 0.863, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+cornerRadius = 4
+
+[node name="LoadingScreen" type="CanvasLayer"]
+z_index = 600
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="FullContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="FullContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="LogoContainer" type="CenterContainer" parent="FullContainer/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 120)
+
+[node name="LogoTitle" type="Label" parent="FullContainer/VBox/LogoContainer"]
+layout_mode = 2
+text = "武侠奇遇录"
+theme_type_variation = "HeaderLarge"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LogoSubtitle" type="Label" parent="FullContainer/VBox/LogoContainer"]
+layout_mode = 2
+text = "Cultivation Wuxia RPG"
+theme_type_variation = "HeaderSmall"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressContainer" type="VBoxContainer" parent="FullContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+custom_minimum_size = Vector2(400, 0)
+
+[node name="StatusLabel" type="Label" parent="FullContainer/VBox/ProgressContainer"]
+layout_mode = 2
+text = "初始化资源..."
+horizontal_alignment = 1
+theme_type_variation = "BodyMedium"
+
+[node name="ProgressBar" type="ProgressBar" parent="FullContainer/VBox/ProgressContainer"]
+layout_mode = 2
+value = 0.0
+show_percentage = true
+custom_minimum_size = Vector2(300, 20)
+
+[node name="TipPanel" type="PanelContainer" parent="FullContainer/VBox"]
+layout_mode = 2
+visible = false
+custom_minimum_size = Vector2(450, 100)
+
+[node name="TipVBox" type="VBoxContainer" parent="FullContainer/VBox/TipPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="TipIcon" type="Label" parent="FullContainer/VBox/TipPanel/TipVBox"]
+layout_mode = 2
+text = "💡"
+horizontal_alignment = 1
+
+[node name="TipLabel" type="Label" parent="FullContainer/VBox/TipPanel/TipVBox"]
+layout_mode = 2
+text = "五行相克：金克木，木克土，土克水，水克火，火克金。"
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+horizontal_alignment = 0
+theme_type_variation = "BodySmall"
+
+[node name="CancelButton" type="Button" parent="FullContainer/VBox"]
+layout_mode = 2
+text = "ESC 取消"
+custom_minimum_size = Vector2(150, 36)
+visible = false
+theme_type_variation = "LoadingCancelButton"
+
+[node name="ErrorContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+
+[node name="ErrorPanel" type="PanelContainer" parent="ErrorContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(400, 200)
+
+[node name="ErrorVBox" type="VBoxContainer" parent="ErrorContainer/ErrorPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+alignment = 1
+
+[node name="ErrorTitle" type="Label" parent="ErrorContainer/ErrorPanel/ErrorVBox"]
+layout_mode = 2
+text = "修炼记录加载失败"
+horizontal_alignment = 1
+theme_type_variation = "HeaderMedium"
+
+[node name="ErrorDesc" type="Label" parent="ErrorContainer/ErrorPanel/ErrorVBox"]
+layout_mode = 2
+text = "存档文件已损坏，无法读取。"
+horizontal_alignment = 1
+theme_type_variation = "BodyMedium"
+
+[node name="ErrorHBox" type="HBoxContainer" parent="ErrorContainer/ErrorPanel/ErrorVBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="ErrorContainer/ErrorPanel/ErrorVBox/ErrorHBox"]
+layout_mode = 2
+text = "重试"
+custom_minimum_size = Vector2(120, 40)
+
+[node name="ReturnButton" type="Button" parent="ErrorContainer/ErrorPanel/ErrorVBox/ErrorHBox"]
+layout_mode = 2
+text = "返回主菜单"
+custom_minimum_size = Vector2(120, 40)
+
+[node name="VersionLabel" type="Label" parent="."]
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = -120.0
+offset_top = -30.0
+offset_right = -20.0
+offset_bottom = -10.0
+text = "v1.0.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+theme_type_variation = "BodySmall"
+modulate = Color(0.5, 0.5, 0.5, 0.6)
