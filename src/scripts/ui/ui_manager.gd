@@ -53,7 +53,8 @@ enum UIState {
 	ENCOUNTER_CARD,   # 奇遇事件卡片
 	QUEST_LOG,        # 任务日志
 	SETTINGS_MENU,    # 设置菜单
-	WORLD_MAP         # 大地图
+	WORLD_MAP,        # 大地图
+	HELP_PANEL        # 帮助面板
 }
 
 ## 当前UI状态
@@ -67,6 +68,7 @@ var backpack_panel: Node = null
 var combat_interface: Node = null
 var encounter_card: Node = null
 var world_map_panel: Node = null           # CanvasLayer root for show()/hide()
+var help_panel_panel: Node = null            # CanvasLayer root for show()/hide()
 
 ## 品阶颜色配置
 var tier_colors: Dictionary = {
@@ -197,6 +199,9 @@ func _hide_current_state() -> void:
 		UIState.WORLD_MAP:
 			if world_map_panel != null:
 				world_map_panel.hide()
+		UIState.HELP_PANEL:
+			if help_panel_panel != null:
+				help_panel_panel.hide()
 
 ## 显示新的UI状态
 func _show_new_state(new_state: int) -> void:
@@ -345,6 +350,8 @@ func _get_state_name(state: int) -> String:
 			return "设置菜单"
 		UIState.WORLD_MAP:
 			return "大地图"
+		UIState.HELP_PANEL:
+			return "帮助面板"
 		_:
 			return "未知"
 

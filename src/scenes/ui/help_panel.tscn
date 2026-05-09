@@ -1,0 +1,195 @@
+[gd_scene load_steps=2 format=3 uid="uid://help_panel_scene"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/help_panel.gd" id="1_script"]
+
+[node name="HelpPanel" type="CanvasLayer" z_index=180]
+
+[node name="HelpPanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_left = 1.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = -560.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="VBox" type="VBoxContainer" parent="HelpPanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+
+[node name="HeaderHBox" type="HBoxContainer" parent="HelpPanelContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+custom_minimum_size = Vector2(0, 48)
+
+[node name="TitleLabel" type="Label" parent="HelpPanelContainer/VBox/HeaderHBox"]
+layout_mode = 2
+text = "帮助"
+theme_type_variation = "HeaderMedium"
+
+[node name="ProgressLabel" type="Label" parent="HelpPanelContainer/VBox/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "教程进度: 0/12"
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="HelpPanelContainer/VBox/HeaderHBox"]
+layout_mode = 2
+text = "✕"
+custom_minimum_size = Vector2(40, 40)
+
+[node name="TabBar" type="TabBar" parent="HelpPanelContainer/VBox"]
+layout_mode = 2
+tabs = [
+	{"title": "教程"},
+	{"title": "系统说明"},
+	{"title": "控制"},
+	{"title": "五行与战斗"}
+]
+
+[node name="TabContent" type="Panel" parent="HelpPanelContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TutorialTab" type="ScrollContainer" parent="HelpPanelContainer/VBox/TabContent"]
+layout_mode = 2
+
+[node name="TutorialVBox" type="VBoxContainer" parent="HelpPanelContainer/VBox/TabContent/TutorialTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="TutorialChapterList" type="ItemList" parent="HelpPanelContainer/VBox/TabContent/TutorialTab/TutorialVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 150)
+select_mode = 1
+
+[node name="TutorialContentLabel" type="RichTextLabel" parent="HelpPanelContainer/VBox/TabContent/TutorialTab/TutorialVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+custom_minimum_size = Vector2(0, 200)
+
+[node name="TutorialNavHBox" type="HBoxContainer" parent="HelpPanelContainer/VBox/TabContent/TutorialTab/TutorialVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="PrevStepButton" type="Button" parent="HelpPanelContainer/VBox/TabContent/TutorialTab/TutorialVBox/TutorialNavHBox"]
+layout_mode = 2
+text = "← 上一页"
+
+[node name="MarkDoneButton" type="Button" parent="HelpPanelContainer/VBox/TabContent/TutorialTab/TutorialVBox/TutorialNavHBox"]
+layout_mode = 2
+text = "标记为已完成"
+
+[node name="NextStepButton" type="Button" parent="HelpPanelContainer/VBox/TabContent/TutorialTab/TutorialVBox/TutorialNavHBox"]
+layout_mode = 2
+text = "下一页 →"
+
+[node name="SystemsTab" type="ScrollContainer" parent="HelpPanelContainer/VBox/TabContent"]
+layout_mode = 2
+visible = false
+
+[node name="SystemsVBox" type="VBoxContainer" parent="HelpPanelContainer/VBox/TabContent/SystemsTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="SearchBox" type="LineEdit" parent="HelpPanelContainer/VBox/TabContent/SystemsTab/SystemsVBox"]
+layout_mode = 2
+placeholder_text = "搜索系统说明..."
+
+[node name="SystemList" type="ItemList" parent="HelpPanelContainer/VBox/TabContent/SystemsTab/SystemsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 150)
+select_mode = 1
+
+[node name="SystemDetailLabel" type="RichTextLabel" parent="HelpPanelContainer/VBox/TabContent/SystemsTab/SystemsVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="ControlsTab" type="ScrollContainer" parent="HelpPanelContainer/VBox/TabContent"]
+layout_mode = 2
+visible = false
+
+[node name="ControlsVBox" type="VBoxContainer" parent="HelpPanelContainer/VBox/TabContent/ControlsTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="ControlsContent" type="RichTextLabel" parent="HelpPanelContainer/VBox/TabContent/ControlsTab/ControlsVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="WuxingCombatTab" type="ScrollContainer" parent="HelpPanelContainer/VBox/TabContent"]
+layout_mode = 2
+visible = false
+
+[node name="WuxingCombatVBox" type="VBoxContainer" parent="HelpPanelContainer/VBox/TabContent/WuxingCombatTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="WuxingTitleLabel" type="Label" parent="HelpPanelContainer/VBox/TabContent/WuxingCombatTab/WuxingCombatVBox"]
+layout_mode = 2
+text = "五行相克矩阵"
+theme_type_variation = "HeaderMedium"
+
+[node name="WuxingMatrixLabel" type="RichTextLabel" parent="HelpPanelContainer/VBox/TabContent/WuxingCombatTab/WuxingCombatVBox"]
+layout_mode = 2
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="CombatTipsTitleLabel" type="Label" parent="HelpPanelContainer/VBox/TabContent/WuxingCombatTab/WuxingCombatVBox"]
+layout_mode = 2
+text = "战斗技巧"
+theme_type_variation = "HeaderMedium"
+
+[node name="CombatTipsLabel" type="RichTextLabel" parent="HelpPanelContainer/VBox/TabContent/WuxingCombatTab/WuxingCombatVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="FooterHBox" type="HBoxContainer" parent="HelpPanelContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+custom_minimum_size = Vector2(0, 32)
+
+[node name="HintLabel" type="Label" parent="HelpPanelContainer/VBox/FooterHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "按 F1 关闭帮助面板"
+horizontal_alignment = 1
