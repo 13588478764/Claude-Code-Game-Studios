@@ -1,0 +1,133 @@
+[gd_scene load_steps=3 format=3 uid="uid://main_menu_scene"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/main_menu.gd" id="1_script"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_right = 1.0
+anchors_bottom = 1.0
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 1.0
+color = Color(0.05, 0.05, 0.05, 1)
+
+[node name="ZoneA_Logo" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 0.35
+offset_top = 20.0
+
+[node name="LogoVBox" type="VBoxContainer" parent="ZoneA_Logo"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="LogoTitle" type="Label" parent="ZoneA_Logo/LogoVBox"]
+layout_mode = 2
+text = "武侠奇遇录"
+theme_type_variation = "HeaderLarge"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LogoSubtitle" type="Label" parent="ZoneA_Logo/LogoVBox"]
+layout_mode = 2
+text = "Cultivation Wuxia RPG"
+theme_type_variation = "HeaderSmall"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ZoneB_Menu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_left = 0.1
+anchors_top = 0.35
+anchors_right = 0.5
+anchors_bottom = 0.75
+offset_left = 40.0
+offset_right = -40.0
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="NewGameButton" type="Button" parent="ZoneB_Menu"]
+layout_mode = 2
+text = "开始新修炼"
+custom_minimum_size = Vector2(0, 48)
+theme_type_variation = "MainMenuButton"
+
+[node name="ContinueButton" type="Button" parent="ZoneB_Menu"]
+layout_mode = 2
+text = "继续修炼"
+custom_minimum_size = Vector2(0, 48)
+theme_type_variation = "MainMenuButton"
+
+[node name="SettingsButton" type="Button" parent="ZoneB_Menu"]
+layout_mode = 2
+text = "修炼设置"
+custom_minimum_size = Vector2(0, 48)
+theme_type_variation = "MainMenuButton"
+
+[node name="CreditsButton" type="Button" parent="ZoneB_Menu"]
+layout_mode = 2
+text = "制作人员"
+custom_minimum_size = Vector2(0, 48)
+theme_type_variation = "MainMenuButton"
+
+[node name="QuitButton" type="Button" parent="ZoneB_Menu"]
+layout_mode = 2
+text = "退出修炼"
+custom_minimum_size = Vector2(0, 48)
+theme_type_variation = "MainMenuButton"
+
+[node name="ZoneC_Info" type="Control" parent="."]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.85
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_top = 10.0
+offset_bottom = -10.0
+
+[node name="VersionLabel" type="Label" parent="ZoneC_Info"]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 0.3
+anchors_bottom = 0.5
+offset_left = 20.0
+text = "v1.0.0"
+theme_type_variation = "BodySmall"
+modulate = Color(0.5, 0.5, 0.5, 0.6)
+
+[node name="SaveInfoLabel" type="Label" parent="ZoneC_Info"]
+layout_mode = 1
+anchors_left = 0.3
+anchors_top = 0.0
+anchors_right = 0.7
+anchors_bottom = 0.5
+text = "上次：金丹初期 · 中原腹地"
+horizontal_alignment = 1
+theme_type_variation = "BodyMedium"
+
+[node name="CloudLabel" type="Label" parent="ZoneC_Info"]
+layout_mode = 1
+anchors_left = 0.7
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 0.5
+offset_right = -20.0
+text = "云存档已启用"
+horizontal_alignment = 2
+theme_type_variation = "BodySmall"
+modulate = Color(0.5, 0.5, 0.5, 0.6)
+
+[node name="CopyrightLabel" type="Label" parent="ZoneC_Info"]
+layout_mode = 1
+anchors_left = 0.0
+anchors_top = 0.5
+anchors_right = 0.5
+anchors_bottom = 1.0
+offset_left = 20.0
+text = "© 2026 武侠奇遇录"
+theme_type_variation = "BodySmall"
+modulate = Color(0.4, 0.4, 0.4, 0.5)
