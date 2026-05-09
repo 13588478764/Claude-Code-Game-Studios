@@ -69,8 +69,8 @@ var backpack_panel: Node = null
 var combat_interface: Node = null
 var encounter_card: Node = null
 var world_map_panel: Node = null           # CanvasLayer root for show()/hide()
-var help_panel_panel: Node = null            # CanvasLayer root for show()/hide()
-var inventory_panel_panel: Node = null       # CanvasLayer root for show()/hide()
+var help_panel: Node = null            # CanvasLayer root for show()/hide()
+var inventory_panel: Node = null       # CanvasLayer root for show()/hide()
 
 ## 品阶颜色配置
 var tier_colors: Dictionary = {
@@ -202,11 +202,11 @@ func _hide_current_state() -> void:
 			if world_map_panel != null:
 				world_map_panel.hide()
 		UIState.HELP_PANEL:
-			if help_panel_panel != null:
-				help_panel_panel.hide()
+			if help_panel != null:
+				help_panel.hide()
 		UIState.INVENTORY_PANEL:
-			if inventory_panel_panel != null:
-				inventory_panel_panel.hide()
+			if inventory_panel != null:
+				inventory_panel.hide()
 
 ## 显示新的UI状态
 func _show_new_state(new_state: int) -> void:
