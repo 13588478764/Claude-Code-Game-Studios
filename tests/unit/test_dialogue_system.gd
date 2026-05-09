@@ -16,10 +16,6 @@ func after_each():
 		if is_inside_tree():
 			dialogue_manager.queue_free()
 
-func after_each():
-	# add_child_autofree 会自动释放，不需要手动 free
-	pass
-
 ## 测试对话树注册
 func test_register_dialogue_tree():
 	var tree := DialogueData.DialogueTree.new("test_dialogue", "测试对话")
