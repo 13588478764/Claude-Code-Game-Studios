@@ -7,8 +7,14 @@ var dialogue_data: DialogueData
 func before_each():
 	var DialogueManagerScript = load("res://src/scripts/dialogue/dialogue_manager.gd")
 	dialogue_manager = DialogueManagerScript.new()
-	add_child_autofree(dialogue_manager)  # 添加到场景树中，确保 get_tree() 可用
+	# Use add_child + register_free to ensure proper scene tree membership
+	add_child(dialogue_manager)
 	dialogue_data = DialogueData.new()
+
+func after_each():
+	if dialogue_manager != null:
+		if is_inside_tree():
+			dialogue_manager.queue_free()
 
 func after_each():
 	# add_child_autofree 会自动释放，不需要手动 free

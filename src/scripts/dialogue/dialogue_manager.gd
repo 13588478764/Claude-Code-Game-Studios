@@ -455,7 +455,7 @@ func _display_current_node() -> void:
 			var scene_tree := get_tree()
 			if scene_tree != null:
 				await scene_tree.create_timer(0.5).timeout
-			_goto_node(_current_node.next_node)
+				_goto_node(_current_node.next_node)
 		else:
 			end_dialogue()
 
