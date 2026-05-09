@@ -79,6 +79,9 @@ func _ready() -> void:
 	var version = "v%s" % ProjectSettings.get_setting("application/config/version", "1.0.0")
 	_version_label.text = version
 
+	# 读取减少运动设置
+	_reduce_motion = _load_reduce_motion_setting()
+
 
 ## 开始加载（完整界面）
 func start_loading(
@@ -96,14 +99,12 @@ func start_loading(
 	_progress_bar.value = 0.0
 
 	# 淡入背景
+	$"FullContainer/VBox".modulate = Color(1, 1, 1, 0)
 	var tween = create_tween()
-	tween.tween_property(_background, "modulate", Color(1, 1, 1, 1), 0.15)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CUBIC)
-
-	# 淡入面板内容
+	tween.tween_property(_background, "modulate", Color(1, 1, 1, 1), 0.15)
 	tween.parallel().tween_property($"FullContainer/VBox", "modulate", Color(1, 1, 1, 1), 0.2)
-	$"FullContainer/VBox".modulate = Color(1, 1, 1, 0)
 
 	# 显示取消按钮
 	_cancel_btn.visible = _can_cancel
@@ -198,7 +199,7 @@ func _input(event: InputEvent) -> void:
 
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE and _can_cancel:
-			_on_cancel_pressed
+			_on_cancel_pressed()
 			get_viewport().set_input_as_handled()
 
 
@@ -249,3 +250,18 @@ func _load_type_to_string(load_type: LoadType) -> String:
 		LoadType.SCENE_TRANSITION: return "scene_transition"
 		LoadType.RETURN_TO_MENU: return "return_to_menu"
 	return "unknown"
+
+
+## 读取减少运动设置
+func _load_reduce_motion_setting() -> bool:
+	var config_path = "user://settings.json"
+	if not FileAccess.file_exists(config_path):
+		return false
+	var file = FileAccess.open(config_path, FileAccess.READ)
+	if file == null:
+		return false
+	var json = JSON.parse_string(file.get_as_text())
+	file.close()
+	if json == null:
+		return false
+	return json.get("reduce_motion", false)

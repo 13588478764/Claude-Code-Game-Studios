@@ -27,14 +27,6 @@ func _ready() -> void:
 	pass
 
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		if _is_paused:
-			# 暂停菜单已处理ESC键，这里不重复处理
-			pass
-		# 其他情况由游戏逻辑处理
-
-
 ## 打开暂停菜单
 func open_pause_menu(area_name: String = "", game_time_str: String = "") -> void:
 	if _pause_menu != null and _is_paused:

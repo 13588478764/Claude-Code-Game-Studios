@@ -47,8 +47,6 @@ var _current_area: String = "青云山"
 var _game_time: String = "未时三刻"
 ## 是否有存档
 var _has_save: bool = false
-## 菜单是否可见
-var _is_visible: bool = false
 ## 子面板是否打开（存档列表/设置/对话框）
 var _subpanel_open: bool = false
 
@@ -78,15 +76,14 @@ func open_menu(area_name: String = "", game_time_str: String = "") -> void:
 		_game_time = game_time_str
 
 	visible = true
-	_is_visible = true
 	_update_location_hint()
 	_update_save_availability()
 
 	# 淡入动画
 	var tween = create_tween()
-	tween.tween_property(_panel, "modulate", Color(1, 1, 1, 1), 0.2)
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(_panel, "modulate", Color(1, 1, 1, 1), 0.2)
 
 	# 默认焦点在"继续修炼"
 	_continue_btn.grab_focus()
@@ -96,7 +93,6 @@ func open_menu(area_name: String = "", game_time_str: String = "") -> void:
 
 ## 关闭暂停菜单（继续游戏）
 func close_menu() -> void:
-	_is_visible = false
 	_subpanel_open = false
 
 	# 淡出动画

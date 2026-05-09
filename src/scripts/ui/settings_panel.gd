@@ -199,22 +199,29 @@ func _on_tab_changed(tab_index: int) -> void:
 
 ## 音量变更即时生效
 func _on_master_volume_changed(value: float) -> void:
-	AudioServer.set_bus_volume_db(0, linear_to_db(value / 100.0))
+	var bus_idx = AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
 	_has_unapplied_changes = true
 
 
 func _on_music_volume_changed(value: float) -> void:
 	# TODO: 设置音乐总线音量
+	# var bus_idx = AudioServer.get_bus_index("Music")
+	# AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
 	_has_unapplied_changes = true
 
 
 func _on_sfx_volume_changed(value: float) -> void:
 	# TODO: 设置音效总线音量
+	# var bus_idx = AudioServer.get_bus_index("SFX")
+	# AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
 	_has_unapplied_changes = true
 
 
 func _on_voice_volume_changed(value: float) -> void:
 	# TODO: 设置语音总线音量
+	# var bus_idx = AudioServer.get_bus_index("Voice")
+	# AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
 	_has_unapplied_changes = true
 
 

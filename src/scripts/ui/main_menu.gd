@@ -84,20 +84,21 @@ func _play_intro_animation() -> void:
 		await get_tree().create_timer(0.08 * (i + 1)).timeout
 		var btn = buttons[i]
 		btn.modulate = Color(1, 1, 1, 0)
-		btn.position.y += 20
+		var start_offset = btn.offset_top
+		btn.offset_top = start_offset + 20
 		var btn_tween = create_tween()
 		btn_tween.tween_property(btn, "modulate", Color(1, 1, 1, 1), 0.15)
-		btn_tween.tween_property(btn, "position:y", btn.position.y - 20, 0.3)
+		btn_tween.tween_property(btn, "offset_top", start_offset, 0.3)
 		btn_tween.set_ease(Tween.EASE_OUT)
 
 	# 底部信息 (1.2s - 1.4s)
 	await get_tree().create_timer(1.2).timeout
-	var info_labels = [$ZoneC_Info/SaveInfoLabel, $ZoneC_Info/VersionLabel, $ZoneC_Info/CopyrightLabel]
+	var info_labels = [$ZoneC_Info/SaveInfoLabel, $ZoneC_Info/VersionLabel]
 	for lbl in info_labels:
 		if lbl != null:
 			lbl.modulate = Color(1, 1, 1, 0)
 			var info_tween = create_tween()
-			info_tween.tween_property(lbl, "modulate", Color(1, 1, 1, lbl.modulate.a if lbl is Label else 1), 0.2)
+			info_tween.tween_property(lbl, "modulate", Color(1, 1, 1, 0.6), 0.2)
 
 
 ## 检测存档状态
