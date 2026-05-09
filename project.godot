@@ -36,6 +36,8 @@ DialogueManager="*res://src/scripts/dialogue/dialogue_manager.gd"
 DialogueLoader="*res://src/scripts/dialogue/dialogue_loader.gd"
 DialogueCombatBridge="*res://src/scripts/dialogue/dialogue_combat_bridge.gd"
 ActManager="*res://src/scripts/story/act_manager.gd"
+PauseMenuManager="*res://src/scripts/ui/pause_menu_manager.gd"
+PauseMenuManager="*res://src/scripts/ui/pause_menu_manager.gd"
 
 [editor_plugins]
 
