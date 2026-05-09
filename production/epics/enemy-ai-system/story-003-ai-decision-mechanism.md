@@ -1,7 +1,7 @@
 # Story 003: AI决策机制
 
 > **Epic**: 敌人AI系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27

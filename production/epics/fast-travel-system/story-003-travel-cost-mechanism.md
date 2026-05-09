@@ -1,7 +1,7 @@
 # Story 003: 旅行成本机制
 
 > **Epic**: 快速旅行系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

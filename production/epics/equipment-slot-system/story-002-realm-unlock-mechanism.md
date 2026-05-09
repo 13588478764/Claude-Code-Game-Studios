@@ -1,7 +1,7 @@
 # Story 002: 境界解锁机制
 
 > **Epic**: 装备槽位系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27

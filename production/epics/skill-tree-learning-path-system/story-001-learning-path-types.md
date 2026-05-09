@@ -1,7 +1,7 @@
 # Story 001: 学习路径类型
 
 > **Epic**: 技能树/学习路径系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-28

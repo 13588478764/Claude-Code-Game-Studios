@@ -1,7 +1,7 @@
 # Story 003: 探索反馈机制
 
 > **Epic**: 开放世界探索系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

@@ -1,7 +1,7 @@
 # Story 002: 弱点打击系统
 
 > **Epic**: 战斗系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

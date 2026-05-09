@@ -1,7 +1,7 @@
 # Story 001: 物品数据结构定义
 
 > **Epic**: 物品数据库
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

@@ -1,7 +1,7 @@
 # Story 002: 物品属性存储
 
 > **Epic**: 物品数据库
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

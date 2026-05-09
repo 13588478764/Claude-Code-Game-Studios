@@ -1,7 +1,7 @@
 # Story 002: 查询与显示系统
 
 > **Epic**: 奇遇历史记录系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
 > **Manifest Version**: 2026-04-27

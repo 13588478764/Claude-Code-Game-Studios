@@ -1,7 +1,7 @@
 # Story 003: 检测类型与强制命中
 
 > **Epic**: 命中检测系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

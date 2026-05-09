@@ -1,7 +1,7 @@
 # Story 002: 解锁机制
 
 > **Epic**: 技能树/学习路径系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-28

@@ -1,7 +1,7 @@
 # Story 002: 角色状态显示面板
 
 > **Epic**: HUD系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Presentation
 > **Type**: UI
 > **Estimate**: 4-6 hours

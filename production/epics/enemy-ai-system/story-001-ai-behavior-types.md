@@ -1,7 +1,7 @@
 # Story 001: AI行为类型
 
 > **Epic**: 敌人AI系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27

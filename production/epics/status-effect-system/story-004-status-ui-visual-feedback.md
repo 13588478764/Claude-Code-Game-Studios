@@ -1,7 +1,7 @@
 # Story 004: 状态UI与视觉反馈
 
 > **Epic**: 状态效果系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Visual/Feel
 > **Estimate**: 4-6 hours

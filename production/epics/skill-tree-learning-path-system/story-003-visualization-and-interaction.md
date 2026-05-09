@@ -1,7 +1,7 @@
 # Story 003: 可视化与交互
 
 > **Epic**: 技能树/学习路径系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
 > **Manifest Version**: 2026-04-28

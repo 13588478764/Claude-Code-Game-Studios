@@ -1,7 +1,7 @@
 # Story 003: 队友状态显示
 
 > **Epic**: HUD系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Presentation
 > **Type**: UI
 > **Manifest Version**: 2026-04-28

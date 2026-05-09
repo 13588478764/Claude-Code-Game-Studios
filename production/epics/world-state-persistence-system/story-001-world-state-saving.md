@@ -1,7 +1,7 @@
 # Story 001: 世界状态保存
 
 > **Epic**: 世界状态持久化
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: Logic
 > **Estimate**: 8 hours

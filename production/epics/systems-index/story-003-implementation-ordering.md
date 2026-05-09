@@ -1,7 +1,7 @@
 # Story 003: 实现顺序规划
 
 > **Epic**: 系统索引
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Config/Data
 > **Estimate**: 5 hours

@@ -1,7 +1,7 @@
 # Story 002: 武学属性存储
 
 > **Epic**: 武学数据库
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

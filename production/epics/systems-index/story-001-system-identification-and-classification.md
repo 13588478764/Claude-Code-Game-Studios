@@ -1,7 +1,7 @@
 # Story 001: 系统识别与分类
 
 > **Epic**: 系统索引
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Config/Data
 > **Estimate**: 4 hours

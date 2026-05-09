@@ -1,7 +1,7 @@
 # Story 001: 任务状态管理
 
 > **Epic**: 任务系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

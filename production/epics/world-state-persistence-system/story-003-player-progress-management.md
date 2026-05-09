@@ -1,7 +1,7 @@
 # Story 003: 玩家进度管理
 
 > **Epic**: 世界状态持久化
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: Logic
 > **Estimate**: 10 hours

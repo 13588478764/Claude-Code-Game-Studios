@@ -1,7 +1,7 @@
 # Story 007: 敌人实例生成集成
 
 > **Epic**: 敌人缩放系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-28

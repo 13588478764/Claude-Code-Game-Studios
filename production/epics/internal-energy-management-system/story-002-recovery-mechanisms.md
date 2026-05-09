@@ -1,7 +1,7 @@
 # Story 002: 恢复机制
 
 > **Epic**: 内力/能量管理系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

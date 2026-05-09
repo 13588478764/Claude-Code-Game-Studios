@@ -1,7 +1,7 @@
 # Story 003: 性能优化和帧率保障
 
 > **Epic**: LOD（细节层次）系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

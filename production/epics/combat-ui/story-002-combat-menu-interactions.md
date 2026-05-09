@@ -1,7 +1,7 @@
 # Story 002: 战斗菜单交互
 
 > **Epic**: 战斗UI系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
 > **Manifest Version**: 2026-04-28

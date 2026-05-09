@@ -1,7 +1,7 @@
 # Story 009: 调试可视化工具
 
 > **Epic**: 敌人缩放系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
 > **Manifest Version**: 2026-04-28

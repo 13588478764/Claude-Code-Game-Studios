@@ -1,7 +1,7 @@
 # Story 002: 纹理细节随距离变化
 
 > **Epic**: LOD（细节层次）系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

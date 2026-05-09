@@ -1,7 +1,7 @@
 # Story 002: EXP计算与分配
 
 > **Epic**: 经验值系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

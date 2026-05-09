@@ -1,7 +1,7 @@
 # Story 001: 武功组合机制
 
 > **Epic**: 武学组合/连招系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

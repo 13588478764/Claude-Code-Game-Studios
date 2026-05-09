@@ -1,7 +1,7 @@
 # Story 003: 武学装备和使用
 
 > **Epic**: 武学系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26

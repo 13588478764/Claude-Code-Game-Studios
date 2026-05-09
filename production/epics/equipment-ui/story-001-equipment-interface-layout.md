@@ -1,7 +1,7 @@
 # Story 001: 装备界面布局
 
 > **Epic**: 装备UI
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
 > **Manifest Version**: 2026-04-27

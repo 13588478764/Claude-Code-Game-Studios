@@ -1,7 +1,7 @@
 # Story 006: 配置文件系统
 
 > **Epic**: 敌人缩放系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Config/Data
 > **Manifest Version**: 2026-04-28

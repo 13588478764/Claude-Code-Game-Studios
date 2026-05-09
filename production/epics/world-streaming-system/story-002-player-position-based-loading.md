@@ -1,7 +1,7 @@
 # Story 002: 基于玩家位置的区域加载
 
 > **Epic**: 世界流式加载系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Estimate**: 8 hours

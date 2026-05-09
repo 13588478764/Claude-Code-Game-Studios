@@ -1,7 +1,7 @@
 # Story 001: 生命值与架势机制
 
 > **Epic**: 生命值/防御系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

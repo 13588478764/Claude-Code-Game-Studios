@@ -1,7 +1,7 @@
 # Story 002: 属性点分配
 
 > **Epic**: 等级提升机制
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

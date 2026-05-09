@@ -1,7 +1,7 @@
 # Story 002: 玩家动机与循环
 
 > **Epic**: 游戏概念
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Design
 > **Manifest Version**: 2026-04-26

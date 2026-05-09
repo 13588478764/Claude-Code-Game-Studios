@@ -1,7 +1,7 @@
 # Story 001: 等级提升触发条件
 
 > **Epic**: 等级提升机制
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

@@ -1,7 +1,7 @@
 # Story 003: 导航标记系统
 
 > **Epic**: 地图/小地图系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: UI
 > **Manifest Version**: 2026-04-26

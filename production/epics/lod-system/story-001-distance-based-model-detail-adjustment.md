@@ -1,7 +1,7 @@
 # Story 001: 基于距离的模型细节调整
 
 > **Epic**: LOD（细节层次）系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

@@ -1,7 +1,7 @@
 # Story 002: 依赖关系映射
 
 > **Epic**: 系统索引
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Config/Data
 > **Estimate**: 6 hours

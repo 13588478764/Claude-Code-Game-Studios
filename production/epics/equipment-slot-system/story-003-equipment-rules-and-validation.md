@@ -1,7 +1,7 @@
 # Story 003: 装备规则与验证
 
 > **Epic**: 装备槽位系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27

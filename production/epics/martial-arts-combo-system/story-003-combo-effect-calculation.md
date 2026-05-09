@@ -1,7 +1,7 @@
 # Story 003: 连招效果计算
 
 > **Epic**: 武学组合/连招系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

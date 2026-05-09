@@ -1,7 +1,7 @@
 # Story 006: 连击和连携系统显示
 
 > **Epic**: HUD系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Presentation
 > **Type**: UI
 > **Manifest Version**: 2026-04-28

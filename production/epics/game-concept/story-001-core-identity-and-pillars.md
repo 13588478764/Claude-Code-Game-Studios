@@ -1,7 +1,7 @@
 # Story 001: 核心身份与支柱
 
 > **Epic**: 游戏概念
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Design
 > **Manifest Version**: 2026-04-26

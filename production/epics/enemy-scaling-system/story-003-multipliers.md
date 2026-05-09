@@ -1,7 +1,7 @@
 # Story 003: 区域难度和敌人类型倍率
 
 > **Epic**: 敌人缩放系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-28

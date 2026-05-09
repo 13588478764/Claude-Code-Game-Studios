@@ -1,7 +1,7 @@
 # Story 002: 已探索区域标记
 
 > **Epic**: 地图/小地图系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

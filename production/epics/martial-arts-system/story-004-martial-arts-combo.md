@@ -1,7 +1,7 @@
 # Story 004: 武学组合系统
 
 > **Epic**: 武学系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

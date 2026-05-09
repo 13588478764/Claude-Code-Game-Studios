@@ -1,7 +1,7 @@
 # Story 001: 动态加载和卸载世界区域
 
 > **Epic**: 世界流式加载系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Estimate**: 12 hours

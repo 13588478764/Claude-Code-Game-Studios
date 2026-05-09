@@ -1,7 +1,7 @@
 # Story 003: 内存优化和性能预算
 
 > **Epic**: 世界流式加载系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Estimate**: 10 hours

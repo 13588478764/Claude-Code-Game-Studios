@@ -1,7 +1,7 @@
 # Story 003: 视觉反馈与特效
 
 > **Epic**: 装备UI
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: UI
 > **Manifest Version**: 2026-04-27

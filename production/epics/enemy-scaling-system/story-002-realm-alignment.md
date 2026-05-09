@@ -1,7 +1,7 @@
 # Story 002: 境界对齐系统实现
 
 > **Epic**: 敌人缩放系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-28

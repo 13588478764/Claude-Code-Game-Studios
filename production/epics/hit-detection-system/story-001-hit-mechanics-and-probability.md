@@ -1,7 +1,7 @@
 # Story 001: 命中机制与概率
 
 > **Epic**: 命中检测系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

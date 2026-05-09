@@ -1,7 +1,7 @@
 # Story 002: 分配机制
 
 > **Epic**: 奖励分配系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-28

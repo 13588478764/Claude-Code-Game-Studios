@@ -1,7 +1,7 @@
 # Story 001: 历史记录机制
 
 > **Epic**: 奇遇历史记录系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27

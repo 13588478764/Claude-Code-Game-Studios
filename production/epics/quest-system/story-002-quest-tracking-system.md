@@ -1,7 +1,7 @@
 # Story 002: 任务追踪系统
 
 > **Epic**: 任务系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26

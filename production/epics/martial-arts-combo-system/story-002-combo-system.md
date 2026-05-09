@@ -1,7 +1,7 @@
 # Story 002: 连招系统
 
 > **Epic**: 武学组合/连招系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Integration
 > **Manifest Version**: 2026-04-26

@@ -1,7 +1,7 @@
 # Story 001: 兴趣点标记系统
 
 > **Epic**: 兴趣点追踪系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: UI
 > **Manifest Version**: 2026-04-26

@@ -1,7 +1,7 @@
 # Story 008: 快捷栏系统
 
 > **Epic**: HUD系统
-> **Status**: Ready
+> **Status**: Complete
 > **Layer**: Presentation
 > **Type**: Integration
 > **Manifest Version**: 2026-04-28

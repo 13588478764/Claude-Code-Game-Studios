@@ -1,7 +1,7 @@
 # Story 002: 装备加成应用
 
 > **Epic**: 装备属性计算
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27

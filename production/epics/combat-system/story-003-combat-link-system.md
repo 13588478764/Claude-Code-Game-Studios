@@ -1,7 +1,7 @@
 # Story 003: 连携系统
 
 > **Epic**: 战斗系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

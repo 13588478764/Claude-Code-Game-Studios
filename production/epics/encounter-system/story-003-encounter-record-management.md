@@ -1,7 +1,7 @@
 # Story 003: 奇遇记录管理
 
 > **Epic**: 奇遇系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

@@ -1,7 +1,7 @@
 # Story 002: 保存加载机制
 
 > **Epic**: 成长数据保存
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

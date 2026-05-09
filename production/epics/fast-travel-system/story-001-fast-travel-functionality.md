@@ -1,7 +1,7 @@
 # Story 001: 快速旅行功能
 
 > **Epic**: 快速旅行系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

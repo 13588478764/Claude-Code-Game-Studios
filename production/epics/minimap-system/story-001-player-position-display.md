@@ -1,7 +1,7 @@
 # Story 001: 玩家位置显示
 
 > **Epic**: 地图/小地图系统
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Core
 > **Type**: UI
 > **Manifest Version**: 2026-04-26

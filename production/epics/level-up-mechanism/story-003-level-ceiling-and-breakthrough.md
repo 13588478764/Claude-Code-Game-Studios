@@ -1,7 +1,7 @@
 # Story 003: 等级上限与突破
 
 > **Epic**: 等级提升机制
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Feature
 > **Type**: Logic
 > **Manifest Version**: 2026-04-26

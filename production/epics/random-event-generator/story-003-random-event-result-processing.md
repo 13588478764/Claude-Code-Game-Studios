@@ -1,7 +1,7 @@
 # Story 003: 随机事件结果处理
 
 > **Epic**: 随机事件生成器
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Integration
 > **Manifest Version**: 2026-04-27

@@ -1,7 +1,7 @@
 # Story 002: 随机事件触发条件
 
 > **Epic**: 随机事件生成器
-> **Status**: Pending Test
+> **Status**: Complete
 > **Layer**: Foundation
 > **Type**: Logic
 > **Manifest Version**: 2026-04-27
