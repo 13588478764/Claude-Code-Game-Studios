@@ -1,6 +1,6 @@
 # UX Spec: 暂停菜单 (Pause Menu)
 
-> **Status**: Ready for Review (Draft — 2026-05-08)
+> **Status**: Approved (UX Review Complete — Z-index fixed 2026-05-09)
 > **Author**: ux-designer
 > **Last Updated**: 2026-05-08
 > **Journey Phase**: 游戏进行中暂停

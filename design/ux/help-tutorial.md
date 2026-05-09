@@ -1,6 +1,6 @@
 # UX Spec: 帮助/教程系统 (Help/Tutorial System)
 
-> **Status**: Draft — Ready for Review
+> **Status**: Approved (UX Review Complete — Z-index fixed 2026-05-09)
 > **Author**: ux-designer
 > **Last Updated**: 2026-05-08
 > **Journey Phase**: 游戏内覆盖面板 (HUD → Side Panel)

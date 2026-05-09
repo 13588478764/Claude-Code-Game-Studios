@@ -1,6 +1,6 @@
 # UX Spec: 加载界面 (Loading Screen)
 
-> **Status**: Draft — Ready for Review
+> **Status**: Approved (UX Review Complete — Z-index fixed 2026-05-09)
 > **Author**: ux-designer
 > **Last Updated**: 2026-05-08
 > **Journey Phase**: 场景过渡

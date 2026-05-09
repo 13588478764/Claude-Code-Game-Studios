@@ -1,6 +1,6 @@
 # UX Spec: 大地图界面 (World Map / Navigation Screen)
 
-> **Status**: Draft (待审核)
+> **Status**: Approved (UX Review Complete — Z-index fixed 2026-05-09)
 > **Author**: ux-designer
 > **Last Updated**: 2026-05-08
 > **Journey Phase(s)**: 大地图探索、任务导航、快速旅行
