@@ -1,0 +1,278 @@
+[gd_scene load_steps=2 format=3 uid="uid://equipment_panel_scene"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/equipment_panel.gd" id="1_script"]
+
+[node name="EquipmentPanel" type="CanvasLayer" z_index=200]
+
+[node name="DimOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 1.0
+color = Color(0, 0, 0, 0.15)
+mouse_filter = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_left = 1.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = -600.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="VBox" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+
+[node name="HeaderHBox" type="HBoxContainer" parent="PanelContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+custom_minimum_size = Vector2(0, 48)
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/VBox/HeaderHBox"]
+layout_mode = 2
+text = "装备"
+theme_type_variation = "HeaderMedium"
+
+[node name="PowerScoreLabel" type="Label" parent="PanelContainer/VBox/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "战力: 0"
+horizontal_alignment = 2
+
+[node name="CloseButton" type="Button" parent="PanelContainer/VBox/HeaderHBox"]
+layout_mode = 2
+text = "✕"
+custom_minimum_size = Vector2(40, 40)
+
+[node name="TabBar" type="TabBar" parent="PanelContainer/VBox"]
+layout_mode = 2
+tabs = [
+	{"title": "穿戴"},
+	{"title": "强化"},
+	{"title": "镶嵌"},
+	{"title": "幻化"}
+]
+
+[node name="TabContent" type="Panel" parent="PanelContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WearTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
+layout_mode = 2
+
+[node name="WearVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/WearTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="SlotGrid" type="GridContainer" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox"]
+layout_mode = 2
+columns = 3
+
+[node name="DetailPanel" type="PanelContainer" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox"]
+layout_mode = 2
+
+[node name="DetailVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+
+[node name="DetailNameLabel" type="Label" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel/DetailVBox"]
+layout_mode = 2
+text = "未选择装备"
+theme_type_variation = "HeaderMedium"
+
+[node name="DetailDescLabel" type="RichTextLabel" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel/DetailVBox"]
+layout_mode = 2
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="DetailActionHBox" type="HBoxContainer" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel/DetailVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="UnequipButton" type="Button" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel/DetailVBox/DetailActionHBox"]
+layout_mode = 2
+text = "卸下"
+
+[node name="EnhanceTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
+layout_mode = 2
+visible = false
+
+[node name="EnhanceVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/EnhanceTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="EquipSelectLabel" type="Label" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+text = "选择要强化的装备"
+theme_type_variation = "HeaderMedium"
+
+[node name="EquipSelectOption" type="OptionButton" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+
+[node name="EquipPreviewLabel" type="Label" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+text = "当前装备: 无"
+
+[node name="MaterialLabel" type="Label" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+text = "强化石: 0 / 银两: 0"
+
+[node name="SuccessRateBar" type="ProgressBar" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+min_value = 0.0
+max_value = 100.0
+
+[node name="SuccessRateLabel" type="Label" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+text = "成功率: 0%"
+horizontal_alignment = 1
+
+[node name="ProtectionCheck" type="CheckBox" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+text = "使用保护符"
+
+[node name="EnhanceButton" type="Button" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+text = "强化"
+theme_type_variation = "PrimaryButton"
+custom_minimum_size = Vector2(0, 40)
+
+[node name="EnhanceHistoryLabel" type="RichTextLabel" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
+layout_mode = 2
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="SocketTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
+layout_mode = 2
+visible = false
+
+[node name="SocketVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/SocketTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="SocketEquipSelectLabel" type="Label" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+text = "选择要镶嵌的装备"
+theme_type_variation = "HeaderMedium"
+
+[node name="SocketEquipSelectOption" type="OptionButton" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+
+[node name="SocketPreviewLabel" type="Label" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+text = "孔洞: 0/3"
+
+[node name="SocketHBox" type="HBoxContainer" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GemInventoryLabel" type="Label" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+text = "宝石库存"
+theme_type_variation = "HeaderMedium"
+
+[node name="GemGrid" type="GridContainer" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+columns = 3
+
+[node name="SocketButton" type="Button" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+text = "镶嵌"
+custom_minimum_size = Vector2(0, 40)
+
+[node name="RemoveGemButton" type="Button" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+text = "移除宝石"
+custom_minimum_size = Vector2(0, 40)
+
+[node name="SetBonusLabel" type="RichTextLabel" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
+layout_mode = 2
+bbcode_enabled = true
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="TransmogTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
+layout_mode = 2
+visible = false
+
+[node name="TransmogVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/TransmogTab"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+
+[node name="CurrentWeaponLabel" type="Label" parent="PanelContainer/VBox/TabContent/TransmogTab/TransmogVBox"]
+layout_mode = 2
+text = "当前武器: 无"
+theme_type_variation = "HeaderMedium"
+
+[node name="PreviewLabel" type="Label" parent="PanelContainer/VBox/TabContent/TransmogTab/TransmogVBox"]
+layout_mode = 2
+text = "当前外观 → 选中外观"
+
+[node name="SkinGrid" type="GridContainer" parent="PanelContainer/VBox/TabContent/TransmogTab/TransmogVBox"]
+layout_mode = 2
+columns = 4
+
+[node name="TransmogCostLabel" type="Label" parent="PanelContainer/VBox/TabContent/TransmogTab/TransmogVBox"]
+layout_mode = 2
+text = "消耗: 银两 x500 或 幻化粉 x1"
+
+[node name="ApplyTransmogButton" type="Button" parent="PanelContainer/VBox/TabContent/TransmogTab/TransmogVBox"]
+layout_mode = 2
+text = "应用幻化"
+theme_type_variation = "PrimaryButton"
+custom_minimum_size = Vector2(0, 40)
+
+[node name="CancelTransmogButton" type="Button" parent="PanelContainer/VBox/TabContent/TransmogTab/TransmogVBox"]
+layout_mode = 2
+text = "取消幻化"
+custom_minimum_size = Vector2(0, 40)
+
+[node name="FooterHBox" type="HBoxContainer" parent="PanelContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+custom_minimum_size = Vector2(0, 32)
+
+[node name="HintLabel" type="Label" parent="PanelContainer/VBox/FooterHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "按 E 键关闭装备面板"
+horizontal_alignment = 1

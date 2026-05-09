@@ -215,7 +215,6 @@ func _show_new_state(new_state: int) -> void:
 			if character_panel != null:
 				character_panel.show()
 				_update_character_panel()
-		UIState.EQUIPMENT_PANEL:
 			if equipment_panel != null:
 				equipment_panel.show()
 				_update_equipment_panel()
@@ -341,8 +340,6 @@ func _get_state_name(state: int) -> String:
 			return "主菜单"
 		UIState.CHARACTER_PANEL:
 			return "角色面板"
-		UIState.EQUIPMENT_PANEL:
-			return "装备界面"
 		UIState.BACKPACK_PANEL:
 			return "背包界面"
 		UIState.COMBAT_INTERFACE:
