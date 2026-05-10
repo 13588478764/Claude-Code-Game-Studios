@@ -271,14 +271,14 @@ func test_link_command_functionality():
 		"internal_energy_cost": 10.0
 	}
 	
-	// Reset and build up link gauge
+	# Reset and build up link gauge
 	system.reset_combo_state()
-	system.combo_state.link_gauge = 0  // Start from 0
+	system.combo_state.link_gauge = 0  # Start from 0
 	
-	// Apply first skill
+	# Apply first skill
 	system.process_skill_usage(skill_data)
 	
-	// Apply synergizing skill
+	# Apply synergizing skill
 	var synergizing_skill = {
 		"tags": ["刚"],
 		"internal_energy_cost": 10.0
@@ -286,15 +286,15 @@ func test_link_command_functionality():
 	
 	var result = system.process_skill_usage(synergizing_skill)
 	
-	// The link gauge should have increased due to the combo
+	# The link gauge should have increased due to the combo
 	assert(system.combo_state.link_gauge > 0, "Link gauge should increase after successful combo")
 	
-	// Apply more skills to build up gauge
+	# Apply more skills to build up gauge
 	for i in range(3):
 		system.process_skill_usage(skill_data)
 		system.process_skill_usage(synergizing_skill)
 	
-	// After several combos, link gauge should be substantial
+	# After several combos, link gauge should be substantial
 	assert(system.combo_state.link_gauge > 30, "Link gauge should be sufficient for link command after several combos")
 	assert(system.is_link_available() == true, "Link should be available after building gauge")
 	
@@ -399,11 +399,11 @@ func test_performance_under_stress():
 		}
 		
 		system.process_skill_usage(skill_a)
-		system.process_skill_usage(skill_b)  // Should synergize with 破防
-		system.process_skill_usage(skill_c)  // Should not synergize
+		system.process_skill_usage(skill_b)  # Should synergize with 破防
+		system.process_skill_usage(skill_c)  # Should not synergize
 	
 	var end_time = Time.get_ticks_usec()
-	var elapsed_time = (end_time - start_time) / 1000.0  // Convert to milliseconds
+	var elapsed_time = (end_time - start_time) / 1000.0  # Convert to milliseconds
 	
 	# The entire test should complete in reasonable time (less than 100ms for 100 iterations)
 	assert(elapsed_time < 100.0, "Combo system should process 100 iterations in under 100ms, took %.2f ms" % elapsed_time)
@@ -471,11 +471,11 @@ func test_edge_cases_and_error_handling():
 	assert(negative_test == 20, "Nonexistent tier should default to basic multiplier")
 	
 	# Test very high multipliers (should be handled properly)
-	var high_multiplier_synergy = system.calculate_combo_tier("破防_刚")  // 2.0 multiplier -> ultimate
+	var high_multiplier_synergy = system.calculate_combo_tier("破防_刚")  # 2.0 multiplier -> ultimate
 	assert(high_multiplier_synergy == "ultimate", "High multiplier should result in ultimate tier")
 	
 	# Test combo chain limits
-	for i in range(10):  // Add more than the 5-item limit
+	for i in range(10):  # Add more than the 5-item limit
 		var temp_skill = {
 			"tags": ["测试%d" % i],
 			"internal_energy_cost": 5.0
@@ -504,7 +504,7 @@ func _on_synergy_detected(tag1: String, tag2: String):
 	print("Synergy detected: %s + %s" % [tag1, tag2])
 
 # Helper function for assertions
-func assert(condition, message):
+func _assert_helper(condition, message):
 	if condition:
 		tests_passed += 1
 	else:
