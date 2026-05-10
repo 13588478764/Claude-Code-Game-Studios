@@ -49,6 +49,8 @@ var _game_time: String = "未时三刻"
 var _has_save: bool = false
 ## 子面板是否打开（存档列表/设置/对话框）
 var _subpanel_open: bool = false
+## 设置面板实例
+var _settings_panel: Node = null
 
 
 func _ready() -> void:
@@ -183,9 +185,13 @@ func _on_load_pressed() -> void:
 func _on_settings_pressed() -> void:
 	pause_menu_settings_opened.emit()
 	_subpanel_open = true
-	# TODO: 打开设置面板实例
-	# 暂时模拟设置关闭
-	await get_tree().create_timer(0.5).timeout
+	# 加载设置面板实例（如果未加载）
+	_load_settings_panel()
+	if _settings_panel != null:
+		_settings_panel.open_settings()
+		_settings_panel.settings_closed.connect(_on_settings_closed)
+
+func _on_settings_closed() -> void:
 	pause_menu_settings_closed.emit(true)
 	_subpanel_open = false
 
@@ -274,3 +280,15 @@ func _show_confirm_dialog(
 	print("[PauseMenu] Buttons: %s" % button_labels)
 	# 模拟回调（默认选择第一个按钮，即确认）
 	callback.call(0)
+
+
+## 加载设置面板实例
+func _load_settings_panel() -> void:
+	if _settings_panel != null:
+		return
+	var scene = load("res://src/scenes/ui/settings_panel.tscn")
+	if scene != null:
+		_settings_panel = scene.instantiate()
+		get_tree().root.add_child(_settings_panel)
+	else:
+		push_warning("无法加载设置面板场景")

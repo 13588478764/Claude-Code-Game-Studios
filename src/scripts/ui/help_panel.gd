@@ -60,12 +60,17 @@ var _current_step_index: int = 0
 var _tutorial_progress: Dictionary = {}
 ## 减少运动设置
 var _reduce_motion: bool = false
+## 情境提示Toast实例
+var _contextual_toast: Node = null
 
 
 func _ready() -> void:
 	# 初始隐藏在屏幕右侧之外
 	visible = true
 	_panel.position.x = _panel.size.x
+
+	# 加载情境提示Toast
+	_load_contextual_toast()
 
 	# 连接信号
 	_close_btn.pressed.connect(close_panel)
@@ -148,12 +153,10 @@ func close_panel() -> void:
 
 ## 显示情境提示
 func show_contextual_toast(toast_id: String, title: String, body: String, related_chapter_id: String = "") -> void:
-	# TODO: 创建情境提示Toast实例，显示在右下角
-	# Toast 应有: Z-index=190, 最大宽度360px, 10秒自动收起
-	# "了解更多" -> open_panel("contextual_toast", target_tab=0, target_item_id=related_chapter_id)
-	# "稍后查看" -> _defer_tutorial(related_chapter_id)
-	# "✕" -> _dismiss_toast(toast_id)
-	print("[HelpPanel] Contextual toast: %s - %s" % [title, body])
+	if _contextual_toast == null:
+		_load_contextual_toast()
+	if _contextual_toast != null:
+		_contextual_toast.show_toast(toast_id, title, body, related_chapter_id)
 
 
 ## Tab切换
@@ -537,3 +540,28 @@ func _load_reduce_motion_setting() -> bool:
 	if json == null:
 		return false
 	return json.get("reduce_motion", false)
+
+
+## 加载情境提示Toast
+func _load_contextual_toast() -> void:
+	var scene = load("res://src/scenes/ui/contextual_toast.tscn")
+	if scene != null:
+		_contextual_toast = scene.instantiate()
+		get_tree().root.add_child(_contextual_toast)
+		_contextual_toast.learn_more_clicked.connect(_on_toast_learn_more)
+		_contextual_toast.later_clicked.connect(_on_toast_later)
+		_contextual_toast.dismissed.connect(_on_toast_dismissed)
+	else:
+		push_warning("无法加载情境提示Toast场景")
+
+
+func _on_toast_learn_more(toast_id: String, related_chapter_id: String) -> void:
+	open_panel("contextual_toast", target_item_id=related_chapter_id)
+
+
+func _on_toast_later(toast_id: String) -> void:
+	_defer_tutorial(toast_id)
+
+
+func _on_toast_dismissed(toast_id: String, action: String) -> void:
+	_dismiss_toast(toast_id)

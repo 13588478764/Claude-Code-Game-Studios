@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://contextual_toast_scene"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/contextual_toast.gd" id="1_script"]
+
+[node name="ContextualToast" type="CanvasLayer" z_index=190]
+
+[node name="ToastPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = -380.0
+offset_top = -200.0
+offset_right = -20.0
+offset_bottom = -100.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="ToastVBox" type="VBoxContainer" parent="ToastPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+
+[node name="TitleLabel" type="Label" parent="ToastPanel/ToastVBox"]
+layout_mode = 2
+text = "💡 提示标题"
+theme_type_variation = "HeaderSmall"
+
+[node name="BodyLabel" type="Label" parent="ToastPanel/ToastVBox"]
+layout_mode = 2
+text = "提示正文内容"
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+
+[node name="ButtonHBox" type="HBoxContainer" parent="ToastPanel/ToastVBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="LearnMoreButton" type="Button" parent="ToastPanel/ToastVBox/ButtonHBox"]
+layout_mode = 2
+text = "了解更多"
+custom_minimum_size = Vector2(100, 32)
+
+[node name="LaterButton" type="Button" parent="ToastPanel/ToastVBox/ButtonHBox"]
+layout_mode = 2
+text = "稍后查看"
+custom_minimum_size = Vector2(100, 32)
+
+[node name="DismissButton" type="Button" parent="ToastPanel/ToastVBox/ButtonHBox"]
+layout_mode = 2
+text = "✕"
+custom_minimum_size = Vector2(32, 32)

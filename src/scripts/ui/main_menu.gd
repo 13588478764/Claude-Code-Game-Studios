@@ -36,6 +36,8 @@ var _has_save: bool = false
 ## 存档信息
 var _save_realm: String = ""
 var _save_region: String = ""
+## 设置面板实例
+var _settings_panel: Node = null
 
 
 func _ready() -> void:
@@ -172,7 +174,9 @@ func _on_continue_pressed() -> void:
 
 func _on_settings_pressed() -> void:
 	main_menu_settings_opened.emit()
-	# TODO: 打开设置面板
+	_load_settings_panel()
+	if _settings_panel != null:
+		_settings_panel.open_settings()
 
 
 func _on_credits_pressed() -> void:
@@ -191,3 +195,15 @@ func _show_quit_confirm() -> void:
 	# 临时直接退出
 	main_menu_quit_confirmed.emit()
 	get_tree().quit()
+
+
+## 加载设置面板实例
+func _load_settings_panel() -> void:
+	if _settings_panel != null:
+		return
+	var scene = load("res://src/scenes/ui/settings_panel.tscn")
+	if scene != null:
+		_settings_panel = scene.instantiate()
+		get_tree().root.add_child(_settings_panel)
+	else:
+		push_warning("无法加载设置面板场景")
