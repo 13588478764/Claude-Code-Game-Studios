@@ -12,11 +12,11 @@ extends Node
 class_name EnemyScalingDebugVisualizer
 
 # 导入所有缩放系统
-const LevelCoefficient = preload("res://scripts/enemy_scaling/level_coefficient.gd")
-const RealmCoefficient = preload("res://scripts/enemy_scaling/realm_coefficient.gd")
-const EnemyMultipliers = preload("res://scripts/enemy_scaling/multipliers.gd")
-const DynamicDifficulty = preload("res://scripts/enemy_scaling/dynamic_difficulty.gd")
-const EnemyGenerator = preload("res://scripts/enemy_scaling/enemy_generator.gd")
+const LevelCoefficient = preload("res://src/scripts/enemy_scaling/level_coefficient.gd")
+const RealmCoefficient = preload("res://src/scripts/enemy_scaling/realm_coefficient.gd")
+const EnemyMultipliers = preload("res://src/scripts/enemy_scaling/multipliers.gd")
+const DynamicDifficulty = preload("res://src/scripts/enemy_scaling/dynamic_difficulty.gd")
+const EnemyGenerator = preload("res://src/scripts/enemy_scaling/enemy_generator.gd")
 
 # UI 组件
 var _scaling_panel: PanelContainer

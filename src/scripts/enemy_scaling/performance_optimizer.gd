@@ -12,9 +12,9 @@ extends Node
 class_name PerformanceOptimizer
 
 # 导入敌人生成器
-const EnemyGenerator = preload("res://scripts/enemy_scaling/enemy_generator.gd")
-const LevelCoefficient = preload("res://scripts/enemy_scaling/level_coefficient.gd")
-const RealmCoefficient = preload("res://scripts/enemy_scaling/realm_coefficient.gd")
+const EnemyGenerator = preload("res://src/scripts/enemy_scaling/enemy_generator.gd")
+const LevelCoefficient = preload("res://src/scripts/enemy_scaling/level_coefficient.gd")
+const RealmCoefficient = preload("res://src/scripts/enemy_scaling/realm_coefficient.gd")
 
 # 性能预算 (毫秒)
 const SINGLE_ENEMY_BUDGET = 1.0  # 单个敌人 < 1ms

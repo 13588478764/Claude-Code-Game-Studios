@@ -12,12 +12,12 @@ extends Node
 class_name EnemyGenerator
 
 # 导入所有缩放系统
-const LevelCoefficient = preload("res://scripts/enemy_scaling/level_coefficient.gd")
-const RealmCoefficient = preload("res://scripts/enemy_scaling/realm_coefficient.gd")
-const EnemyMultipliers = preload("res://scripts/enemy_scaling/multipliers.gd")
-const DynamicDifficulty = preload("res://scripts/enemy_scaling/dynamic_difficulty.gd")
-const EdgeCaseHandler = preload("res://scripts/enemy_scaling/edge_cases.gd")
-const EnemyScalingConfigLoader = preload("res://scripts/enemy_scaling/config_loader.gd")
+const LevelCoefficient = preload("res://src/scripts/enemy_scaling/level_coefficient.gd")
+const RealmCoefficient = preload("res://src/scripts/enemy_scaling/realm_coefficient.gd")
+const EnemyMultipliers = preload("res://src/scripts/enemy_scaling/multipliers.gd")
+const DynamicDifficulty = preload("res://src/scripts/enemy_scaling/dynamic_difficulty.gd")
+const EdgeCaseHandler = preload("res://src/scripts/enemy_scaling/edge_cases.gd")
+const EnemyScalingConfigLoader = preload("res://src/scripts/enemy_scaling/config_loader.gd")
 
 # 配置加载器实例
 var config_loader: EnemyScalingConfigLoader
