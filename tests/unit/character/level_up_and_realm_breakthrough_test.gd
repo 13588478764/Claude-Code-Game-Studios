@@ -4,7 +4,7 @@
 extends Node
 
 # 导入需要测试的脚本
-var LevelUpManager = load("res://scripts/character/level_up_manager.gd")
+var LevelUpManager = load("res://src/scripts/character/level_up_manager.gd")
 
 # 测试结果统计
 var tests_passed = 0

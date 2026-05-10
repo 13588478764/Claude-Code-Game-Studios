@@ -4,7 +4,7 @@
 extends Node
 
 # 导入需要测试的脚本
-var DataIntegrityManager = load("res://scripts/persistence/data_integrity_manager.gd")
+var DataIntegrityManager = load("res://src/scripts/persistence/data_integrity_manager.gd")
 
 # 测试结果统计
 var tests_passed = 0

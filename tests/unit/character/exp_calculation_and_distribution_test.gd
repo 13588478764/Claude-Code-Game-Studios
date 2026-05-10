@@ -4,7 +4,7 @@
 extends Node
 
 # 导入需要测试的脚本
-var ExpCalculationManager = load("res://scripts/character/exp_calculation_manager.gd")
+var ExpCalculationManager = load("res://src/scripts/character/exp_calculation_manager.gd")
 
 # 测试结果统计
 var tests_passed = 0

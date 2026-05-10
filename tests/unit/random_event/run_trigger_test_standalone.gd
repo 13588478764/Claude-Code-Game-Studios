@@ -3,7 +3,7 @@ extends SceneTree
 ## 独立测试运行器 - 不依赖GUT框架
 ## 用于验证RandomEventTrigger的功能
 
-var RandomEventTrigger = preload("res://scripts/random_event/random_event_trigger.gd")
+var RandomEventTrigger = preload("res://src/scripts/random_event/random_event_trigger.gd")
 var test_count = 0
 var passed_count = 0
 var failed_count = 0

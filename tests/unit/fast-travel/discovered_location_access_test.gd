@@ -4,7 +4,7 @@
 extends Node
 
 # 导入需要测试的脚本
-var LocationDiscoveryManager = load("res://scripts/fast_travel/location_discovery_manager.gd")
+var LocationDiscoveryManager = load("res://src/scripts/fast_travel/location_discovery_manager.gd")
 
 # 测试结果统计
 var tests_passed = 0

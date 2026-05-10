@@ -4,7 +4,7 @@
 extends Node
 
 # Import the script to test
-var DefenseMitigationManager = load("res://scripts/combat/defense_mitigation_manager.gd")
+var DefenseMitigationManager = load("res://src/scripts/combat/defense_mitigation_manager.gd")
 
 # Test results
 var tests_passed = 0

@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const PerformanceOptimizer = preload("res://scripts/enemy_scaling/performance_optimizer.gd")
+const PerformanceOptimizer = preload("res://src/scripts/enemy_scaling/performance_optimizer.gd")
 
 var performance_optimizer: PerformanceOptimizer
 

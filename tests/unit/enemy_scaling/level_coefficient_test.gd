@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const LevelCoefficient = preload("res://scripts/enemy_scaling/level_coefficient.gd")
+const LevelCoefficient = preload("res://src/scripts/enemy_scaling/level_coefficient.gd")
 
 ## AC-1: 等级1敌人数值验证
 ## GIVEN 玩家等级为1, WHEN 遭遇新手区普通敌人, THEN 敌人HP应在100-200范围内,攻击力应在15-30范围内

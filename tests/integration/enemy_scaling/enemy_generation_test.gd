@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const EnemyGenerator = preload("res://scripts/enemy_scaling/enemy_generator.gd")
+const EnemyGenerator = preload("res://src/scripts/enemy_scaling/enemy_generator.gd")
 
 var enemy_generator: EnemyGenerator
 
@@ -234,8 +234,7 @@ func test_complete_scaling_formula():
 	)
 	
 	# 验证公式: 最终 = 基础 × 等级系数 × 境界系数 × 区域倍率 × 类型倍率 × 动态系数
-	var expected_hp = 100 * enemy["level_coefficient"] * enemy["realm_coefficient"] * 
-		enemy["region_multiplier"] * enemy["type_hp_multiplier"] * enemy["dynamic_coefficient"]
+	var expected_hp = 100 * enemy["level_coefficient"] * enemy["realm_coefficient"] * enemy["region_multiplier"] * enemy["type_hp_multiplier"] * enemy["dynamic_coefficient"]
 	
 	assert_almost_eq(enemy["final_hp"], expected_hp, 0.1,
 		"Final HP should match complete scaling formula")

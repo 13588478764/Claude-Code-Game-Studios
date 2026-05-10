@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const DynamicDifficulty = preload("res://scripts/enemy_scaling/dynamic_difficulty.gd")
+const DynamicDifficulty = preload("res://src/scripts/enemy_scaling/dynamic_difficulty.gd")
 
 ## AC-6: 连续失败惩罚
 ## GIVEN 玩家连续失败同一战斗3次, WHEN 第4次遭遇, THEN 敌人属性降低30%(系数=0.7)

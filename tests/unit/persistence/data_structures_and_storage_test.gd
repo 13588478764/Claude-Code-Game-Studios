@@ -4,7 +4,7 @@
 extends Node
 
 # 导入需要测试的脚本
-var GrowthDataStructureManager = load("res://scripts/persistence/growth_data_structure_manager.gd")
+var GrowthDataStructureManager = load("res://src/scripts/persistence/growth_data_structure_manager.gd")
 
 # 测试结果统计
 var tests_passed = 0

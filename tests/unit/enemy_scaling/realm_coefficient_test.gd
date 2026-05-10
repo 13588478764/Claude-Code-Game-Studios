@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const RealmCoefficient = preload("res://scripts/enemy_scaling/realm_coefficient.gd")
+const RealmCoefficient = preload("res://src/scripts/enemy_scaling/realm_coefficient.gd")
 
 ## AC-2: 金丹初期精英敌人验证
 ## GIVEN 玩家等级为50(境界5), WHEN 计算最终属性, THEN HP≈18,000±10%, 攻击≈2,000±10%

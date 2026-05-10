@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const EnemyScalingDebugVisualizer = preload("res://scripts/enemy_scaling/debug_visualizer.gd")
+const EnemyScalingDebugVisualizer = preload("res://src/scripts/enemy_scaling/debug_visualizer.gd")
 
 var debug_visualizer: EnemyScalingDebugVisualizer
 

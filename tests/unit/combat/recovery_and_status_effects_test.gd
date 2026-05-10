@@ -4,8 +4,8 @@
 extends Node
 
 # Import the script to test
-var RecoveryStatusManager = load("res://scripts/combat/recovery_status_manager.gd")
-var HealthPoiseManager = load("res://scripts/combat/health_poise_manager.gd")
+var RecoveryStatusManager = load("res://src/scripts/combat/recovery_status_manager.gd")
+var HealthPoiseManager = load("res://src/scripts/combat/health_poise_manager.gd")
 
 # Test results
 var tests_passed = 0

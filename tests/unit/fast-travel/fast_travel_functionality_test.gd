@@ -4,7 +4,7 @@
 extends Node
 
 # 导入需要测试的脚本
-var FastTravelManager = load("res://scripts/fast_travel/fast_travel_manager.gd")
+var FastTravelManager = load("res://src/scripts/fast_travel/fast_travel_manager.gd")
 
 # 测试结果统计
 var tests_passed = 0

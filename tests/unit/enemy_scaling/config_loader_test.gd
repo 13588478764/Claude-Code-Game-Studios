@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const EnemyScalingConfigLoader = preload("res://scripts/enemy_scaling/config_loader.gd")
+const EnemyScalingConfigLoader = preload("res://src/scripts/enemy_scaling/config_loader.gd")
 
 var config_loader: EnemyScalingConfigLoader
 

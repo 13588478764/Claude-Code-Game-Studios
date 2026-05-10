@@ -5,7 +5,7 @@
 
 extends GutTest
 
-const EdgeCaseHandler = preload("res://scripts/enemy_scaling/edge_cases.gd")
+const EdgeCaseHandler = preload("res://src/scripts/enemy_scaling/edge_cases.gd")
 
 ## AC-8: 等级过高保护
 func test_level_too_high_protection():

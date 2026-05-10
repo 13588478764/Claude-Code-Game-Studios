@@ -5,9 +5,9 @@
 
 extends GutTest
 
-const EnemyMultipliers = preload("res://scripts/enemy_scaling/multipliers.gd")
-const LevelCoefficient = preload("res://scripts/enemy_scaling/level_coefficient.gd")
-const RealmCoefficient = preload("res://scripts/enemy_scaling/realm_coefficient.gd")
+const EnemyMultipliers = preload("res://src/scripts/enemy_scaling/multipliers.gd")
+const LevelCoefficient = preload("res://src/scripts/enemy_scaling/level_coefficient.gd")
+const RealmCoefficient = preload("res://src/scripts/enemy_scaling/realm_coefficient.gd")
 
 ## AC-3: 终局区Boss验证
 ## GIVEN 玩家等级99, WHEN 遭遇终局区Boss, THEN HP≈450,000, 攻击≈15,000(±10%)
