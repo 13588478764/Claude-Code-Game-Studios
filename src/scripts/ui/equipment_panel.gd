@@ -122,12 +122,17 @@ var _equipped_items: Dictionary = {}
 var _enhance_history: Array[String] = []
 ## 减少运动设置
 var _reduce_motion: bool = false
+## 确认对话框实例
+var _confirm_dialog: Node = null
 
 
 func _ready() -> void:
 	# 初始隐藏
 	visible = true
 	_panel.position.x = _panel.size.x
+
+	# 加载确认对话框
+	_load_confirm_dialog()
 
 	# 连接信号
 	_close_btn.pressed.connect(close_panel)
@@ -485,16 +490,26 @@ func _on_socket_equip_selected(index: int) -> void:
 
 ## 执行镶嵌
 func _on_socket() -> void:
-	# TODO: 弹出确认对话框
-	print("[Equipment] 镶嵌宝石")
-	_changes_made = true
+	_show_confirm_dialog(
+		"确认镶嵌",
+		"确定要镶嵌宝石吗？",
+		"socket_gem",
+		func() -> void:
+			equipment_gem_socketed.emit("", 0, _selected_gem_color)
+			_changes_made = true
+	)
 
 
 ## 移除宝石
 func _on_remove_gem() -> void:
-	# TODO: 弹出确认对话框
-	print("[Equipment] 移除宝石")
-	_changes_made = true
+	_show_confirm_dialog(
+		"确认移除宝石",
+		"确定要移除已镶嵌的宝石吗？",
+		"",  # No suppression for gem removal
+		func() -> void:
+			equipment_gem_removed.emit("", 0, _selected_gem_color)
+			_changes_made = true
+	)
 
 
 ## 填充幻化Tab数据
@@ -541,10 +556,14 @@ func _select_skin(index: int) -> void:
 func _on_apply_transmog() -> void:
 	if _selected_skin_index < 0:
 		return
-	# TODO: 弹出确认对话框
-	equipment_transmog_applied.emit("current_weapon", str(_selected_skin_index))
-	_changes_made = true
-	print("[Equipment] 应用幻化: index %d" % _selected_skin_index)
+	_show_confirm_dialog(
+		"确认幻化",
+		"确定要应用此外观吗？",
+		"transmog_apply",
+		func() -> void:
+			equipment_transmog_applied.emit("current_weapon", str(_selected_skin_index))
+			_changes_made = true
+	)
 
 
 ## 取消幻化
@@ -624,6 +643,20 @@ func _input(event: InputEvent) -> void:
 				if _is_open:
 					close_panel()
 					get_viewport().set_input_as_handled()
+
+
+## 加载确认对话框
+func _load_confirm_dialog() -> void:
+	var scene = load("res://src/scenes/ui/confirm_dialog.tscn")
+	if scene != null:
+		_confirm_dialog = scene.instantiate()
+		add_child(_confirm_dialog)
+
+## 显示确认对话框
+func _show_confirm_dialog(title: String, description: String, suppress_key: String, on_confirm: Callable) -> void:
+	if _confirm_dialog != null:
+		_confirm_dialog.show_confirm(title, description, suppress_key)
+		_confirm_dialog.confirmed.connect(on_confirm, CONNECT_ONE_SHOT)
 
 
 ## 读取减少运动设置

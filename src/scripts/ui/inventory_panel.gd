@@ -74,12 +74,17 @@ var _selected_item_index: int = -1
 var _current_filter: String = "all"
 ## 减少运动设置
 var _reduce_motion: bool = false
+## 确认对话框实例
+var _confirm_dialog: Node = null
 
 
 func _ready() -> void:
 	# 初始隐藏在屏幕右侧之外
 	visible = true
 	_panel.position.x = _panel.size.x
+
+	# 加载确认对话框
+	_load_confirm_dialog()
 
 	# 连接信号
 	_close_btn.pressed.connect(close_panel)
@@ -323,12 +328,15 @@ func _on_sell_item() -> void:
 		return
 
 	var item = filtered[_selected_item_index]
-	var price = item.get("price", 0)
-	inventory_item_sold.emit(item.id, price)
-	print("[Inventory] 出售物品: %s (价格: %d)" % [item.name, price])
-
-	_remove_item(item)
-	_refresh_inventory()
+	_show_confirm_dialog(
+		"确认出售",
+		"确定要出售 %s 吗？\n获得 %d 灵石" % [item.name, item.get("price", 0)],
+		"sell_%s" % item.id,
+		func() -> void:
+			inventory_item_sold.emit(item.id, item.get("price", 0))
+			_remove_item(item)
+			_refresh_inventory()
+	)
 
 
 ## 拆解物品
@@ -338,36 +346,38 @@ func _on_dismantle_item() -> void:
 		return
 
 	var item = filtered[_selected_item_index]
-	var materials: Dictionary = {}
-
-	# 根据品阶返回材料
-	match item.tier:
-		"common":
-			materials = {"铁锭": 2}
-		"rare":
-			materials = {"精钢": 2, "灵石": 1}
-		"epic":
-			materials = {"玄铁": 3, "灵石": 3}
-		"legendary":
-			materials = {"天外陨铁": 2, "灵石": 5}
-
-	inventory_item_dismantled.emit(item.id, materials)
-	print("[Inventory] 拆解物品: %s (获得: %s)" % [item.name, materials])
-
-	_remove_item(item)
-	_refresh_inventory()
+	var materials: Dictionary = _get_dismantle_materials(item.tier)
+	_show_confirm_dialog(
+		"确认拆解",
+		"确定要拆解 %s 吗？\n获得: %s" % [item.name, _format_materials(materials)],
+		"dismantle_%s" % item.id,
+		func() -> void:
+			inventory_item_dismantled.emit(item.id, materials)
+			_remove_item(item)
+			_refresh_inventory()
+	)
 
 
 ## 批量出售
 func _on_bulk_sell() -> void:
-	# TODO: 弹出确认对话框，选择要出售的物品
-	print("[Inventory] 批量出售功能")
+	_show_confirm_dialog(
+		"批量出售",
+		"确定要出售所有可出售物品吗？",
+		"bulk_sell",
+		func() -> void:
+			print("[Inventory] 批量出售已确认")
+	)
 
 
 ## 批量拆解
 func _on_bulk_dismantle() -> void:
-	# TODO: 弹出确认对话框，选择要拆解的物品
-	print("[Inventory] 批量拆解功能")
+	_show_confirm_dialog(
+		"批量拆解",
+		"确定要拆解所有可拆解物品吗？",
+		"bulk_dismantle",
+		func() -> void:
+			print("[Inventory] 批量拆解已确认")
+	)
 
 
 ## 整理背包
@@ -472,6 +482,53 @@ func _input(event: InputEvent) -> void:
 				if _is_open:
 					close_panel()
 					get_viewport().set_input_as_handled()
+
+
+## 加载确认对话框
+func _load_confirm_dialog() -> void:
+	var scene = load("res://src/scenes/ui/confirm_dialog.tscn")
+	if scene != null:
+		_confirm_dialog = scene.instantiate()
+		add_child(_confirm_dialog)
+		_confirm_dialog.confirmed.connect(_on_dialog_confirmed)
+		_confirm_dialog.cancelled.connect(_on_dialog_cancelled)
+	else:
+		push_warning("无法加载确认对话框场景")
+
+## 显示确认对话框
+func _show_confirm_dialog(title: String, description: String, suppress_key: String, on_confirm: Callable) -> void:
+	if _confirm_dialog != null:
+		_confirm_dialog.show_confirm(title, description, suppress_key)
+		_confirm_dialog.confirmed.connect(on_confirm, CONNECT_ONE_SHOT)
+
+func _on_dialog_confirmed() -> void:
+	pass
+
+func _on_dialog_cancelled() -> void:
+	pass
+
+## 获取拆解材料
+func _get_dismantle_materials(tier: String) -> Dictionary:
+	match tier:
+		"common":
+			return {"铁锭": 2}
+		"uncommon":
+			return {"精钢": 2, "灵石": 1}
+		"rare":
+			return {"玄铁": 3, "灵石": 2}
+		"epic":
+			return {"玄铁": 3, "灵石": 3}
+		"legendary":
+			return {"天外陨铁": 2, "灵石": 5}
+		_:
+			return {}
+
+## 格式化材料显示
+func _format_materials(materials: Dictionary) -> String:
+	var parts: Array[String] = []
+	for key in materials:
+		parts.append("%s x%d" % [key, materials[key]])
+	return ", ".join(parts)
 
 
 ## 读取减少运动设置

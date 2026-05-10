@@ -1,0 +1,70 @@
+[gd_scene load_steps=2 format=3 uid="uid://confirm_dialog_scene"]
+
+[ext_resource type="Script" path="res://src/scripts/ui/confirm_dialog.gd" id="1_script"]
+
+[node name="ConfirmDialog" type="CanvasLayer" z_index=400]
+
+[node name="DimOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_right = 1.0
+anchors_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+mouse_filter = 2
+
+[node name="DialogPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_left = 0.5
+anchors_top = 0.5
+anchors_right = 0.5
+anchors_bottom = 0.5
+offset_left = -220.0
+offset_top = -120.0
+offset_right = 220.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DialogVBox" type="VBoxContainer" parent="DialogPanel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+anchors_left = 0.0
+anchors_top = 0.0
+anchors_right = 1.0
+anchors_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="TitleLabel" type="Label" parent="DialogPanel/DialogVBox"]
+layout_mode = 2
+text = "确认操作？"
+theme_type_variation = "HeaderMedium"
+horizontal_alignment = 1
+
+[node name="DescLabel" type="Label" parent="DialogPanel/DialogVBox"]
+layout_mode = 2
+text = "简要说明操作后果"
+autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+vertical_alignment = 1
+
+[node name="SuppressCheck" type="CheckBox" parent="DialogPanel/DialogVBox"]
+layout_mode = 2
+text = "不再显示此提示"
+visible = false
+
+[node name="ButtonHBox" type="HBoxContainer" parent="DialogPanel/DialogVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="ConfirmButton" type="Button" parent="DialogPanel/DialogVBox/ButtonHBox"]
+layout_mode = 2
+text = "确认"
+theme_type_variation = "PrimaryButton"
+custom_minimum_size = Vector2(120, 40)
+
+[node name="CancelButton" type="Button" parent="DialogPanel/DialogVBox/ButtonHBox"]
+layout_mode = 2
+text = "取消"
+custom_minimum_size = Vector2(120, 40)
