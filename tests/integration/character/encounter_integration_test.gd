@@ -19,14 +19,14 @@ func after_all():
 func before_each():
 	"""在每个测试之前运行"""
 	# 创建角色系统实例
-	character_system = preload("res://src/scripts/character/character_system.gd").new()
+	character_system = load("res://src/scripts/character/character_system.gd").new()
 	character_system.initialize_character()
 	
 	# 创建物品管理器实例
-	item_manager = preload("res://src/scripts/economy/item_manager.gd").new()
+	item_manager = load("res://src/scripts/economy/item_manager.gd").new()
 	
 	# 创建奇遇集成管理器实例
-	encounter_integration = preload("res://src/scripts/encounter/encounter_integration.gd").new()
+	encounter_integration = load("res://src/scripts/encounter/encounter_integration.gd").new()
 	encounter_integration.initialize(character_system, null, item_manager)
 
 func after_each():
@@ -221,7 +221,7 @@ func test_signal_system_integration():
 func test_edge_cases():
 	"""测试边界情况"""
 	# 测试未初始化角色系统的情况
-	var uninit_integration = preload("res://src/scripts/encounter/encounter_integration.gd").new()
+	var uninit_integration = load("res://src/scripts/encounter/encounter_integration.gd").new()
 	var probability = uninit_integration.calculate_encounter_probability(0.03)
 	assert_eq(probability, 0.03, "未初始化时应返回基础概率")
 	

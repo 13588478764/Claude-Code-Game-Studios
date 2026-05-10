@@ -9,7 +9,7 @@
 extends GutTest
 
 # 导入实现文件
-const DamageMultiplierManager = preload("res://src/scripts/combat/damage_multiplier_manager.gd")
+const DamageMultiplierManager = load("res://src/scripts/combat/damage_multiplier_manager.gd")
 
 var multiplier_manager: DamageMultiplierManager
 

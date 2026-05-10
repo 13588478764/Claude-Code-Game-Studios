@@ -4,8 +4,8 @@
 extends GutTest
 
 # 导入要测试的脚本
-const EquipmentWearerScript = preload("res://src/scripts/equipment/equipment_wearer.gd")
-const EquipmentManagerScript = preload("res://src/scripts/equipment/equipment_manager.gd")
+const EquipmentWearerScript = load("res://src/scripts/equipment/equipment_wearer.gd")
+const EquipmentManagerScript = load("res://src/scripts/equipment/equipment_manager.gd")
 
 # 测试实例
 var wearer

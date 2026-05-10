@@ -17,7 +17,7 @@ func after_all():
 func before_each():
 	"""在每个测试之前运行"""
 	# 创建新的角色系统实例
-	character_system = preload("res://src/scripts/character/character_system.gd").new()
+	character_system = load("res://src/scripts/character/character_system.gd").new()
 	character_system.initialize_character()
 
 func after_each():

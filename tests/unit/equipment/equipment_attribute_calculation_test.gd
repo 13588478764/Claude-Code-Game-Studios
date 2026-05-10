@@ -4,7 +4,7 @@
 extends GutTest
 
 # 导入要测试的脚本
-const EquipmentAttributeCalculatorScript = preload("res://src/scripts/equipment/equipment_attribute_calculator.gd")
+const EquipmentAttributeCalculatorScript = load("res://src/scripts/equipment/equipment_attribute_calculator.gd")
 
 # 测试计算器实例
 var calculator

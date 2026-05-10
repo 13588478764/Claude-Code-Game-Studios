@@ -9,7 +9,7 @@
 extends GutTest
 
 # 导入实现文件
-const DamageCalculator = preload("res://src/scripts/combat/damage_calculator.gd")
+const DamageCalculator = load("res://src/scripts/combat/damage_calculator.gd")
 
 var damage_calculator: DamageCalculator
 var attacker: Node

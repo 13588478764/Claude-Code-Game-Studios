@@ -17,7 +17,7 @@ func after_all():
 func before_each():
 	"""在每个测试之前运行"""
 	# 创建战斗系统实例
-	combat_system = preload("res://src/scripts/combat/combat_system.gd").new()
+	combat_system = load("res://src/scripts/combat/combat_system.gd").new()
 	combat_system.initialize()
 
 func after_each():

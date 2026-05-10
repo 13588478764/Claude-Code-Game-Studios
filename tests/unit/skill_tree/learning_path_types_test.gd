@@ -9,7 +9,7 @@ var skill_tree_manager: SkillTreeManager
 
 func before_each():
 	# 初始化技能树管理器
-	skill_tree_manager = preload("res://src/scripts/skill_tree/skill_tree_manager.gd").new()
+	skill_tree_manager = load("res://src/scripts/skill_tree/skill_tree_manager.gd").new()
 
 func after_each():
 	# 清理测试资源

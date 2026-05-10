@@ -18,10 +18,10 @@ func after_all():
 func before_each():
 	"""在每个测试之前运行"""
 	# 创建战斗系统和弱点系统实例
-	combat_system = preload("res://src/scripts/combat/combat_system.gd").new()
+	combat_system = load("res://src/scripts/combat/combat_system.gd").new()
 	combat_system.initialize()
 	
-	weakness_system = preload("res://src/scripts/combat/weakness_system.gd").new()
+	weakness_system = load("res://src/scripts/combat/weakness_system.gd").new()
 	weakness_system.initialize(combat_system)
 
 func after_each():

@@ -9,8 +9,8 @@ var manager
 var validator
 
 func before_each():
-	manager = preload("res://src/scripts/character/attribute_point_manager.gd").new()
-	validator = preload("res://src/scripts/character/attribute_validation_manager.gd").new()
+	manager = load("res://src/scripts/character/attribute_point_manager.gd").new()
+	validator = load("res://src/scripts/character/attribute_validation_manager.gd").new()
 	
 	# 初始化管理器
 	validator.set_attribute_manager(manager)

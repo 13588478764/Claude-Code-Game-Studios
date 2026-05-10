@@ -4,7 +4,7 @@
 extends GutTest
 
 # 导入要测试的脚本
-const EquipmentManagerScript = preload("res://src/scripts/equipment/equipment_manager.gd")
+const EquipmentManagerScript = load("res://src/scripts/equipment/equipment_manager.gd")
 
 # 测试管理器实例
 var equipment_manager

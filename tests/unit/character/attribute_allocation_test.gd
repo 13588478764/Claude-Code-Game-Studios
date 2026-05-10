@@ -18,11 +18,11 @@ func after_all():
 func before_each():
 	"""在每个测试之前运行"""
 	# 创建新的角色系统实例
-	character_system = preload("res://src/scripts/character/character_system.gd").new()
+	character_system = load("res://src/scripts/character/character_system.gd").new()
 	character_system.initialize_character()
 	
 	# 创建物品管理器实例
-	item_manager = preload("res://src/scripts/economy/item_manager.gd").new()
+	item_manager = load("res://src/scripts/economy/item_manager.gd").new()
 	
 	# 将物品管理器添加到场景树以便角色系统可以找到它
 	var main_game = Node.new()

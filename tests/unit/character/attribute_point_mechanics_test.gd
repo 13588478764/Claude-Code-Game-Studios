@@ -134,7 +134,7 @@ func test_attribute_point_data_structure():
 	assert_eq(saved_data["reset_count"], 1, "保存的重置次数应正确")
 	
 	# 创建新的管理器并加载数据
-	var new_manager = preload("res://src/scripts/character/attribute_point_manager.gd").new()
+	var new_manager = load("res://src/scripts/character/attribute_point_manager.gd").new()
 	new_manager.load_data(saved_data)
 	
 	# 验证加载的数据

@@ -23,7 +23,7 @@ func before_each():
 	ui_instance = ui_scene.instantiate()
 	
 	# 创建角色系统实例
-	character_system = preload("res://src/scripts/character/character_system.gd").new()
+	character_system = load("res://src/scripts/character/character_system.gd").new()
 	character_system.initialize_character()
 	
 	# 将UI添加到场景树

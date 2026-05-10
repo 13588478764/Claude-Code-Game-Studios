@@ -8,10 +8,18 @@ var attribute_ui: Node
 
 func before_all():
 	# 创建AttributePointManager实例
-	attribute_manager = preload("res://src/scripts/character/attribute_point_manager.gd").new()
-	
+	var manager_script = load("res://src/scripts/character/attribute_point_manager.gd")
+	if manager_script == null:
+		pending("attribute_point_manager.gd 无法加载")
+		return
+	attribute_manager = manager_script.new()
+
 	# 创建AttributeAssignmentUI实例
-	attribute_ui = preload("res://src/scripts/character/attribute_assignment_ui.gd").new()
+	var ui_script = load("res://src/scripts/character/attribute_assignment_ui.gd")
+	if ui_script == null:
+		pending("attribute_assignment_ui.gd 无法加载")
+		return
+	attribute_ui = ui_script.new()
 	
 	# 将UI添加到场景树以确保_onready变量正确初始化
 	var temp_node = Node.new()

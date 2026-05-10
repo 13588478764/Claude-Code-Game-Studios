@@ -8,7 +8,7 @@ extends GutTest
 ## 框架: GUT (Godot Unit Testing)
 
 const HUDScene := preload("res://src/scenes/ui/hud/HUD.tscn")
-const HUDManagerScript := preload("res://src/scripts/ui/hud/hud_manager.gd")
+const HUDManagerScript := load("res://src/scripts/ui/hud/hud_manager.gd")
 
 var hud: CanvasLayer
 var hud_manager: HUDManager

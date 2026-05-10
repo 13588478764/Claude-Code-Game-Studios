@@ -4,7 +4,7 @@
 extends GutTest
 
 # 导入要测试的脚本
-const MartialArtsSystemScript = preload("res://src/scripts/combat/martial_arts_system.gd")
+const MartialArtsSystemScript = load("res://src/scripts/combat/martial_arts_system.gd")
 
 # 测试系统实例
 var system
