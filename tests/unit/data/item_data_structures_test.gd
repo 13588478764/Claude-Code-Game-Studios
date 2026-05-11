@@ -259,12 +259,3 @@ func test_effect_type_handling():
 	print("✓ Effect type handling test passed")
 	tests_passed += 8
 	tests_total += 8
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

@@ -1,8 +1,8 @@
 ## PerformanceOptimizer
 ## performance_optimizer.gd
-性能优化和批量计算系统
-优化批量敌人生成性能,实现缓存和防抖机制
-TR-enemy-scaling-001 to TR-enemy-scaling-006
+## 性能优化和批量计算系统
+## 优化批量敌人生成性能,实现缓存和防抖机制
+## TR-enemy-scaling-001 to TR-enemy-scaling-006
 ##
 ## 主要功能：
 ## - 待补充
@@ -203,7 +203,7 @@ func get_performance_stats() -> Dictionary:
 ## @return: 缓存统计字典
 func get_cache_stats() -> Dictionary:
 	var total_lookups = _performance_stats["cache_hits"] + _performance_stats["cache_misses"]
-	var hit_rate = (total_lookups > 0) ? (_performance_stats["cache_hits"] / float(total_lookups)) * 100.0 : 0.0
+	var hit_rate = (_performance_stats["cache_hits"] / float(total_lookups)) * 100.0 if total_lookups > 0 else 0.0
 	
 	return {
 		"level_cache_size": _level_coefficient_cache.size(),

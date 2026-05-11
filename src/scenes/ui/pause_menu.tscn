@@ -21,7 +21,7 @@ border_width_bottom = 2
 cornerRadius = 4
 
 [node name="PauseMenu" type="CanvasLayer"]
-z_index = 260
+layer = 260
 script = ExtResource("1_script")
 
 [node name="DimOverlay" type="ColorRect" parent="."]

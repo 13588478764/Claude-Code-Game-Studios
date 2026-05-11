@@ -46,9 +46,9 @@ func test_auto_save_on_level_up():
 	# 创建一个模拟角色对象
 	var mock_character = {
 		"level": 10,
-		"get_level": funcref(self, "_get_mock_level"),
-		"get_realm": funcref(self, "_get_mock_realm"),
-		"get_experience": funcref(self, "_get_mock_experience")
+		"get_level": Callable(self, "_get_mock_level"),
+		"get_realm": Callable(self, "_get_mock_realm"),
+		"get_experience": Callable(self, "_get_mock_experience")
 	}
 	
 	# 连接保存完成信号
@@ -70,9 +70,9 @@ func test_auto_save_on_realm_breakthrough():
 	var save_manager = SaveLoadManager.new()
 	var mock_character = {
 		"realm": 2,
-		"get_level": funcref(self, "_get_mock_level"),
-		"get_realm": funcref(self, "_get_mock_realm"),
-		"get_experience": funcref(self, "_get_mock_experience")
+		"get_level": Callable(self, "_get_mock_level"),
+		"get_realm": Callable(self, "_get_mock_realm"),
+		"get_experience": Callable(self, "_get_mock_experience")
 	}
 	
 	var save_completed = false
@@ -92,10 +92,10 @@ func test_auto_save_on_attribute_allocation():
 	var save_manager = SaveLoadManager.new()
 	var mock_character = {
 		"attributes": {"strength": 20, "agility": 18},
-		"get_level": funcref(self, "_get_mock_level"),
-		"get_realm": funcref(self, "_get_mock_realm"),
-		"get_attribute": funcref(self, "_get_mock_attribute"),
-		"get_experience": funcref(self, "_get_mock_experience")
+		"get_level": Callable(self, "_get_mock_level"),
+		"get_realm": Callable(self, "_get_mock_realm"),
+		"get_attribute": Callable(self, "_get_mock_attribute"),
+		"get_experience": Callable(self, "_get_mock_experience")
 	}
 	
 	var save_completed = false
@@ -115,10 +115,10 @@ func test_manual_save_functionality():
 	var save_manager = SaveLoadManager.new()
 	var mock_character = {
 		"name": "测试角色",
-		"get_name": funcref(self, "_get_mock_name"),
-		"get_level": funcref(self, "_get_mock_level"),
-		"get_realm": funcref(self, "_get_mock_realm"),
-		"get_experience": funcref(self, "_get_mock_experience")
+		"get_name": Callable(self, "_get_mock_name"),
+		"get_level": Callable(self, "_get_mock_level"),
+		"get_realm": Callable(self, "_get_mock_realm"),
+		"get_experience": Callable(self, "_get_mock_experience")
 	}
 	
 	var save_completed = false
@@ -140,11 +140,11 @@ func test_save_with_character_object():
 		"level": 25,
 		"realm": 3,
 		"experience": 15000,
-		"get_level": funcref(self, "_get_mock_level"),
-		"get_realm": funcref(self, "_get_mock_realm"),
-		"get_experience": funcref(self, "_get_mock_experience"),
-		"get_name": funcref(self, "_get_mock_name"),
-		"get_location": funcref(self, "_get_mock_location")
+		"get_level": Callable(self, "_get_mock_level"),
+		"get_realm": Callable(self, "_get_mock_realm"),
+		"get_experience": Callable(self, "_get_mock_experience"),
+		"get_name": Callable(self, "_get_mock_name"),
+		"get_location": Callable(self, "_get_mock_location")
 	}
 	
 	var save_completed = false
@@ -196,10 +196,10 @@ func test_load_functionality():
 	var mock_character = {
 		"level": 12,
 		"realm": 1,
-		"get_level": funcref(self, "_get_mock_level"),
-		"get_realm": funcref(self, "_get_mock_realm"),
-		"get_experience": funcref(self, "_get_mock_experience"),
-		"get_name": funcref(self, "_get_mock_name")
+		"get_level": Callable(self, "_get_mock_level"),
+		"get_realm": Callable(self, "_get_mock_realm"),
+		"get_experience": Callable(self, "_get_mock_experience"),
+		"get_name": Callable(self, "_get_mock_name")
 	}
 	
 	var save_result = save_manager.save_growth_data(mock_character, 1)
@@ -247,10 +247,10 @@ func test_delete_save_functionality():
 	# 先保存一个测试存档
 	var mock_character = {
 		"level": 5,
-		"get_level": funcref(self, "_get_mock_level"),
-		"get_realm": funcref(self, "_get_mock_realm"),
-		"get_experience": funcref(self, "_get_mock_experience"),
-		"get_name": funcref(self, "_get_mock_name")
+		"get_level": Callable(self, "_get_mock_level"),
+		"get_realm": Callable(self, "_get_mock_realm"),
+		"get_experience": Callable(self, "_get_mock_experience"),
+		"get_name": Callable(self, "_get_mock_name")
 	}
 	
 	var save_result = save_manager.save_growth_data(mock_character, 1)
@@ -289,12 +289,3 @@ func _get_mock_name():
 # 模拟方法 - 获取位置
 func _get_mock_location():
 	return "青云山"
-
-# 断言函数
-func assert(condition, message):
-	if not condition:
-		print("测试失败: " + message)
-		tests_total += 1
-	else:
-		# 条件为真时，什么都不做，继续
-		pass

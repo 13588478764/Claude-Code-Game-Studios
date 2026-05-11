@@ -111,6 +111,16 @@ func add_quest_objective(quest_id: String, obj_type: ObjectiveType, target_id: S
 	var quest = quest_definitions[quest_id]
 	var objective = Objective.new(obj_type, target_id, target_count, description)
 	quest.objectives.append(objective)
+	
+	# 如果该任务已经处于 active 状态（已被 accept_quest 拷贝到 active_quests），
+	# 同步把新目标也添加到 active_quests 的副本中。
+	# 否则之后调用 update_objective_progress / get_quest_info 时会发现 active_quests
+	# 中的 objectives 是空的（accept_quest 时拷贝的快照），导致进度无法更新。
+	if active_quests.has(quest_id):
+		# 单独 new 一个 Objective 实例，避免与 quest_definitions 共享引用
+		var active_objective = Objective.new(obj_type, target_id, target_count, description)
+		active_quests[quest_id].objectives.append(active_objective)
+	
 	print("Added objective to quest ", quest_id, ": ", description)
 	return true
 

@@ -1,7 +1,7 @@
 ## StatusVisualFeedback
 ## StatusVisualFeedback Node节点
-管理状态效果的粒子特效和音频反馈
-遵循ADR-001: 使用Node类管理视觉反馈,监听GameConfigManager的low_memory_mode信号
+## 管理状态效果的粒子特效和音频反馈
+## 遵循ADR-001: 使用Node类管理视觉反馈,监听GameConfigManager的low_memory_mode信号
 ##
 ## 主要功能：
 ## - 待补充

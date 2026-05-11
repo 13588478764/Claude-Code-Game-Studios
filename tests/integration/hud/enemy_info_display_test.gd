@@ -23,7 +23,10 @@ func before_each() -> void:
 	var scene = load("res://src/scenes/ui/hud/enemy_info_panel.tscn")
 	enemy_info_panel = scene.instantiate()
 	add_child(enemy_info_panel)
-	await enemy_info_panel.tree_entered
+	# 注意：不能 `await enemy_info_panel.tree_entered` —— 该信号在 add_child() 内部已经
+	# 同步发射过了，再 await 会永久卡住测试。这里用 process_frame 等一帧确保
+	# _ready 中创建的 Tween/AnimationPlayer 等都进入稳定状态。
+	await get_tree().process_frame
 
 func after_each() -> void:
 	if is_instance_valid(enemy_info_panel):

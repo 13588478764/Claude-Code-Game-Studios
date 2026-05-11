@@ -201,37 +201,37 @@ func test_enumerations():
 	
 	# 测试所有武学类型
 	var all_types = [MartialArtData.MartialArtType.ATTACK, 
-	                 MartialArtData.MartialArtType.DEFENSE, 
-	                 MartialArtData.MartialArtType.MOVEMENT, 
-	                 MartialArtData.MartialArtType.BUFF, 
-	                 MartialArtData.MartialArtType.DEBUFF]
+					 MartialArtData.MartialArtType.DEFENSE, 
+					 MartialArtData.MartialArtType.MOVEMENT, 
+					 MartialArtData.MartialArtType.BUFF, 
+					 MartialArtData.MartialArtType.DEBUFF]
 	
 	assert(all_types.size() == 5, "应该有5种武学类型")
 	
 	# 测试所有武器类型
 	var all_weapons = [MartialArtData.WeaponType.SWORD, 
-	                   MartialArtData.WeaponType.BLADE, 
-	                   MartialArtData.WeaponType.FIST, 
-	                   MartialArtData.WeaponType.STAFF, 
-	                   MartialArtData.WeaponType.NONE]
+					   MartialArtData.WeaponType.BLADE, 
+					   MartialArtData.WeaponType.FIST, 
+					   MartialArtData.WeaponType.STAFF, 
+					   MartialArtData.WeaponType.NONE]
 	
 	assert(all_weapons.size() == 5, "应该有5种武器类型")
 	
 	# 测试所有门派
 	var all_schools = [MartialArtData.SchoolType.SHAOLIN, 
-	                   MartialArtData.SchoolType.WUDANG, 
-	                   MartialArtData.SchoolType.EMEI, 
-	                   MartialArtData.SchoolType.GAOYANG, 
-	                   MartialArtData.SchoolType.QINGCHENG, 
-	                   MartialArtData.SchoolType.GENERIC]
+					   MartialArtData.SchoolType.WUDANG, 
+					   MartialArtData.SchoolType.EMEI, 
+					   MartialArtData.SchoolType.GAOYANG, 
+					   MartialArtData.SchoolType.QINGCHENG, 
+					   MartialArtData.SchoolType.GENERIC]
 	
 	assert(all_schools.size() == 6, "应该有6种门派")
 	
 	# 测试所有品阶
 	var all_grades = [MartialArtData.GradeType.COMMON, 
-	                  MartialArtData.GradeType.RARE, 
-	                  MartialArtData.GradeType.EPIC, 
-	                  MartialArtData.GradeType.LEGENDARY]
+					  MartialArtData.GradeType.RARE, 
+					  MartialArtData.GradeType.EPIC, 
+					  MartialArtData.GradeType.LEGENDARY]
 	
 	assert(all_grades.size() == 4, "应该有4种品阶")
 	
@@ -259,12 +259,3 @@ func test_string_representation():
 	print("✓ 字符串表示测试通过")
 	tests_passed += 4
 	tests_total += 4
-
-# 断言函数
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("断言失败: " + message)
-	
-	tests_total += 1

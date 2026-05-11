@@ -1,6 +1,6 @@
 ## EquipmentBonusApplier
 ## 装备加成应用器
-负责应用装备特殊效果、状态抗性和属性叠加逻辑
+## 负责应用装备特殊效果、状态抗性和属性叠加逻辑
 
 extends Node
 

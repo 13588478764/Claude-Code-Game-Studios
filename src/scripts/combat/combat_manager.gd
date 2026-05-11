@@ -142,8 +142,10 @@ enum BattleState {
 
 ## 战斗单位数据结构
 class BattleUnit:
-	## 战斗单位节点
-	var unit_node: Object
+	## 战斗单位节点（可以是 Object 节点引用，也可以是 Dictionary 数据）
+	## 注意：不能限定为 Object 类型——Dictionary 是 Godot 4 的 Variant 内置类型，
+	## 并不继承自 Object，赋值时会触发类型不匹配错误。
+	var unit_node
 	
 	## 速度/先攻值，用于行动队列排序
 	var initiative: int
@@ -173,10 +175,24 @@ class BattleUnit:
 	var attributes: Dictionary
 	
 	## 构造函数
-	## @param node: 战斗单位节点
+	## @param node_or_data: 战斗单位节点或数据字典
 	## @param init_attrs: 初始属性字典
-	func _init(node: Object, init_attrs: Dictionary) -> void:
-		unit_node = node
+	func _init(node_or_data, init_attrs: Dictionary) -> void:
+		if node_or_data is Object:
+			unit_node = node_or_data
+		elif node_or_data is Dictionary:
+			unit_node = node_or_data
+			# 如果传入的是数据字典，从中提取属性
+			initiative = initiative if init_attrs.has("speed") else node_or_data.get("speed", 10)
+			current_hp = node_or_data.get("hp", 100)
+			max_hp = node_or_data.get("max_hp", 100)
+			current_internal_energy = node_or_data.get("internal_energy", 50)
+			max_internal_energy = node_or_data.get("max_internal_energy", 100)
+			stance = node_or_data.get("stance", 100)
+			combo_value = node_or_data.get("combo_value", 0)
+			link_gauge = node_or_data.get("link_gauge", 0)
+			attributes = node_or_data.get("attributes", {})
+			return
 		initiative = init_attrs.get("speed", 10)
 		current_hp = init_attrs.get("hp", 100)
 		max_hp = init_attrs.get("max_hp", 100)

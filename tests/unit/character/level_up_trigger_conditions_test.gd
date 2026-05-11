@@ -239,12 +239,3 @@ func test_player_status_and_realm_info():
 	print("✓ Player status and realm info test passed")
 	tests_passed += 15
 	tests_total += 15
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

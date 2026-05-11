@@ -429,7 +429,7 @@ func test_urgent_quest_detection():
 	for i in range(9):  # 9/10，接近完成
 		manager.update_objective_progress("urgent_test_quest_1", 0)
 	
-	// 更新第二个任务的进度，使其刚完成一部分
+	# 更新第二个任务的进度，使其刚完成一部分
 	manager.update_objective_progress("urgent_test_quest_2", 0)  # 1/5
 	
 	# 获取紧急任务
@@ -437,15 +437,15 @@ func test_urgent_quest_detection():
 	assert(urgent_quests.size() == 1, "应有一个紧急任务")
 	assert(urgent_quests[0] == "urgent_test_quest_1", "紧急任务应是接近完成的那个")
 	
-	// 完成第一个任务
+	# 完成第一个任务
 	for i in range(1):  # 再击杀1只，完成任务
 		manager.update_objective_progress("urgent_test_quest_1", 0)
 	
-	// 此时第一个任务已完成，不应再是紧急任务
+	# 此时第一个任务已完成，不应再是紧急任务
 	var urgent_quests_after_completion = tracker.get_urgent_quests()
 	assert(urgent_quests_after_completion.size() == 0, "完成任务后不应有紧急任务")
 	
-	// 更新第二个任务使其接近完成
+	# 更新第二个任务使其接近完成
 	for i in range(3):  # 总共4/5，接近完成
 		manager.update_objective_progress("urgent_test_quest_2", 0)
 	
@@ -456,12 +456,3 @@ func test_urgent_quest_detection():
 	print("✓ 紧急任务检测测试通过")
 	tests_passed += 8
 	tests_total += 8
-
-# 断言函数
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("断言失败: " + message)
-	
-	tests_total += 1

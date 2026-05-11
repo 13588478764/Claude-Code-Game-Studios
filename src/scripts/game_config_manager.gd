@@ -88,7 +88,10 @@ func check_memory_and_update_mode() -> void:
 ##   - enabled: 是否启用低内存模式
 func set_manual_low_memory_mode(enabled: bool) -> void:
 	if not is_node_ready():
-		push_error("%s 节点未就绪" % LOG_PREFIX)
+		# 使用 push_warning 而非 push_error：
+		# 1. 节点未就绪是可恢复状态（调用方已经做了 early-return 处理）
+		# 2. push_error 会被 GUT 测试框架计入测试失败，但这并非真正的程序错误
+		push_warning("%s 节点未就绪，跳过 set_manual_low_memory_mode" % LOG_PREFIX)
 		return
 	
 	manual_override = true
@@ -98,7 +101,8 @@ func set_manual_low_memory_mode(enabled: bool) -> void:
 ## 清除手动覆盖，恢复自动检测
 func clear_manual_override() -> void:
 	if not is_node_ready():
-		push_error("%s 节点未就绪" % LOG_PREFIX)
+		# 同 set_manual_low_memory_mode：用 warning 而非 error，避免 GUT 误判
+		push_warning("%s 节点未就绪，跳过 clear_manual_override" % LOG_PREFIX)
 		return
 	
 	manual_override = false

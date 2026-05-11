@@ -20,7 +20,7 @@ func before_each() -> void:
 ## 测试1: DialogueCombatBridge autoload已正确加载
 func test_bridge_autoload_exists() -> void:
 	assert_ne(dialogue_combat_bridge, null, "DialogueCombatBridge 应该作为 autoload 存在")
-	assert_eq(dialogue_combat_bridge.is_initialized, true, "DialogueCombatBridge 应该已初始化")
+	assert_true(dialogue_combat_bridge._is_initialized, "DialogueCombatBridge 应该已初始化")
 
 ## 测试2: Bridge信号连接正确
 func test_bridge_signals_connected() -> void:
@@ -134,21 +134,29 @@ func test_trigger_combat_effect_emits_signal() -> void:
 		"callback_node"
 	)
 	
-	# 监控信号发射
-	var signal_received = false
-	var received_args = {}
+	# 监控信号发射 —— 使用 Dictionary 包装可变状态
+	# 关键：GDScript lambda 按值捕获，给 lambda 内部的 `var` 重新赋值不会影响外部变量。
+	# 必须 mutate 引用类型（Dictionary/Array）的字段才能让外部读到更新。
+	var observation := {
+		"signal_received": false,
+		"encounter_id": null,
+		"config": null,
+		"callback": null,
+	}
 	
 	dialogue_manager.combat_trigger_requested.connect(
 		func(enc_id, cfg, cb_node):
-			signal_received = true
-			received_args = {"encounter_id": enc_id, "config": cfg, "callback": cb_node}
+			observation["signal_received"] = true
+			observation["encounter_id"] = enc_id
+			observation["config"] = cfg
+			observation["callback"] = cb_node
 	)
 	
 	effect.execute()
 	
-	assert_true(signal_received, "combat_trigger_requested 信号应该被发射")
-	assert_eq(received_args.encounter_id, "test_encounter", "encounter_id 应该匹配")
-	assert_eq(received_args.callback, "callback_node", "callback_node 应该匹配")
+	assert_true(observation["signal_received"], "combat_trigger_requested 信号应该被发射")
+	assert_eq(observation["encounter_id"], "test_encounter", "encounter_id 应该匹配")
+	assert_eq(observation["callback"], "callback_node", "callback_node 应该匹配")
 
 ## 测试12: JSON解析战斗触发效果
 func test_json_trigger_combat_parsing() -> void:

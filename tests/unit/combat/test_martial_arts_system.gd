@@ -183,7 +183,7 @@ func test_proficiency_cap():
 	for i in range(20):
 		ma_system.increase_proficiency("sword_basic_01", 10, 0.0, 1.0)
 	
-	assert_le(sword_data.proficiency_level, 15, "熟练度不应超过上限15")
+	assert_lte(sword_data.proficiency_level, 15, "熟练度不应超过上限15")
 
 ## 测试：熟练度幸运加成
 func test_proficiency_luck_bonus():
@@ -253,4 +253,3 @@ func test_constants():
 	assert_eq(MartialArtsSystem.FRAGMENT_NEEDED_FOR_SYNTHESIS, 3, "合成所需残页数应该为3")
 	assert_eq(MartialArtsSystem.MAX_EQUIPPED_MARTIAL_ARTS, 4, "最大装备数应该为4")
 	assert_eq(MartialArtsSystem.MAX_PROFICIENCY_LEVEL, 10, "最大熟练度等级应该为10")
-HEREDOC_END < /dev/null

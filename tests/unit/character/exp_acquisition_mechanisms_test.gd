@@ -198,14 +198,17 @@ func test_exp_source_tracing():
 	var exp_manager = ExpAcquisitionManager.new()
 	
 	# 连接信号以验证来源
-	var exp_source_verified = false
-	var exp_amount_verified = false
+	# 使用Dictionary包装状态，绕过GDScript lambda按值捕获的限制
+	var verification_state := {
+		"source_verified": false,
+		"amount_verified": false,
+	}
 	
-	func on_exp_granted(amount, source_type, source_details):
+	var on_exp_granted := func(amount, source_type, _source_details):
 		if source_type == exp_manager.EXP_SOURCE_COMBAT:
-			exp_source_verified = true
+			verification_state["source_verified"] = true
 		if amount > 0:
-			exp_amount_verified = true
+			verification_state["amount_verified"] = true
 	
 	exp_manager.exp_granted.connect(on_exp_granted)
 	
@@ -214,8 +217,8 @@ func test_exp_source_tracing():
 	var battle_result = {}
 	exp_manager.grant_combat_exp(enemy_data, battle_result)
 	
-	assert(exp_source_verified, "EXP来源应正确追溯")
-	assert(exp_amount_verified, "EXP数量应正确记录")
+	assert(verification_state["source_verified"], "EXP来源应正确追溯")
+	assert(verification_state["amount_verified"], "EXP数量应正确记录")
 	
 	print("✓ EXP来源追溯测试通过")
 	tests_passed += 2
@@ -246,12 +249,3 @@ func test_multiple_exp_sources():
 	print("✓ 多个EXP来源测试通过")
 	tests_passed += 4
 	tests_total += 4
-
-# 断言函数
-func assert(condition, message):
-	if not condition:
-		print("测试失败: " + message)
-		tests_total += 1
-	else:
-		# 条件为真时，什么都不做，继续
-		pass

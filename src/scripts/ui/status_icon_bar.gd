@@ -1,8 +1,8 @@
 ## StatusIconBar
 ## StatusIconBar Control节点
-显示角色当前的状态效果图标栏
-AC4: UI适配不同分辨率
-遵循ADR-001: 使用Control节点实现UI,通过信号系统监听状态变化
+## 显示角色当前的状态效果图标栏
+## AC4: UI适配不同分辨率
+## 遵循ADR-001: 使用Control节点实现UI,通过信号系统监听状态变化
 ##
 ## 主要功能：
 ## - 待补充

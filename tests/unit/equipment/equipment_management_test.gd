@@ -4,12 +4,15 @@
 extends GutTest
 
 # 导入要测试的脚本
-const EquipmentManagerScript = load("res://src/scripts/equipment/equipment_manager.gd")
+var EquipmentManagerScript
 
 # 测试管理器实例
 var equipment_manager
 
 # 每个测试前执行
+func before_all():
+	EquipmentManagerScript = load("res://src/scripts/equipment/equipment_manager.gd")
+
 func before_each():
 	equipment_manager = EquipmentManagerScript.new()
 	equipment_manager._ready()  # 手动调用初始化

@@ -22,7 +22,8 @@ func test_main_menu_root_type():
 func test_main_menu_script_exists():
 	var scene = load("res://src/scenes/ui/main_menu.tscn")
 	var instance = scene.instantiate()
-	assert_not_null(instance.script, "主菜单应该有脚本附加")
+	var script_path = instance.get_script()
+	assert_not_null(script_path, "场景应该有脚本附加")
 	instance.queue_free()
 
 func test_main_menu_has_buttons():

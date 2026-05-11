@@ -1,8 +1,8 @@
 ## RealmCoefficient
 ## realm_coefficient.gd
-境界对齐系统实现
-实现9个境界等级,每个境界+10%全属性加成,与玩家境界一一对应
-TR-enemy-scaling-002
+## 境界对齐系统实现
+## 实现9个境界等级,每个境界+10%全属性加成,与玩家境界一一对应
+## TR-enemy-scaling-002
 ##
 ## 主要功能：
 ## - 待补充

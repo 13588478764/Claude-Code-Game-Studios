@@ -33,7 +33,6 @@ signal major_realm_breakthrough_started(character_id: String, new_realm: String)
 signal major_realm_breakthrough_completed(character_id: String, new_realm: String)
 signal perfect_state_achieved(character_id: String, realm: String)
 signal exp_threshold_calculated(level: int, threshold: int)
-REPLACE
 
 # 境界结构定义
 var realm_structure = {

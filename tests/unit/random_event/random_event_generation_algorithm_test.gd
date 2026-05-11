@@ -20,8 +20,8 @@ func test_random_event_generation_with_different_luck_stats():
 	var weight_high = generator.calculate_weight_with_modifiers(base_weight, luck_stat_high, luck_coefficient, zone_multiplier)
 	
 	# 高福缘应该产生更高的权重
-	assert_that(weight_high > weight_low, "高福缘属性应该产生更高的事件权重")
-	assert_that(weight_low >= 0.5, "权重不应低于0.5")
+	assert_true(weight_high > weight_low, "高福缘属性应该产生更高的事件权重")
+	assert_true(weight_low >= 0.5, "权重不应低于0.5")
 	
 	print("福缘属性对权重影响测试通过")
 	print("低福缘(10)权重: ", weight_low)
@@ -39,7 +39,7 @@ func test_seed_generation():
 	var seed2 = generator.generate_seed(region_id, date_value, player_id)
 	
 	# 相同输入应该产生相同的种子
-	assert_that(seed1 == seed2, "相同输入应该产生相同的种子值")
+	assert_true(seed1 == seed2, "相同输入应该产生相同的种子值")
 	
 	print("种子生成测试通过，种子值: ", seed1)
 
@@ -65,8 +65,8 @@ func test_event_pool_management():
 	var retrieved_pool = generator.get_region_event_pool(region_id)
 	
 	# 验证事件池是否正确设置
-	assert_that(retrieved_pool.size() == 1, "事件池应包含1个事件")
-	assert_that(retrieved_pool[0].event_id == "test_event_001", "事件ID应匹配")
+	assert_true(retrieved_pool.size() == 1, "事件池应包含1个事件")
+	assert_true(retrieved_pool[0].event_id == "test_event_001", "事件ID应匹配")
 	
 	print("事件池管理测试通过")
 
@@ -79,7 +79,7 @@ func test_event_type_cooldown():
 	
 	# 检查冷却状态（此时不应在冷却中）
 	var is_on_cooldown_before = generator.is_event_type_on_cooldown(player_id, event_type)
-	assert_that(not is_on_cooldown_before, "事件类型不应在冷却中")
+	assert_true(not is_on_cooldown_before, "事件类型不应在冷却中")
 	
 	# 更新最后事件
 	generator.update_last_event(player_id, event_type)
@@ -111,7 +111,7 @@ func test_random_event_generation():
 			event_count[event.event_id] += 1
 	
 	# 验证生成的事件数量
-	assert_that(event_count.size() > 0, "应该生成至少一种类型的事件")
+	assert_true(event_count.size() > 0, "应该生成至少一种类型的事件")
 	
 	print("随机事件生成测试通过")
 	print("生成的事件分布: ", event_count)
@@ -125,9 +125,9 @@ func test_day_of_year_calculation():
 	var day365 = generator._day_of_year(2026, 12, 31)  # 一年最后一天
 	var leap_day = generator._day_of_year(2024, 2, 29)  # 闰年2月29日
 	
-	assert_that(day1 == 1, "1月1日应该是一年中的第1天")
-	assert_that(day365 == 365, "非闰年12月31日应该是一年中的第365天")
-	assert_that(leap_day == 60, "闰年2月29日应该是一年中的第60天")
+	assert_true(day1 == 1, "1月1日应该是一年中的第1天")
+	assert_true(day365 == 365, "非闰年12月31日应该是一年中的第365天")
+	assert_true(leap_day == 60, "闰年2月29日应该是一年中的第60天")
 	
 	print("日期计算测试通过")
 	print("2026年1月1日: 第", day1, "天")

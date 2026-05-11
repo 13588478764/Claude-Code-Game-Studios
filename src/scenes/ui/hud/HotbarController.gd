@@ -30,9 +30,15 @@ var _drag_preview: Control = null
 # 冷却时间更新
 var _cooldown_timer: Timer
 
-@onready var slot_container: HBoxContainer = $SlotContainer
+var slot_container: HBoxContainer = null
 
 func _ready() -> void:
+	# 创建容器节点（如果还未创建）
+	if slot_container == null:
+		slot_container = HBoxContainer.new()
+		slot_container.name = "SlotContainer"
+		add_child(slot_container)
+
 	_initialize_slots()
 	_setup_cooldown_timer()
 	_connect_signals()
@@ -58,10 +64,12 @@ func _setup_cooldown_timer() -> void:
 	_cooldown_timer.wait_time = 0.016  # ~60FPS更新
 
 func _connect_signals() -> void:
-	# 监听物品系统信号
-	GameEvents.item_hotbar_changed.connect(_on_item_hotbar_changed)
-	GameEvents.item_used.connect(_on_item_used)
-	GameEvents.item_quantity_changed.connect(_on_item_quantity_changed)
+	# GameEvents 是 autoload 单例，测试环境中可能不存在
+	if not Engine.is_editor_hint() and has_node("/root/GameEvents"):
+		var game_events = get_node("/root/GameEvents")
+		game_events.item_hotbar_changed.connect(_on_item_hotbar_changed)
+		game_events.item_used.connect(_on_item_used)
+		game_events.item_quantity_changed.connect(_on_item_quantity_changed)
 
 ## AC-1: 8个槽位正确显示(64x64px)
 ## AC-2: 物品图标正确显示

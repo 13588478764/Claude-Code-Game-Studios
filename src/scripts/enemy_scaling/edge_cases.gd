@@ -1,8 +1,8 @@
 ## EdgeCases
 ## edge_cases.gd
-边缘情况处理系统
-处理等级差距保护、战斗中升级、数据异常等边缘情况
-TR-enemy-scaling-006
+## 边缘情况处理系统
+## 处理等级差距保护、战斗中升级、数据异常等边缘情况
+## TR-enemy-scaling-006
 ##
 ## 主要功能：
 ## - 待补充
@@ -73,7 +73,7 @@ static func should_update_enemy_stats_on_level_up(
 ## 处理数据异常 - 基础HP
 static func validate_base_hp(base_hp: float) -> Dictionary:
 	if base_hp <= 0:
-		push_error("Invalid base HP: %f. Using default value: %d" % [base_hp, DEFAULT_BASE_HP])
+		push_warning("Invalid base HP: %f. Using default value: %d" % [base_hp, DEFAULT_BASE_HP])
 		return {
 			"validated_hp": DEFAULT_BASE_HP,
 			"has_error": true
@@ -86,7 +86,7 @@ static func validate_base_hp(base_hp: float) -> Dictionary:
 ## 处理数据异常 - 基础攻击
 static func validate_base_attack(base_attack: float) -> Dictionary:
 	if base_attack <= 0:
-		push_error("Invalid base attack: %f. Using default value: %d" % [base_attack, DEFAULT_BASE_ATTACK])
+		push_warning("Invalid base attack: %f. Using default value: %d" % [base_attack, DEFAULT_BASE_ATTACK])
 		return {
 			"validated_attack": DEFAULT_BASE_ATTACK,
 			"has_error": true
@@ -99,7 +99,7 @@ static func validate_base_attack(base_attack: float) -> Dictionary:
 ## 处理数据异常 - 区域倍率
 static func validate_region_multiplier(region_multiplier: float) -> Dictionary:
 	if region_multiplier <= 0:
-		push_error("Invalid region multiplier: %f. Using default value: 1.0" % region_multiplier)
+		push_warning("Invalid region multiplier: %f. Using default value: 1.0" % region_multiplier)
 		return {
 			"validated_multiplier": 1.0,
 			"has_error": true

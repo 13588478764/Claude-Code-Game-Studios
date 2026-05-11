@@ -1,9 +1,9 @@
 ## ItemData
 ## ItemData
-item data
-数据定义模块
-ItemData
-物品数据基类，定义所有物品的通用属性
+## item data
+## 数据定义模块
+## ItemData
+## 物品数据基类，定义所有物品的通用属性
 ##
 ## 主要功能：
 ## - 待补充

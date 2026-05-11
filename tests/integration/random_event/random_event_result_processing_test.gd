@@ -63,7 +63,7 @@ func test_combat_encounter_processing_correctly_triggers_combat_scene():
 	# Then: 正确生成敌人并应用战斗结果
 	assert_true(success, "战斗遭遇事件处理应该成功")
 	assert_true(mock_combat_manager.combat_started, "应该触发战斗场景")
-	assert_equal(mock_combat_manager.last_enemy_config["enemies"], ["wolf", "boar"], "应该生成正确的敌人配置")
+	assert_eq(mock_combat_manager.last_enemy_config["enemies"], ["wolf", "boar"], "应该生成正确的敌人配置")
 
 # 测试奇遇/叙事事件处理
 func test_narrative_encounter_processing_provides_options_interface():
@@ -83,7 +83,7 @@ func test_narrative_encounter_processing_provides_options_interface():
 	# Then: 提供对话选项界面
 	assert_true(success, "奇遇/叙事事件处理应该成功")
 	assert_true(mock_ui_manager.dialog_shown, "应该显示对话选项界面")
-	assert_equal(mock_ui_manager.last_dialog_config["title"], "迷路的孩子", "应该显示正确的对话标题")
+	assert_eq(mock_ui_manager.last_dialog_config["title"], "迷路的孩子", "应该显示正确的对话标题")
 
 # 测试资源/宝藏事件处理
 func test_resource_treasure_processing_correctly_awards_items():
@@ -103,7 +103,7 @@ func test_resource_treasure_processing_correctly_awards_items():
 	# Then: 正确发放物品奖励
 	assert_true(success, "资源/宝藏事件处理应该成功")
 	assert_true(mock_item_manager.items_awarded, "应该发放物品奖励")
-	assert_equal(mock_item_manager.last_rewards.size(), 2, "应该发放2个奖励")
+	assert_eq(mock_item_manager.last_rewards.size(), 2, "应该发放2个奖励")
 
 # 测试环境/状态事件处理
 func test_environmental_status_processing_applies_temporary_effects():
@@ -123,7 +123,7 @@ func test_environmental_status_processing_applies_temporary_effects():
 	# Then: 施加正确的临时效果
 	assert_true(success, "环境/状态事件处理应该成功")
 	assert_true(mock_status_effect_system.effects_applied, "应该施加状态效果")
-	assert_equal(mock_status_effect_system.last_effects.size(), 2, "应该施加2个状态效果")
+	assert_eq(mock_status_effect_system.last_effects.size(), 2, "应该施加2个状态效果")
 
 # 边缘情况测试：背包满的情况
 func test_resource_treasure_processing_handles_full_inventory():
@@ -164,8 +164,8 @@ func test_combat_encounter_processing_handles_different_enemy_combinations():
 	
 	# Then: 正确处理不同的敌人组合
 	assert_true(success, "战斗遭遇事件处理应该成功")
-	assert_equal(mock_combat_manager.last_enemy_config["enemies"], ["bandit_leader", "bandit_archer", "bandit_sword"], "应该生成正确的强盗组合")
-	assert_equal(mock_combat_manager.last_enemy_config["difficulty"], "medium", "应该设置正确的难度")
+	assert_eq(mock_combat_manager.last_enemy_config["enemies"], ["bandit_leader", "bandit_archer", "bandit_sword"], "应该生成正确的强盗组合")
+	assert_eq(mock_combat_manager.last_enemy_config["difficulty"], "medium", "应该设置正确的难度")
 
 # 边缘情况测试：检查所有选项路径和结果
 func test_narrative_encounter_processing_handles_all_choice_paths():
@@ -191,7 +191,7 @@ func test_narrative_encounter_processing_handles_all_choice_paths():
 	var result = result_processor._apply_narrative_choice(choice_data, player_id)
 	
 	assert_true(result.has("item_purchased"), "购买选项应该返回购买的物品")
-	assert_equal(result["silver_spent"], 100, "应该消耗100银两")
+	assert_eq(result["silver_spent"], 100, "应该消耗100银两")
 
 # 边缘情况测试：检查效果叠加和持续时间
 func test_environmental_status_processing_handles_effect_stacking_and_duration():
@@ -217,14 +217,14 @@ func test_environmental_status_processing_handles_effect_stacking_and_duration()
 	
 	# Then: 正确处理效果叠加
 	assert_true(success1, "第一个环境事件处理应该成功")
-	assert_equal(mock_status_effect_system.last_effects[0]["duration"], 900, "幸运发现效果应该持续15分钟")
+	assert_eq(mock_status_effect_system.last_effects[0]["duration"], 900, "幸运发现效果应该持续15分钟")
 	
 	# When: 处理第二个环境事件
 	var success2 = result_processor.process_random_event_result(event_data2, player_id)
 	
 	# Then: 正确处理持续时间
 	assert_true(success2, "第二个环境事件处理应该成功")
-	assert_equal(mock_status_effect_system.last_effects[0]["duration"], 1200, "疲劳效果应该持续20分钟")
+	assert_eq(mock_status_effect_system.last_effects[0]["duration"], 1200, "疲劳效果应该持续20分钟")
 
 
 # Mock类定义

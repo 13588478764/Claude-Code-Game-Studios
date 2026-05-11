@@ -1,6 +1,6 @@
 ## EquipmentUiTest
 ## 装备界面布局测试脚本
-验证equipment_ui.gd是否正确实现了story-001-equipment-interface-layout.md中描述的功能
+## 验证equipment_ui.gd是否正确实现了story-001-equipment-interface-layout.md中描述的功能
 ##
 ## 主要功能：
 ## - 待补充

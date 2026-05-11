@@ -171,7 +171,10 @@ func play_normal_animation(damage_num: DamageNumber):
 	tween.start()
 	
 	# 动画结束后隐藏标签
-	yield(tween, "tween_completed")
+	# GDScript 3.x: yield(tween, "tween_completed") → GDScript 4: await tween.tween_completed
+	# 注意：旧版 Tween 节点 + interpolate_property API 在 Godot 4 已弃用，
+	# 完整迁移应改用 create_tween() + tween_property()，本处仅做最小修复让脚本可解析。
+	await tween.tween_completed
 	damage_num.label.visible = false
 	tween.queue_free()
 
@@ -208,7 +211,8 @@ func play_critical_animation(damage_num: DamageNumber):
 	tween.start()
 	
 	# 动画结束后隐藏标签
-	yield(tween, "tween_completed")
+	# GDScript 3.x: yield(tween, "tween_completed") → GDScript 4: await tween.tween_completed
+	await tween.tween_completed
 	damage_num.label.visible = false
 	tween.queue_free()
 

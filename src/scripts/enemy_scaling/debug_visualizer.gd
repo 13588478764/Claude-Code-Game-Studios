@@ -1,13 +1,13 @@
 ## DebugVisualizer
 ## debug_visualizer.gd
-调试可视化工具
-实现开发模式下的缩放参数显示和难度曲线图表
-TR-enemy-scaling-008
+## 调试可视化工具
+## 实现开发模式下的缩放参数显示和难度曲线图表
+## TR-enemy-scaling-008
 ##
 ## 主要功能：
 ## - 待补充
 
-extends Node
+extends Control
 
 class_name EnemyScalingDebugVisualizer
 

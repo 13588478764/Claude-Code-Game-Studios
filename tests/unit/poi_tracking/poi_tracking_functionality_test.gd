@@ -115,8 +115,8 @@ func test_poi_discovery_mechanism():
 		manager.POI_TYPE.QUEST_TARGET, 
 		"远距离目标", 
 		"距离玩家100像素的目标",
-		false,  // 不是隐藏点
-		50.0    // 发现半径50像素
+		false,  # 不是隐藏点
+		50.0    # 发现半径50像素
 	)
 	assert(result2 == true, "应能成功注册远距离POI")
 	
@@ -143,13 +143,13 @@ func test_perception_skill_functionality():
 	# 注册一个隐藏的POI（需要技能才能发现）
 	var result1 = manager.register_poi(
 		"hidden_poi", 
-		Vector2(60, 0),  // 在60像素距离，小于技能范围
+		Vector2(60, 0),  # 在60像素距离，小于技能范围
 		manager.POI_TYPE.SECRET_ENCOUNTER, 
 		"隐藏奇遇点", 
 		"需要技能才能发现的奇遇点",
-		true,   // 是隐藏点
-		0.0,    // 无自动发现半径
-		30      // 需要30点感知才能发现
+		true,   # 是隐藏点
+		0.0,    # 无自动发现半径
+		30      # 需要30点感知才能发现
 	)
 	assert(result1 == true, "应能成功注册隐藏POI")
 	
@@ -249,12 +249,3 @@ func test_poi_marker_system():
 	print("✓ POI标记系统测试通过")
 	tests_passed += 6
 	tests_total += 6
-
-# 断言函数
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("断言失败: " + message)
-	
-	tests_total += 1

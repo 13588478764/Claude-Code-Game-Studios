@@ -7,10 +7,11 @@ var character_growth_ui: CharacterGrowthUiScript
 var test_scene: Node
 
 func before_each():
-	# 创建CharacterSystem实例
-	character_system = CharacterSystem.new()
-	character_system.name = "CharacterSystem"
-	add_child_autofree(character_system)
+	# CharacterSystem 是 AutoLoad 单例，已经存在于 SceneTree 中。
+	# 不能调用 CharacterSystem.new()（CharacterSystem 是 autoload 节点的实例引用，不是脚本类）。
+	# 直接引用 autoload 即可；后续测试可能会修改它的状态，
+	# 如有需要可在此调用 character_system.reset_for_test()（若该方法存在）。
+	character_system = CharacterSystem
 	
 	# 加载UI场景
 	var ui_scene = load("res://src/scenes/ui/character_growth_ui.tscn")
@@ -20,10 +21,12 @@ func before_each():
 	# 获取UI脚本引用
 	character_growth_ui = test_scene as CharacterGrowthUiScript
 	
-	# 等待一帧确保_ready执行完成
-	await wait_frames(2)
+	# 等待两帧确保_ready执行完成（wait_frames 在新版 GUT 中已弃用，
+	# 物理帧用 wait_physics_frames，渲染/process 帧用 wait_process_frames）
+	await wait_physics_frames(2)
 
 func after_each():
+	# 不要 free / null autoload 引用 —— autoload 由 SceneTree 全局管理
 	character_system = null
 	character_growth_ui = null
 	test_scene = null
@@ -39,7 +42,7 @@ func test_character_panel_displays_initial_data():
 	
 	# When: 显示UI
 	character_growth_ui.show_ui()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 角色面板应显示初始数据
 	assert_eq(character_system.level, 1, "Initial level should be 1")
@@ -52,7 +55,7 @@ func test_character_panel_updates_on_level_up():
 	
 	# When: 角色升级
 	character_system.add_experience(1000)  # 足够升级的经验
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: UI应该反映新的等级
 	assert_gt(character_system.level, initial_level, "Level should increase")
@@ -65,7 +68,7 @@ func test_character_panel_shows_realm_bonus():
 	# When: 角色突破到筑基期
 	character_system.level = 10
 	character_system.breakthrough_realm()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 应显示境界加成
 	assert_eq(character_system.realm_index, 1, "Should be in second realm")
@@ -82,7 +85,7 @@ func test_attribute_allocation_slider_binding():
 	
 	# When: 显示UI
 	character_growth_ui.show_ui()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 滑块应该正确绑定
 	if character_growth_ui.strength_slider:
@@ -95,7 +98,7 @@ func test_attribute_allocation_confirm():
 	# When: 分配3点到力道
 	character_growth_ui.temp_attribute_allocation["strength"] = 3
 	character_growth_ui._on_confirm_allocation()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 力道应增加3点
 	assert_eq(character_system.attributes.strength, initial_strength + 3, "Strength should increase by 3")
@@ -120,7 +123,7 @@ func test_attribute_reset():
 	
 	# When: 重置属性
 	var result = character_system.reset_attributes()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 属性应恢复到基础值
 	assert_true(result, "Reset should succeed")
@@ -134,7 +137,7 @@ func test_attribute_reset():
 func test_talent_grid_initialization():
 	# Given: UI已加载
 	character_growth_ui.show_ui()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 天赋网格应该初始化为4x4
 	assert_eq(character_system.talent_grid.size(), 4, "Should have 4 rows")
@@ -146,7 +149,7 @@ func test_talent_unlock():
 	
 	# When: 解锁天赋(0,0)
 	var result = character_system.unlock_talent(0, 0)
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 天赋应该被解锁
 	assert_true(result, "Talent unlock should succeed")
@@ -196,7 +199,7 @@ func test_level_up_signal_triggers_ui_update():
 	
 	# When: 角色升级
 	character_system.add_experience(1000)
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 应该发射level_up_event信号
 	assert_signal_emitted(character_system, "level_up_event", "Should emit level_up_event")
@@ -223,7 +226,7 @@ func test_complete_character_growth_flow():
 	# When: 完整的成长流程
 	# 1. 获得经验升级
 	character_system.add_experience(1000)
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# 2. 分配新获得的属性点
 	character_system.allocate_attribute_points("strength", 3)
@@ -244,12 +247,12 @@ func test_complete_character_growth_flow():
 func test_ui_responds_to_character_system_changes():
 	# Given: UI已显示
 	character_growth_ui.show_ui()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# When: 角色系统发生变化
 	character_system.add_experience(500)
 	character_system.allocate_attribute_points("strength", 2)
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: UI应该自动更新（通过信号）
 	# 这个测试验证信号连接是否正常工作

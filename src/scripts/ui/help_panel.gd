@@ -270,8 +270,8 @@ func _populate_wuxing_combat_data() -> void:
 | [color=#4169E1]水[/color]  →  [color=#FF4500]火[/color] |
 | [color=#FF4500]火[/color]  →  [color=#FFD700]金[/color] |
 
-相克攻击：[b]+50%[/b] 伤害
-被克制攻击：[b]-50%[/b] 伤害
+## 相克攻击：[b]+50%[/b] 伤害
+## 被克制攻击：[b]-50%[/b] 伤害
 """
 
 	_combat_tips_label.text = """[b]战斗技巧[/b]
@@ -556,7 +556,10 @@ func _load_contextual_toast() -> void:
 
 
 func _on_toast_learn_more(toast_id: String, related_chapter_id: String) -> void:
-	open_panel("contextual_toast", target_item_id=related_chapter_id)
+	# GDScript 不支持 Python 风格的 keyword arguments（target_item_id=...）
+	# open_panel 签名: (source: String, target_tab: int = -1, target_item_id: String = "")
+	# 第 2 个参数是 int 类型，必须传 -1（默认值）；第 3 个才是 target_item_id
+	open_panel("contextual_toast", -1, related_chapter_id)
 
 
 func _on_toast_later(toast_id: String) -> void:

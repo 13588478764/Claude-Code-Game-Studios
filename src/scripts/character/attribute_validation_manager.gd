@@ -37,7 +37,6 @@ signal validation_passed(attribute_type: String, points: int)
 signal validation_failed(attribute_type: String, reason: String)
 signal reset_completed(reset_type: String)
 signal data_integrity_verified()
-REPLACE
 
 func _ready():
 	pass

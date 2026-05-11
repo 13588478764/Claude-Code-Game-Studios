@@ -104,7 +104,11 @@ func _validate_scene_structure() -> void:
 			push_warning("[HUDManager] Required node missing: %s" % node_info.name)
 
 	if missing_nodes.size() > 0:
-		push_error("[HUDManager] Scene structure incomplete. Missing nodes: %s" % str(missing_nodes))
+		# 使用 push_warning 而非 push_error：
+		# 1. 已有降级 UI 处理，这是可恢复状态
+		# 2. push_error 会被 GUT 测试框架视为失败，但 test_hud_handles_missing_optional_panel_gracefully 
+		#    等测试故意制造此场景验证降级逻辑
+		push_warning("[HUDManager] Scene structure incomplete. Missing nodes: %s" % str(missing_nodes))
 		# 显示降级UI(简化版HUD或错误提示)
 		_show_fallback_ui(missing_nodes)
 

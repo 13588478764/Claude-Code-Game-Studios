@@ -1,8 +1,8 @@
 ## Multipliers
 ## multipliers.gd
-区域难度和敌人类型倍率系统
-实现5个区域难度等级和3种敌人类型的倍率
-TR-enemy-scaling-003, TR-enemy-scaling-004
+## 区域难度和敌人类型倍率系统
+## 实现5个区域难度等级和3种敌人类型的倍率
+## TR-enemy-scaling-003, TR-enemy-scaling-004
 ##
 ## 主要功能：
 ## - 待补充

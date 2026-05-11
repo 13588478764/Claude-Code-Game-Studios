@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/scripts/ui/contextual_toast.gd" id="1_script"]
 
-[node name="ContextualToast" type="CanvasLayer" z_index=190]
+[node name="ContextualToast" type="CanvasLayer" layer=190]
 
 [node name="ToastPanel" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -35,7 +35,7 @@ theme_type_variation = "HeaderSmall"
 [node name="BodyLabel" type="Label" parent="ToastPanel/ToastVBox"]
 layout_mode = 2
 text = "提示正文内容"
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 1
 
 [node name="ButtonHBox" type="HBoxContainer" parent="ToastPanel/ToastVBox"]
 layout_mode = 2

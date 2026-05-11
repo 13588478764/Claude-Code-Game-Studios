@@ -4,12 +4,15 @@
 extends GutTest
 
 # 导入要测试的脚本
-const EquipmentAttributeCalculatorScript = load("res://src/scripts/equipment/equipment_attribute_calculator.gd")
+var EquipmentAttributeCalculatorScript
 
 # 测试计算器实例
 var calculator
 
 # 每个测试前执行
+func before_all():
+	EquipmentAttributeCalculatorScript = load("res://src/scripts/equipment/equipment_attribute_calculator.gd")
+
 func before_each():
 	calculator = EquipmentAttributeCalculatorScript.new()
 	calculator._ready()  # 手动调用初始化

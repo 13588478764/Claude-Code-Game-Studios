@@ -13,11 +13,15 @@ func before_each():
 	# 仅在开发模式下创建
 	if OS.is_debug_build():
 		debug_visualizer = EnemyScalingDebugVisualizer.new()
+		# 必须 add_child 到 SceneTree（GutTest 自身在 SceneTree 中）才会触发 _ready()，
+		# 否则 _create_ui() 不会执行，所有 Label 引用为 null。
+		# add_child_autofree 会在测试结束时自动 queue_free，避免内存泄漏。
+		add_child_autofree(debug_visualizer)
 
 ## 开发者UI-1: 缩放系数面板实时显示
 func test_scaling_panel_displays_coefficients():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	# Given: 设置玩家等级
@@ -34,7 +38,7 @@ func test_scaling_panel_displays_coefficients():
 ## 开发者UI-2: 属性对比面板显示基础vs缩放属性
 func test_attribute_panel_shows_comparison():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	# Given: 创建调试可视化工具
@@ -53,7 +57,7 @@ func test_attribute_panel_shows_comparison():
 ## 开发者UI-3: 难度曲线图表显示1-99级曲线
 func test_difficulty_curve_displays_all_levels():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	# Given: 创建调试可视化工具
@@ -68,7 +72,7 @@ func test_difficulty_curve_displays_all_levels():
 ## 验证玩家等级设置
 func test_set_player_level():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	# Test 最低等级
@@ -94,7 +98,7 @@ func test_set_player_level():
 ## 验证区域设置
 func test_set_region():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	for region_id in range(5):
@@ -105,7 +109,7 @@ func test_set_region():
 ## 验证敌人类型设置
 func test_set_enemy_type():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	for enemy_type in range(3):
@@ -116,7 +120,7 @@ func test_set_enemy_type():
 ## 验证失败次数设置
 func test_set_failure_count():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	debug_visualizer.set_failure_count(0)
@@ -135,7 +139,7 @@ func test_set_failure_count():
 ## 验证无伤胜利次数设置
 func test_set_perfect_win_count():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	debug_visualizer.set_perfect_win_count(0)
@@ -154,7 +158,7 @@ func test_set_perfect_win_count():
 ## 验证调试信息完整性
 func test_debug_info_completeness():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	debug_visualizer.set_player_level(50)
@@ -175,7 +179,7 @@ func test_debug_info_completeness():
 ## 验证多次更新
 func test_multiple_updates():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	# 第一次更新
@@ -196,7 +200,7 @@ func test_multiple_updates():
 ## 验证边界值
 func test_boundary_values():
 	if not OS.is_debug_build():
-		skip("Test only runs in debug build")
+		pending("Test only runs in debug build")
 		return
 	
 	# 测试等级边界

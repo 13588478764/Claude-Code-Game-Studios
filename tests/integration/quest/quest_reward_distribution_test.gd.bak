@@ -8,8 +8,6 @@ var QuestManager = load("res://src/scripts/quest/quest_manager.gd")
 var QuestRewardManager = load("res://src/scripts/quest/quest_reward_manager.gd")
 
 # 测试结果统计
-var tests_passed = 0
-var tests_total = 0
 
 # 运行所有测试
 func run_all_tests():
@@ -39,7 +37,6 @@ func run_all_tests():
 	# 测试8: 奖励公式验证
 	test_reward_formula_verification()
 	
-	print("任务奖励分发系统集成测试完成: %d/%d 通过" % [tests_passed, tests_total])
 
 # 测试任务奖励管理器初始化和连接
 func test_quest_reward_manager_initialization_and_connection():
@@ -56,8 +53,6 @@ func test_quest_reward_manager_initialization_and_connection():
 	assert(reward_manager.quest_manager == manager, "奖励管理器应正确连接到任务管理器")
 	
 	print("✓ 任务奖励管理器初始化和连接测试通过")
-	tests_passed += 4
-	tests_total += 4
 
 # 测试奖励计算功能
 func test_reward_calculation():
@@ -106,8 +101,6 @@ func test_reward_calculation():
 	assert(side_calculated_rewards.silver == expected_side_silver, "支线任务银两奖励应为等级×系数")
 	
 	print("✓ 奖励计算功能测试通过")
-	tests_passed += 6
-	tests_total += 6
 
 # 测试经验值奖励分发
 func test_exp_reward_distribution():
@@ -125,7 +118,6 @@ func test_exp_reward_distribution():
 	manager.set_quest_rewards("exp_test_quest", {"exp": 500})
 	
 	# 模拟角色成长系统（添加add_experience方法）
-	manager.add_func("add_experience", func(amount): 
 		manager.experience = (manager.get("experience") if manager.has_method("get") else 0) + amount
 		print("Added ", amount, " EXP, total: ", manager.experience)
 	)
@@ -135,8 +127,6 @@ func test_exp_reward_distribution():
 	assert(success == true, "应能成功分发经验奖励")
 	
 	print("✓ 经验值奖励分发测试通过")
-	tests_passed += 2
-	tests_total += 2
 
 # 测试银两奖励分发
 func test_silver_reward_distribution():
@@ -154,7 +144,6 @@ func test_silver_reward_distribution():
 	manager.set_quest_rewards("silver_test_quest", {"silver": 250})
 	
 	# 模拟经济系统（添加add_silver方法）
-	manager.add_func("add_silver", func(amount): 
 		manager.silver = (manager.get("silver") if manager.has_method("get") else 0) + amount
 		print("Added ", amount, " silver, total: ", manager.silver)
 	)
@@ -164,8 +153,6 @@ func test_silver_reward_distribution():
 	assert(success == true, "应能成功分发银两奖励")
 	
 	print("✓ 银两奖励分发测试通过")
-	tests_passed += 2
-	tests_total += 2
 
 # 测试物品奖励分发
 func test_item_reward_distribution():
@@ -187,8 +174,6 @@ func test_item_reward_distribution():
 	assert(success == true, "应能成功分发物品奖励")
 	
 	print("✓ 物品奖励分发测试通过")
-	tests_passed += 2
-	tests_total += 2
 
 # 测试特殊物品奖励分发
 func test_special_item_reward_distribution():
@@ -212,8 +197,6 @@ func test_special_item_reward_distribution():
 	assert(success == true, "应能成功分发特殊物品奖励")
 	
 	print("✓ 特殊物品奖励分发测试通过")
-	tests_passed += 2
-	tests_total += 2
 
 # 测试背包满时的奖励处理
 func test_inventory_full_handling():
@@ -263,8 +246,6 @@ func test_inventory_full_handling():
 	assert(retrieved_items.items.size() >= 1, "应能从临时储物箱中取出物品")
 	
 	print("✓ 背包满时的奖励处理测试通过")
-	tests_passed += 8
-	tests_total += 8
 
 # 测试奖励公式验证
 func test_reward_formula_verification():
@@ -294,25 +275,9 @@ func test_reward_formula_verification():
 	# 奇遇任务银两是随机的，所以只验证基本计算方式
 	
 	print("✓ 奖励公式验证测试通过")
-	tests_passed += 8
-	tests_total += 8
 
 # 为Node添加动态方法的方法（用于模拟系统函数）
-func Node.add_func(name, f):
-	if not has_method("_call"):
-		var d = {}
-		d[name] = f
-		set_script(create_script_from_dictionary(d))
-	else:
-		var s = get_script()
-		var d = {}
-		for m in s.get_method_list():
-			d[m.name] = s.call.bind(m.name)
-		d[name] = f
-		set_script(create_script_from_dictionary(d))
-
 # 创建一个包含指定方法的脚本
-func create_script_from_dictionary(methods_dict):
 	var script_content = "extends Node\n"
 	for method_name in methods_dict:
 		script_content += "\nfunc " + method_name + "(*args):\n"
@@ -326,8 +291,5 @@ func create_script_from_dictionary(methods_dict):
 # 断言函数
 func assert(condition, message):
 	if condition:
-		tests_passed += 1
 	else:
 		print("断言失败: " + message)
-	
-	tests_total += 1

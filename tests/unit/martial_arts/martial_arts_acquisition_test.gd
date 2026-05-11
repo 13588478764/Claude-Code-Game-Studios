@@ -4,12 +4,15 @@
 extends GutTest
 
 # 导入要测试的脚本
-const MartialArtsSystemScript = load("res://src/scripts/combat/martial_arts_system.gd")
+var MartialArtsSystemScript
 
 # 测试系统实例
 var system
 
 # 每个测试前执行
+func before_all():
+	MartialArtsSystemScript = load("res://src/scripts/combat/martial_arts_system.gd")
+
 func before_each():
 	system = MartialArtsSystemScript.new()
 	system._ready()  # 手动调用初始化

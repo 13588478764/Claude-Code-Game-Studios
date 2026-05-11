@@ -22,7 +22,8 @@ func test_settings_panel_root_type():
 func test_settings_panel_script_exists():
 	var scene = load("res://src/scenes/ui/settings_panel.tscn")
 	var instance = scene.instantiate()
-	assert_not_null(instance.script, "设置面板应该有脚本附加")
+	var script_path = instance.get_script()
+	assert_not_null(script_path, "场景应该有脚本附加")
 	instance.queue_free()
 
 func test_settings_panel_has_tabs():

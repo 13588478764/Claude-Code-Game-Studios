@@ -28,7 +28,6 @@ const EXP_SOURCE_QUEST = "quest"
 # ============================================================================
 
 signal exp_granted(exp_amount: int, source_type: String, source_details: Dictionary)
-REPLACE
 
 # 战斗EXP奖励基数
 var combat_exp_base_values = {

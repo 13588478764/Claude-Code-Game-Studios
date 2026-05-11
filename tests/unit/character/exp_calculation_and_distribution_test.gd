@@ -323,12 +323,3 @@ func test_full_exp_calculation():
 	print("✓ 完整EXP计算流程测试通过")
 	tests_passed += 6
 	tests_total += 6
-
-# 断言函数
-func assert(condition, message):
-	if not condition:
-		print("测试失败: " + message)
-		tests_total += 1
-	else:
-		# 条件为真时，什么都不做，继续
-		pass

@@ -1,6 +1,6 @@
 ## ElementalPropertyCalculator
 ## 元素属性计算器
-负责计算五行克制体系和元素伤害计算
+## 负责计算五行克制体系和元素伤害计算
 
 extends Node
 

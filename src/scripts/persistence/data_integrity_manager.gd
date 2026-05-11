@@ -28,7 +28,7 @@ func _ready():
 func _initialize_migrations():
 	# 这里可以定义不同版本之间的迁移函数
 	# 例如，从1.0.0迁移到1.1.0的函数
-	version_migrations["1.0.0_to_1.1.0"] = funcref(self, "_migrate_1_0_0_to_1_1_0")
+	version_migrations["1.0.0_to_1.1.0"] = Callable(self, "_migrate_1_0_0_to_1_1_0")
 
 # 验证存档数据完整性
 func validate_save_data(file_path: String) -> bool:

@@ -21,9 +21,11 @@ func before_all():
 		return
 	attribute_ui = ui_script.new()
 	
-	# 将UI添加到场景树以确保_onready变量正确初始化
-	var temp_node = Node.new()
-	temp_node.add_child(attribute_ui)
+	# 将UI添加到 GutTest 场景树（GutTest 实例本身在 SceneTree 中），
+	# 这样 _ready() 会被触发，attribute_ui 内部的 Label 节点会被正确初始化。
+	# 之前用 `var temp_node = Node.new(); temp_node.add_child(...)` 是错误的：
+	# temp_node 自身没有进入 SceneTree，子节点的 _ready() 不会触发。
+	add_child(attribute_ui)
 	
 	# 设置UI的attribute_manager引用
 	attribute_ui.set_attribute_manager(attribute_manager)
@@ -149,10 +151,13 @@ func test_integration_with_attribute_manager():
 	# 验证UI能正确显示管理器的状态
 	attribute_ui.refresh_ui()
 	
+	# UI label 显示格式为 "可用点数: %d"，断言时只比较数字部分，
+	# 避免与展示文案耦合（UI 文案变更不应导致逻辑测试失败）
 	var initial_available_ui = attribute_ui.available_points_label.text
 	var initial_available_manager = str(attribute_manager.get_available_points())
 	
-	assert_eq(initial_available_ui, initial_available_manager, "UI和管理器的可用点数应同步")
+	assert_true(initial_available_ui.ends_with(initial_available_manager),
+		"UI 文本 '%s' 应包含管理器返回的可用点数 '%s'" % [initial_available_ui, initial_available_manager])
 	
 	# 修改管理器状态
 	attribute_manager.allocate_point("strength")
@@ -162,7 +167,8 @@ func test_integration_with_attribute_manager():
 	var updated_available_ui = attribute_ui.available_points_label.text
 	var updated_available_manager = str(attribute_manager.get_available_points())
 	
-	assert_eq(updated_available_ui, updated_available_manager, "UI应反映管理器的更新")
+	assert_true(updated_available_ui.ends_with(updated_available_manager),
+		"UI 文本 '%s' 应包含管理器更新后的可用点数 '%s'" % [updated_available_ui, updated_available_manager])
 
 func test_forbidden_in_battle():
 	# 测试禁止在战斗中进行属性点分配（验证控制规则）

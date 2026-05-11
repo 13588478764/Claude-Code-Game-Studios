@@ -2,10 +2,12 @@
 ## 验证奇遇基础标识、时空上下文、结果奖励摘要和玩家状态快照的记录
 extends GutTest
 
+var _HistoryLoggerScript = load("res://src/scripts/encounter/history_logger.gd")  # 用脚本资源代替 autoload 实例，避免污染单例
+
 var history_logger
 
 func before_each():
-	history_logger = HistoryLogger.new()
+	history_logger = _HistoryLoggerScript.new()
 	add_child_autofree(history_logger)
 
 func after_each():

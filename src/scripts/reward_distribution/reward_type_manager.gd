@@ -171,17 +171,25 @@ func is_valid_reward_id(reward_id: String) -> bool:
 
 # 获取奖励配置
 func get_reward_config(reward_id: String) -> Dictionary:
-	# 在所有类别中搜索奖励ID
+	# 数据结构示例：
+	#   material_resources:
+	#     silver: {name: 银两, ...}        ← 一级直挂（subcategory 自身就是 reward）
+	#     basic_materials:                  ← 二级嵌套子分类
+	#       iron_ore: {name: 铁矿石, ...}
+	#
+	# 之前的 bug：当 silver 是 Dict 时，代码进入嵌套查找分支
+	# 调用 category_data["silver"].has("silver")，永远返回 false。
+	# 修复：先检查 subcategory == reward_id（一级直挂），再尝试嵌套查找。
 	for category in reward_type_config.keys():
 		var category_data = reward_type_config[category]
 		for subcategory in category_data.keys():
+			# 优先匹配：subcategory 自身就是 reward_id（一级直挂结构）
+			if subcategory == reward_id:
+				return category_data[subcategory]
+			# 否则尝试嵌套查找（subcategory 是子分类，里面才是 reward）
 			if typeof(category_data[subcategory]) == TYPE_DICTIONARY:
 				if category_data[subcategory].has(reward_id):
 					return category_data[subcategory][reward_id]
-			else:
-				# 直接的奖励项
-				if subcategory == reward_id:
-					return category_data[subcategory]
 	
 	return {}
 

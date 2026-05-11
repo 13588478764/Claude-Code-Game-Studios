@@ -218,12 +218,3 @@ func test_equipment_bonuses_update():
 	print("✓ Equipment bonuses update test passed")
 	tests_passed += 2
 	tests_total += 2
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

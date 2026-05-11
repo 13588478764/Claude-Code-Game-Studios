@@ -283,8 +283,8 @@ func test_batch_update_manager_large_queue() -> void:
 func test_lod_resolution_switching() -> void:
 	# 获取当前LOD
 	var current_lod = lod_scheduler.get_current_lod()
-	assert_ge(current_lod, LODUpdateScheduler.LODLevel.LOW, "LOD应该是有效的")
-	assert_le(current_lod, LODUpdateScheduler.LODLevel.HIGH, "LOD应该是有效的")
+	assert_gte(current_lod, LODUpdateScheduler.LODLevel.LOW, "LOD应该是有效的")
+	assert_lte(current_lod, LODUpdateScheduler.LODLevel.HIGH, "LOD应该是有效的")
 	
 	# 验证LOD名称
 	var lod_name = lod_scheduler.get_lod_name()

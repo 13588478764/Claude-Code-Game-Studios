@@ -22,13 +22,14 @@ func test_help_panel_root_type():
 func test_help_panel_script_exists():
 	var scene = load("res://src/scenes/ui/help_panel.tscn")
 	var instance = scene.instantiate()
-	assert_not_null(instance.script, "帮助面板应该有脚本附加")
+	var script_path = instance.get_script()
+	assert_not_null(script_path, "场景应该有脚本附加")
 	instance.queue_free()
 
 func test_help_panel_z_index():
 	var scene = load("res://src/scenes/ui/help_panel.tscn")
 	var instance = scene.instantiate()
-	assert_eq(instance.z_index, 180, "帮助面板Z-index应该是180")
+	assert_eq(instance.layer, 180, "帮助面板Z-index应该是180")
 	instance.queue_free()
 
 func test_help_panel_has_tabs():

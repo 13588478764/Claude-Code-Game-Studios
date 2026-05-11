@@ -209,7 +209,7 @@ func test_signal_system_integration():
 	encounter_integration.grant_encounter_rewards(encounter_type, encounter_data)
 	
 	# 等待一帧以确保信号被处理
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# 验证信号已发射
 	assert_true(signal_data.has("reward_type"), "信号应该已发射并设置了 reward_type")

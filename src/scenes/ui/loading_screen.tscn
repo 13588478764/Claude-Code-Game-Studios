@@ -15,7 +15,7 @@ border_width_bottom = 1
 cornerRadius = 4
 
 [node name="LoadingScreen" type="CanvasLayer"]
-z_index = 600
+layer = 600
 script = ExtResource("1_script")
 
 [node name="Background" type="ColorRect" parent="."]
@@ -99,7 +99,7 @@ horizontal_alignment = 1
 [node name="TipLabel" type="Label" parent="FullContainer/VBox/TipPanel/TipVBox"]
 layout_mode = 2
 text = "五行相克：金克木，木克土，土克水，水克火，火克金。"
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 1
 horizontal_alignment = 0
 theme_type_variation = "BodySmall"
 

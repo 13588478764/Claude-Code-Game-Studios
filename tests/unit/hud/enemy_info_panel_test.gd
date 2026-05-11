@@ -2,7 +2,10 @@ extends GutTest
 ## 敌人信息显示单元测试
 ## 测试EnemyInfoPanel的核心逻辑，不依赖完整场景加载
 
-var enemy_info_panel: Node
+# 注意：enemy_info_panel.gd 是 `extends Control`，必须用 Control（或其子类）实例承载该脚本。
+# 不能用 Node.new() + set_script(...) 的方式，因为 Node 不是 Control 的子类，
+# 会触发 "Script inherits from native type 'Control', so it can't be assigned to an object of type: 'Node'"
+var enemy_info_panel: Control
 var game_events: Node
 
 func before_each() -> void:
@@ -20,8 +23,10 @@ func before_each() -> void:
 		game_events = GameEvents
 	
 	# 创建EnemyInfoPanel脚本实例（不加载场景）
-	enemy_info_panel = Node.new()
-	enemy_info_panel.set_script(load("res://src/scripts/ui/hud/enemy_info_panel.gd"))
+	# 使用 script.new() 直接实例化脚本，得到的是脚本声明 extends 的基类（Control）实例。
+	# 不能用 Node.new() + set_script(...)：Node 不是 Control 的子类。
+	var enemy_info_panel_script = load("res://src/scripts/ui/hud/enemy_info_panel.gd")
+	enemy_info_panel = enemy_info_panel_script.new()
 	add_child(enemy_info_panel)
 
 func after_each() -> void:
@@ -57,9 +62,10 @@ func test_game_events_signals_exist() -> void:
 
 ## 测试WeaknessIconDisplay的元素映射
 func test_weakness_icon_element_mapping() -> void:
+	# weakness_icon_display.gd 是 `extends Control`，不能用 Node.new() + set_script。
+	# 直接 script.new() 得到 Control 实例。
 	var script = load("res://src/scripts/ui/hud/weakness_icon_display.gd")
-	var instance = Node.new()
-	instance.set_script(script)
+	var instance = script.new()
 	
 	# 检查ELEMENT_ICONS常量
 	var element_icons = instance.get("ELEMENT_ICONS")
@@ -74,8 +80,7 @@ func test_weakness_icon_element_mapping() -> void:
 ## 测试EnemyInfoPanel的颜色常量
 func test_enemy_info_panel_color_constants() -> void:
 	var script = load("res://src/scripts/ui/hud/enemy_info_panel.gd")
-	var instance = Node.new()
-	instance.set_script(script)
+	var instance = script.new()  # script.new() 自动得到正确的 Control 实例
 	
 	# 检查颜色常量
 	var color_gold = instance.get("COLOR_GOLD")
@@ -87,8 +92,7 @@ func test_enemy_info_panel_color_constants() -> void:
 ## 测试EnemyInfoPanel的动画时长常量
 func test_enemy_info_panel_animation_constants() -> void:
 	var script = load("res://src/scripts/ui/hud/enemy_info_panel.gd")
-	var instance = Node.new()
-	instance.set_script(script)
+	var instance = script.new()  # script.new() 自动得到正确的 Control 实例
 	
 	# 检查动画时长常量
 	var fade_duration = instance.get("FADE_DURATION")
@@ -188,7 +192,8 @@ func test_method_length_reasonable() -> void:
 	var max_method_length = 0
 	
 	for line in lines:
-		if line.strip_edges().starts_with("func "):
+		# 注意：GDScript 4 的 String 用 begins_with()，不是 Python 风格的 starts_with()
+		if line.strip_edges().begins_with("func "):
 			if current_method_length > max_method_length:
 				max_method_length = current_method_length
 			current_method_length = 0

@@ -75,7 +75,7 @@ func track_quest(quest_id: String) -> bool:
 		return false
 	
 	var quest_info = quest_manager.get_quest_info(quest_id)
-	if quest_info.empty():
+	if quest_info.is_empty():
 		print("Quest not found: ", quest_id)
 		return false
 	
@@ -131,7 +131,7 @@ func get_active_quests_info() -> Array:
 	
 	for quest_id in active_quests_ids:
 		var quest_info = quest_manager.get_quest_info(quest_id)
-		if not quest_info.empty():
+		if not quest_info.is_empty():
 			result.append(quest_info)
 	
 	return result
@@ -165,7 +165,7 @@ func _handle_enemy_killed_event(data: Dictionary):
 	var active_quests = quest_manager.get_active_quests()
 	for quest_id in active_quests:
 		var quest_info = quest_manager.get_quest_info(quest_id)
-		if quest_info.empty():
+		if quest_info.is_empty():
 			continue
 		
 		# 检查任务的每个目标
@@ -187,7 +187,7 @@ func _handle_item_collected_event(data: Dictionary):
 	var active_quests = quest_manager.get_active_quests()
 	for quest_id in active_quests:
 		var quest_info = quest_manager.get_quest_info(quest_id)
-		if quest_info.empty():
+		if quest_info.is_empty():
 			continue
 		
 		# 检查任务的每个目标
@@ -209,7 +209,7 @@ func _handle_location_reached_event(data: Dictionary):
 	var active_quests = quest_manager.get_active_quests()
 	for quest_id in active_quests:
 		var quest_info = quest_manager.get_quest_info(quest_id)
-		if quest_info.empty():
+		if quest_info.is_empty():
 			continue
 		
 		# 检查任务的每个目标
@@ -234,7 +234,7 @@ func _handle_npc_talked_to_event(data: Dictionary):
 	var active_quests = quest_manager.get_active_quests()
 	for quest_id in active_quests:
 		var quest_info = quest_manager.get_quest_info(quest_id)
-		if quest_info.empty():
+		if quest_info.is_empty():
 			continue
 		
 		# 检查任务的每个目标
@@ -256,7 +256,7 @@ func _handle_item_used_event(data: Dictionary):
 	var active_quests = quest_manager.get_active_quests()
 	for quest_id in active_quests:
 		var quest_info = quest_manager.get_quest_info(quest_id)
-		if quest_info.empty():
+		if quest_info.is_empty():
 			continue
 		
 		# 检查任务的每个目标
@@ -305,7 +305,7 @@ func get_quest_tracking_data(quest_id: String) -> Dictionary:
 		return {}
 	
 	var quest_info = quest_manager.get_quest_info(quest_id)
-	if quest_info.empty():
+	if quest_info.is_empty():
 		return {}
 	
 	var tracking_data = {
@@ -322,7 +322,7 @@ func get_quest_tracking_data(quest_id: String) -> Dictionary:
 			"current_count": objective.current_count,
 			"target_count": objective.target_count,
 			"is_complete": objective.is_complete,
-			"progress_ratio": objective.target_count > 0 ? float(objective.current_count) / float(objective.target_count) : 0
+			"progress_ratio": (float(objective.current_count) / float(objective.target_count)) if objective.target_count > 0 else 0
 		})
 	
 	return tracking_data

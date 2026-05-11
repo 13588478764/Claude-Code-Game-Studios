@@ -22,7 +22,6 @@ class_name ExpCalculationManager
 const EXP_CURVE_EARLY = 1.0    # 初期线性增长
 const EXP_CURVE_MID = 1.5      # 中期温和指数增长
 const EXP_CURVE_LATE = 2.5     # 后期陡峭指数增长
-REPLACE
 
 # 基础经验值公式
 # Base_EXP = Enemy_Base_Value × (Enemy_Level / Player_Level)^Scaling_Factor

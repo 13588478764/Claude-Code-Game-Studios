@@ -190,9 +190,13 @@ func _on_warning_timeout():
 		return
 	
 	# 发送事件准备触发信号
-	emit_signal("event_trigger_ready", pending_trigger_data)
+	# 关键：必须 duplicate(true) 一份再传出去，否则 emit_signal 后立即调用 clear()
+	# 会同时清空所有订阅者持有的 Dictionary 引用（GDScript Dictionary 是引用类型）。
+	# 之前的 bug：测试中 observation["trigger_data"] 和 pending_trigger_data 指向同一对象，
+	# clear() 后两者都变空，导致 has("trigger_type") 失败。
+	emit_signal("event_trigger_ready", pending_trigger_data.duplicate(true))
 	
-	# 清空待触发数据
+	# 清空待触发数据（不会影响已经发出去的拷贝）
 	pending_trigger_data.clear()
 
 # 设置当前区域

@@ -269,9 +269,19 @@ func _get_player_data_snapshot() -> Dictionary:
 	if _character_system == null:
 		return {"level": 1, "realm": "", "attributes": {}}
 	
+	# 注意：Object.get(name) 只接受 1 个参数，找不到属性返回 null
+	# 不能像 Dictionary.get(key, default) 那样传第二个默认值参数
+	var level_value = _character_system.get("level")
+	if level_value == null:
+		level_value = 1
+	
+	var realm_value = _character_system.get("realm_name")
+	if realm_value == null:
+		realm_value = ""
+	
 	return {
-		"level": _character_system.level if _character_system.has_method("level") or _character_system.get("level") else 1,
-		"realm": _character_system.get("realm_name", ""),
+		"level": level_value,
+		"realm": realm_value,
 		"attributes": _get_character_attributes()
 	}
 

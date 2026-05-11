@@ -76,7 +76,7 @@ func test_start_dialogue() -> void:
 	dialogue_manager.load_dialogue_from_json(test_file)
 	
 	# 开始对话
-	var dialogue_id := "INTRO_YUNZHONGHE_001"
+	var dialogue_id := "yunzhonghe_first_meeting"
 	var result: bool = dialogue_manager.start_dialogue(dialogue_id)
 	assert_true(result, "start_dialogue should return true for valid dialogue_id")
 	assert_true(dialogue_manager.is_in_dialogue(), "is_in_dialogue should return true after starting")
@@ -90,7 +90,7 @@ func test_end_dialogue() -> void:
 		return
 	
 	dialogue_manager.load_dialogue_from_json(test_file)
-	dialogue_manager.start_dialogue("INTRO_YUNZHONGHE_001")
+	dialogue_manager.start_dialogue("yunzhonghe_first_meeting")
 	
 	# 结束对话
 	dialogue_manager.end_dialogue()
@@ -115,7 +115,7 @@ func test_dialogue_signals() -> void:
 		return
 	
 	dialogue_manager.load_dialogue_from_json(test_file)
-	dialogue_manager.start_dialogue("INTRO_YUNZHONGHE_001")
+	dialogue_manager.start_dialogue("yunzhonghe_first_meeting")
 	
 	assert_true(dialogue_started_received, "dialogue_started signal should be emitted")
 	

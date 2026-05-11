@@ -1,8 +1,8 @@
 ## StatusTooltip
 ## StatusTooltip Control节点
-显示状态效果的详细信息提示框
-AC4: UI适配不同分辨率
-遵循ADR-001: 使用Control节点实现UI
+## 显示状态效果的详细信息提示框
+## AC4: UI适配不同分辨率
+## 遵循ADR-001: 使用Control节点实现UI
 ##
 ## 主要功能：
 ## - 待补充

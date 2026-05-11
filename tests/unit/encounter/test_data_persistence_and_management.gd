@@ -2,10 +2,12 @@
 ## 验证历史记录序列化、存档加载、内存管理和存储空间管理
 extends GutTest
 
+var _HistoryPersistenceManagerScript = load("res://src/scripts/encounter/history_persistence_manager.gd")  # 用脚本资源代替 autoload 实例，避免污染单例
+
 var persistence_manager
 
 func before_each():
-	persistence_manager = HistoryPersistenceManager.new()
+	persistence_manager = _HistoryPersistenceManagerScript.new()
 	add_child_autofree(persistence_manager)
 
 func after_each():

@@ -352,11 +352,16 @@ func test_event_ready_signal_after_warning():
 	# Given: 预警倒计时开始
 	trigger.set_current_region("wilderness")
 	var event_ready = false
-	var trigger_data = {}
+	# 关键：GDScript lambda 按值捕获，给 lambda 内部的 var 重新赋值不会影响外部变量。
+	# 必须把可变状态放到 Dictionary 里，让 lambda mutate 字段，外部才能读到更新。
+	var observation := {
+		"event_ready": false,
+		"trigger_data": {},
+	}
 	
 	trigger.event_trigger_ready.connect(func(data):
-		event_ready = true
-		trigger_data = data
+		observation["event_ready"] = true
+		observation["trigger_data"] = data
 	)
 	
 	# When: 手动触发预警并模拟超时
@@ -364,9 +369,9 @@ func test_event_ready_signal_after_warning():
 	trigger._on_warning_timeout()  # 直接调用超时处理，避免等待 Timer
 	
 	# Then: 应该发出事件准备触发信号
-	assert_true(event_ready, "应该发出事件准备触发信号")
-	assert_true(trigger_data.has("trigger_type"), "触发数据应该包含触发类型")
-	assert_eq(trigger_data.trigger_type, "distance", "触发类型应该是distance")
+	assert_true(observation["event_ready"], "应该发出事件准备触发信号")
+	assert_true(observation["trigger_data"].has("trigger_type"), "触发数据应该包含触发类型")
+	assert_eq(observation["trigger_data"]["trigger_type"], "distance", "触发类型应该是distance")
 
 func test_warning_cancelled_in_safe_zone():
 	# Edge case: 玩家在预警期间进入安全区

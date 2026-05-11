@@ -38,14 +38,37 @@ const FADE_DURATION = 0.2
 const HIGHLIGHT_DURATION = 0.3
 
 func _ready() -> void:
+	# 检测 UI 是否完整加载（单元测试 / 脚本测试模式下 unique-name 节点都不存在）。
+	# 这种情况下跳过 UI 初始化，但仍然允许信号连接（让脚本逻辑可被独立测试）。
+	if not _is_ui_initialized():
+		_connect_game_events_safely()
+		return
+	
 	# 初始化UI状态
 	_update_no_target_display()
 	
 	# 连接GameEvents信号
-	GameEvents.enemy_selected.connect(_on_enemy_selected)
-	GameEvents.enemy_hp_changed.connect(_on_enemy_hp_changed)
-	GameEvents.enemy_weakness_revealed.connect(_on_enemy_weakness_revealed)
-	GameEvents.enemy_status_changed.connect(_on_enemy_status_changed)
+	_connect_game_events_safely()
+
+
+## 检测脚本依赖的 UI 节点是否都已就位
+## 当通过 .tscn 完整加载时返回 true；通过 script.new() 直接实例化时返回 false。
+func _is_ui_initialized() -> bool:
+	return no_target_label != null and enemy_name_label != null
+
+## 安全连接 GameEvents 信号（避免重复连接 / autoload 不可用时崩溃）
+func _connect_game_events_safely() -> void:
+	if not is_instance_valid(GameEvents):
+		return
+	if not GameEvents.enemy_selected.is_connected(_on_enemy_selected):
+		GameEvents.enemy_selected.connect(_on_enemy_selected)
+	if not GameEvents.enemy_hp_changed.is_connected(_on_enemy_hp_changed):
+		GameEvents.enemy_hp_changed.connect(_on_enemy_hp_changed)
+	if not GameEvents.enemy_weakness_revealed.is_connected(_on_enemy_weakness_revealed):
+		GameEvents.enemy_weakness_revealed.connect(_on_enemy_weakness_revealed)
+	if GameEvents.has_signal("enemy_status_changed") \
+			and not GameEvents.enemy_status_changed.is_connected(_on_enemy_status_changed):
+		GameEvents.enemy_status_changed.connect(_on_enemy_status_changed)
 
 func _process(_delta: float) -> void:
 	# 处理脏标记更新 (ADR-002: 脏标记优化)

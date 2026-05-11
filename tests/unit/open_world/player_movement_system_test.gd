@@ -149,12 +149,3 @@ func test_attribute_management():
 	print("✓ Attribute management test passed")
 	tests_passed += 4
 	tests_total += 4
-
-# Utility function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

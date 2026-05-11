@@ -223,12 +223,3 @@ func test_data_persistence():
 	print("✓ Data persistence test passed")
 	tests_passed += 6
 	tests_total += 6
-
-# Utility function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

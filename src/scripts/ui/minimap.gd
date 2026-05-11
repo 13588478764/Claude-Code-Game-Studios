@@ -1,11 +1,14 @@
 ## Minimap
 ## 小地图系统实现
-管理小地图的显示、玩家位置、朝向以及区域探索状态
+## 管理小地图的显示、玩家位置、朝向以及区域探索状态
 ##
 ## 主要功能：
 ## - 待补充
 
-extends Node
+# 小地图是 UI 组件，需要使用 Control（提供 position/size/anchor 等 UI 属性）
+# 之前用 extends Node 会导致 update_minimap_position() 中
+# `self.position = Vector2(...)` 报错"Node 没有 position 属性"
+extends Control
 
 class_name Minimap
 
@@ -214,8 +217,8 @@ func check_exploration(player_pos: Vector2):
 func update_exploration_percentage():
 	# 这里简化处理，实际项目中需要根据区域大小和探索点数量计算
 	# 假设每个区域有100个探索点
-	var total_points = 100
-	var explored_points = min(explored_areas.size(), total_points)
+	var total_points = 100.0
+	var explored_points = min(float(explored_areas.size()), total_points)
 	exploration_percentage = (explored_points / total_points) * 100.0
 	
 	print("探索进度: ", exploration_percentage, "%")

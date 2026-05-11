@@ -99,6 +99,8 @@ func _process_narrative_encounter(event_data: RandomEventGenerator.EventData, pl
 		})
 	)
 
+	return true
+
 # 处理资源/宝藏事件
 func _process_resource_treasure(event_data: RandomEventGenerator.EventData, player_id: String, additional_data: Dictionary) -> bool:
 	if not item_manager or not character_system:

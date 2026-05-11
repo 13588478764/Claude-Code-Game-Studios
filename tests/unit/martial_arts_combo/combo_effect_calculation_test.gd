@@ -155,10 +155,11 @@ func test_status_upgrade_duration_calculation():
 	var expected_duration = base_duration * upgrade_multiplier  # 2 * 1.5 = 3.0
 	
 	# Since the current system doesn't have a direct function for this, we'll create a test function
-	func calculate_status_upgrade_duration(base_duration, upgrade_multiplier):
-		return base_duration * upgrade_multiplier
+	# 改为 lambda 表达式：GDScript 不允许在函数体内用 `func` 定义具名嵌套函数
+	var calculate_status_upgrade_duration := func(base, mult):
+		return base * mult
 	
-	var calculated_duration = calculate_status_upgrade_duration(base_duration, upgrade_multiplier)
+	var calculated_duration = calculate_status_upgrade_duration.call(base_duration, upgrade_multiplier)
 	assert(calculated_duration == expected_duration, "Upgraded duration should be %f" % expected_duration)
 	
 	# Test with different values
@@ -169,7 +170,7 @@ func test_status_upgrade_duration_calculation():
 	]
 	
 	for test in duration_tests:
-		var result = calculate_status_upgrade_duration(test.base, test.multiplier)
+		var result = calculate_status_upgrade_duration.call(test.base, test.multiplier)
 		assert(abs(result - test.expected) < 0.01, "Duration calculation should match formula for base=%d, mult=%.1f" % [test.base, test.multiplier])
 	
 	print("✓ Status upgrade duration calculation test passed")
@@ -255,9 +256,9 @@ func test_combo_tier_effects():
 	var system = MartialArtsComboSystem.new()
 	
 	# Test that different synergies result in different combo tiers
-	var ultimate_tier = system.calculate_combo_tier("破防_刚")  // 2.0 multiplier -> ultimate
-	var advanced_tier = system.calculate_combo_tier("湿_雷")    // 1.8 multiplier -> advanced
-	var combustion_tier = system.calculate_combo_tier("燃烧_水") // 1.6 multiplier -> advanced
+	var ultimate_tier = system.calculate_combo_tier("破防_刚")  # 2.0 multiplier -> ultimate
+	var advanced_tier = system.calculate_combo_tier("湿_雷")    # 1.8 multiplier -> advanced
+	var combustion_tier = system.calculate_combo_tier("燃烧_水") # 1.6 multiplier -> advanced
 	
 	assert(ultimate_tier == "ultimate", "破防_刚 should be ultimate tier")
 	assert(advanced_tier == "advanced", "湿_雷 should be advanced tier")
@@ -324,14 +325,14 @@ func test_combined_effect_calculations():
 	var initial_link_gauge = system.combo_state.link_gauge
 	var combo_sequence = [
 		{"tags": ["湿"], "cost": 10.0},
-		{"tags": ["雷"], "cost": 15.0}  // Should synergize with wet target
+		{"tags": ["雷"], "cost": 15.0}  # Should synergize with wet target
 	]
 	
 	# Reset for this test
 	system.reset_combo_state()
 	
 	for skill in combo_sequence:
-		var seq_result = system.process_skill_usage(skill, ["湿润"])  // Wet target status
+		var seq_result = system.process_skill_usage(skill, ["湿润"])  # Wet target status
 		# Each skill should add to the link gauge
 		assert(seq_result.link_gauge_change >= 20, "Each skill should contribute to link gauge")
 	
@@ -341,12 +342,3 @@ func test_combined_effect_calculations():
 	print("✓ Combined effect calculations test passed")
 	tests_passed += 12
 	tests_total += 12
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

@@ -2,10 +2,12 @@
 ## 验证奇遇奖励类型、奖励发放机制、福缘影响和奖励冲突处理
 extends GutTest
 
+var _EncounterRewardManagerScript = load("res://src/scripts/encounter/encounter_reward_manager.gd")  # 用脚本资源代替 autoload 实例，避免污染单例
+
 var reward_manager
 
 func before_each():
-	reward_manager = EncounterRewardManager.new()
+	reward_manager = _EncounterRewardManagerScript.new()
 	add_child_autofree(reward_manager)
 
 func after_each():

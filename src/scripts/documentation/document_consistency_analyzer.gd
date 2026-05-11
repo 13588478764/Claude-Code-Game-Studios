@@ -1,7 +1,7 @@
 ## DocumentConsistencyAnalyzer
 ## DocumentConsistencyAnalyzer
-document consistency analyzer
-文档管理模块
+## document consistency analyzer
+## 文档管理模块
 ##
 ## 主要功能：
 ## - 待补充

@@ -38,7 +38,7 @@ class NotificationData:
 				duration = -1.0  # AC-10: 错误持续到手动关闭
 
 ## 通知容器
-@onready var notifications_container: VBoxContainer = $NotificationsContainer
+var notifications_container: VBoxContainer = null
 
 ## 当前显示的通知列表
 var _active_notifications: Array[Control] = []
@@ -53,14 +53,26 @@ const MAX_VISIBLE_NOTIFICATIONS: int = 3  # AC-11
 func _ready() -> void:
 	# 连接GameEvents信号
 	_connect_game_events()
-	
+
 	# 初始化容器
+	_ensure_container()
+
+	print("[NotificationManager] Initialized")
+
+
+## 懒加载：确保 notifications_container 已初始化。
+## _ready() 和 _display_notification() 都会调用此方法，
+## 防止在 _ready() 完成前就被调用 show_notification 时空引用崩溃。
+func _ensure_container() -> void:
+	if notifications_container != null and is_instance_valid(notifications_container):
+		return
+	notifications_container = get_node_or_null("NotificationsContainer")
 	if notifications_container == null:
 		notifications_container = VBoxContainer.new()
 		notifications_container.name = "NotificationsContainer"
-		add_child(notifications_container)
-	
-	print("[NotificationManager] Initialized")
+		# 仅当本节点已经在场景树中时才能 add_child
+		if is_inside_tree():
+			add_child(notifications_container)
 
 
 func _connect_game_events() -> void:
@@ -105,6 +117,13 @@ func show_error(message: String) -> void:
 
 ## 内部方法: 显示通知面板
 func _display_notification(data: NotificationData) -> void:
+	# 防御性懒加载：调用方可能在 _ready() 完成之前就调用 show_notification
+	# （特别是在测试 / autoload 早期初始化的场景中），此时容器还是 null
+	_ensure_container()
+	if notifications_container == null:
+		push_warning("[NotificationManager] notifications_container 仍为 null，跳过 _display_notification")
+		return
+	
 	# 创建通知面板
 	var notification_panel = _create_notification_panel(data)
 	

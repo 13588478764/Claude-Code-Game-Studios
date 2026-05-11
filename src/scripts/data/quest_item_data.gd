@@ -1,9 +1,9 @@
 ## QuestItemData
 ## QuestItemData
-quest item data
-数据定义模块
-QuestItemData
-任务道具数据类，继承自ItemData，定义任务道具特有的属性
+## quest item data
+## 数据定义模块
+## QuestItemData
+## 任务道具数据类，继承自ItemData，定义任务道具特有的属性
 ##
 ## 主要功能：
 ## - 待补充

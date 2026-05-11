@@ -6,10 +6,10 @@ class_name PartyStatusDisplay
 ## 支持淡入/淡出动画和HP平滑过渡
 
 # 队友槽位容器
-@onready var party_slots_container: VBoxContainer = $VBoxContainer/PartySlotsContainer
+var party_slots_container: VBoxContainer = null
 
 # 队友槽位预制体(动态创建)
-var party_member_slot_scene: PackedScene = preload("res://src/scenes/ui/hud/party_member_slot.tscn")
+var party_member_slot_scene: PackedScene = null
 
 # 队友数据缓存
 var _party_members: Array[Dictionary] = []  # {id, name, hp, max_hp, is_downed}
@@ -20,19 +20,34 @@ var _max_visible_members: int = 3
 var _party_dirty: bool = false
 
 func _ready() -> void:
+	# 自动创建容器（测试环境或动态创建时）
+	if party_slots_container == null:
+		party_slots_container = VBoxContainer.new()
+		party_slots_container.name = "PartySlotsContainer"
+		var vbox = VBoxContainer.new()
+		vbox.name = "VBoxContainer"
+		vbox.add_child(party_slots_container)
+		add_child(vbox)
+		party_slots_container = vbox.get_node("PartySlotsContainer")
+	# 延迟加载预制体场景
+	if party_member_slot_scene == null and ResourceLoader.exists("res://src/scenes/ui/hud/party_member_slot.tscn"):
+		party_member_slot_scene = load("res://src/scenes/ui/hud/party_member_slot.tscn")
+
 	_connect_signals()
 	_initialize_empty_state()
 
 func _connect_signals() -> void:
-	## 连接GameEvents信号
-	GameEvents.party_member_added.connect(_on_party_member_added)
-	GameEvents.party_member_removed.connect(_on_party_member_removed)
-	GameEvents.party_member_hp_changed.connect(_on_party_member_hp_changed)
-	GameEvents.party_member_downed.connect(_on_party_member_downed)
+	## 连接GameEvents信号（测试环境中可能不存在）
+	if has_node("/root/GameEvents"):
+		var game_events = get_node("/root/GameEvents")
+		game_events.party_member_added.connect(_on_party_member_added)
+		game_events.party_member_removed.connect(_on_party_member_removed)
+		game_events.party_member_hp_changed.connect(_on_party_member_hp_changed)
+		game_events.party_member_downed.connect(_on_party_member_downed)
 
 func _initialize_empty_state() -> void:
 	## 初始化空状态提示
-	if party_slots_container.get_child_count() == 0:
+	if party_slots_container == null or party_slots_container.get_child_count() == 0:
 		var empty_label = Label.new()
 		empty_label.text = "无队友"
 		empty_label.add_theme_font_size_override("font_size", 14)
@@ -128,6 +143,9 @@ func _apply_party_update() -> void:
 
 func _add_member_slot_with_animation(member: Dictionary) -> void:
 	## 添加队友槽位并播放淡入动画
+	if party_member_slot_scene == null:
+		push_warning("PartyMemberSlot scene not loaded, skipping slot creation")
+		return
 	var slot = party_member_slot_scene.instantiate()
 	slot.name = "PartyMemberSlot_%s" % member["id"]
 	party_slots_container.add_child(slot)

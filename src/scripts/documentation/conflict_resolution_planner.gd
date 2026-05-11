@@ -1,7 +1,7 @@
 ## ConflictResolutionPlanner
 ## ConflictResolutionPlanner
-conflict resolution planner
-文档管理模块
+## conflict resolution planner
+## 文档管理模块
 ##
 ## 主要功能：
 ## - 待补充

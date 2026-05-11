@@ -1,8 +1,8 @@
 ## DynamicDifficulty
 ## dynamic_difficulty.gd
-动态难度调整系统
-实现基于玩家表现的动态难度调整
-TR-enemy-scaling-005
+## 动态难度调整系统
+## 实现基于玩家表现的动态难度调整
+## TR-enemy-scaling-005
 ##
 ## 主要功能：
 ## - 待补充

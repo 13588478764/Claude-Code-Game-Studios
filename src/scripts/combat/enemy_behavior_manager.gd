@@ -169,7 +169,6 @@ func evaluate_coordination(enemy_data, allies):
 		if is_ally_in_danger(ally):
 			var protect_score = calculate_protection_score(ally, enemy_data)
 			scores[ally.id] = protect_score * 15  # 保护权重
-	end
 	
 	return scores
 

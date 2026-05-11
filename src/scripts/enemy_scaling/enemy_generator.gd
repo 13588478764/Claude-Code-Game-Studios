@@ -1,8 +1,8 @@
 ## EnemyGenerator
 ## enemy_generator.gd
-敌人实例生成集成系统
-集成所有缩放系统,生成最终敌人实例
-TR-enemy-scaling-001 to TR-enemy-scaling-006
+## 敌人实例生成集成系统
+## 集成所有缩放系统,生成最终敌人实例
+## TR-enemy-scaling-001 to TR-enemy-scaling-006
 ##
 ## 主要功能：
 ## - 待补充

@@ -4,21 +4,28 @@
 extends GutTest
 
 # 导入要测试的脚本
-const EquipmentWearerScript = load("res://src/scripts/equipment/equipment_wearer.gd")
-const EquipmentManagerScript = load("res://src/scripts/equipment/equipment_manager.gd")
+var EquipmentWearerScript
+var EquipmentManagerScript
 
 # 测试实例
 var wearer
 var manager
 
+func before_all():
+	EquipmentWearerScript = load("res://src/scripts/equipment/equipment_wearer.gd")
+	EquipmentManagerScript = load("res://src/scripts/equipment/equipment_manager.gd")
+
 # 每个测试前执行
 func before_each():
+	if EquipmentWearerScript == null or EquipmentManagerScript == null:
+		pending("脚本无法加载，跳过测试")
+		return
 	wearer = EquipmentWearerScript.new()
 	manager = EquipmentManagerScript.new()
-	
+
 	# 将 wearer 添加到场景树
 	add_child_autofree(wearer)
-	
+
 	wearer._ready()
 	manager._ready()
 

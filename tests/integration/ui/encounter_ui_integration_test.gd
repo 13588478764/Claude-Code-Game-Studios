@@ -9,10 +9,10 @@ var item_manager: Node
 var test_scene: Node
 
 func before_each():
-	# 创建CharacterSystem实例
-	character_system = CharacterSystem.new()
-	character_system.name = "CharacterSystem"
-	add_child_autofree(character_system)
+	# CharacterSystem 是 AutoLoad 单例，已经存在于 /root/CharacterSystem。
+	# 不能 .new() 创建新实例 —— UI 内部用 get_node_or_null("/root/CharacterSystem") 
+	# 访问 autoload，新实例与 UI 看到的不是同一个对象，集成测试将无效。
+	character_system = CharacterSystem
 	
 	# 创建简单的ItemManager模拟
 	item_manager = Node.new()
@@ -20,11 +20,11 @@ func before_each():
 	item_manager.set_script(preload("res://tests/mocks/mock_item_manager.gd"))
 	add_child_autofree(item_manager)
 	
-	# 创建EncounterIntegration实例
-	encounter_integration = EncounterIntegration.new()
-	encounter_integration.name = "EncounterIntegration"
-	encounter_integration.initialize(character_system, null, item_manager)
-	add_child_autofree(encounter_integration)
+	# EncounterIntegration 同样是 AutoLoad 单例，直接引用
+	encounter_integration = EncounterIntegration
+	# initialize 仍可调用以重置内部依赖关系（如果方法存在且幂等）
+	if encounter_integration.has_method("initialize"):
+		encounter_integration.initialize(character_system, null, item_manager)
 	
 	# 加载UI场景
 	var ui_scene = load("res://src/scenes/ui/encounter_ui.tscn")
@@ -35,7 +35,7 @@ func before_each():
 	encounter_ui = test_scene as EncounterUiScript
 	
 	# 等待一帧确保_ready执行完成
-	await wait_frames(2)
+	await wait_physics_frames(2)
 
 func after_each():
 	character_system = null
@@ -189,7 +189,7 @@ func test_encounter_ui_displays_correct_data():
 	
 	# When: 显示奇遇
 	encounter_ui.show_encounter(encounter_data)
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: UI应该可见
 	assert_true(encounter_ui.visible, "UI should be visible")
@@ -209,7 +209,7 @@ func test_encounter_ui_shows_lucky_star_icon():
 		"encounter_id": "test_ui_002"
 	}
 	encounter_ui.show_encounter(encounter_data)
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 福缘图标应该可见
 	if encounter_ui.lucky_star_icon:
@@ -229,7 +229,7 @@ func test_encounter_ui_hides_lucky_star_icon_for_low_luck():
 		"encounter_id": "test_ui_003"
 	}
 	encounter_ui.show_encounter(encounter_data)
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 福缘图标应该隐藏
 	if encounter_ui.lucky_star_icon:
@@ -249,7 +249,7 @@ func test_accept_button_grants_reward():
 	
 	# When: 点击接受按钮
 	encounter_ui._on_accept_button_pressed()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 应发放奖励
 	assert_gt(character_system.total_attribute_points, initial_points, "Should grant attribute points")
@@ -264,7 +264,7 @@ func test_decline_button_does_not_grant_reward():
 	
 	# When: 点击拒绝按钮
 	encounter_ui._on_decline_button_pressed()
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 不应发放奖励
 	assert_eq(character_system.total_attribute_points, initial_points, "Should not grant reward")
@@ -279,7 +279,7 @@ func test_encounter_triggered_signal():
 	
 	# When: 触发奇遇
 	encounter_integration.trigger_encounter_with_integration(1.0, "test_signal_001")
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 应发射encounter_triggered信号
 	assert_signal_emitted(encounter_integration, "encounter_triggered", "Should emit encounter_triggered")
@@ -307,7 +307,7 @@ func test_complete_encounter_flow():
 	# When: 完整的奇遇流程
 	# 1. 触发奇遇（保证成功）
 	var result = encounter_integration.trigger_encounter_with_integration(1.0, "test_complete_001")
-	await wait_frames(1)
+	await wait_physics_frames(1)
 	
 	# Then: 奇遇应该触发
 	assert_true(result["triggered"], "Encounter should trigger")
@@ -328,7 +328,7 @@ func test_ui_responds_to_encounter_integration_signals():
 	
 	# When: 通过encounter_integration触发奇遇
 	encounter_integration.trigger_encounter_with_integration(1.0, "test_ui_signal_001")
-	await wait_frames(2)
+	await wait_physics_frames(2)
 	
 	# Then: UI应该响应并显示（通过信号）
 	# 注意：由于UI的_on_encounter_triggered会被调用，current_encounter_data应该被设置

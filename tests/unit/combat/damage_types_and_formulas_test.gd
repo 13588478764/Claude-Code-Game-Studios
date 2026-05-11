@@ -9,7 +9,7 @@
 extends GutTest
 
 # 导入实现文件
-const DamageCalculator = load("res://src/scripts/combat/damage_calculator.gd")
+var DamageCalculator
 
 var damage_calculator: DamageCalculator
 var attacker: Node
@@ -18,6 +18,9 @@ var defender: Node
 # ============================================================================
 # 测试设置和清理
 # ============================================================================
+
+func before_all():
+	DamageCalculator = load("res://src/scripts/combat/damage_calculator.gd")
 
 func before_each():
 	damage_calculator = DamageCalculator.new()

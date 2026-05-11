@@ -219,12 +219,3 @@ func test_can_overload_check():
 	print("✓ Can overload check test passed")
 	tests_passed += 1
 	tests_total += 1
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

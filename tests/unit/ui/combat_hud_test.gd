@@ -241,4 +241,4 @@ func test_hud_data_validation() -> void:
 	
 	# 验证数据有效性
 	assert_gt(valid_character_data["max_hp"], 0, "最大HP应该大于0")
-	assert_le(valid_character_data["hp"], valid_character_data["max_hp"], "HP不应该超过最大HP")
+	assert_lte(valid_character_data["hp"], valid_character_data["max_hp"], "HP不应该超过最大HP")

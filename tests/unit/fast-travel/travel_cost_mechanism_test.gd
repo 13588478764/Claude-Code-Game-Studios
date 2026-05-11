@@ -226,12 +226,3 @@ func test_refund_functionality():
 	print("✓ 退款功能测试通过")
 	tests_passed += 3
 	tests_total += 3
-
-# 断言函数
-func assert(condition, message):
-	if not condition:
-		print("测试失败: " + message)
-		tests_total += 1
-	else:
-		# 条件为真时，什么都不做，继续
-		pass

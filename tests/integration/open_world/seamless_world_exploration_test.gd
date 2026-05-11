@@ -135,12 +135,4 @@ func test_distance_calculations():
 	print("✓ Distance calculations test passed")
 	tests_passed += 2
 	tests_total += 2
-
-# Utility function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1
+   

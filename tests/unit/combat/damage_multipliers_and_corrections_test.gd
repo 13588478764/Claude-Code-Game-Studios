@@ -9,13 +9,16 @@
 extends GutTest
 
 # 导入实现文件
-const DamageMultiplierManager = load("res://src/scripts/combat/damage_multiplier_manager.gd")
+var DamageMultiplierManager
 
 var multiplier_manager: DamageMultiplierManager
 
 # ============================================================================
 # 测试设置和清理
 # ============================================================================
+
+func before_all():
+	DamageMultiplierManager = load("res://src/scripts/combat/damage_multiplier_manager.gd")
 
 func before_each():
 	multiplier_manager = DamageMultiplierManager.new()

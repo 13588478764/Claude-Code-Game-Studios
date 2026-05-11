@@ -99,7 +99,7 @@ func test_object_registration():
 	
 	# Create a dummy node and resources for testing
 	var dummy_node = Node2D.new()
-	var dummy_resources = [preload("res://icon.png"), preload("res://icon.png"), preload("res://icon.png")]  # Using icon as placeholder
+	var dummy_resources = [Resource.new(), Resource.new(), Resource.new()]  # Using empty resources as placeholders
 	
 	# Mock function to return player position
 	var player_pos_func = func(): return Vector2(0, 0)
@@ -114,7 +114,7 @@ func test_object_registration():
 	assert(manager.lod_objects["test_obj_1"].resources.size() == 3, "Registered object should have 3 resources")
 	
 	# Try to register with insufficient resources
-	var bad_result = manager.register_lod_object("bad_obj", dummy_node, [preload("res://icon.png")], player_pos_func)  # Only 1 resource
+	var bad_result = manager.register_lod_object("bad_obj", dummy_node, [Resource.new()], player_pos_func)  # Only 1 resource
 	assert(bad_result == false, "Object registration should fail with insufficient resources")
 	
 	# Unregister the object
@@ -131,7 +131,7 @@ func test_distance_based_lod_switching():
 	
 	# Create a dummy node and resources for testing
 	var dummy_node = Node2D.new()
-	var dummy_resources = [preload("res://icon.png"), preload("res://icon.png"), preload("res://icon.png")]
+	var dummy_resources = [Resource.new(), Resource.new(), Resource.new()]
 	
 	# Create a function that returns different positions based on test scenario
 	var test_positions = [Vector2(0, 0), Vector2(2000, 0), Vector2(4000, 0)]
@@ -196,7 +196,7 @@ func test_debounce_mechanism():
 	
 	# Add an object to test debounce
 	var dummy_node = Node2D.new()
-	var dummy_resources = [preload("res://icon.png"), preload("res://icon.png"), preload("res://icon.png")]
+	var dummy_resources = [Resource.new(), Resource.new(), Resource.new()]
 	var player_pos_func = func(): return Vector2(0, 0)
 	
 	manager.register_lod_object("debounce_test_obj", dummy_node, dummy_resources, player_pos_func)
@@ -255,7 +255,7 @@ func test_lod_statistics():
 	var dummy_node1 = Node2D.new()
 	var dummy_node2 = Node2D.new()
 	var dummy_node3 = Node2D.new()
-	var dummy_resources = [preload("res://icon.png"), preload("res://icon.png"), preload("res://icon.png")]
+	var dummy_resources = [Resource.new(), Resource.new(), Resource.new()]
 	
 	var pos_func1 = func(): return Vector2(0, 0)  # Close - HIGH_LOD
 	var pos_func2 = func(): return Vector2(2000, 0)  # Medium - MEDIUM_LOD
@@ -283,12 +283,3 @@ func test_lod_statistics():
 	print("✓ LOD statistics test passed")
 	tests_passed += 6
 	tests_total += 6
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

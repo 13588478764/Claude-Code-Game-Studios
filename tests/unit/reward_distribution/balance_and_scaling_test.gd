@@ -44,9 +44,9 @@ func test_level_realm_scaling():
 	# Then: 正确应用缩放公式
 	# 公式: 基础奖励数量 × (1 + 玩家等级 × 等级缩放系数) × (1 + 境界 × 境界缩放系数)
 	# 默认系数: level_scaling_coefficient = 0.1, realm_scaling_coefficient = 0.05
-	assert_equal(scaled_1, 110, "玩家等级1时，100基础奖励应缩放为110 (100 * (1 + 1 * 0.1))")
-	assert_equal(scaled_50, 600, "玩家等级50时，100基础奖励应缩放为600 (100 * (1 + 50 * 0.1))")
-	assert_equal(scaled_50_realm5, 750, "玩家等级50境界5时，100基础奖励应缩放为750 (100 * (1 + 50 * 0.1) * (1 + 5 * 0.05))")
+	assert_eq(scaled_1, 110, "玩家等级1时，100基础奖励应缩放为110 (100 * (1 + 1 * 0.1))")
+	assert_eq(scaled_50, 600, "玩家等级50时，100基础奖励应缩放为600 (100 * (1 + 50 * 0.1))")
+	assert_eq(scaled_50_realm5, 750, "玩家等级50境界5时，100基础奖励应缩放为750 (100 * (1 + 50 * 0.1) * (1 + 5 * 0.05))")
 
 # 测试通胀控制机制
 func test_inflation_control_mechanism():
@@ -68,7 +68,7 @@ func test_inflation_control_mechanism():
 	for reward in adjusted_rewards:
 		if reward.item_id == "iron_ore":
 			# 低级材料应减少80% (10 * (1 - 0.8) = 2)
-			assert_equal(reward.quantity, 2, "低级材料应减少80%")
+			assert_eq(reward.quantity, 2, "低级材料应减少80%")
 			has_low_tier_reduction = true
 		elif reward.type == "inflation_compensation":
 			has_high_tier_compensation = true
@@ -147,8 +147,8 @@ func test_edge_cases_level_boundary_values():
 	var scaled_99 = balance_manager.calculate_scaled_reward_amount(base_amount, player_level_99)
 	
 	# Then: 边界值应正确处理
-	assert_equal(scaled_1, 55, "等级1边界值应正确计算")
-	assert_equal(scaled_99, 545, "等级99边界值应正确计算")
+	assert_eq(scaled_1, 55, "等级1边界值应正确计算")
+	assert_eq(scaled_99, 545, "等级99边界值应正确计算")
 
 # 边缘情况测试：部分背包空间可用
 func test_edge_cases_partial_backpack_space():
@@ -173,7 +173,7 @@ func test_edge_cases_partial_backpack_space():
 		if reward.type == "overflow_conversion":
 			has_overflow_conversion = true
 	
-	assert_equal(total_quantity, 5, "总数量应保持不变")
+	assert_eq(total_quantity, 5, "总数量应保持不变")
 	assert_true(has_overflow_conversion, "应包含溢出转换")
 
 # 边缘情况测试：跨等级区域边界
@@ -251,7 +251,7 @@ func test_configuration_parameter_adjustment():
 	var inflation_rewards = balance_manager.apply_inflation_control(rewards, player_level_40)
 	
 	# Then: 自定义参数应正确应用
-	assert_equal(scaled_amount, 900, "自定义缩放系数应正确应用 (100 * (1 + 40 * 0.2))")
+	assert_eq(scaled_amount, 900, "自定义缩放系数应正确应用 (100 * (1 + 40 * 0.2))")
 	
 	# 通胀控制应在等级30以上生效，减少率50%
 	var iron_ore_quantity = 0
@@ -260,4 +260,4 @@ func test_configuration_parameter_adjustment():
 			iron_ore_quantity = reward.quantity
 			break
 	
-	assert_equal(iron_ore_quantity, 5, "自定义通胀控制参数应正确应用 (10 * (1 - 0.5))")
+	assert_eq(iron_ore_quantity, 5, "自定义通胀控制参数应正确应用 (10 * (1 - 0.5))")

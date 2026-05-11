@@ -2,10 +2,12 @@
 ## 验证奇遇完成状态记录、连续失败计数器、历史记录管理和存档功能
 extends GutTest
 
+var _EncounterRecordManagerScript = load("res://src/scripts/encounter/encounter_record_manager.gd")  # 用脚本资源代替 autoload 实例，避免污染单例
+
 var record_manager
 
 func before_each():
-	record_manager = EncounterRecordManager.new()
+	record_manager = _EncounterRecordManagerScript.new()
 	add_child_autofree(record_manager)
 
 func after_each():

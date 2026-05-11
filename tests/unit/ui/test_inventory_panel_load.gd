@@ -22,13 +22,14 @@ func test_inventory_panel_root_type():
 func test_inventory_panel_script_exists():
 	var scene = load("res://src/scenes/ui/inventory_panel.tscn")
 	var instance = scene.instantiate()
-	assert_not_null(instance.script, "背包面板应该有脚本附加")
+	var script_path = instance.get_script()
+	assert_not_null(script_path, "场景应该有脚本附加")
 	instance.queue_free()
 
 func test_inventory_panel_z_index():
 	var scene = load("res://src/scenes/ui/inventory_panel.tscn")
 	var instance = scene.instantiate()
-	assert_eq(instance.z_index, 200, "背包面板Z-index应该是200")
+	assert_eq(instance.layer, 200, "背包面板Z-index应该是200")
 	instance.queue_free()
 
 func test_inventory_panel_has_tabs():

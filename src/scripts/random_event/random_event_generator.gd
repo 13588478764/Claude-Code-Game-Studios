@@ -79,11 +79,18 @@ func _initialize_default_events():
 	region_event_pools["village"] = village_pool
 
 # 设置区域事件池
-func set_region_event_pool(region_id: String, events: Array[EventData]):
+## 设置区域事件池
+## 注意：参数类型用通用 Array 而不是 Array[EventData]，因为 EventData 是内部类，
+## 调用方（特别是测试和 JSON 反序列化）很难构造严格的 Array[EventData] 字面量。
+## 内部仍可按 EventData 实例使用，调用方需保证元素类型正确。
+func set_region_event_pool(region_id: String, events: Array):
 	region_event_pools[region_id] = events
 
 # 获取区域事件池
-func get_region_event_pool(region_id: String) -> Array[EventData]:
+## 获取区域事件池
+## 返回类型同样用通用 Array（与 set_region_event_pool 对称），
+## 元素仍然是 EventData 实例。
+func get_region_event_pool(region_id: String) -> Array:
 	if region_event_pools.has(region_id):
 		return region_event_pools[region_id]
 	else:

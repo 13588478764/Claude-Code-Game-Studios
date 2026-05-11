@@ -6,20 +6,58 @@ extends GutTest
 var menu_system: MenuSystemFunctions
 var notification_manager: NotificationManager
 var test_scene: Node
+var menu_buttons: HBoxContainer
 
 
 func before_each():
-	# 加载HUD场景
-	var hud_scene = load("res://src/scenes/ui/hud/HUD.tscn")
-	test_scene = hud_scene.instantiate()
+	# 创建测试场景结构，不加载完整 HUD
+	test_scene = Control.new()
+	test_scene.name = "TestScene"
 	add_child_autofree(test_scene)
-	
-	# 获取MenuSystemFunctions和NotificationManager
-	menu_system = test_scene.get_node("MenuSystemFunctions")
-	notification_manager = test_scene.get_node("NotificationManager")
-	
+
+	# 创建MenuSystemFunctions所需子节点
+	menu_buttons = HBoxContainer.new()
+	menu_buttons.name = "MenuButtons"
+	test_scene.add_child(menu_buttons)
+
+	var main_menu_button = Button.new()
+	main_menu_button.name = "MainMenuButton"
+	main_menu_button.custom_minimum_size = Vector2(48, 48)
+	menu_buttons.add_child(main_menu_button)
+
+	var settings_button = Button.new()
+	settings_button.name = "SettingsButton"
+	settings_button.custom_minimum_size = Vector2(48, 48)
+	menu_buttons.add_child(settings_button)
+
+	var help_button = Button.new()
+	help_button.name = "HelpButton"
+	help_button.custom_minimum_size = Vector2(48, 48)
+	menu_buttons.add_child(help_button)
+
+	# 创建NotificationManager（需要一个包含NotificationsContainer子节点的控制节点）
+	var notification_root = Control.new()
+	notification_root.name = "NotificationRoot"
+	test_scene.add_child(notification_root)
+
+	var notification_container = VBoxContainer.new()
+	notification_container.name = "NotificationsContainer"
+	notification_root.add_child(notification_container)
+
+	# 加载MenuSystemFunctions脚本并挂载到test_scene
+	var menu_system_script = load("res://src/scripts/ui/hud/menu_system_functions.gd")
+	test_scene.set_script(menu_system_script)
+	menu_system = test_scene as MenuSystemFunctions
+
+	# 加载NotificationManager脚本
+	var notification_script = load("res://src/scripts/ui/hud/notification_manager.gd")
+	notification_root.set_script(notification_script)
+	notification_manager = notification_root
+
 	assert_not_null(menu_system, "MenuSystemFunctions should exist")
 	assert_not_null(notification_manager, "NotificationManager should exist")
+
+	await get_tree().process_frame
 
 
 # ============================================================================
@@ -90,7 +128,7 @@ func test_ac4_esc_key_opens_main_menu():
 	var event = InputEventKey.new()
 	event.keycode = KEY_ESCAPE
 	event.pressed = true
-	menu_system._input(event)
+	menu_system._unhandled_input(event)
 	
 	assert_signal_emitted(menu_system, "main_menu_requested", "ESC key should trigger main menu")
 
@@ -106,7 +144,7 @@ func test_ac5_f1_key_opens_help():
 	var event = InputEventKey.new()
 	event.keycode = KEY_F1
 	event.pressed = true
-	menu_system._input(event)
+	menu_system._unhandled_input(event)
 	
 	assert_signal_emitted(menu_system, "help_requested", "F1 key should trigger help")
 
@@ -153,7 +191,7 @@ func test_ac7_esc_key_blocked_in_combat():
 	var event = InputEventKey.new()
 	event.keycode = KEY_ESCAPE
 	event.pressed = true
-	menu_system._input(event)
+	menu_system._unhandled_input(event)
 	
 	assert_signal_not_emitted(menu_system, "main_menu_requested", "ESC key should not trigger main menu in combat")
 

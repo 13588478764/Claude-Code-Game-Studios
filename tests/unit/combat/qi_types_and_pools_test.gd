@@ -241,12 +241,3 @@ func test_qi_status_information():
 	print("✓ Qi status information test passed")
 	tests_passed += 13
 	tests_total += 13
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

@@ -1,7 +1,7 @@
 ## DocumentAlignmentImplementer
 ## DocumentAlignmentImplementer
-document alignment implementer
-文档管理模块
+## document alignment implementer
+## 文档管理模块
 ##
 ## 主要功能：
 ## - 待补充

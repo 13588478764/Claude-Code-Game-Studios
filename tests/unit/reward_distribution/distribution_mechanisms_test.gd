@@ -32,8 +32,8 @@ func test_fixed_base_rewards_mechanism():
 	# Then: 正确返回固定奖励
 	assert_true(fixed_rewards.has("silver"), "应包含银两奖励")
 	assert_true(fixed_rewards.has("experience"), "应包含经验值奖励")
-	assert_equal(fixed_rewards.silver, 50, "银两数量应为50")
-	assert_equal(fixed_rewards.experience, 30, "经验值数量应为30")
+	assert_eq(fixed_rewards.silver, 50, "银两数量应为50")
+	assert_eq(fixed_rewards.experience, 30, "经验值数量应为30")
 	
 	# 测试不存在的奇遇类型
 	var invalid_type = "non_existent_encounter"
@@ -52,14 +52,14 @@ func test_weighted_random_pool_mechanism():
 	var adjusted_pool_80 = distribution_manager.calculate_weighted_pool(pool, luck_80)
 	
 	# Then: 稀有物品权重正确修正
-	assert_equal(adjusted_pool_0.silver, 100, "普通物品权重不应受福缘影响")
-	assert_equal(adjusted_pool_0.rare_sword, 10, "福缘为0时稀有物品权重不变")
-	assert_equal(adjusted_pool_0.thousand_year_ginseng, 5, "福缘为0时稀有材料权重不变")
+	assert_eq(adjusted_pool_0.silver, 100, "普通物品权重不应受福缘影响")
+	assert_eq(adjusted_pool_0.rare_sword, 10, "福缘为0时稀有物品权重不变")
+	assert_eq(adjusted_pool_0.thousand_year_ginseng, 5, "福缘为0时稀有材料权重不变")
 	
 	# 福缘为80时，稀有物品权重应增加80%
-	assert_equal(adjusted_pool_80.silver, 100, "普通物品权重不应受福缘影响")
-	assert_equal(adjusted_pool_80.rare_sword, 18, "福缘为80时稀有物品权重应为18 (10 * 1.8)")
-	assert_equal(adjusted_pool_80.thousand_year_ginseng, 9, "福缘为80时稀有材料权重应为9 (5 * 1.8)")
+	assert_eq(adjusted_pool_80.silver, 100, "普通物品权重不应受福缘影响")
+	assert_eq(adjusted_pool_80.rare_sword, 18, "福缘为80时稀有物品权重应为18 (10 * 1.8)")
+	assert_eq(adjusted_pool_80.thousand_year_ginseng, 9, "福缘为80时稀有材料权重应为9 (5 * 1.8)")
 
 # 测试层级掉落表机制
 func test_tier_drop_table_mechanism():
@@ -74,8 +74,8 @@ func test_tier_drop_table_mechanism():
 	var tier_from_region = distribution_manager.calculate_drop_tier(player_level_25, 3, 10) # 使用区域层级
 	
 	# Then: 正确计算掉落层级
-	assert_equal(tier_5, 0, "玩家等级5应计算为层级0 (5/10=0.5，向下取整)")
-	assert_equal(tier_25, 2, "玩家等级25应计算为层级2 (25/10=2.5，向下取整)")
+	assert_eq(tier_5, 0, "玩家等级5应计算为层级0 (5/10=0.5，向下取整)")
+	assert_eq(tier_25, 2, "玩家等级25应计算为层级2 (25/10=2.5，向下取整)")
 	
 	# 测试获取掉落表
 	var drop_table_1 = distribution_manager.get_tier_drop_table(1)
@@ -122,7 +122,7 @@ func test_edge_cases_empty_reward_config():
 	# Then: 应安全处理空配置
 	assert_true(adjusted_empty.is_empty(), "空池应返回空字典")
 	assert_true(rewards_empty.is_empty(), "空奇遇类型应返回空字典")
-	assert_equal(selected_empty, "", "空池应返回空字符串")
+	assert_eq(selected_empty, "", "空池应返回空字符串")
 
 # 边缘情况测试：福缘边界值
 func test_edge_cases_luck_boundary_values():
@@ -136,8 +136,8 @@ func test_edge_cases_luck_boundary_values():
 	var adjusted_max = distribution_manager.calculate_weighted_pool(pool, luck_max)
 	
 	# Then: 边界值应正确处理
-	assert_equal(adjusted_min.rare_sword, 10, "福缘为0时权重不变")
-	assert_equal(adjusted_max.rare_sword, 20, "福缘为100时权重翻倍 (10 * 2.0)")
+	assert_eq(adjusted_min.rare_sword, 10, "福缘为0时权重不变")
+	assert_eq(adjusted_max.rare_sword, 20, "福缘为100时权重翻倍 (10 * 2.0)")
 
 # 边缘情况测试：层级边界值
 func test_edge_cases_tier_boundary_values():
@@ -151,8 +151,8 @@ func test_edge_cases_tier_boundary_values():
 	var tier_99 = distribution_manager.calculate_drop_tier(player_level_99, max_tier_5, 10)
 	
 	# Then: 边界值应正确处理
-	assert_equal(tier_0, 0, "玩家等级0应计算为层级0")
-	assert_equal(tier_99, 5, "玩家等级99在最大层级5时应返回5")
+	assert_eq(tier_0, 0, "玩家等级0应计算为层级0")
+	assert_eq(tier_99, 5, "玩家等级99在最大层级5时应返回5")
 
 # 测试完整奖励生成流程
 func test_complete_reward_generation_flow():
@@ -197,5 +197,5 @@ func test_custom_drop_table_addition():
 	
 	# Then: 自定义掉落表应可被获取
 	var retrieved_table = distribution_manager.get_tier_drop_table(custom_tier)
-	assert_equal(retrieved_table.material_resources.silver, 1000, "自定义掉落表应正确保存")
-	assert_equal(retrieved_table.equipment_items.legendary_sword, 1, "自定义装备应正确保存")
+	assert_eq(retrieved_table.material_resources.silver, 1000, "自定义掉落表应正确保存")
+	assert_eq(retrieved_table.equipment_items.legendary_sword, 1, "自定义装备应正确保存")

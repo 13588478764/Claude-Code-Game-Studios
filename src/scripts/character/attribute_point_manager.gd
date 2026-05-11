@@ -44,7 +44,6 @@ var reset_count: int = 0  # 免费重置次数
 
 signal attribute_allocated(attribute_type: String, new_value: int)
 signal attributes_reset()
-REPLACE
 
 func _ready():
 	pass

@@ -22,13 +22,14 @@ func test_world_map_root_type():
 func test_world_map_script_exists():
 	var scene = load("res://src/scenes/ui/world_map.tscn")
 	var instance = scene.instantiate()
-	assert_not_null(instance.script, "大地图应该有脚本附加")
+	var script_path = instance.get_script()
+	assert_not_null(script_path, "场景应该有脚本附加")
 	instance.queue_free()
 
 func test_world_map_z_index():
 	var scene = load("res://src/scenes/ui/world_map.tscn")
 	var instance = scene.instantiate()
-	assert_eq(instance.z_index, 220, "大地图Z-index应该是220")
+	assert_eq(instance.layer, 220, "大地图Z-index应该是220")
 	instance.queue_free()
 
 func test_world_map_has_tabs():

@@ -290,12 +290,3 @@ func test_distance_and_direction_calculation():
 	print("✓ 距离和方向计算测试通过")
 	tests_passed += 11
 	tests_total += 11
-
-# 断言函数
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("断言失败: " + message)
-	
-	tests_total += 1

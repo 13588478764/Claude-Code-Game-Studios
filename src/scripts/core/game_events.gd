@@ -132,6 +132,12 @@ signal enemy_down_state_changed(enemy_id: String, is_down: bool)
 ## 敌人Break状态变化
 signal enemy_break_state_changed(enemy_id: String, is_broken: bool)
 
+## 敌人通用状态变化（如 "down" / "break" / "" 等字符串状态标识）
+## 用于 enemy_info_panel 等需要"状态字符串"风格订阅的组件；
+## 与 enemy_down_state_changed / enemy_break_state_changed 是互补关系，
+## 后者发布"是/否"布尔变化，本信号发布当前状态名（多状态合并）。
+signal enemy_status_changed(enemy_id: String, status: String)
+
 # ============================================================================
 # BUFF/DEBUFF SIGNALS (P1级 - 状态效果)
 # ============================================================================
@@ -207,6 +213,9 @@ signal item_equipped(item_id: String, slot: String)
 
 ## 卸下装备
 signal item_unequipped(item_id: String, slot: String)
+
+## 物品数量变化（通用，快捷栏/背包等均可监听）
+signal item_quantity_changed(item_id: String, new_quantity: int)
 
 ## 快捷栏变化
 signal item_hotbar_changed(slot: int, item_id: String, quantity: int)

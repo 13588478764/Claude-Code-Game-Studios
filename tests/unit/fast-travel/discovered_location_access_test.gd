@@ -198,12 +198,3 @@ func test_force_unlock_nonexistent_location():
 	print("✓ 强制解锁不存在地点测试通过")
 	tests_passed += 1
 	tests_total += 1
-
-# 断言函数
-func assert(condition, message):
-	if not condition:
-		print("测试失败: " + message)
-		tests_total += 1
-	else:
-		# 条件为真时，什么都不做，继续
-		pass

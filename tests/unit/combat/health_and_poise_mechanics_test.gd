@@ -179,12 +179,3 @@ func test_status_changes():
 	print("✓ Status changes test passed")
 	tests_passed += 3
 	tests_total += 3
-
-# Helper function for assertions
-func assert(condition, message):
-	if condition:
-		tests_passed += 1
-	else:
-		print("Assertion failed: " + message)
-	
-	tests_total += 1

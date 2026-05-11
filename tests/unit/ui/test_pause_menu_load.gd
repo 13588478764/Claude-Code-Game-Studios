@@ -34,7 +34,7 @@ func test_pause_menu_script_exists():
 func test_pause_menu_z_index():
 	var scene = load("res://src/scenes/ui/pause_menu.tscn")
 	var instance = scene.instantiate()
-	assert_eq(instance.z_index, 260, "暂停菜单Z-index应该是260")
+	assert_eq(instance.layer, 260, "暂停菜单Z-index应该是260")
 	instance.queue_free()
 
 ## 测试：场景有必要的按钮节点

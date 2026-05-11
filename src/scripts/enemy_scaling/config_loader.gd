@@ -1,8 +1,9 @@
 ## ConfigLoader
 ## config_loader.gd
-敌人缩放系统配置加载器
-从JSON配置文件加载所有缩放参数
-TR-enemy-scaling-007
+##
+## 敌人缩放系统配置加载器
+## 从JSON配置文件加载所有缩放参数
+## TR-enemy-scaling-007
 ##
 ## 主要功能：
 ## - 待补充

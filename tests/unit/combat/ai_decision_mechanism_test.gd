@@ -105,7 +105,6 @@ func test_priority_scoring_table_correctly_implemented() -> TestResult:
 		
 		var score = decision_manager.calculate_action_score(action, test_targets[0], battlefield_context)
 		action_scores.append({"action": action, "score": score})
-	end
 	
 	# 验证结果
 	if action_scores.size() == test_enemy.skills.size():

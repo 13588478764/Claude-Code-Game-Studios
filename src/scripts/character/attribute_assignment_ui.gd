@@ -45,7 +45,6 @@ var available_points_label: Label
 
 signal allocation_applied(allocation: Dictionary)
 signal allocation_reset()
-REPLACE
 
 func _ready():
 	# 初始化UI组件（在实际项目中这些会从场景中获取）
