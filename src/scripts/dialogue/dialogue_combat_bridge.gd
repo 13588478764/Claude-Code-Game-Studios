@@ -241,7 +241,10 @@ func _on_battle_ended(result: Dictionary) -> void:
 	if result.has("winner"):
 		var winners = result.get("winner", [])
 		for winner in winners:
-			if winner.get("is_player", false) or (winner.unit_node != null and str(winner.unit_node).contains("player")):
+			var is_player = false
+			if winner.unit_node is Dictionary:
+				is_player = winner.unit_node.get("is_player", false)
+			if is_player or (winner.unit_node != null and str(winner.unit_node).contains("player")):
 				victory = true
 				break
 

@@ -109,23 +109,26 @@ func _connect_global_events() -> void:
 # 事件处理器
 # ============================================================================
 
-## 战斗胜利时检查奇遇触发
+## 战斗胜利时记录，延迟到回到探索时再检查奇遇（避免与结算面板重叠）
+var _pending_victory_encounter: bool = false
+
 func _on_combat_ended(victory: bool, rewards: Dictionary) -> void:
 	if not victory:
-		print("[EncounterEventHandler] 战斗失败，跳过奇遇触发检查")
 		return
-	
-	if _encounter_trigger_manager == null or _character_system == null:
-		return
-	
-	print("[EncounterEventHandler] 战斗胜利，检查奇遇触发...")
-	_trigger_encounter(TriggerContext.BATTLE_VICTORY)
+	_pending_victory_encounter = true
 
 ## 进入新区域时检查奇遇触发
 func _on_area_entered(area_name: String, area_level: int) -> void:
 	if _encounter_trigger_manager == null or _character_system == null:
 		return
-	
+
+	# 战斗胜利后延迟的奇遇检查
+	if _pending_victory_encounter:
+		_pending_victory_encounter = false
+		print("[EncounterEventHandler] 战斗胜利，检查奇遇触发...")
+		_trigger_encounter(TriggerContext.BATTLE_VICTORY)
+		return
+
 	print("[EncounterEventHandler] 进入区域 %s，检查奇遇触发..." % area_name)
 	_trigger_encounter(TriggerContext.MAP_MOVEMENT)
 

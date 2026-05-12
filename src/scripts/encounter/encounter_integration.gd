@@ -253,12 +253,7 @@ func trigger_encounter_with_integration(base_probability: float, encounter_id: S
 		# 顺序符合"先触发后奖励"的语义）
 		encounter_triggered.emit(encounter_type, encounter_id, probability)
 		
-		# 发放奖励
-		var encounter_data = {
-			"type": encounter_type,
-			"id": encounter_id
-		}
-		grant_encounter_rewards(encounter_type, encounter_data)
+		# 奖励由 EncounterUI 按钮触发，此处不自动发放
 	
 	return result
 

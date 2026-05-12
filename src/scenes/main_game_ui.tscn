@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://ct02kuwt81anl" path="res://src/scripts/audio/audio_system.gd" id="8"]
 [ext_resource type="PackedScene" uid="uid://c7nakn2p8qx4r" path="res://src/scenes/ui/encounter_ui.tscn" id="9"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/dialogue_box.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/exploration_panel.tscn" id="11"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/battle_result_panel.tscn" id="12"]
 
 [node name="MainGameUI" type="Node2D" unique_id=73997892]
 script = ExtResource("1")
@@ -109,4 +111,12 @@ visible = false
 
 ; DialogueBox 默认隐藏，由 DialogueManager 在触发对话时显示
 [node name="DialogueBox" parent="HUDLayer" unique_id=769544804 instance=ExtResource("10")]
+visible = false
+
+; ExplorationPanel 默认隐藏，由 GameLoopManager 在进入探索时显示
+[node name="ExplorationPanel" parent="HUDLayer" instance=ExtResource("11")]
+visible = false
+
+; BattleResultPanel 默认隐藏，由 GameLoopManager 在战斗结算时显示
+[node name="BattleResultPanel" parent="HUDLayer" instance=ExtResource("12")]
 visible = false

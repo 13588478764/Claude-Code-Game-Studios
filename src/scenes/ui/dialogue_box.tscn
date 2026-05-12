@@ -96,9 +96,17 @@ size_flags_horizontal = 3
 text = "选择4"
 visible = false
 
-[node name="ContinueHint" type="Label" parent="VBoxContainer"]
+[node name="BottomBar" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
+
+[node name="ContinueHint" type="Label" parent="VBoxContainer/BottomBar"]
+layout_mode = 2
+size_flags_horizontal = 3
 visible = false
-horizontal_alignment = 2
 text = "[按空格继续]"
 self_modulate = Color(1, 1, 1, 0.5)
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/BottomBar"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 0)
+text = "跳过"

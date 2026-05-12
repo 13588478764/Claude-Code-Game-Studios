@@ -58,6 +58,7 @@ func _on_start_new_game_pressed():
 	_hide_node("WelcomeLabel")
 	_hide_node("StartNewGameButton")
 	_hide_node("LoadGameButton")
+	_hide_node("MainMenuPanel")
 
 	# 显示 HUDLayer
 	var hud_layer = get_node_or_null("HUDLayer")
@@ -67,8 +68,13 @@ func _on_start_new_game_pressed():
 	# 初始化所有系统
 	initialize_game_systems()
 
-	# 显示角色面板进行测试
-	show_character_panel()
+	# 通知 GameLoopManager 进入探索状态
+	var game_loop = get_node_or_null("/root/GameLoopManager")
+	if game_loop:
+		game_loop.enter_exploration()
+	else:
+		push_warning("[主游戏UI] GameLoopManager 未找到，回退到角色面板")
+		show_character_panel()
 
 	print("新游戏已开始！")
 	print("====================")

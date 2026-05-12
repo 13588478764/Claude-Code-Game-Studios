@@ -407,11 +407,16 @@ func end_battle() -> void:
 ## @return 战斗结果字典
 func _calculate_battle_result() -> Dictionary:
 	var alive_units: Array = []
-	for unit in battle_units:
-		if unit.current_hp > 0:
-			alive_units.append(unit)
-	
+	var player_alive := false
+	var half := ceili(battle_units.size() / 2.0)
+	for i in range(battle_units.size()):
+		if battle_units[i].current_hp > 0:
+			alive_units.append(battle_units[i])
+			if i < half:
+				player_alive = true
+
 	return {
+		"victory": player_alive,
 		"winner": alive_units,
 		"battle_log": battle_log.duplicate()
 	}
@@ -559,21 +564,8 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 ## @param attack_data: 攻击数据字典
 ## @return 最终伤害值
 func calculate_damage(attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
-	# 确定伤害类型（默认物理伤害，可通过 attack_data 指定）
-	var damage_type: int = attack_data.get("damage_type", DamageCalculator.DamageType.PHYSICAL)
-	
-	# 委托给 DamageCalculator 计算基础伤害
-	var base_dmg: int = 1
-	if _damage_calculator != null:
-		# 需要创建临时的 Node 包装器来适配 BattleUnit
-		var attacker_node := _create_damage_node(attacker, attack_data)
-		var target_node := _create_damage_node(target, {})
-		base_dmg = _damage_calculator.calculate_base_damage(attacker_node, target_node, damage_type)
-		attacker_node.queue_free()
-		target_node.queue_free()
-	else:
-		# 回退：使用本地简化计算
-		base_dmg = _calculate_damage_fallback(attacker, target, attack_data)
+	# 使用本地简化计算（避免 DamageCalculator 的 Node-meta 适配开销）
+	var base_dmg: int = _calculate_damage_fallback(attacker, target, attack_data)
 	
 	# 应用连击值加成（战斗系统特有逻辑）
 	var combo_bonus: float = 1.0 + (float(attacker.combo_value) / float(max_combo) * max_combo_bonus)
@@ -605,16 +597,10 @@ func _create_damage_node(unit: BattleUnit, attack_data: Dictionary) -> Node:
 ## @param attack_data: 攻击数据字典
 ## @return 基础伤害值
 func _calculate_damage_fallback(attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
-	var base_dmg: int = base_damage + randi_range(0, damage_random_range)
-	
 	var attack_attr: int = attacker.attributes.get("force", 10)
-	var force_div: float = _damage_formulas.get("force_divisor", 50.0)
-	base_dmg += int(base_dmg * attack_attr / force_div)
-	
-	var stance_def_div: float = _damage_formulas.get("stance_defense_divisor", 10.0)
-	var defense_reduction: int = int((max_stance - target.stance) / stance_def_div)
-	base_dmg = max(1, base_dmg - defense_reduction)
-	
+	var defend_attr: int = target.attributes.get("constitution", 0)
+	var base_dmg: int = max(1, attack_attr - defend_attr / 3) + randi_range(0, damage_random_range)
+
 	return base_dmg
 
 ## 设置伤害计算器（依赖注入）

@@ -1,0 +1,415 @@
+## GameLoopManager
+## 游戏核心循环管理器（胶水层）
+##
+## 串联各独立子系统，驱动 MVP 游戏循环：
+## 探索 → 遭遇/战斗 → 奖励 → 成长 → 探索
+##
+## 不修改子系统内部逻辑，仅通过信号和公共 API 对接。
+
+extends Node
+
+# ============================================================================
+# 游戏状态
+# ============================================================================
+
+enum GameState {
+	MENU,
+	EXPLORING,
+	IN_COMBAT,
+	COMBAT_RESULT,
+}
+
+# ============================================================================
+# 区域定义
+# ============================================================================
+
+const REGIONS: Array[Dictionary] = [
+	{"id": "start_village", "name": "新手村·青石镇", "level": 1, "region_id": 0, "encounter_rate": 0.4},
+	{"id": "bandit_fortress", "name": "黑风寨", "level": 5, "region_id": 1, "encounter_rate": 0.6},
+	{"id": "qingyun_mountain", "name": "青云山", "level": 10, "region_id": 2, "encounter_rate": 0.5},
+	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 3, "encounter_rate": 0.35},
+]
+
+# 敌人模板：按区域定义基础数据
+const ENEMY_TEMPLATES: Dictionary = {
+	"start_village": [
+		{"name": "野狼", "base_hp": 60, "base_attack": 8, "speed": 8, "type": 0},
+		{"name": "山贼喽啰", "base_hp": 80, "base_attack": 10, "speed": 7, "type": 0},
+	],
+	"bandit_fortress": [
+		{"name": "黑风寨匪徒", "base_hp": 120, "base_attack": 18, "speed": 9, "type": 1},
+		{"name": "黑风寨头目", "base_hp": 200, "base_attack": 25, "speed": 6, "type": 2},
+	],
+	"qingyun_mountain": [
+		{"name": "妖兽", "base_hp": 150, "base_attack": 22, "speed": 12, "type": 1},
+		{"name": "护山灵兽", "base_hp": 250, "base_attack": 30, "speed": 8, "type": 2},
+	],
+	"jiangnan_water": [
+		{"name": "水贼", "base_hp": 100, "base_attack": 15, "speed": 10, "type": 0},
+		{"name": "邪修弟子", "base_hp": 180, "base_attack": 20, "speed": 11, "type": 1},
+	],
+}
+
+# 奖励配置
+const BASE_EXP_PER_ENEMY: int = 50
+const BASE_SILVER_PER_ENEMY: int = 20
+const REGION_REWARD_MULTIPLIER: Array[float] = [1.0, 1.5, 2.5, 2.0]
+
+# ============================================================================
+# 信号定义
+# ============================================================================
+
+signal game_state_changed(new_state: GameState)
+signal battle_log_updated(message: String)
+signal exploration_result(result_text: String)
+signal combat_result_ready(reward_data: Dictionary)
+
+# ============================================================================
+# 成员变量
+# ============================================================================
+
+var current_state: GameState = GameState.MENU
+var current_region: Dictionary = {}
+var _combat_system: Node = null
+var _character_system: Node = null
+var _currency_manager: Node = null
+var _game_events: Node = null
+var _enemy_generator = null
+
+## 当前战斗的敌人数量（用于奖励计算）
+var _current_battle_enemy_count: int = 0
+
+## 自动战斗定时器
+var _auto_battle_timer: Timer = null
+
+# ============================================================================
+# 生命周期
+# ============================================================================
+
+func _ready() -> void:
+	call_deferred("_initialize")
+
+
+func _initialize() -> void:
+	_game_events = get_node_or_null("/root/GameEvents")
+	_character_system = get_node_or_null("/root/CharacterSystem")
+	_combat_system = get_node_or_null("/root/CombatSystem")
+	_currency_manager = get_node_or_null("/root/CurrencyManager")
+
+	# 创建 EnemyGenerator 实例
+	var EnemyGeneratorScript = load("res://src/scripts/enemy_scaling/enemy_generator.gd")
+	if EnemyGeneratorScript:
+		_enemy_generator = EnemyGeneratorScript.new()
+
+	# 创建自动战斗定时器
+	_auto_battle_timer = Timer.new()
+	_auto_battle_timer.wait_time = 0.5
+	_auto_battle_timer.one_shot = true
+	_auto_battle_timer.timeout.connect(_on_auto_battle_tick)
+	add_child(_auto_battle_timer)
+
+	_connect_signals()
+
+	# 默认选中第一个区域
+	current_region = REGIONS[0]
+
+	print("[GameLoopManager] 初始化完成")
+
+
+func _connect_signals() -> void:
+	if _game_events == null:
+		push_warning("[GameLoopManager] GameEvents 未找到")
+		return
+
+	_game_events.combat_ended.connect(_on_combat_ended)
+	_game_events.combat_started.connect(_on_combat_started)
+
+# ============================================================================
+# 公共 API
+# ============================================================================
+
+## 进入探索状态
+func enter_exploration() -> void:
+	_set_state(GameState.EXPLORING)
+
+
+## 选择区域
+func select_region(region_index: int) -> void:
+	if region_index < 0 or region_index >= REGIONS.size():
+		return
+	current_region = REGIONS[region_index]
+	print("[GameLoopManager] 切换区域: %s" % current_region.name)
+
+
+## 执行一次探索行动
+func do_explore_action() -> Dictionary:
+	if current_state != GameState.EXPLORING:
+		return {"type": "error", "message": "当前不在探索状态"}
+
+	# 发射区域进入信号（让 EncounterEventHandler 也能响应）
+	if _game_events:
+		_game_events.nav_area_entered.emit(current_region.id, current_region.level)
+
+	# 判定是否触发战斗
+	var roll := randf()
+	if roll < current_region.encounter_rate:
+		_start_random_battle()
+		return {"type": "combat", "message": "遭遇敌人！"}
+
+	# 未触发战斗，给一点探索奖励
+	var explore_exp := randi_range(5, 15)
+	if _character_system:
+		_character_system.add_experience(explore_exp)
+
+	var result_text := "探索了%s，获得 %d 经验。" % [current_region.name, explore_exp]
+	exploration_result.emit(result_text)
+	return {"type": "explore", "message": result_text, "exp": explore_exp}
+
+
+## 获取角色状态摘要
+func get_player_summary() -> Dictionary:
+	if _character_system == null:
+		return {}
+
+	var silver := 0
+	if _currency_manager and _currency_manager.has_method("get_currency_amount"):
+		silver = _currency_manager.get_currency_amount(0)  # SILVER = 0
+
+	return {
+		"level": _character_system.level,
+		"exp": _character_system.experience,
+		"exp_next": _character_system.get_exp_required_for_level(_character_system.level + 1) if _character_system.has_method("get_exp_required_for_level") else 100,
+		"realm": _character_system.REALMS[_character_system.realm_index]["name"] if _character_system.realm_index < _character_system.REALMS.size() else "未知",
+		"hp": _character_system.attributes.constitution * 10,
+		"silver": silver,
+	}
+
+
+## 从结算回到探索
+func return_to_exploration() -> void:
+	_set_state(GameState.EXPLORING)
+
+# ============================================================================
+# 战斗流程
+# ============================================================================
+
+func _start_random_battle() -> void:
+	if _combat_system == null:
+		push_warning("[GameLoopManager] CombatSystem 未找到，跳过战斗")
+		return
+
+	# 选择敌人模板
+	var templates: Array = ENEMY_TEMPLATES.get(current_region.id, ENEMY_TEMPLATES["start_village"])
+	var template: Dictionary = templates[randi() % templates.size()]
+
+	# 构建玩家战斗数据
+	var player_data := _build_player_battle_data()
+
+	# 构建敌人战斗数据
+	var enemy_data := _build_enemy_battle_data(template)
+
+	_current_battle_enemy_count = 1
+
+	battle_log_updated.emit("⚔️ 遭遇 %s！战斗开始！" % template.name)
+
+	# 启动战斗（前半是玩家，后半是敌人）
+	_combat_system.start_battle([player_data, enemy_data])
+
+
+func _build_player_battle_data() -> Dictionary:
+	if _character_system == null:
+		return {"name": "玩家", "hp": 100, "max_hp": 100, "speed": 10, "attributes": {}}
+
+	var attrs = _character_system.attributes
+	var combat_stats := {}
+	if _character_system.has_method("get_combat_stats"):
+		combat_stats = _character_system.get_combat_stats()
+
+	var max_hp: int = attrs.constitution * 10
+	var total_attrs: Dictionary = attrs.get_total()
+	total_attrs["force"] = total_attrs.get("strength", 10)
+	return {
+		"name": "玩家",
+		"hp": max_hp,
+		"max_hp": max_hp,
+		"speed": attrs.agility,
+		"internal_energy": attrs.intelligence * 5,
+		"max_internal_energy": attrs.intelligence * 5,
+		"stance": 100,
+		"combo_value": 0,
+		"link_gauge": 0,
+		"attributes": total_attrs,
+		"is_player": true,
+	}
+
+
+func _build_enemy_battle_data(template: Dictionary) -> Dictionary:
+	var player_level: int = 1
+	if _character_system:
+		player_level = _character_system.level
+
+	# 用 EnemyGenerator 缩放（如果可用）
+	if _enemy_generator:
+		var scaled = _enemy_generator.generate_enemy_instance(
+			template, player_level, current_region.region_id, template.type
+		)
+		return {
+			"name": template.name,
+			"hp": int(scaled.final_hp),
+			"max_hp": int(scaled.final_hp),
+			"speed": template.speed,
+			"internal_energy": 30,
+			"max_internal_energy": 50,
+			"stance": 100,
+			"combo_value": 0,
+			"link_gauge": 0,
+			"attributes": {"force": int(scaled.final_attack / 2)},
+			"is_player": false,
+		}
+
+	# 降级：直接使用模板数据
+	return {
+		"name": template.name,
+		"hp": template.base_hp,
+		"max_hp": template.base_hp,
+		"speed": template.speed,
+		"internal_energy": 30,
+		"max_internal_energy": 50,
+		"stance": 100,
+		"combo_value": 0,
+		"link_gauge": 0,
+		"attributes": {"force": template.base_attack / 2},
+		"is_player": false,
+	}
+
+# ============================================================================
+# 自动战斗
+# ============================================================================
+
+func _on_combat_started() -> void:
+	_set_state(GameState.IN_COMBAT)
+	# 延迟启动自动战斗，等待 CombatManager 完成初始化
+	_auto_battle_timer.start()
+
+
+func _on_auto_battle_tick() -> void:
+	if current_state != GameState.IN_COMBAT:
+		return
+	if _combat_system == null:
+		return
+	if _combat_system.battle_state == 0:  # IDLE
+		return
+
+	# 如果战斗已经结束，不再执行
+	if _combat_system.is_battle_over():
+		return
+
+	var current_unit = _combat_system.current_turn_unit
+	if current_unit == null:
+		return
+
+	# 自动选择攻击目标：找到第一个存活的对手
+	var target_index := _find_attack_target(current_unit)
+	if target_index >= 0:
+		var action_data := {
+			"type": "attack",
+			"target_index": target_index,
+		}
+		_combat_system.execute_action(action_data)
+		var target_name: String = ""
+		if target_index < _combat_system.battle_units.size():
+			var target = _combat_system.battle_units[target_index]
+			if target.unit_node is Dictionary:
+				target_name = target.unit_node.get("name", "目标")
+
+		battle_log_updated.emit("回合行动完成")
+	else:
+		# 没有可攻击目标，结束战斗
+		_combat_system.end_battle()
+		return
+
+	# 继续下一个自动回合
+	if not _combat_system.is_battle_over():
+		_auto_battle_timer.start()
+
+
+func _find_attack_target(current_unit) -> int:
+	var current_index = _combat_system.battle_units.find(current_unit)
+	var half := ceili(_combat_system.battle_units.size() / 2.0)
+	var is_player_unit = current_index < half
+
+	# 玩家单位攻击敌人（后半），敌人攻击玩家（前半）
+	for i in range(_combat_system.battle_units.size()):
+		var unit = _combat_system.battle_units[i]
+		if unit.current_hp <= 0:
+			continue
+		if is_player_unit and i >= half:
+			return i
+		if not is_player_unit and i < half:
+			return i
+
+	return -1
+
+# ============================================================================
+# 战斗结算
+# ============================================================================
+
+func _on_combat_ended(victory: bool, result: Dictionary) -> void:
+	_auto_battle_timer.stop()
+
+	if current_state != GameState.IN_COMBAT:
+		return
+
+	var reward_data := {}
+	if victory:
+		reward_data = _calculate_rewards()
+		_distribute_rewards(reward_data)
+	else:
+		reward_data = {"victory": false, "exp": 0, "silver": 0}
+
+	reward_data["victory"] = victory
+	reward_data["battle_log"] = result.get("battle_log", [])
+
+	_set_state(GameState.COMBAT_RESULT)
+
+	# 通知 UI 显示结算
+	combat_result_ready.emit(reward_data)
+	battle_log_updated.emit("战斗结束！%s" % ("胜利！" if victory else "失败..."))
+
+
+func _calculate_rewards() -> Dictionary:
+	var region_mult: float = 1.0
+	if current_region.region_id < REGION_REWARD_MULTIPLIER.size():
+		region_mult = REGION_REWARD_MULTIPLIER[current_region.region_id]
+
+	var exp_reward := int(BASE_EXP_PER_ENEMY * _current_battle_enemy_count * region_mult)
+	var silver_reward := int(BASE_SILVER_PER_ENEMY * _current_battle_enemy_count * region_mult)
+
+	return {
+		"exp": exp_reward,
+		"silver": silver_reward,
+		"region": current_region.name,
+	}
+
+
+func _distribute_rewards(rewards: Dictionary) -> void:
+	if _character_system and rewards.get("exp", 0) > 0:
+		var old_level: int = _character_system.level
+		_character_system.add_experience(rewards["exp"])
+		rewards["level_up"] = _character_system.level > old_level
+		rewards["new_level"] = _character_system.level
+
+	if _currency_manager and rewards.get("silver", 0) > 0:
+		_currency_manager.add_currency(0, rewards["silver"])  # CurrencyType.SILVER = 0
+
+	print("[GameLoopManager] 奖励分发: 经验 %d, 银两 %d" % [rewards.get("exp", 0), rewards.get("silver", 0)])
+
+# ============================================================================
+# 状态管理
+# ============================================================================
+
+func _set_state(new_state: GameState) -> void:
+	var old := current_state
+	current_state = new_state
+	game_state_changed.emit(new_state)
+	print("[GameLoopManager] 状态: %s → %s" % [GameState.keys()[old], GameState.keys()[new_state]])

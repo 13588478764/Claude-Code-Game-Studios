@@ -10,7 +10,8 @@ signal player_choice_selected(choice_index: int)
 @onready var _speaker_name: Label = $VBoxContainer/SpeakerPanel/HBoxContainer/SpeakerName
 @onready var _dialogue_text: RichTextLabel = $VBoxContainer/DialogueText
 @onready var _choices_container: VBoxContainer = $VBoxContainer/ChoicesContainer
-@onready var _continue_hint: Label = $VBoxContainer/ContinueHint
+@onready var _continue_hint: Label = $VBoxContainer/BottomBar/ContinueHint
+@onready var _close_button: Button = $VBoxContainer/BottomBar/CloseButton
 
 ## 选择按钮缓存
 var _choice_buttons: Array[Button] = []
@@ -43,7 +44,10 @@ func _ready() -> void:
 	
 	# 隐藏继续提示
 	_continue_hint.visible = false
-	
+
+	# 连接关闭按钮
+	_close_button.pressed.connect(_on_close_pressed)
+
 	# 自动连接DialogueManager
 	var dialogue_manager = get_node_or_null("/root/DialogueManager")
 	if dialogue_manager != null:
@@ -136,6 +140,8 @@ func _get_display_name(speaker_id: String) -> String:
 
 ## 处理节点显示
 func _on_node_displayed(node: DialogueData.DialogueNode) -> void:
+	if not visible:
+		show_dialogue()
 	_update_speaker(node.speaker)
 	_update_text(node.text)
 	
@@ -167,6 +173,11 @@ func _on_choice_pressed(index: int) -> void:
 		
 		_hide_all_choices()
 		_waiting_for_input = false
+
+func _on_close_pressed() -> void:
+	if _dialogue_manager != null:
+		_dialogue_manager.end_dialogue()
+
 
 func _input(event: InputEvent) -> void:
 	if not visible:
