@@ -35,6 +35,7 @@ signal time_threshold_reached(elapsed_time: float)  # 时间阈值达到
 var total_distance_traveled: float = 0.0  # 总移动距离
 var distance_since_last_check: float = 0.0  # 上次检查后的移动距离
 var last_position: Vector2 = Vector2.ZERO  # 上次记录的位置
+var _has_recorded_position: bool = false  # 是否已记录初始位置（避免 last_position == ZERO 假阳性）
 
 # 时间跟踪
 var total_time_elapsed: float = 0.0  # 总游戏时间
@@ -87,10 +88,15 @@ func update_player_position(new_position: Vector2):
 	# 如果在安全区，不进行距离跟踪
 	if current_safe_zone != SafeZoneType.NONE:
 		last_position = new_position
+		_has_recorded_position = true
 		return
 	
 	# 计算移动距离
-	if last_position != Vector2.ZERO:
+	# 修复：之前用 `if last_position != Vector2.ZERO` 检测"是否首次调用"，
+	# 但 last_position 默认就是 ZERO，且玩家可能真的从 (0,0) 出发，
+	# 这种情况下第二次调用时 last_position == ZERO，会被误判为"首次"，
+	# 导致距离永远累计为 0。改用 _has_recorded_position 显式标志位。
+	if _has_recorded_position:
 		var distance_moved = last_position.distance_to(new_position)
 		total_distance_traveled += distance_moved
 		distance_since_last_check += distance_moved
@@ -100,6 +106,7 @@ func update_player_position(new_position: Vector2):
 			_on_distance_threshold_reached()
 	
 	last_position = new_position
+	_has_recorded_position = true
 
 # 更新时间跟踪
 func _update_time_tracking(delta: float):
@@ -266,6 +273,7 @@ func reset_distance_tracking():
 	total_distance_traveled = 0.0
 	distance_since_last_check = 0.0
 	last_position = Vector2.ZERO
+	_has_recorded_position = false
 
 # 重置时间跟踪
 func reset_time_tracking():

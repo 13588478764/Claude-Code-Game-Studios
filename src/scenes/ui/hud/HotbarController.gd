@@ -109,22 +109,18 @@ func _use_item_in_slot(slot_index: int) -> void:
 	if slot_data.cooldown_remaining > 0:
 		return
 	
-	# 使用物品
-	GameEvents.item_used.emit(slot_data.item_id, 1)
-	
-	# 数量减少
-	slot_data.quantity -= 1
-	
 	# AC-10: 物品使用后有冷却时间显示(圆形进度条)
+	# 注意：冷却必须在 emit 之前设置完，避免 _on_item_used 回调
+	# 中重绘槽位时拿到旧的冷却数据
 	slot_data.cooldown_remaining = _get_item_cooldown(slot_data.item_id)
 	slot_data.cooldown_total = slot_data.cooldown_remaining
 	
-	# 如果数量为0，清空槽位
-	if slot_data.quantity <= 0:
-		slot_data.item_id = ""
-		slot_data.quantity = 0
-	
-	_update_slot_display(slot_index)
+	# 使用物品 - 发射全局信号
+	# 数量扣减由 _on_item_used 回调统一处理（避免双重扣减）：
+	# - 本地直接扣 -1 + 信号回调再扣 -1 会导致每次使用扣 2 个
+	# - 让回调处理也能保证其他系统通过 GameEvents.item_used 通知时
+	#   hotbar 数量也会正确同步
+	GameEvents.item_used.emit(slot_data.item_id, 1)
 	
 	# 启动冷却时间更新
 	if not _cooldown_timer.is_stopped():

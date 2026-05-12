@@ -47,9 +47,14 @@ func _process(delta: float) -> void:
 	_update_lod_level()
 
 ## 注册组件
+## 注意：last_update_times 初始化为 -INF 而非 0.0
+## 这样首次调用 should_update 时一定满足 (current_time - (-INF) >= interval)，
+## 保证"刚注册的组件首次必更新"的语义。
+## 如果初始化为 0.0，当 current_time 也接近 0（_process 还没跑）时，
+## should_update 会返回 false，破坏首次更新契约。
 func register_component(component_name: String, priority: int) -> void:
 	registered_components[component_name] = priority
-	last_update_times[component_name] = 0.0
+	last_update_times[component_name] = -INF
 
 ## 注销组件
 func unregister_component(component_name: String) -> void:
@@ -92,9 +97,10 @@ func _update_lod_level() -> void:
 
 ## LOD级别变化时的处理
 func _on_lod_changed() -> void:
-	# 重置所有组件的更新时间，强制立即更新
+	# 重置所有组件的更新时间为 -INF，强制立即更新
+	# （理由同 register_component：避免 current_time 也接近 0 时差值不够大）
 	for component_name in last_update_times.keys():
-		last_update_times[component_name] = 0.0
+		last_update_times[component_name] = -INF
 
 ## 获取当前LOD级别
 func get_current_lod() -> int:
@@ -122,5 +128,6 @@ func get_stats() -> Dictionary:
 
 ## 强制更新所有组件
 func force_update_all() -> void:
+	# 同 _on_lod_changed：用 -INF 保证下一次 should_update 一定返回 true
 	for component_name in last_update_times.keys():
-		last_update_times[component_name] = 0.0
+		last_update_times[component_name] = -INF

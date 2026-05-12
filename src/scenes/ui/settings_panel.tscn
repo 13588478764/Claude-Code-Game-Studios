@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://src/scripts/ui/settings_panel.gd" id="1_script"]
 
 [node name="SettingsPanel" type="Control"]
+script = ExtResource("1_script")
 
 layout_mode = 3
 visible = false
@@ -85,43 +86,43 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 
-[node name="ResolutionLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsVBox"]
+[node name="ResolutionLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
 
 layout_mode = 2
 text = "分辨率"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="ResolutionOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsVBox"]
+[node name="ResolutionOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
 
 layout_mode = 2
 
 
-[node name="QualityLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsVBox"]
+[node name="QualityLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
 
 layout_mode = 2
 text = "画质"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="QualityOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsVBox"]
+[node name="QualityOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
 
 layout_mode = 2
 
 
-[node name="FullscreenCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsVBox"]
+[node name="FullscreenCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
 
 layout_mode = 2
 text = "全屏模式"
 
 
-[node name="ReduceMotionCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsVBox"]
+[node name="ReduceMotionCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
 
 layout_mode = 2
 text = "减少运动"
 
 
-[node name="PreviewButton" type="Button" parent="MainPanel/VBox/TabContent/GraphicsVBox"]
+[node name="PreviewButton" type="Button" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
 
 layout_mode = 2
 text = "预览更改"
@@ -139,14 +140,14 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 
-[node name="MasterVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="MasterVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 text = "主音量"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="MasterVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="MasterVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 min_value = 0.0
@@ -154,14 +155,14 @@ max_value = 100.0
 value = 80.0
 
 
-[node name="MusicVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="MusicVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 text = "音乐音量"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="MusicVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="MusicVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 min_value = 0.0
@@ -169,14 +170,14 @@ max_value = 100.0
 value = 70.0
 
 
-[node name="SFXVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="SFXVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 text = "音效音量"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="SFXVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="SFXVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 min_value = 0.0
@@ -184,14 +185,14 @@ max_value = 100.0
 value = 80.0
 
 
-[node name="VoiceVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="VoiceVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 text = "语音音量"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="VoiceVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundVBox"]
+[node name="VoiceVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
 
 layout_mode = 2
 min_value = 0.0
@@ -211,20 +212,20 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 
-[node name="KeyboardLabel" type="Label" parent="MainPanel/VBox/TabContent/ControlVBox"]
+[node name="KeyboardLabel" type="Label" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox"]
 
 layout_mode = 2
 text = "键盘映射"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="KeyboardGrid" type="GridContainer" parent="MainPanel/VBox/TabContent/ControlVBox"]
+[node name="KeyboardGrid" type="GridContainer" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox"]
 
 layout_mode = 2
 columns = 2
 
 
-[node name="ResetDefaultsButton" type="Button" parent="MainPanel/VBox/TabContent/ControlVBox"]
+[node name="ResetDefaultsButton" type="Button" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox"]
 
 layout_mode = 2
 text = "恢复默认键位"
@@ -242,14 +243,14 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 
-[node name="UIScaleLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityVBox"]
+[node name="UIScaleLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
 
 layout_mode = 2
 text = "UI缩放: 100%"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="UIScaleSlider" type="HSlider" parent="MainPanel/VBox/TabContent/AccessibilityVBox"]
+[node name="UIScaleSlider" type="HSlider" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
 
 layout_mode = 2
 min_value = 1.0
@@ -258,19 +259,19 @@ value = 1.0
 step = 0.25
 
 
-[node name="ColorblindLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityVBox"]
+[node name="ColorblindLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
 
 layout_mode = 2
 text = "色盲模式"
 theme_type_variation = "HeaderMedium"
 
 
-[node name="ColorblindOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/AccessibilityVBox"]
+[node name="ColorblindOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
 
 layout_mode = 2
 
 
-[node name="ScreenReaderCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/AccessibilityVBox"]
+[node name="ScreenReaderCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
 
 layout_mode = 2
 text = "启用屏幕阅读器"

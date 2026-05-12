@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://src/scripts/ui/inventory_panel.gd" id="1_script"]
 
-[node name="InventoryPanel" type="CanvasLayer" z_index=200]
+[node name="InventoryPanel" type="CanvasLayer"]
+script = ExtResource("1_script")
+layer = 200
 
 [node name="DimOverlay" type="ColorRect" parent="."]
 layout_mode = 1
@@ -133,7 +135,7 @@ theme_type_variation = "HeaderMedium"
 [node name="ItemDescLabel" type="RichTextLabel" parent="PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox"]
 layout_mode = 2
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="ItemActionHBox" type="HBoxContainer" parent="PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox"]
 layout_mode = 2

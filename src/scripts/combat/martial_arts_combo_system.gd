@@ -301,7 +301,8 @@ func _process(delta):
 	if combo_state.combo_timer > 0:
 		combo_state.combo_timer -= delta
 		if combo_state.combo_timer <= 0:
-			# 连招窗口结束，重置部分状态
+			# 连招窗口结束：把计时器 clamp 到 0（避免出现 -0.1 等负值）+ 重置部分状态
+			combo_state.combo_timer = 0.0
 			combo_state.last_applied_tags.clear()
 
 # 获取可用的协同效果（用于UI显示）

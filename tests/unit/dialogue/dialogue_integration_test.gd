@@ -98,14 +98,19 @@ func test_end_dialogue() -> void:
 
 func test_dialogue_signals() -> void:
 	## 测试：对话信号发射
-	var dialogue_started_received := false
-	var dialogue_ended_received := false
+	## 
+	## GDScript Lambda 闭包陷阱：
+	## Lambda 按值捕获外部变量，给 lambda 内部捕获的 bool 变量重新赋值
+	## 不会影响外部 var 的值。必须用 Array/Dictionary 等引用类型传递状态。
+	## 之前 `var dialogue_started_received := false` + lambda 赋值 = true
+	## 在外部读取依然是 false，导致 assert 失败。
+	var received := {"started": false, "ended": false}
 	
 	dialogue_manager.dialogue_started.connect(
-		func(_id): dialogue_started_received = true
+		func(_id): received["started"] = true
 	)
 	dialogue_manager.dialogue_ended.connect(
-		func(_id): dialogue_ended_received = true
+		func(_id): received["ended"] = true
 	)
 	
 	var test_file := "res://data/dialogues/intro_yunzhonghe.json"
@@ -117,14 +122,14 @@ func test_dialogue_signals() -> void:
 	dialogue_manager.load_dialogue_from_json(test_file)
 	dialogue_manager.start_dialogue("yunzhonghe_first_meeting")
 	
-	assert_true(dialogue_started_received, "dialogue_started signal should be emitted")
+	assert_true(received["started"], "dialogue_started signal should be emitted")
 	
 	dialogue_manager.end_dialogue()
 	
 	# 等待信号传播
 	await get_tree().process_frame
 	
-	assert_true(dialogue_ended_received, "dialogue_ended signal should be emitted")
+	assert_true(received["ended"], "dialogue_ended signal should be emitted")
 
 func test_loaded_dialogues_count() -> void:
 	## 测试：DialogueLoader加载了足够的对话文件

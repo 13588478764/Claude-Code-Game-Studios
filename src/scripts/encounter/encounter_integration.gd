@@ -248,6 +248,11 @@ func trigger_encounter_with_integration(base_probability: float, encounter_id: S
 		var encounter_type = determine_encounter_type()
 		result["encounter_type"] = encounter_type
 		
+		# 发射奇遇触发信号（必须在发放奖励之前发射，
+		# 这样订阅者可以先收到 encounter_triggered，再收到 encounter_reward_granted，
+		# 顺序符合"先触发后奖励"的语义）
+		encounter_triggered.emit(encounter_type, encounter_id, probability)
+		
 		# 发放奖励
 		var encounter_data = {
 			"type": encounter_type,

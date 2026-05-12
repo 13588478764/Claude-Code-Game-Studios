@@ -32,11 +32,13 @@ func test_distance_tracking_accumulates_correctly():
 
 func test_distance_threshold_triggers_check():
 	# Given: 玩家在野外移动
+	# 注意：lambda 按值捕获 bool/int/String 等基本类型，给 lambda 内部
+	# 重新赋值不会影响外部变量。必须用 Dict/Array 引用类型传递状态。
 	trigger.set_current_region("wilderness")
-	var signal_emitted = false
+	var observed := {"signal_emitted": false}
 	
 	trigger.distance_threshold_reached.connect(func(_distance):
-		signal_emitted = true
+		observed["signal_emitted"] = true
 	)
 	
 	# When: 累计移动距离达到100个格子
@@ -44,7 +46,7 @@ func test_distance_threshold_triggers_check():
 	trigger.update_player_position(Vector2(100, 0))
 	
 	# Then: 应该触发距离阈值信号
-	assert_true(signal_emitted, "应该发出距离阈值达到信号")
+	assert_true(observed["signal_emitted"], "应该发出距离阈值达到信号")
 	
 	# And: 距离计数器应该重置
 	var stats = trigger.get_tracking_stats()
@@ -52,11 +54,12 @@ func test_distance_threshold_triggers_check():
 
 func test_distance_threshold_exact_boundary():
 	# Edge case: 检查精确距离计算
+	# Lambda 闭包陷阱：bool 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var threshold_reached = false
+	var observed := {"threshold_reached": false}
 	
 	trigger.distance_threshold_reached.connect(func(_distance):
-		threshold_reached = true
+		observed["threshold_reached"] = true
 	)
 	
 	# When: 移动距离恰好等于阈值
@@ -64,15 +67,16 @@ func test_distance_threshold_exact_boundary():
 	trigger.update_player_position(Vector2(100, 0))
 	
 	# Then: 应该触发
-	assert_true(threshold_reached, "恰好100格子应该触发")
+	assert_true(observed["threshold_reached"], "恰好100格子应该触发")
 
 func test_distance_threshold_just_below():
 	# Edge case: 距离刚好低于阈值
+	# Lambda 闭包陷阱：bool 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var threshold_reached = false
+	var observed := {"threshold_reached": false}
 	
 	trigger.distance_threshold_reached.connect(func(_distance):
-		threshold_reached = true
+		observed["threshold_reached"] = true
 	)
 	
 	# When: 移动距离略低于阈值
@@ -80,15 +84,16 @@ func test_distance_threshold_just_below():
 	trigger.update_player_position(Vector2(99.9, 0))
 	
 	# Then: 不应该触发
-	assert_false(threshold_reached, "99.9格子不应该触发")
+	assert_false(observed["threshold_reached"], "99.9格子不应该触发")
 
 func test_distance_accumulates_across_multiple_moves():
 	# Edge case: 多次移动累计距离
+	# Lambda 闭包陷阱：int 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var trigger_count = 0
+	var observed := {"trigger_count": 0}
 	
 	trigger.distance_threshold_reached.connect(func(_distance):
-		trigger_count += 1
+		observed["trigger_count"] += 1
 	)
 	
 	# When: 多次小距离移动累计超过阈值
@@ -99,7 +104,7 @@ func test_distance_accumulates_across_multiple_moves():
 	trigger.update_player_position(Vector2(120, 0))
 	
 	# Then: 应该触发一次（累计120格子）
-	assert_eq(trigger_count, 1, "应该触发一次距离检查")
+	assert_eq(observed["trigger_count"], 1, "应该触发一次距离检查")
 
 # ============================================================================
 # AC-2 测试: 基于时间的触发机制
@@ -118,18 +123,19 @@ func test_time_tracking_accumulates_correctly():
 
 func test_time_threshold_triggers_check():
 	# Given: 玩家在游戏世界中
+	# Lambda 闭包陷阱：bool 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var signal_emitted = false
+	var observed := {"signal_emitted": false}
 	
 	trigger.time_threshold_reached.connect(func(_time):
-		signal_emitted = true
+		observed["signal_emitted"] = true
 	)
 	
 	# When: 游戏时间经过5分钟（300秒）
 	trigger._process(300.0)
 	
 	# Then: 应该触发时间阈值信号
-	assert_true(signal_emitted, "应该发出时间阈值达到信号")
+	assert_true(observed["signal_emitted"], "应该发出时间阈值达到信号")
 	
 	# And: 时间计数器应该重置
 	var stats = trigger.get_tracking_stats()
@@ -158,26 +164,28 @@ func test_time_tracking_pauses_correctly():
 
 func test_time_threshold_exact_boundary():
 	# Edge case: 时间恰好等于阈值
+	# Lambda 闭包陷阱：bool 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var threshold_reached = false
+	var observed := {"threshold_reached": false}
 	
 	trigger.time_threshold_reached.connect(func(_time):
-		threshold_reached = true
+		observed["threshold_reached"] = true
 	)
 	
 	# When: 时间恰好等于300秒
 	trigger._process(300.0)
 	
 	# Then: 应该触发
-	assert_true(threshold_reached, "恰好300秒应该触发")
+	assert_true(observed["threshold_reached"], "恰好300秒应该触发")
 
 func test_time_accumulates_across_multiple_frames():
 	# Edge case: 多帧累计时间
+	# Lambda 闭包陷阱：int 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var trigger_count = 0
+	var observed := {"trigger_count": 0}
 	
 	trigger.time_threshold_reached.connect(func(_time):
-		trigger_count += 1
+		observed["trigger_count"] += 1
 	)
 	
 	# When: 多次小时间增量累计超过阈值
@@ -185,7 +193,7 @@ func test_time_accumulates_across_multiple_frames():
 		trigger._process(16.0)  # 模拟20帧，每帧16ms
 	
 	# Then: 应该触发一次（累计320秒）
-	assert_eq(trigger_count, 1, "应该触发一次时间检查")
+	assert_eq(observed["trigger_count"], 1, "应该触发一次时间检查")
 
 # ============================================================================
 # AC-3 测试: 安全区检测
@@ -224,51 +232,51 @@ func test_safe_zone_prevents_time_trigger():
 
 func test_safe_zone_entry_signal():
 	# Given: 玩家在野外
+	# Lambda 闭包陷阱：bool/枚举值按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var zone_entered = false
-	var entered_zone_type = null
+	var observed := {"zone_entered": false, "entered_zone_type": null}
 	
 	trigger.safe_zone_entered.connect(func(zone_type):
-		zone_entered = true
-		entered_zone_type = zone_type
+		observed["zone_entered"] = true
+		observed["entered_zone_type"] = zone_type
 	)
 	
 	# When: 进入城镇
 	trigger.set_current_region("village")
 	
 	# Then: 应该发出进入安全区信号
-	assert_true(zone_entered, "应该发出进入安全区信号")
-	assert_eq(entered_zone_type, RandomEventTrigger.SafeZoneType.TOWN, "应该是城镇类型")
+	assert_true(observed["zone_entered"], "应该发出进入安全区信号")
+	assert_eq(observed["entered_zone_type"], RandomEventTrigger.SafeZoneType.TOWN, "应该是城镇类型")
 
 func test_safe_zone_exit_signal():
 	# Given: 玩家在城镇
+	# Lambda 闭包陷阱：bool/枚举值按值捕获，必须用 Dict 包装
 	trigger.set_current_region("village")
-	var zone_exited = false
-	var exited_zone_type = null
+	var observed := {"zone_exited": false, "exited_zone_type": null}
 	
 	trigger.safe_zone_exited.connect(func(zone_type):
-		zone_exited = true
-		exited_zone_type = zone_type
+		observed["zone_exited"] = true
+		observed["exited_zone_type"] = zone_type
 	)
 	
 	# When: 离开城镇
 	trigger.set_current_region("wilderness")
 	
 	# Then: 应该发出离开安全区信号
-	assert_true(zone_exited, "应该发出离开安全区信号")
-	assert_eq(exited_zone_type, RandomEventTrigger.SafeZoneType.TOWN, "应该是城镇类型")
+	assert_true(observed["zone_exited"], "应该发出离开安全区信号")
+	assert_eq(observed["exited_zone_type"], RandomEventTrigger.SafeZoneType.TOWN, "应该是城镇类型")
 
 func test_safe_zone_boundary_transition():
 	# Edge case: 检查安全区边界过渡
+	# Lambda 闭包陷阱：int 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var enter_count = 0
-	var exit_count = 0
+	var observed := {"enter_count": 0, "exit_count": 0}
 	
 	trigger.safe_zone_entered.connect(func(_zone_type):
-		enter_count += 1
+		observed["enter_count"] += 1
 	)
 	trigger.safe_zone_exited.connect(func(_zone_type):
-		exit_count += 1
+		observed["exit_count"] += 1
 	)
 	
 	# When: 快速进出安全区
@@ -278,8 +286,8 @@ func test_safe_zone_boundary_transition():
 	trigger.set_current_region("wilderness")
 	
 	# Then: 应该正确记录进出次数
-	assert_eq(enter_count, 2, "应该记录2次进入")
-	assert_eq(exit_count, 2, "应该记录2次离开")
+	assert_eq(observed["enter_count"], 2, "应该记录2次进入")
+	assert_eq(observed["exit_count"], 2, "应该记录2次离开")
 
 func test_is_in_safe_zone_check():
 	# Given: 玩家在不同区域
@@ -313,26 +321,13 @@ func test_custom_safe_zone_addition():
 # ============================================================================
 
 func test_warning_signal_emitted():
-	# Given: 即将触发随机事件
-	trigger.set_current_region("wilderness")
-	trigger.set_player_luck(100)  # 高福缘确保触发
-	var warning_emitted = false
-	var warning_time_value = 0.0
-	
-	trigger.event_trigger_warning.connect(func(warning_time):
-		warning_emitted = true
-		warning_time_value = warning_time
-	)
-	
-	# When: 距离阈值达到并触发概率判定成功
-	trigger.update_player_position(Vector2(0, 0))
-	trigger.update_player_position(Vector2(100, 0))
-	
-	# Then: 应该发出预警信号（可能需要多次尝试因为有概率）
-	# 注意：由于触发有概率，这个测试可能需要多次运行
-	# 为了测试稳定性，我们检查预警时间是否正确
-	if warning_emitted:
-		assert_almost_eq(warning_time_value, 2.5, 0.1, "预警时间应该在2-3秒范围内")
+	# 直接通过 _start_warning 测试预警信号发射，避免概率不确定性
+	watch_signals(trigger)
+
+	trigger._start_warning("test")
+
+	assert_signal_emitted(trigger, "event_trigger_warning",
+		"_start_warning 应发射 event_trigger_warning 信号")
 
 func test_warning_timer_duration():
 	# Given: 预警系统激活
@@ -394,11 +389,12 @@ func test_warning_cancelled_in_safe_zone():
 
 func test_no_duplicate_warnings():
 	# Edge case: 预警期间不应重复触发
+	# Lambda 闭包陷阱：int 按值捕获，必须用 Dict 包装
 	trigger.set_current_region("wilderness")
-	var warning_count = 0
+	var observed := {"warning_count": 0}
 	
 	trigger.event_trigger_warning.connect(func(_time):
-		warning_count += 1
+		observed["warning_count"] += 1
 	)
 	
 	# When: 预警激活期间再次尝试触发
@@ -406,7 +402,7 @@ func test_no_duplicate_warnings():
 	trigger._perform_trigger_check("time")
 	
 	# Then: 不应该发出第二次预警
-	assert_eq(warning_count, 1, "预警期间不应重复触发")
+	assert_eq(observed["warning_count"], 1, "预警期间不应重复触发")
 
 # ============================================================================
 # 触发概率公式测试
@@ -443,7 +439,9 @@ func test_trigger_probability_with_combat_penalty():
 	var probability = trigger.calculate_trigger_probability()
 	
 	# Then: 概率应该减少（30% - 2 * 5% = 20%）
-	assert_eq(probability, 0.2, "连续战斗2次应该减少10%概率")
+	# 浮点精度问题：0.3 - 2*0.05 = 0.3 - 0.1，IEEE 754 下可能是 0.19999...
+	# 用 assert_almost_eq 容许微小误差，而不是 assert_eq 严格相等
+	assert_almost_eq(probability, 0.2, 0.0001, "连续战斗2次应该减少10%概率")
 
 func test_trigger_probability_combined():
 	# Given: 同时有福缘和战斗惩罚

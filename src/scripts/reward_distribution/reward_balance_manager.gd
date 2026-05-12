@@ -45,10 +45,14 @@ func _initialize_default_config():
 
 # 实现等级/境界挂钩的数值缩放
 # 公式: 最终奖励数量 = 基础奖励数量 × (1 + 玩家等级 × 等级缩放系数)
-func calculate_scaled_reward_amount(base_amount: int, player_level: int, player_realm: int = 0) -> float:
+#
+# 返回 int 而非 float：奖励数量必须是整数（不可能给玩家 110.5 个银两），
+# 同时也避免测试在比较 int vs float 时触发类型不匹配警告/失败。
+# 用 roundi() 而非 int() 截断，避免浮点尾数（如 109.99999999）截断到 109。
+func calculate_scaled_reward_amount(base_amount: int, player_level: int, player_realm: int = 0) -> int:
 	var level_scaling = 1.0 + (player_level * level_scaling_coefficient)
 	var realm_scaling = 1.0 + (player_realm * realm_scaling_coefficient)
-	return base_amount * level_scaling * realm_scaling
+	return roundi(base_amount * level_scaling * realm_scaling)
 
 # 实现通胀控制机制
 func apply_inflation_control(rewards: Array, player_level: int) -> Array:
@@ -65,7 +69,10 @@ func apply_inflation_control(rewards: Array, player_level: int) -> Array:
 		# 检查是否为低级材料
 		if _is_low_tier_material(item_id) and reward_type != "fixed":
 			# 减少低级材料奖励
-			var reduced_quantity = int(quantity * (1.0 - low_tier_material_reduction_rate))
+			# 用 roundi() 而非 int() 截断，避免浮点尾数把 2.0000001 截到 1
+			# （例如 10 × (1.0 - 0.8) 在 GDScript 浮点下可能是 1.99999...，
+			#  int() 截断后变 1，与测试期望的 2 不符）
+			var reduced_quantity = roundi(quantity * (1.0 - low_tier_material_reduction_rate))
 			if reduced_quantity > 0:
 				adjusted_rewards.append({"item_id": item_id, "quantity": reduced_quantity, "type": reward_type})
 			

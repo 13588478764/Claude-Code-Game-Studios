@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://src/scripts/ui/confirm_dialog.gd" id="1_script"]
 
 [node name="ConfirmDialog" type="CanvasLayer" layer=400]
+script = ExtResource("1_script")
 
 [node name="DimOverlay" type="ColorRect" parent="."]
 layout_mode = 1

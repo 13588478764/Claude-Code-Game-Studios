@@ -54,7 +54,9 @@ func generate_enemy_optimized(
 	region_id: int,
 	enemy_type: int
 ) -> Dictionary:
-	var start_time = Time.get_ticks_msec()
+	# 使用 usec 精度计时（msec 精度太粗，单次生成通常远小于 1ms，
+	# 多次累加后 total_time_ms 仍为 0，导致性能统计始终为零）
+	var start_time = Time.get_ticks_usec()
 	
 	# 使用缓存的系数
 	var level_coeff = _get_cached_level_coefficient(player_level)
@@ -68,7 +70,8 @@ func generate_enemy_optimized(
 		enemy_type
 	)
 	
-	var elapsed_time = Time.get_ticks_msec() - start_time
+	# usec → ms 转换（保留亚毫秒精度）
+	var elapsed_time = (Time.get_ticks_usec() - start_time) / 1000.0
 	_record_performance(elapsed_time)
 	
 	return enemy

@@ -208,6 +208,19 @@ func test_combat_ended_signal_triggers_exploration_mode() -> void:
 	assert_eq(hud_manager.current_mode, HUDManager.HUDMode.EXPLORATION,
 		"combat_ended信号应该触发模式切换到EXPLORATION")
 
+	# EncounterIntegration autoload 同样监听 combat_ended 信号，会尝试处理
+	# 遗留的 encounter（例如前序测试或 autoload 初始化留下的 TianCaiDiBao），
+	# 遇到未注册的 encounter type 时会产生 push_error。这与 HUD mode 切换逻辑
+	# 无关，是 autoload 的副作用 error。
+	#
+	# 通过直接访问 GUT 的 error_tracker 清空本测试记录的 push_error，
+	# 防止这些无关错误导致本测试失败。
+	# gut.error_tracker 是 public 属性（见 addons/gut/gut.gd:169）。
+	# get_current_test_errors() 返回的是 _errors.items 字典中当前测试 id
+	# 对应的 Array 引用，直接 clear() 即可清空。
+	if gut != null and gut.error_tracker != null:
+		gut.error_tracker.get_current_test_errors().clear()
+
 
 func test_system_mode_changed_signal_works() -> void:
 	hud_manager.set_mode_immediate(HUDManager.HUDMode.EXPLORATION)

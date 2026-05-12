@@ -93,11 +93,11 @@ func _show_choices(choices: Array) -> void:
 	var count := mini(choices.size(), _choice_buttons.size())
 	for i in range(count):
 		var choice = choices[i]
-		_choice_buttons[i].text = choice.get("text", "选择")
+		_choice_buttons[i].text = choice.text if choice.text != "" else "选择"
 		_choice_buttons[i].visible = true
-		
+
 		# 显示道心提示（如果有）
-		var dao_heart_hint: int = choice.get("dao_heart_hint", 0)
+		var dao_heart_hint: int = choice.dao_heart_hint
 		if dao_heart_hint != 0:
 			var hint_text := " (+)" if dao_heart_hint > 0 else " (-)"
 			_choice_buttons[i].text += hint_text

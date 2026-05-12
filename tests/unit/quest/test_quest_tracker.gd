@@ -224,20 +224,58 @@ func test_handle_location_reached_event():
 	assert_signal_emitted(quest_tracker, "quest_target_location_updated", "位置更新信号应该触发")
 
 ## 测试：事件处理缺少管理器
+## 契约：当 quest_manager 为 null 时，handle_external_event 必须 early-return
+##       不抛异常、不修改任何状态、不发射任何信号
 func test_handle_event_no_manager():
 	quest_tracker.quest_manager = null
+	
+	# 监听追踪器的所有信号，确保完全静默
+	watch_signals(quest_tracker)
+	
+	# 调用事件处理 - 不应崩溃
 	quest_tracker.handle_external_event("enemy_killed", {"enemy_type": "bandit"})
-	# 不应崩溃，静默返回
+	quest_tracker.handle_external_event("item_collected", {"item_id": "herb"})
+	quest_tracker.handle_external_event("npc_talked_to", {"npc_id": "elder"})
+	
+	# 验证：quest_manager 引用确实为空（防御性断言）
+	assert_null(quest_tracker.quest_manager, "quest_manager 应保持为 null")
+	# 验证：未发射任何任务相关信号
+	assert_signal_not_emitted(quest_tracker, "objective_progress_updated",
+		"无 manager 时不应发射目标进度信号")
+	assert_signal_not_emitted(quest_tracker, "quest_target_location_updated",
+		"无 manager 时不应发射位置更新信号")
 
 ## 测试：事件处理缺少必要数据
+## 契约：当事件 data 缺少必要字段时（如 enemy_killed 缺 enemy_type），
+##       _handle_*_event 必须 early-return，任务进度保持不变
 func test_handle_event_missing_data():
 	quest_manager.register_quest("test_event", "测试事件", "描述", QuestManager.QuestType.SIDE)
 	quest_manager.update_quest_status("test_event", QuestManager.QuestStatus.AVAILABLE)
 	quest_manager.accept_quest("test_event")
+	quest_manager.add_quest_objective("test_event", QuestManager.ObjectiveType.KILL_ENEMY,
+		"bandit", 3, "击杀3个山贼")
 	
-	# 事件数据缺少enemy_type
-	quest_tracker.handle_external_event("enemy_killed", {})
-	# 不应崩溃，静默返回
+	# 记录事件处理前的进度（应为 0）
+	var info_before = quest_manager.get_quest_info("test_event")
+	var progress_before = info_before.objectives[0].current_count
+	assert_eq(progress_before, 0, "前置条件：初始进度应为 0")
+	
+	watch_signals(quest_tracker)
+	
+	# 各种缺少必要字段的事件 - 都应静默返回
+	quest_tracker.handle_external_event("enemy_killed", {})              # 缺 enemy_type
+	quest_tracker.handle_external_event("item_collected", {})            # 缺 item_id
+	quest_tracker.handle_external_event("npc_talked_to", {})             # 缺 npc_id
+	quest_tracker.handle_external_event("location_reached", {})          # 缺 location_id
+	quest_tracker.handle_external_event("item_used", {})                 # 缺 item_id
+	
+	# 验证：进度没有任何变化
+	var info_after = quest_manager.get_quest_info("test_event")
+	assert_eq(info_after.objectives[0].current_count, progress_before,
+		"缺少必要数据时，任务进度不应改变")
+	# 验证：未发射进度更新信号
+	assert_signal_not_emitted(quest_tracker, "objective_progress_updated",
+		"缺少必要数据时不应发射目标进度信号")
 
 ## 测试：追踪数据 - 目标完成度比例
 func test_quest_tracking_data_progress_ratio():

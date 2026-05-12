@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://src/scripts/ui/help_panel.gd" id="1_script"]
 
-[node name="HelpPanel" type="CanvasLayer" z_index=180]
+[node name="HelpPanel" type="CanvasLayer"]
+script = ExtResource("1_script")
+layer = 180
 
 [node name="HelpPanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -79,7 +81,7 @@ select_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 custom_minimum_size = Vector2(0, 200)
 
 [node name="TutorialNavHBox" type="HBoxContainer" parent="HelpPanelContainer/VBox/TabContent/TutorialTab/TutorialVBox"]
@@ -126,7 +128,7 @@ select_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="ControlsTab" type="ScrollContainer" parent="HelpPanelContainer/VBox/TabContent"]
 layout_mode = 2
@@ -146,7 +148,7 @@ offset_right = -16.0
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="WuxingCombatTab" type="ScrollContainer" parent="HelpPanelContainer/VBox/TabContent"]
 layout_mode = 2
@@ -170,7 +172,7 @@ theme_type_variation = "HeaderMedium"
 [node name="WuxingMatrixLabel" type="RichTextLabel" parent="HelpPanelContainer/VBox/TabContent/WuxingCombatTab/WuxingCombatVBox"]
 layout_mode = 2
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="CombatTipsTitleLabel" type="Label" parent="HelpPanelContainer/VBox/TabContent/WuxingCombatTab/WuxingCombatVBox"]
 layout_mode = 2
@@ -181,7 +183,7 @@ theme_type_variation = "HeaderMedium"
 layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="FooterHBox" type="HBoxContainer" parent="HelpPanelContainer/VBox"]
 layout_mode = 2

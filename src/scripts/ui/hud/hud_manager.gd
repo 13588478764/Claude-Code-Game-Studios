@@ -214,6 +214,10 @@ func set_mode_immediate(mode: HUDMode) -> void:
 	current_mode = mode
 	_apply_mode_change(mode)
 	_has_pending_mode_switch = false
+	# 同步递增切换计数器：set_mode_immediate 也是一次完整的模式切换，
+	# 必须计入 mode_switch_count，否则 AC-9 健壮性测试无法验证切换次数。
+	# （之前只有异步路径 set_mode 递增，导致 immediate 路径在压力测试中读出 0）
+	_mode_switch_count += 1
 
 
 ## 获取模式切换次数(用于AC-9健壮性测试)

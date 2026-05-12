@@ -53,6 +53,16 @@ func update_hp(current: int, max_value: int) -> void:
 		_cached_hp = current
 		_cached_max_hp = max_value
 		_hp_dirty = true
+		# 立即应用 HP 颜色（不等下一帧 _process）：
+		# - 颜色是关键即时反馈，延迟会导致初次显示一帧白色
+		# - 测试也依赖立即可观察的颜色状态
+		# - tween 动画本身仍是异步的，所以"立即"指的是 modulate 颜色立即生效，
+		#   bar 的 value 通过 tween 0.1s 平滑过渡到目标
+		# 注意：必须 is_node_ready 才能访问 @onready 节点，
+		# 否则首次 set_member_data 时（_ready 之前）会失败
+		if is_node_ready():
+			_apply_hp_update()
+			_hp_dirty = false
 
 func set_downed_state(is_downed: bool) -> void:
 	## 设置倒地状态

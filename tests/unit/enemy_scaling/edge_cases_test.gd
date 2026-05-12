@@ -164,7 +164,11 @@ func test_level_difference_at_threshold():
 ## 边界情况: 等级差距未达到阈值
 func test_level_difference_below_threshold():
 	# 玩家等级在阈值内
-	var player_level = 60  # 40 + 20
+	# 修正：原测试用 player_level=60, region_max=40，差额 = 20，
+	# 与 test_level_too_high_protection（同样差额 20，期望触发 TOO_EASY）矛盾。
+	# 阈值边界采用 >= 触发（差额 = 阈值 → 触发保护），所以"在阈值内"
+	# 应该是差额 < 阈值，即 player_level < 60。改为 59（差 = 19）。
+	var player_level = 59  # 差额 = 59 - 40 = 19，严格小于阈值 20
 	var region_min = 20
 	var region_max = 40
 	var original_multiplier = 1.3

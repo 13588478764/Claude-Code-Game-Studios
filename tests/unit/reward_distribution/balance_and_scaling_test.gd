@@ -153,6 +153,9 @@ func test_edge_cases_level_boundary_values():
 # 边缘情况测试：部分背包空间可用
 func test_edge_cases_partial_backpack_space():
 	# Given: 部分背包空间可用
+	# 注意：balance_manager 在 before_all 中创建并复用，必须显式重置
+	# backpack 状态，避免被前序测试污染
+	balance_manager.reset_backpack_usage()
 	balance_manager.set_backpack_capacity(10)
 	balance_manager.update_backpack_usage(7)  # 还有3个空间
 	
@@ -164,17 +167,22 @@ func test_edge_cases_partial_backpack_space():
 	# When: 处理部分空间
 	var processed_rewards = balance_manager.handle_backpack_capacity(rewards, player_id)
 	
-	# Then: 部分物品放入背包，其余转换为银两
-	var total_quantity = 0
+	# Then: 部分物品（3 个 potion）放入背包，剩余 2 个转换为 silver overflow
+	# 修正断言：原测试把 silver 数量和 potion 数量加和，但 silver 是按价值计算的，
+	# 不能与 potion 数量直接相加。改为：分别验证"有部分进入背包"和"有 overflow 转换"。
+	var potion_quantity_in_backpack = 0
 	var has_overflow_conversion = false
 	
 	for reward in processed_rewards:
-		total_quantity += reward.quantity
+		if reward.item_id == "health_potion":
+			potion_quantity_in_backpack += reward.quantity
 		if reward.type == "overflow_conversion":
 			has_overflow_conversion = true
 	
-	assert_eq(total_quantity, 5, "总数量应保持不变")
-	assert_true(has_overflow_conversion, "应包含溢出转换")
+	# 背包有 3 个空间，应放入 3 个 potion
+	assert_eq(potion_quantity_in_backpack, 3,
+		"背包剩余 3 空间应放入 3 个 potion（总共要求 5 个）")
+	assert_true(has_overflow_conversion, "应包含溢出转换（剩 2 个 potion 转 silver）")
 
 # 边缘情况测试：跨等级区域边界
 func test_edge_cases_cross_tier_boundaries():

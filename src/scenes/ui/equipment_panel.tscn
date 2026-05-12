@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://src/scripts/ui/equipment_panel.gd" id="1_script"]
 
-[node name="EquipmentPanel" type="CanvasLayer" z_index=200]
+[node name="EquipmentPanel" type="CanvasLayer"]
+script = ExtResource("1_script")
+layer = 200
 
 [node name="DimOverlay" type="ColorRect" parent="."]
 layout_mode = 1
@@ -104,7 +106,7 @@ theme_type_variation = "HeaderMedium"
 [node name="DetailDescLabel" type="RichTextLabel" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel/DetailVBox"]
 layout_mode = 2
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="DetailActionHBox" type="HBoxContainer" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel/DetailVBox"]
 layout_mode = 2
@@ -168,7 +170,7 @@ custom_minimum_size = Vector2(0, 40)
 [node name="EnhanceHistoryLabel" type="RichTextLabel" parent="PanelContainer/VBox/TabContent/EnhanceTab/EnhanceVBox"]
 layout_mode = 2
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="SocketTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
 layout_mode = 2
@@ -222,7 +224,7 @@ custom_minimum_size = Vector2(0, 40)
 [node name="SetBonusLabel" type="RichTextLabel" parent="PanelContainer/VBox/TabContent/SocketTab/SocketVBox"]
 layout_mode = 2
 bbcode_enabled = true
-autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+autowrap_mode = 3
 
 [node name="TransmogTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
 layout_mode = 2

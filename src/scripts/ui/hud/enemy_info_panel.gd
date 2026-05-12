@@ -1,4 +1,5 @@
 extends Control
+class_name EnemyInfoPanel
 ## 敌人信息显示面板
 ## 显示选中敌人的名称、等级、HP条、五行弱点图标、状态标识
 ## 遵循ADR-002 (HUD架构模式) 和 ADR-003 (数据绑定机制)

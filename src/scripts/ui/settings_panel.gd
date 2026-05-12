@@ -30,7 +30,7 @@ signal settings_reset_to_defaults
 @onready var _reset_all_btn: Button = $MainPanel/VBox/FooterHBox/ResetAllButton
 @onready var _apply_btn: Button = $MainPanel/VBox/FooterHBox/ApplyButton
 @onready var _preview_btn: Button = $MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox/PreviewButton
-@onready var _reset_defaults_btn: Button = $MainPanel/VBox/TabContent/ControlVBox/ResetDefaultsButton
+@onready var _reset_defaults_btn: Button = $MainPanel/VBox/TabContent/ControlTab/ControlVBox/ResetDefaultsButton
 
 const CONFIG_PATH: String = "user://settings.json"
 

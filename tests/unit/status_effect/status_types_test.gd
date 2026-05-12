@@ -88,10 +88,17 @@ func test_poison_damage_calculation_basic():
 	manager.apply_status(poison_effect)
 	manager.trigger_end_of_turn_effects()
 	
-	# Then: 角色受到10点毒素伤害,防御值仅减免5点(50%),实际受到5点伤害
-	# 原始伤害10,防御减免50% = 5,最终伤害 = 10 - 5 = 5
-	var expected_hp = 1000.0 - 5.0
-	assert_almost_eq(manager.current_hp, expected_hp, 0.01, "应受到5点伤害(防御减免50%)")
+	# Then: 公式 final = max(base × stacks - defense × 0.5, 0)
+	#       = max(10 × 1 - 50 × 0.5, 0)
+	#       = max(10 - 25, 0)
+	#       = 0
+	# 修正：原测试注释 "防御减免50% = 5" 计算错误（50 × 0.5 = 25，不是 5），
+	# 与其它测试用例（test_poison_damage_with_high_defense / _min_value / _max_value）
+	# 全部使用的 max(raw - defense*0.5, 0) 公式不一致。本场景下高防御吸收全部伤害，
+	# HP 不变。
+	var expected_hp = 1000.0
+	assert_almost_eq(manager.current_hp, expected_hp, 0.01,
+		"defense=50 完全吸收 base=10 的毒伤害（max(10-25,0)=0）")
 
 func test_poison_damage_with_zero_defense():
 	# Edge case: 防御值为0时,受到全额10点伤害

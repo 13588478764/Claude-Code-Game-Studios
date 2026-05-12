@@ -53,7 +53,10 @@ func test_trigger_combat_effect_creation() -> void:
 func test_bridge_create_player_unit() -> void:
 	var player_unit = dialogue_combat_bridge._create_player_unit()
 	
-	assert_ne(player_unit, null, "玩家单位不应为空")
+	# 注意：用 assert_not_null 而不是 assert_ne(x, null)。
+	# GUT 的 assert_ne 内部会调用 diff_tool 比较两值差异，
+	# 当其中一个是 null 时会触发"Only Arrays and Dictionaries are supported"内部错误。
+	assert_not_null(player_unit, "玩家单位不应为空")
 	assert_true(player_unit.has("id"), "玩家单位应该有 id")
 	assert_eq(player_unit.id, "player", "玩家 id 应为 'player'")
 	assert_true(player_unit.has("hp"), "玩家单位应该有 hp")
@@ -76,7 +79,8 @@ func test_bridge_create_enemy_unit() -> void:
 	
 	var enemy_unit = dialogue_combat_bridge._create_enemy_unit(enemy_config)
 	
-	assert_ne(enemy_unit, null, "敌人单位不应为空")
+	# 同上：用 assert_not_null 替代 assert_ne(x, null) 避免 GUT diff_tool 内部错误
+	assert_not_null(enemy_unit, "敌人单位不应为空")
 	assert_eq(enemy_unit.id, "test_enemy", "敌人 id 应该正确")
 	assert_eq(enemy_unit.hp, 100, "敌人 hp 应该正确")
 	assert_eq(enemy_unit.is_player, false, "is_player 应为 false")

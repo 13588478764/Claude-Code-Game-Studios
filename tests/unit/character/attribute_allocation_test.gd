@@ -168,8 +168,10 @@ func test_attribute_reset_functionality_works():
 
 # 测试用例5: 信号系统集成
 func test_signal_system_integration():
-	"""测试信号系统是否正确发射"""
-	# 跳过信号系统集成测试 - 需要在编辑器中手动验证
-	# 原因: GUT 框架在命令行模式下对信号的支持有限
-	# 建议: 在 Godot 编辑器中运行此测试或使用 watch_signals() 方法
-	pass
+	# 使用 GUT 的 watch_signals 验证信号发射
+	watch_signals(character_system)
+
+	character_system.allocate_attribute_points("strength", 2)
+
+	assert_signal_emitted(character_system, "attribute_points_allocated",
+		"分配属性点后应发射 attribute_points_allocated 信号")

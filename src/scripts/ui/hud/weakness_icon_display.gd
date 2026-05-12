@@ -1,4 +1,5 @@
 extends Control
+class_name WeaknessIconDisplay
 ## 弱点图标显示组件
 ## 显示单个五行弱点图标，支持高亮和动画
 ## 遵循ADR-002 (HUD架构模式) 和 ADR-003 (数据绑定机制)

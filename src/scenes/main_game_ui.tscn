@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cubqffjuuxiqe" path="res://src/scripts/world/world_system.gd" id="7"]
 [ext_resource type="Script" uid="uid://ct02kuwt81anl" path="res://src/scripts/audio/audio_system.gd" id="8"]
 [ext_resource type="PackedScene" uid="uid://c7nakn2p8qx4r" path="res://src/scenes/ui/encounter_ui.tscn" id="9"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/dialogue_box.tscn" id="10"]
 
 [node name="MainGameUI" type="Node2D" unique_id=73997892]
 script = ExtResource("1")
@@ -92,25 +93,20 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "加载游戏"
 
-[node name="TestAllSystemsButton" type="Button" parent="." unique_id=2137639041]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 21.0
-offset_top = 189.0
-offset_right = 221.0
-offset_bottom = 220.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "测试所有系统"
 
 [node name="HUDLayer" type="CanvasLayer" parent="." unique_id=1000000001]
+visible = false
 
 [node name="HUDManager" type="CanvasLayer" parent="HUDLayer" unique_id=1000000002]
 script = ExtResource("5")
 
+; EncounterUI 默认隐藏：
+; - HUDLayer.visible=false 对子 Control 不生效（CanvasLayer 不传 visible）
+; - 必须在 EncounterUI 节点自身设置 visible=false
+; - 由 EncounterSystem 在触发奇遇时显式 show()
 [node name="EncounterUI" parent="HUDLayer" unique_id=1703814570 instance=ExtResource("9")]
+visible = false
 
-[node name="DialogueBoxInstance" parent="HUDLayer" unique_id=769544804 instance=ExtResource("9")]
+; DialogueBox 默认隐藏，由 DialogueManager 在触发对话时显示
+[node name="DialogueBox" parent="HUDLayer" unique_id=769544804 instance=ExtResource("10")]
+visible = false

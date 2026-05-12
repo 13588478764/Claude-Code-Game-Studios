@@ -339,3 +339,161 @@ stories:
   blocker: ''
   completed: '2026-05-02'
   notes: 12/12 ACs passed. 音效反馈暂缺(音频系统未实现,已有TODO)
+---
+sprint: 2
+goal: 完成全部8个UI场景实现，补充测试覆盖，建立性能基准，推进项目进入Polish阶段
+start: '2026-05-09'
+end: '2026-05-23'
+generated: '2026-05-11'
+updated: '2026-05-12'
+stories:
+- id: s2-01
+  name: 暂停菜单
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-02
+  name: 大地图场景
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-03
+  name: 帮助/教程面板
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-04
+  name: 加载界面
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-05
+  name: 主菜单场景
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-06
+  name: 设置界面
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-07
+  name: 背包面板
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-08
+  name: 装备面板
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-09'
+  notes: 场景实现完成并提交
+- id: s2-09
+  name: 战斗测试补充
+  file: ''
+  priority: should-have
+  status: done
+  owner: QA/Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-11'
+  notes: 36个战斗测试文件已存在(伤害/防御/AI/状态效果)，远超QA Plan要求
+- id: s2-10
+  name: 对话集成测试
+  file: ''
+  priority: should-have
+  status: done
+  owner: QA/Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-11'
+  notes: 10个测试用例，覆盖对话加载/选择/效果/分支/历史/队列/信号
+- id: s2-11
+  name: 经济集成测试
+  file: ''
+  priority: should-have
+  status: done
+  owner: QA/Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 2个集成测试文件已实现，覆盖货币获取→消费→余额更新链路
+- id: s2-12
+  name: 性能基准测试
+  file: ''
+  priority: should-have
+  status: done
+  owner: Performance
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-11'
+  notes: 3个测试: 主场景FPS≥55、面板FPS≥50、Draw Calls<5000
+- id: s2-13
+  name: ADR-006奇遇架构审核
+  file: ''
+  priority: nice-to-have
+  status: deferred
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: ''
+  notes: 延迟至后续Sprint
+- id: s2-14
+  name: ADR-007对话架构审核
+  file: ''
+  priority: nice-to-have
+  status: deferred
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: ''
+  notes: 延迟至后续Sprint
+- id: s2-15
+  name: UI集成测试
+  file: ''
+  priority: nice-to-have
+  status: done
+  owner: QA/Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-11'
+  notes: 8个测试: 面板加载/互斥(暂停/大地图/设置)/不暂停游戏/切换无崩溃/内存泄漏/Z-index/焦点转移/综合互斥

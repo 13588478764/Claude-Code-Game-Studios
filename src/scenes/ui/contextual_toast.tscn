@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://src/scripts/ui/contextual_toast.gd" id="1_script"]
 
 [node name="ContextualToast" type="CanvasLayer" layer=190]
+script = ExtResource("1_script")
 
 [node name="ToastPanel" type="PanelContainer" parent="."]
 layout_mode = 1

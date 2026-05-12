@@ -33,27 +33,50 @@ func _ready():
 			test_button.pressed.connect(_on_test_all_systems_pressed)
 
 func load_and_add_character_panel():
-	"""动态加载角色面板场景"""
+	"""动态加载角色面板场景。
+	
+	预加载面板节点以便后续 UIManager.switch_to_state(CHARACTER_PANEL) 可以立即 show()，
+	但启动时必须显式 hide()，否则主菜单上会盖着角色信息面板。
+	（character_panel.tscn 根节点是 Control，默认 visible=true。）
+	"""
 	var scene = load("res://src/scenes/ui/character_panel.tscn")
 	if scene != null:
 		var panel_instance = scene.instantiate()
 		panel_instance.name = "CharacterPanelInstance"
 		add_child(panel_instance)
+		# 关键：启动时隐藏，由 show_character_panel() 在玩家点击"开始新游戏"时显示
+		panel_instance.visible = false
 	else:
 		push_error("无法加载角色面板场景")
 
 func _on_start_new_game_pressed():
 	"""开始新游戏按钮回调"""
 	print("=== 开始新游戏 ===")
-	
+
+	# 隐藏主菜单元素
+	_hide_node("GameTitleLabel")
+	_hide_node("WelcomeLabel")
+	_hide_node("StartNewGameButton")
+	_hide_node("LoadGameButton")
+
+	# 显示 HUDLayer
+	var hud_layer = get_node_or_null("HUDLayer")
+	if hud_layer:
+		hud_layer.visible = true
+
 	# 初始化所有系统
 	initialize_game_systems()
-	
+
 	# 显示角色面板进行测试
 	show_character_panel()
-	
+
 	print("新游戏已开始！")
 	print("====================")
+
+func _hide_node(node_name: String) -> void:
+	var node = get_node_or_null(node_name)
+	if node:
+		node.visible = false
 
 func _on_load_game_pressed():
 	"""加载游戏按钮回调"""

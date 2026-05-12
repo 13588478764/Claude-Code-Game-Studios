@@ -127,6 +127,16 @@ func _initialize_default_config():
 	}
 
 # 获取奖励类别
+## 数据结构示例：
+##   material_resources:
+##     silver: {name: 银两, ...}        ← 一级直挂（subcategory 自身就是 reward）
+##     basic_materials:                  ← 二级嵌套子分类
+##       iron_ore: {name: 铁矿石, ...}
+##
+## 之前的 bug：当 silver 的 value 是 Dict 时，代码进入嵌套查找分支
+## 调用 category_data["silver"].has("silver")，永远返回 false。
+## 同类 bug 已在 get_reward_config 中修复（见该函数注释）。
+## 这里同步修复：先检查 subcategory == reward_id（一级直挂），再尝试嵌套查找。
 func get_reward_category(reward_id: String) -> int:
 	if type_validation_cache.has(reward_id):
 		return type_validation_cache[reward_id]
@@ -135,14 +145,15 @@ func get_reward_category(reward_id: String) -> int:
 	for category in reward_type_config.keys():
 		var category_data = reward_type_config[category]
 		for subcategory in category_data.keys():
+			# 优先匹配：subcategory 自身就是 reward_id（一级直挂结构）
+			# 涵盖：silver / experience / attribute_points / talent_points 等
+			if subcategory == reward_id:
+				var category_enum = _get_category_enum_from_string(category)
+				type_validation_cache[reward_id] = category_enum
+				return category_enum
+			# 否则尝试嵌套查找（subcategory 是子分类，里面才是 reward）
 			if typeof(category_data[subcategory]) == TYPE_DICTIONARY:
 				if category_data[subcategory].has(reward_id):
-					var category_enum = _get_category_enum_from_string(category)
-					type_validation_cache[reward_id] = category_enum
-					return category_enum
-			else:
-				# 直接的奖励项
-				if subcategory == reward_id:
 					var category_enum = _get_category_enum_from_string(category)
 					type_validation_cache[reward_id] = category_enum
 					return category_enum

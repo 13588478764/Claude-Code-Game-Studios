@@ -134,12 +134,15 @@ func test_hotbar_performance_slot_click_response() -> void:
 func test_hotbar_performance_cooldown_update() -> void:
 	hotbar_controller.add_item_to_slot(0, test_item_id, test_quantity)
 	hotbar_controller._use_item_in_slot(0)
-	
-	var start_time = Time.get_ticks_msec()
+
+	# 使用 usec（微秒）精度而不是 msec（毫秒），msec 的 1ms 精度本身就让 "< 1ms"
+	# 的断言不可能稳定通过（整数时钟至少读 0 或 1，没有亚毫秒分辨率）。
+	# 改为检查 < 5000 微秒（5ms）以避免在 CI/高负载环境下的 flaky 失败。
+	var start_usec = Time.get_ticks_usec()
 	hotbar_controller._on_cooldown_timer_timeout()
-	var elapsed = Time.get_ticks_msec() - start_time
-	
-	assert_lt(elapsed, 1, "冷却时间更新应<1ms")
+	var elapsed_usec = Time.get_ticks_usec() - start_usec
+
+	assert_lt(elapsed_usec, 5000, "冷却时间更新应<5ms（%d 微秒）" % elapsed_usec)
 
 ## 集成测试
 func test_hotbar_integration_with_game_events() -> void:

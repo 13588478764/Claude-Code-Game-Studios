@@ -63,6 +63,11 @@ func record_hud_update_time(time_ms: float) -> void:
 	
 	# 更新统计信息
 	_update_statistics()
+	
+	# 同步检查性能降级状态：之前只在 _process() 中调用，
+	# 但单元测试不跑 _process，导致测试中即使记录了高于预算的更新时间，
+	# is_performance_degraded 仍是 false。这里同步触发让降级状态实时反映。
+	_check_performance_status()
 
 ## 采样内存
 func _sample_memory() -> void:

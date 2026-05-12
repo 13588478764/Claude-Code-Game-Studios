@@ -36,10 +36,15 @@ static func check_level_difference(
 	var adjusted_multiplier = original_region_multiplier
 	var warning_type = WarningType.NONE
 	
-	if player_level > region_max_level + LEVEL_DIFFERENCE_THRESHOLD:
+	# 边界采用 >= / <= 而非严格不等：阈值本身（差额 = LEVEL_DIFFERENCE_THRESHOLD）
+	# 已经达到"过高/过低保护"的边界条件，必须触发警告。
+	# 之前用严格大于会让边界值（如玩家 Lv60 vs 区域 max=40）失去保护。
+	var level_diff_above_max = player_level - region_max_level
+	var level_diff_below_min = region_min_level - player_level
+	if level_diff_above_max >= LEVEL_DIFFERENCE_THRESHOLD:
 		adjusted_multiplier = 0.5
 		warning_type = WarningType.TOO_EASY
-	elif player_level < region_min_level - LEVEL_DIFFERENCE_THRESHOLD:
+	elif level_diff_below_min >= LEVEL_DIFFERENCE_THRESHOLD:
 		adjusted_multiplier = original_region_multiplier
 		warning_type = WarningType.TOO_HARD
 	

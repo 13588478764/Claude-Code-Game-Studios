@@ -67,6 +67,13 @@ var temp_attribute_points = 0
 func _ready():
 	# 获取UI元素引用
 	var character_panel = get_parent()
+	print("[CharacterPanel] parent = ", character_panel.name if character_panel else "null")
+	print("[CharacterPanel] scene = ", get_parent().scene_file_path if get_parent() else "null")
+
+	if character_panel == null:
+		push_warning("[CharacterPanel] No parent, cannot setup UI")
+		return
+
 	level_value_label = character_panel.get_node("Background/LevelInfo/LevelValue")
 	realm_value_label = character_panel.get_node("Background/LevelInfo/RealmValue")
 	strength_value_label = character_panel.get_node("Background/AttributesPanel/StrengthRow/StrengthValue")
@@ -76,17 +83,23 @@ func _ready():
 	willpower_value_label = character_panel.get_node("Background/AttributesPanel/WillpowerRow/WillpowerValue")
 	luck_value_label = character_panel.get_node("Background/AttributesPanel/LuckRow/LuckValue")
 	attribute_points_value_label = character_panel.get_node("Background/AttributePointsRow/AttributePointsValue")
-	close_button = character_panel.get_node("Background/CloseButton")
-	reset_button = character_panel.get_node("Background/ResetButton")
-	apply_button = character_panel.get_node("Background/ApplyButton")
+	close_button = character_panel.get_node_or_null("Background/CloseButton")
+	reset_button = character_panel.get_node_or_null("Background/ResetButton")
+	apply_button = character_panel.get_node_or_null("Background/ApplyButton")
 	strength_add_button = character_panel.get_node("Background/AttributesPanel/StrengthRow/StrengthAddButton")
 	agility_add_button = character_panel.get_node("Background/AttributesPanel/AgilityRow/AgilityAddButton")
 	constitution_add_button = character_panel.get_node("Background/AttributesPanel/ConstitutionRow/ConstitutionAddButton")
 	intelligence_add_button = character_panel.get_node("Background/AttributesPanel/IntelligenceRow/IntelligenceAddButton")
 	willpower_add_button = character_panel.get_node("Background/AttributesPanel/WillpowerRow/WillpowerAddButton")
 	luck_add_button = character_panel.get_node("Background/AttributesPanel/LuckRow/LuckAddButton")
-	
+
+	print("[CharacterPanel] close_button = ", close_button.name if close_button else "null")
+	print("[CharacterPanel] reset_button = ", reset_button.name if reset_button else "null")
+	print("[CharacterPanel] apply_button = ", apply_button.name if apply_button else "null")
+
 	# 连接按钮信号
+	if close_button != null:
+		close_button.pressed.connect(_on_close_button_pressed)
 	if reset_button != null:
 		reset_button.pressed.connect(_on_reset_button_pressed)
 	if apply_button != null:

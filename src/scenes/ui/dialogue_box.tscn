@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://src/scripts/ui/dialogue_box_script.gd" id="1_dialogue"]
 
 [node name="DialogueBox" type="Control"]
+script = ExtResource("1_dialogue")
 layout_mode = 3
 anchors_preset = -1
 anchor_left = 0.1

@@ -24,6 +24,10 @@ func before_each():
 	# 创建游戏配置管理器
 	var GameConfigManager = load("res://src/scripts/game_config_manager.gd")
 	game_config = GameConfigManager.new()
+	# 必须 add_child 到 SceneTree，否则 is_node_ready() 返回 false，
+	# game_config 内部所有"节点未就绪就 early return"的方法都不会工作。
+	# add_child_autofree 会在测试结束时自动清理。
+	add_child_autofree(game_config)
 	
 	# 连接道具系统
 	manager.connect_item_system(item_system)
@@ -36,9 +40,8 @@ func after_each():
 	if item_system:
 		item_system.free()
 		item_system = null
-	if game_config:
-		game_config.free()
-		game_config = null
+	# game_config 已用 add_child_autofree，GUT 会自动清理，这里不能再 free 一次
+	game_config = null
 
 # ============================================================================
 # AC3: 内存不足降级处理测试
@@ -79,13 +82,26 @@ func test_normal_memory_mode():
 
 func test_low_memory_mode_signal():
 	# Test: 低内存模式改变时发射信号
-	var signal_watcher = watch_signals(game_config)
+	#
+	# 注意：game_config._ready() 会调用 check_memory_and_update_mode()，
+	# 在内存使用量 < 2GB 阈值时会自动把 low_memory_mode 设为 true。
+	# 因此 before_each 之后 game_config 的 low_memory_mode 状态不可预测。
+	#
+	# 修复：先显式设置到 false 基线（吞掉初始化引起的信号），
+	# 再监听信号 + 切换到 true，才能稳定验证 changed 信号。
+	game_config.set_manual_low_memory_mode(false)
+	assert_false(game_config.is_low_memory_mode(),
+		"前置条件：应已被重置为非低内存模式")
 	
-	# When: 切换低内存模式
+	# Given: 信号监听从已知基线开始
+	watch_signals(game_config)
+	
+	# When: 切换低内存模式 (false -> true)
 	game_config.set_manual_low_memory_mode(true)
 	
-	# Then: 应发射low_memory_mode_changed信号
-	assert_signal_emitted(game_config, "low_memory_mode_changed", "应发射low_memory_mode_changed信号")
+	# Then: 应发射 low_memory_mode_changed 信号
+	assert_signal_emitted(game_config, "low_memory_mode_changed",
+		"应发射 low_memory_mode_changed 信号")
 
 func test_all_status_types_work_in_low_memory():
 	# Edge case: 降级模式下,所有状态类型都能正常工作

@@ -79,7 +79,9 @@ func test_calculate_combo_tier_ultimate():
 
 ## 测试：计算连招等级 - advanced
 func test_calculate_combo_tier_advanced():
-	var tier = combo_system.calculate_combo_tier("浮空_坠击")
+	# 注意：之前用 "浮空_坠击" 不对，它的 damage_multiplier=2.5，会判为 ultimate（>=2.0）。
+	# 改用 "湿_雷"（multiplier=1.8）才正好落在 advanced 区间（1.6 <= x < 2.0）。
+	var tier = combo_system.calculate_combo_tier("湿_雷")
 	assert_eq(tier, "advanced", "damage_multiplier>=1.6应该为advanced")
 
 ## 测试：计算连招等级 - basic

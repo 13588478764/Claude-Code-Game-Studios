@@ -7,11 +7,11 @@ var character_growth_ui: CharacterGrowthUiScript
 var test_scene: Node
 
 func before_each():
-	# CharacterSystem 是 AutoLoad 单例，已经存在于 SceneTree 中。
-	# 不能调用 CharacterSystem.new()（CharacterSystem 是 autoload 节点的实例引用，不是脚本类）。
-	# 直接引用 autoload 即可；后续测试可能会修改它的状态，
-	# 如有需要可在此调用 character_system.reset_for_test()（若该方法存在）。
+	# CharacterSystem 是 AutoLoad 单例，所有测试共享同一个实例。
+	# 必须在每个测试前重置状态，否则前一个测试的状态会污染后一个测试。
 	character_system = CharacterSystem
+	# 调用 initialize_character() 重置 level/experience/attributes/talent_grid 等到初始值
+	character_system.initialize_character()
 	
 	# 加载UI场景
 	var ui_scene = load("res://src/scenes/ui/character_growth_ui.tscn")
