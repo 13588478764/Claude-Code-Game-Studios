@@ -252,7 +252,10 @@ func trigger_encounter_with_integration(base_probability: float, encounter_id: S
 		# 这样订阅者可以先收到 encounter_triggered，再收到 encounter_reward_granted，
 		# 顺序符合"先触发后奖励"的语义）
 		encounter_triggered.emit(encounter_type, encounter_id, probability)
-		
+
+		# 标记为已触发
+		mark_encounter_triggered(encounter_id)
+
 		# 奖励由 EncounterUI 按钮触发，此处不自动发放
 	
 	return result
