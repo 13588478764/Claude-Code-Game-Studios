@@ -497,3 +497,240 @@ stories:
   blocker: ''
   completed: '2026-05-11'
   notes: 8个测试: 面板加载/互斥(暂停/大地图/设置)/不暂停游戏/切换无崩溃/内存泄漏/Z-index/焦点转移/综合互斥
+---
+sprint: 3
+goal: 将已实现的UI面板接入游戏循环，添加战斗操作UI替代自动战斗，接通存档系统
+start: '2026-05-13'
+end: '2026-05-27'
+generated: '2026-05-12'
+updated: '2026-05-13'
+verified: '2026-05-13'
+stories:
+- id: s3-01
+  name: 探索面板接入快捷键面板系统
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)
+- id: s3-02
+  name: 暂停菜单接入游戏循环
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)
+- id: s3-03
+  name: 背包面板数据绑定
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)，银两显示在Header区域
+- id: s3-04
+  name: 装备面板数据绑定
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)
+- id: s3-05
+  name: 战斗操作UI
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1.5
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)，修复技能伤害/回合归属/防御减伤/逃跑标记/战斗日志HP显示
+- id: s3-06
+  name: 存档/读档系统接入
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 1.5
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)，修复存档数据完整性/属性名/加载后UI跳转/无存档时加载处理
+- id: s3-07
+  name: 角色面板接入
+  file: ''
+  priority: should-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)
+- id: s3-08
+  name: 大地图数据绑定
+  file: ''
+  priority: should-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)，修复CanvasLayer不可见时TabBar标签未初始化
+- id: s3-09
+  name: 设置面板持久化
+  file: ''
+  priority: should-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)
+- id: s3-10
+  name: 战斗日志面板
+  file: ''
+  priority: nice-to-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-12'
+  notes: 验证通过(05-13)，内置在CombatActionPanel中
+- id: s3-11
+  name: ADR-006奇遇架构审核
+  file: ''
+  priority: nice-to-have
+  status: backlog
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: ''
+- id: s3-12
+  name: ADR-007对话架构审核
+  file: ''
+  priority: nice-to-have
+  status: backlog
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: ''
+---
+sprint: 4
+goal: 深化战斗系统（接入武学/内力/连招），丰富探索内容（奇遇事件/对话触发），补齐任务日志和多存档槽位UI，修复测试回归
+start: '2026-05-14'
+end: '2026-05-28'
+generated: '2026-05-13'
+updated: '2026-05-13'
+verified: '2026-05-13'
+stories:
+- id: s4-01
+  name: 武学技能接入战斗
+  file: ''
+  priority: must-have
+  status: ready-for-dev
+  owner: Gameplay Programmer
+  estimate_days: 2
+  blocker: ''
+  completed: ''
+- id: s4-02
+  name: 奇遇事件接入探索循环
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 1.5
+  blocker: ''
+  completed: '2026-05-13'
+  notes: 30个奇遇JSON接入DialogueManager，92个结局节点全部有实际奖励，42个物品定义补全，奇遇冷却持久化
+- id: s4-03
+  name: 任务日志UI面板
+  file: ''
+  priority: must-have
+  status: ready-for-dev
+  owner: UI Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: ''
+- id: s4-04
+  name: 多存档槽位UI
+  file: ''
+  priority: must-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-13'
+  notes: 3槽位保存/加载/删除/覆盖确认，CanvasLayer层级修复(270>260)
+- id: s4-05
+  name: 测试回归修复
+  file: ''
+  priority: must-have
+  status: ready-for-dev
+  owner: QA/Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: ''
+- id: s4-06
+  name: 战斗结算面板
+  file: ''
+  priority: should-have
+  status: backlog
+  owner: UI Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: ''
+- id: s4-07
+  name: 内力/气系统接入战斗UI
+  file: ''
+  priority: should-have
+  status: backlog
+  owner: Gameplay Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: ''
+- id: s4-08
+  name: 对话系统接入探索
+  file: ''
+  priority: should-have
+  status: backlog
+  owner: Gameplay Programmer
+  estimate_days: 1
+  blocker: ''
+  completed: ''
+- id: s4-09
+  name: ADR-006奇遇架构审核
+  file: ''
+  priority: nice-to-have
+  status: backlog
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: ''
+- id: s4-10
+  name: ADR-007对话架构审核
+  file: ''
+  priority: nice-to-have
+  status: backlog
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: ''
+- id: s4-11
+  name: 战斗连招系统接入
+  file: ''
+  priority: nice-to-have
+  status: backlog
+  owner: Gameplay Programmer
+  estimate_days: 1.5
+  blocker: ''
+  completed: ''
