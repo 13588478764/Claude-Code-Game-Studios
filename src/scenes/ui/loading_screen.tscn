@@ -12,7 +12,10 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-cornerRadius = 4
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_left = 4
+corner_radius_bottom_right = 4
 
 [node name="LoadingScreen" type="CanvasLayer"]
 layer = 600
@@ -82,10 +85,10 @@ custom_minimum_size = Vector2(450, 100)
 [node name="TipVBox" type="VBoxContainer" parent="FullContainer/VBox/TipPanel"]
 layout_mode = 2
 theme_override_constants/separation = 8
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
-anchors_bottom = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = -16.0
@@ -125,10 +128,10 @@ custom_minimum_size = Vector2(400, 200)
 [node name="ErrorVBox" type="VBoxContainer" parent="ErrorContainer/ErrorPanel"]
 layout_mode = 2
 theme_override_constants/separation = 16
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
-anchors_bottom = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = -20.0
@@ -163,8 +166,8 @@ text = "返回主菜单"
 custom_minimum_size = Vector2(120, 40)
 
 [node name="VersionLabel" type="Label" parent="."]
-anchors_right = 1.0
-anchors_bottom = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = -120.0
 offset_top = -30.0
 offset_right = -20.0

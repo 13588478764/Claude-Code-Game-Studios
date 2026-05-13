@@ -244,13 +244,14 @@ func _update_character_panel() -> void:
 	var character_data = character_system.get_final_attributes()
 	var combat_stats = character_system.get_combat_stats()
 	
-	character_panel_script.update_display({
-		"level": character_system.level,
-		"realm": character_system.get_current_realm()["name"],
-		"attributes": character_data,
-		"combat_stats": combat_stats,
-		"attribute_points": character_system.total_attribute_points - character_system.allocated_attribute_points
-	})
+	if character_panel_script.has_method("update_display"):
+		character_panel_script.update_display({
+			"level": character_system.level,
+			"realm": character_system.get_current_realm()["name"],
+			"attributes": character_data,
+			"combat_stats": combat_stats,
+			"attribute_points": character_system.total_attribute_points - character_system.allocated_attribute_points
+		})
 	
 	ui_updated.emit("character_panel")
 
@@ -270,11 +271,12 @@ func _update_equipment_panel() -> void:
 	var equipped_items: Dictionary = equipment_system.equipped_items
 	var equipment_attributes: Dictionary = equipment_system.get_equipment_attributes()
 	
-	equipment_panel.update_display({
-		"equipped_items": equipped_items,
-		"equipment_attributes": equipment_attributes,
-		"slot_unlock_status": _get_slot_unlock_status(character_system.realm_index)
-	})
+	if equipment_panel.has_method("update_display"):
+		equipment_panel.update_display({
+			"equipped_items": equipped_items,
+			"equipment_attributes": equipment_attributes,
+			"slot_unlock_status": _get_slot_unlock_status(character_system.realm_index)
+		})
 	
 	ui_updated.emit("equipment_panel")
 
@@ -284,11 +286,12 @@ func _update_backpack_panel() -> void:
 		push_warning("背包面板未初始化")
 		return
 	
-	backpack_panel.update_display({
-		"items": _get_backpack_items(),
-		"filters": {"tier": "all", "type": "all"},
-		"sort_mode": "name"
-	})
+	if backpack_panel.has_method("update_display"):
+		backpack_panel.update_display({
+			"items": _get_backpack_items(),
+			"filters": {"tier": "all", "type": "all"},
+			"sort_mode": "name"
+		})
 	
 	ui_updated.emit("backpack_panel")
 
@@ -307,13 +310,14 @@ func _update_combat_interface() -> void:
 	var enemy_characters: Array = combat_system.enemy_characters
 	var turn_order: Array = combat_system.turn_order
 	
-	combat_interface.update_display({
-		"players": player_characters,
-		"enemies": enemy_characters,
-		"turn_order": turn_order,
-		"combo_count": combat_system.combo_count,
-		"link_gauge": combat_system.link_gauge
-	})
+	if combat_interface.has_method("update_display"):
+		combat_interface.update_display({
+			"players": player_characters,
+			"enemies": enemy_characters,
+			"turn_order": turn_order,
+			"combo_count": combat_system.combo_count,
+			"link_gauge": combat_system.link_gauge
+		})
 	
 	ui_updated.emit("combat_interface")
 

@@ -1,8 +1,8 @@
 ## 确认对话框组件
 ## 对应 UX Spec: design/ux/interaction-patterns.md §3. 确认对话框
-## Z-index = 400（在所有面板之上）
+## 作为背包面板的最后子节点，确保渲染在最上层
 
-extends CanvasLayer
+extends Control
 
 ## 确认时发出
 signal confirmed
@@ -23,6 +23,7 @@ var _reduce_motion: bool = false
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
 	_panel.modulate = Color(1, 1, 1, 0)
 
@@ -147,7 +148,7 @@ func clear_suppression(key: String) -> void:
 		file.close()
 
 
-## 输入处理
+## 输入处理 — 对话框打开时拦截 ESC/Enter
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return

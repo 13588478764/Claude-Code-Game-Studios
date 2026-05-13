@@ -68,6 +68,11 @@ func _on_start_new_game_pressed():
 	# 初始化所有系统
 	initialize_game_systems()
 
+	# 连接暂停菜单返回主菜单信号
+	var pause_menu = get_node_or_null("HUDLayer/PauseMenu")
+	if pause_menu and not pause_menu.pause_menu_return_to_main.is_connected(_on_return_to_main_menu):
+		pause_menu.pause_menu_return_to_main.connect(_on_return_to_main_menu)
+
 	# 通知 GameLoopManager 进入探索状态
 	var game_loop = get_node_or_null("/root/GameLoopManager")
 	if game_loop:
@@ -85,22 +90,92 @@ func _hide_node(node_name: String) -> void:
 		node.visible = false
 
 func _on_load_game_pressed():
-	"""加载游戏按钮回调"""
+	"""加载游戏按钮回调 — 打开槽位选择面板"""
 	print("=== 加载游戏 ===")
-	
+
 	var save_system = get_node_or_null("/root/SaveSystem")
-	if save_system != null:
-		var loaded_data = save_system.load_from_slot(0)
-		if loaded_data != null:
-			print("游戏加载成功！")
-			show_character_panel()
-		else:
-			print("没有找到存档，开始新游戏")
-			_on_start_new_game_pressed()
-	else:
+	if save_system == null:
 		print("存档系统不可用")
-	
-	print("====================")
+		return
+
+	# 检查是否有任何存档
+	var any_save := false
+	for i in range(1, save_system.MAX_SLOTS + 1):
+		if save_system.has_save(i):
+			any_save = true
+			break
+
+	if not any_save:
+		print("没有找到存档，开始新游戏")
+		_on_start_new_game_pressed()
+		return
+
+	# 打开存档槽位选择面板
+	var slot_panel = _get_or_create_save_slot_panel()
+	if slot_panel:
+		if not slot_panel.slot_selected.is_connected(_on_load_slot_selected):
+			slot_panel.slot_selected.connect(_on_load_slot_selected)
+		if not slot_panel.slot_panel_cancelled.is_connected(_on_load_slot_cancelled):
+			slot_panel.slot_panel_cancelled.connect(_on_load_slot_cancelled)
+		slot_panel.open_load()
+
+
+func _on_load_slot_selected(slot: int) -> void:
+	"""存档槽位选择回调"""
+	var save_system = get_node_or_null("/root/SaveSystem")
+	if save_system == null:
+		return
+
+	var success: bool = save_system.load_from_slot(slot)
+	if not success:
+		print("存档加载失败 (槽位 %d)" % slot)
+		return
+
+	print("游戏加载成功！(槽位 %d)" % slot)
+
+	# 隐藏主菜单元素
+	_hide_node("GameTitleLabel")
+	_hide_node("WelcomeLabel")
+	_hide_node("StartNewGameButton")
+	_hide_node("LoadGameButton")
+	_hide_node("MainMenuPanel")
+
+	# 显示 HUDLayer
+	var hud_layer = get_node_or_null("HUDLayer")
+	if hud_layer:
+		hud_layer.visible = true
+
+	# 连接暂停菜单返回主菜单信号
+	var pause_menu = get_node_or_null("HUDLayer/PauseMenu")
+	if pause_menu and not pause_menu.pause_menu_return_to_main.is_connected(_on_return_to_main_menu):
+		pause_menu.pause_menu_return_to_main.connect(_on_return_to_main_menu)
+
+	# 进入探索状态
+	var game_loop = get_node_or_null("/root/GameLoopManager")
+	if game_loop:
+		game_loop.enter_exploration()
+	else:
+		push_warning("[主游戏UI] GameLoopManager 未找到")
+
+
+func _on_load_slot_cancelled() -> void:
+	"""取消加载回调"""
+	print("[主游戏UI] 取消加载存档")
+
+
+func _get_or_create_save_slot_panel() -> Node:
+	"""获取或创建存档槽位面板实例"""
+	var existing = get_node_or_null("SaveSlotPanel")
+	if existing:
+		return existing
+	var scene = load("res://src/scenes/ui/save_slot_panel.tscn")
+	if scene == null:
+		push_warning("[主游戏UI] 无法加载存档槽位面板")
+		return null
+	var panel = scene.instantiate()
+	add_child(panel)
+	return panel
+
 
 func _on_test_all_systems_pressed():
 	"""测试所有系统按钮回调"""
@@ -118,22 +193,47 @@ func initialize_game_systems():
 	var character_system = get_node_or_null("/root/CharacterSystem")
 	var equipment_system = get_node_or_null("/root/EquipmentSystem")
 	var encounter_system = get_node_or_null("/root/EncounterSystem")
-	var economy_system = get_node_or_null("/root/EconomySystem")
-	
+
 	if character_system != null:
 		character_system.initialize_character()
-		character_system.add_experience(100)  # 给一点初始经验
-	
+		character_system.add_experience(100)
+
 	if equipment_system != null:
 		print("装备系统就绪")
-	
+
 	if encounter_system != null:
 		print("奇遇系统就绪")
-	
-	if economy_system != null:
-		economy_system.add_silver(100)  # 给一点初始银两
+
+	# 初始化货币
+	var currency_mgr = get_node_or_null("/root/CurrencyManager")
+	if currency_mgr:
+		currency_mgr.add_currency(currency_mgr.CurrencyType.SILVER, 100)
 		print("经济系统就绪")
+
+	# 初始化背包物品和装备
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv:
+		inv.add_item("common_sword", 1)
+		inv.add_item("common_helmet", 1)
+		inv.add_item("health_pill", 3)
+		inv.add_item("spirit_stone_small", 5)
+		# 自动装备初始装备
+		inv.equip_item("common_sword", "weapon_main")
+		inv.equip_item("common_helmet", "head")
+		print("背包系统就绪: %d 种物品, %d 战力" % [inv.get_item_slot_count(), inv.get_equipment_power_score()])
 	
+	# 初始化武学系统
+	var martial_arts = get_node_or_null("/root/MartialArtsSystem")
+	if martial_arts:
+		for ma_id in ["sword_basic_01", "fist_basic_01", "palm_basic_01"]:
+			var ma_data = martial_arts.get_martial_art_data(ma_id)
+			if ma_data:
+				martial_arts.player_martial_arts[ma_id] = ma_data.duplicate(true)
+		martial_arts.equip_martial_art("sword_basic_01", 0)
+		martial_arts.equip_martial_art("fist_basic_01", 1)
+		martial_arts.equip_martial_art("palm_basic_01", 2)
+		print("武学系统就绪: %d 种武学已装备" % martial_arts.equipped_martial_arts.filter(func(x): return x != null).size())
+
 	# 初始化幕次管理器
 	var act_manager = get_node_or_null("/root/ActManager")
 	if act_manager != null:
@@ -198,6 +298,41 @@ func _on_dialogue_ended(dialogue_id: String) -> void:
 			await get_tree().create_timer(1.0).timeout
 			dialogue_manager.start_dialogue("ACT2_EVENT1_RETURN")
 			act_manager.trigger_event("act_2", "act2_event1_return")
+
+func _on_return_to_main_menu(_saved_before_exit: bool) -> void:
+	"""返回主菜单"""
+	get_tree().paused = false
+
+	# 关闭暂停菜单
+	var pause_menu = get_node_or_null("HUDLayer/PauseMenu")
+	if pause_menu:
+		pause_menu.visible = false
+
+	# 隐藏 HUDLayer
+	var hud_layer = get_node_or_null("HUDLayer")
+	if hud_layer:
+		hud_layer.visible = false
+
+	# 显示主菜单元素
+	_show_node("GameTitleLabel")
+	_show_node("WelcomeLabel")
+	_show_node("StartNewGameButton")
+	_show_node("LoadGameButton")
+	_show_node("MainMenuPanel")
+
+	# 重置 GameLoopManager
+	var game_loop = get_node_or_null("/root/GameLoopManager")
+	if game_loop:
+		game_loop.return_to_menu()
+
+	print("[主游戏UI] 已返回主菜单")
+
+
+func _show_node(node_name: String) -> void:
+	var node = get_node_or_null(node_name)
+	if node:
+		node.visible = true
+
 
 func show_character_panel():
 	"""显示角色面板"""

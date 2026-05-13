@@ -54,6 +54,14 @@ text = "获得银两: 0"
 layout_mode = 2
 text = ""
 
+[node name="DropsLabel" type="Label" parent="PanelContainer/VBox/RewardBox"]
+layout_mode = 2
+text = ""
+
+[node name="RegionLabel" type="Label" parent="PanelContainer/VBox/RewardBox"]
+layout_mode = 2
+text = ""
+
 [node name="ContinueButton" type="Button" parent="PanelContainer/VBox"]
 layout_mode = 2
 custom_minimum_size = Vector2(160, 44)

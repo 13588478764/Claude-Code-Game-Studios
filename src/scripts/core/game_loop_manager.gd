@@ -55,6 +55,29 @@ const BASE_EXP_PER_ENEMY: int = 50
 const BASE_SILVER_PER_ENEMY: int = 20
 const REGION_REWARD_MULTIPLIER: Array[float] = [1.0, 1.5, 2.5, 2.0]
 
+## 战斗掉落物品表（按区域）
+const BATTLE_DROP_TABLE: Dictionary = {
+	"start_village": [
+		{"item_id": "health_pill", "name": "回春丹", "chance": 0.3, "count": 1},
+	],
+	"bandit_fortress": [
+		{"item_id": "health_pill", "name": "回春丹", "chance": 0.25, "count": 1},
+		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.15, "count": 1},
+	],
+	"qingyun_mountain": [
+		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.3, "count": 2},
+		{"item_id": "health_pill", "name": "回春丹", "chance": 0.2, "count": 2},
+	],
+	"jiangnan_water": [
+		{"item_id": "health_pill", "name": "回春丹", "chance": 0.25, "count": 1},
+		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.2, "count": 1},
+	],
+}
+
+# 非战斗奇遇配置
+const ENCOUNTER_BASE_PROB: float = 0.08
+const ENCOUNTER_PROB_CAP: float = 0.20
+
 # ============================================================================
 # 信号定义
 # ============================================================================
@@ -75,6 +98,8 @@ var _character_system: Node = null
 var _currency_manager: Node = null
 var _game_events: Node = null
 var _enemy_generator = null
+var _encounter_data_loader: Node = null
+var _dialogue_manager: Node = null
 
 ## 当前战斗的敌人数量（用于奖励计算）
 var _current_battle_enemy_count: int = 0
@@ -95,6 +120,9 @@ func _initialize() -> void:
 	_character_system = get_node_or_null("/root/CharacterSystem")
 	_combat_system = get_node_or_null("/root/CombatSystem")
 	_currency_manager = get_node_or_null("/root/CurrencyManager")
+
+	_encounter_data_loader = get_node_or_null("/root/EncounterDataLoader")
+	_dialogue_manager = get_node_or_null("/root/DialogueManager")
 
 	# 创建 EnemyGenerator 实例
 	var EnemyGeneratorScript = load("res://src/scripts/enemy_scaling/enemy_generator.gd")
@@ -146,17 +174,18 @@ func do_explore_action() -> Dictionary:
 	if current_state != GameState.EXPLORING:
 		return {"type": "error", "message": "当前不在探索状态"}
 
-	# 发射区域进入信号（让 EncounterEventHandler 也能响应）
-	if _game_events:
-		_game_events.nav_area_entered.emit(current_region.id, current_region.level)
-
 	# 判定是否触发战斗
 	var roll := randf()
 	if roll < current_region.encounter_rate:
 		_start_random_battle()
 		return {"type": "combat", "message": "遭遇敌人！"}
 
-	# 未触发战斗，给一点探索奖励
+	# 未触发战斗，检查非战斗奇遇
+	var encounter_result := _check_non_combat_encounter()
+	if encounter_result.get("triggered", false):
+		return encounter_result
+
+	# 普通探索奖励
 	var explore_exp := randi_range(5, 15)
 	if _character_system:
 		_character_system.add_experience(explore_exp)
@@ -188,6 +217,65 @@ func get_player_summary() -> Dictionary:
 ## 从结算回到探索
 func return_to_exploration() -> void:
 	_set_state(GameState.EXPLORING)
+
+# ============================================================================
+# 非战斗奇遇
+# ============================================================================
+
+## 检查非战斗奇遇触发（概率公式：基础概率 * (1 + 福缘/100)，上限20%）
+func _check_non_combat_encounter() -> Dictionary:
+	var luck_stat := 0.0
+	if _character_system and _character_system.attributes:
+		luck_stat = _character_system.attributes.luck
+
+	var prob := ENCOUNTER_BASE_PROB * (1.0 + luck_stat / 100.0)
+	prob = minf(prob, ENCOUNTER_PROB_CAP)
+
+	var roll := randf()
+	print("[GameLoopManager] 奇遇检定: roll=%.3f, 阈值=%.3f, %s" % [roll, prob, "通过！" if roll <= prob else "未触发"])
+	if roll > prob:
+		return {"triggered": false}
+	# 优先使用 EncounterDataLoader 的30个数据驱动奇遇
+	if _encounter_data_loader and _encounter_data_loader.get_encounter_count() > 0:
+		var region_id: String = current_region.get("id", "")
+		var encounter_meta: Dictionary = _encounter_data_loader.select_random_encounter(region_id)
+
+		if not encounter_meta.is_empty():
+			var enc_id: String = encounter_meta.id
+			_encounter_data_loader.mark_triggered(enc_id)
+
+			# 通过 DialogueManager 启动奇遇对话树（奖励由对话 effects 自动处理）
+			if _dialogue_manager and _dialogue_manager.has_dialogue(enc_id):
+				_dialogue_manager.start_dialogue(enc_id)
+
+			var result_text := "✨ 仙缘奇遇 — %s！" % encounter_meta.title
+			exploration_result.emit(result_text)
+
+			# 记录奇遇历史
+			var record_mgr = get_node_or_null("/root/EncounterRecordManager")
+			if record_mgr and record_mgr.has_method("mark_encounter_completed"):
+				record_mgr.mark_encounter_completed(enc_id)
+
+			return {
+				"triggered": true,
+				"type": "dialogue_encounter",
+				"encounter_type": encounter_meta.type,
+				"dialogue_id": enc_id,
+				"message": result_text,
+			}
+
+	# 降级：如果 EncounterDataLoader 不可用，给予基础经验奖励
+	var fallback_exp := randi_range(30, 80)
+	if _character_system:
+		_character_system.add_experience(fallback_exp)
+	var fallback_text := "✨ 仙缘奇遇 — 江湖传闻！获得 %d 经验。" % fallback_exp
+	exploration_result.emit(fallback_text)
+	return {
+		"triggered": true,
+		"type": "encounter",
+		"encounter_type": "fallback",
+		"message": fallback_text,
+	}
 
 # ============================================================================
 # 战斗流程
@@ -297,15 +385,22 @@ func _on_auto_battle_tick() -> void:
 		return
 	if _combat_system == null:
 		return
+
+	# 玩家回合由 CombatActionPanel 处理，不自动行动
+	var current_unit = _combat_system.current_turn_unit
+	if current_unit != null:
+		var idx: int = _combat_system.battle_units.find(current_unit)
+		var half: int = ceili(_combat_system.battle_units.size() / 2.0)
+		if idx >= 0 and idx < half:
+			return
+	else:
+		return
+
 	if _combat_system.battle_state == 0:  # IDLE
 		return
 
 	# 如果战斗已经结束，不再执行
 	if _combat_system.is_battle_over():
-		return
-
-	var current_unit = _combat_system.current_turn_unit
-	if current_unit == null:
 		return
 
 	# 自动选择攻击目标：找到第一个存活的对手
@@ -334,9 +429,9 @@ func _on_auto_battle_tick() -> void:
 
 
 func _find_attack_target(current_unit) -> int:
-	var current_index = _combat_system.battle_units.find(current_unit)
-	var half := ceili(_combat_system.battle_units.size() / 2.0)
-	var is_player_unit = current_index < half
+	var current_index: int = _combat_system.battle_units.find(current_unit)
+	var half: int = ceili(_combat_system.battle_units.size() / 2.0)
+	var is_player_unit: bool = current_index < half
 
 	# 玩家单位攻击敌人（后半），敌人攻击玩家（前半）
 	for i in range(_combat_system.battle_units.size()):
@@ -360,21 +455,30 @@ func _on_combat_ended(victory: bool, result: Dictionary) -> void:
 	if current_state != GameState.IN_COMBAT:
 		return
 
+	var fled: bool = result.get("fled", false)
 	var reward_data := {}
-	if victory:
+	if victory and not fled:
 		reward_data = _calculate_rewards()
 		_distribute_rewards(reward_data)
 	else:
 		reward_data = {"victory": false, "exp": 0, "silver": 0}
 
 	reward_data["victory"] = victory
+	reward_data["fled"] = fled
 	reward_data["battle_log"] = result.get("battle_log", [])
 
 	_set_state(GameState.COMBAT_RESULT)
 
-	# 通知 UI 显示结算
+	var end_msg: String
+	if fled:
+		end_msg = "战斗结束！成功逃跑，未获得奖励。"
+	elif victory:
+		end_msg = "战斗结束！胜利！"
+	else:
+		end_msg = "战斗结束！失败..."
+
 	combat_result_ready.emit(reward_data)
-	battle_log_updated.emit("战斗结束！%s" % ("胜利！" if victory else "失败..."))
+	battle_log_updated.emit(end_msg)
 
 
 func _calculate_rewards() -> Dictionary:
@@ -385,10 +489,18 @@ func _calculate_rewards() -> Dictionary:
 	var exp_reward := int(BASE_EXP_PER_ENEMY * _current_battle_enemy_count * region_mult)
 	var silver_reward := int(BASE_SILVER_PER_ENEMY * _current_battle_enemy_count * region_mult)
 
+	# 物品掉落计算
+	var drops: Array = []
+	var drop_table: Array = BATTLE_DROP_TABLE.get(current_region.id, [])
+	for entry in drop_table:
+		if randf() < entry.chance:
+			drops.append({"item_id": entry.item_id, "name": entry.name, "count": entry.count})
+
 	return {
 		"exp": exp_reward,
 		"silver": silver_reward,
 		"region": current_region.name,
+		"drops": drops,
 	}
 
 
@@ -402,11 +514,25 @@ func _distribute_rewards(rewards: Dictionary) -> void:
 	if _currency_manager and rewards.get("silver", 0) > 0:
 		_currency_manager.add_currency(0, rewards["silver"])  # CurrencyType.SILVER = 0
 
-	print("[GameLoopManager] 奖励分发: 经验 %d, 银两 %d" % [rewards.get("exp", 0), rewards.get("silver", 0)])
+	# 物品掉落发放
+	var inv = get_node_or_null("/root/InventorySystem")
+	var drops: Array = rewards.get("drops", [])
+	if inv and not drops.is_empty():
+		for drop in drops:
+			inv.add_item(drop.item_id, drop.count)
+
+	print("[GameLoopManager] 奖励分发: 经验 %d, 银两 %d, 掉落 %d 种" % [rewards.get("exp", 0), rewards.get("silver", 0), drops.size()])
 
 # ============================================================================
 # 状态管理
 # ============================================================================
+
+## 返回主菜单，重置所有状态
+func return_to_menu() -> void:
+	_auto_battle_timer.stop()
+	_set_state(GameState.MENU)
+	print("[GameLoopManager] 已返回主菜单")
+
 
 func _set_state(new_state: GameState) -> void:
 	var old := current_state

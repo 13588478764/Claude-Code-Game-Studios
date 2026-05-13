@@ -12,6 +12,13 @@
 [ext_resource type="PackedScene" path="res://src/scenes/ui/dialogue_box.tscn" id="10"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/exploration_panel.tscn" id="11"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/battle_result_panel.tscn" id="12"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/pause_menu.tscn" id="13"]
+[ext_resource type="PackedScene" uid="uid://inventory_panel_scene" path="res://src/scenes/ui/inventory_panel.tscn" id="14"]
+[ext_resource type="PackedScene" uid="uid://equipment_panel_scene" path="res://src/scenes/ui/equipment_panel.tscn" id="15"]
+[ext_resource type="PackedScene" uid="uid://world_map_scene" path="res://src/scenes/ui/world_map.tscn" id="16"]
+[ext_resource type="PackedScene" uid="uid://help_panel_scene" path="res://src/scenes/ui/help_panel.tscn" id="17"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/combat_action_panel.tscn" id="18"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/quest_log_panel.tscn" id="19"]
 
 [node name="MainGameUI" type="Node2D" unique_id=73997892]
 script = ExtResource("1")
@@ -117,6 +124,34 @@ visible = false
 [node name="ExplorationPanel" parent="HUDLayer" instance=ExtResource("11")]
 visible = false
 
+; CombatActionPanel 默认隐藏，战斗时自动显示操作按钮
+[node name="CombatActionPanel" parent="HUDLayer" instance=ExtResource("18")]
+visible = false
+
 ; BattleResultPanel 默认隐藏，由 GameLoopManager 在战斗结算时显示
 [node name="BattleResultPanel" parent="HUDLayer" instance=ExtResource("12")]
+visible = false
+
+; PauseMenu 默认隐藏，由快捷键 ESC 触发
+[node name="PauseMenu" parent="HUDLayer" instance=ExtResource("13")]
+visible = false
+
+; InventoryPanel 默认隐藏，由快捷键 I 触发
+[node name="InventoryPanel" parent="HUDLayer" instance=ExtResource("14")]
+visible = false
+
+; EquipmentPanel 默认隐藏，由快捷键 E 触发
+[node name="EquipmentPanel" parent="HUDLayer" instance=ExtResource("15")]
+visible = false
+
+; WorldMap 默认隐藏，由快捷键 M 触发
+[node name="WorldMap" parent="HUDLayer" instance=ExtResource("16")]
+visible = false
+
+; HelpPanel 默认隐藏，由快捷键 F1 触发
+[node name="HelpPanel" parent="HUDLayer" instance=ExtResource("17")]
+visible = false
+
+; QuestLogPanel 默认隐藏，由快捷键 J 触发
+[node name="QuestLogPanel" parent="HUDLayer" instance=ExtResource("19")]
 visible = false

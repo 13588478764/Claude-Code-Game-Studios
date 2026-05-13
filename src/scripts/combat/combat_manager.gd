@@ -389,13 +389,16 @@ func end_current_turn() -> void:
 	start_next_turn()
 
 ## 结束战斗
-func end_battle() -> void:
+func end_battle(fled: bool = false) -> void:
 	battle_state = BattleState.CLEANUP
 	battle_state_changed.emit(battle_state)
-	
-	# 检查战斗结果
+
 	var result: Dictionary = _calculate_battle_result()
-	
+	if fled:
+		result["victory"] = false
+		result["fled"] = true
+		_log_battle_action("逃跑成功，撤离战斗")
+
 	battle_ended.emit(result)
 	
 	# 重置状态
@@ -490,7 +493,7 @@ func execute_attack(attack_data: Dictionary) -> Dictionary:
 	unit_resource_changed.emit(attacker, "combo", old_combo, attacker.combo_value)
 	
 	# 记录战斗日志
-	_log_battle_action("%s 对 %s 造成了 %d 点伤害" % [str(attacker.unit_node), str(target.unit_node), damage])
+	_log_battle_action("%s 对 %s 造成了 %d 点伤害 (剩余HP: %d/%d)" % [_unit_name(attacker), _unit_name(target), damage, target.current_hp, target.max_hp])
 	
 	return {
 		"success": true,
@@ -511,12 +514,14 @@ func execute_defend(defend_data: Dictionary) -> Dictionary:
 	unit_resource_changed.emit(defender, "stance", old_stance, defender.stance)
 	
 	# 记录战斗日志
-	_log_battle_action("%s 进入防御状态，架势值增加" % str(defender.unit_node))
+	var reduction_pct: int = int(float(defender.stance) / float(max_stance) * 30)
+	_log_battle_action("%s 进入防御状态，架势值 %d/%d (减伤 %d%%)" % [_unit_name(defender), defender.stance, max_stance, reduction_pct])
 	
 	return {
 		"success": true,
 		"type": "defend",
-		"stance_increased": defend_stance_increase
+		"stance_increased": defend_stance_increase,
+		"stance_reduction_pct": reduction_pct
 	}
 
 ## 执行技能行动
@@ -545,12 +550,14 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 	unit_resource_changed.emit(user, "link_gauge", old_link, user.link_gauge)
 	
 	# 记录战斗日志
-	_log_battle_action("%s 使用了技能 %s" % [str(user.unit_node), skill_data.get("name", "未知技能")])
+	_log_battle_action("%s 使用了技能 %s" % [_unit_name(user), skill_data.get("name", "未知技能")])
 	
 	return {
 		"success": true,
 		"type": "skill",
 		"skill_name": skill_data.get("name", "未知技能"),
+		"damage_dealt": effect_result.get("damage", 0),
+		"target_hp_left": effect_result.get("target_hp_left", 0),
 		"effect": effect_result
 	}
 
@@ -599,7 +606,11 @@ func _create_damage_node(unit: BattleUnit, attack_data: Dictionary) -> Node:
 func _calculate_damage_fallback(attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
 	var attack_attr: int = attacker.attributes.get("force", 10)
 	var defend_attr: int = target.attributes.get("constitution", 0)
-	var base_dmg: int = max(1, attack_attr - defend_attr / 3) + randi_range(0, damage_random_range)
+	var raw_dmg: int = max(1, attack_attr - defend_attr / 3) + randi_range(0, damage_random_range)
+
+	# 架势减伤：架势值 0~100 对应 0%~30% 减伤
+	var stance_reduction: float = float(target.stance) / float(max_stance) * 0.3
+	var base_dmg: int = max(1, int(raw_dmg * (1.0 - stance_reduction)))
 
 	return base_dmg
 
@@ -613,9 +624,24 @@ func set_damage_calculator(calc: DamageCalculator) -> void:
 ## @param skill_data: 技能数据字典
 ## @return 技能效果字典
 func apply_skill_effect(user: BattleUnit, skill_data: Dictionary) -> Dictionary:
-	# 这里会根据技能数据应用具体效果
-	# 简化实现，返回基本效果
-	return {"type": "skill_effect", "value": skill_data.get("power", 1)}
+	var target_idx: int = skill_data.get("target_index", -1)
+	if target_idx < 0 or target_idx >= battle_units.size():
+		return {"type": "skill_effect", "damage": 0}
+
+	var target: BattleUnit = battle_units[target_idx]
+	var power: int = skill_data.get("power", 1)
+
+	var attack_attr: int = user.attributes.get("force", 10)
+	var defend_attr: int = target.attributes.get("constitution", 0)
+	var damage: int = max(1, power + attack_attr - defend_attr / 3)
+
+	var old_hp: int = target.current_hp
+	target.current_hp = max(0, target.current_hp - damage)
+	unit_hp_changed.emit(target, old_hp, target.current_hp)
+
+	_log_battle_action("%s 的技能对 %s 造成了 %d 点伤害 (剩余HP: %d/%d)" % [_unit_name(user), _unit_name(target), damage, target.current_hp, target.max_hp])
+
+	return {"type": "skill_effect", "damage": damage, "target_hp_left": target.current_hp}
 
 # ============================================================================
 # 资源管理
@@ -687,6 +713,13 @@ func get_battle_status() -> Dictionary:
 # ============================================================================
 # 辅助方法
 # ============================================================================
+
+## 获取单位显示名称
+func _unit_name(unit: BattleUnit) -> String:
+	if unit.unit_node is Dictionary:
+		return unit.unit_node.get("name", "未知")
+	return str(unit.unit_node)
+
 
 ## 记录战斗日志
 ## @param message: 日志消息

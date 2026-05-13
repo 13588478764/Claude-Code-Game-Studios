@@ -80,6 +80,7 @@ var _teleport_points: Array[Dictionary] = []
 func _ready() -> void:
 	visible = false
 	_panel.modulate = Color(1, 1, 1, 0)
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 	# 连接信号
 	_close_btn.pressed.connect(close_map)
@@ -111,6 +112,13 @@ func open_map(source: String = "keyboard", initial_tab: int = 0) -> void:
 	get_tree().paused = true
 
 	visible = true
+
+	# CanvasLayer 不可见时 TabBar 可能未加载编辑器定义的标签
+	if _tab_bar.tab_count == 0:
+		_tab_bar.add_tab("地图")
+		_tab_bar.add_tab("传送")
+		_tab_bar.add_tab("探索度")
+
 	_tab_bar.current_tab = initial_tab
 	_on_tab_changed(initial_tab)
 
@@ -252,45 +260,50 @@ func _update_map_data() -> void:
 	for child in _markers_container.get_children():
 		child.queue_free()
 
-	# 从 FastTravelManager 获取已发现的传送点
-	var fast_travel: Node = get_tree().root.get_node_or_null("FastTravelManager")
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
 	_teleport_points.clear()
 
-	if fast_travel != null and fast_travel.has_method("get_unlocked_locations"):
-		var locations = fast_travel.get_unlocked_locations()
-		for loc in locations:
-			if loc is Object and loc.has_method("get"):
-				_teleport_points.append({
-					"id": loc.get("id", loc.get("name", "")),
-					"name": loc.get("name", ""),
-					"region": loc.get("region", ""),
-					"position": loc.get("position", Vector2.ZERO),
-					"unlocked": loc.get("is_unlocked", false),
-				})
+	if game_loop:
+		# 从 GameLoopManager 获取区域数据
+		var regions: Array = game_loop.REGIONS
+		var marker_positions: Array[Vector2] = [
+			Vector2(150, 350), Vector2(400, 200), Vector2(650, 400), Vector2(350, 500)
+		]
+		for i in range(regions.size()):
+			var region: Dictionary = regions[i]
+			var pos: Vector2 = marker_positions[i] if i < marker_positions.size() else Vector2(100 + i * 150, 300)
+			_teleport_points.append({
+				"id": region.id,
+				"name": region.name,
+				"region": region.name,
+				"position": pos,
+				"unlocked": true,
+				"level": region.level,
+			})
 	else:
-		# 使用占位数据
 		_teleport_points = [
-			{"id": "qingyun_mountain", "name": "青云山", "region": "青州", "position": Vector2(300, 400), "unlocked": true},
-			{"id": "tianjian_sect", "name": "天剑宗", "region": "剑域", "position": Vector2(700, 300), "unlocked": true},
+			{"id": "start_village", "name": "新手村·青石镇", "region": "青石镇", "position": Vector2(150, 350), "unlocked": true, "level": 1},
 		]
 
 	# 创建传送点标记
 	for point in _teleport_points:
 		_create_marker(point.position, point.name, "teleport", point.unlocked)
 
-	# 创建玩家当前位置标记（占位）
-	var player_pos = Vector2(300, 400)  # TODO: 从玩家数据系统读取
-	_create_marker(player_pos, "当前位置", "player", true)
+	# 玩家当前位置标记
+	var current_region_name := "未知区域"
+	if game_loop:
+		current_region_name = game_loop.current_region.get("name", "未知区域")
+		# 在当前区域标记上显示玩家位置
+		for point in _teleport_points:
+			if point.id == game_loop.current_region.get("id", ""):
+				_create_marker(point.position + Vector2(0, -20), "▼ 你在此", "player", true)
+				break
 
-	# 更新信息卡
-	_current_region_label.text = "当前区域: 青云山"  # TODO: 从数据系统读取
-	var exploration_pct = 0.0
-	var explore_mgr: Node = get_tree().root.get_node_or_null("ExploreManager")
-	if explore_mgr != null and explore_mgr.has_method("get_current_region_exploration_percentage"):
-		exploration_pct = explore_mgr.get_current_region_exploration_percentage()
+	_current_region_label.text = "当前区域: %s" % current_region_name
+	if game_loop:
+		_exploration_label.text = "推荐等级: %d" % game_loop.current_region.get("level", 1)
 	else:
-		exploration_pct = 67.0  # 占位
-	_exploration_label.text = "探索进度: %d%%" % int(exploration_pct)
+		_exploration_label.text = ""
 
 
 ## 创建标记
@@ -340,7 +353,7 @@ func _update_travel_data() -> void:
 	_teleport_list.clear()
 
 	for point in _teleport_points:
-		var display_text = "%s (%s)" % [point.name, point.region]
+		var display_text := "%s (Lv.%d)" % [point.name, point.get("level", 1)]
 		_teleport_list.add_item(display_text)
 
 	# 默认选中第一个
@@ -350,7 +363,7 @@ func _update_travel_data() -> void:
 	else:
 		_travel_cost_label.text = "旅行费用: --"
 		_player_realm_label.text = "境界: --"
-		_spirit_stone_label.text = "灵石: --"
+		_spirit_stone_label.text = "银两: --"
 		_travel_btn.disabled = true
 
 
@@ -360,25 +373,39 @@ func _on_teleport_point_selected(index: int) -> void:
 	if index < 0 or index >= _teleport_points.size():
 		return
 
-	var point = _teleport_points[index]
-	var fast_travel: Node = get_tree().root.get_node_or_null("FastTravelManager")
+	var point: Dictionary = _teleport_points[index]
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
+	var is_current := false
+	if game_loop:
+		is_current = (point.id == game_loop.current_region.get("id", ""))
 
-	var cost = 0
-	if fast_travel != null and fast_travel.has_method("calculate_travel_cost"):
-		var current_loc = ""
-		if fast_travel.has_method("get_current_location_info"):
-			var loc_info = fast_travel.get_current_location_info()
-			current_loc = loc_info.get("id", "")
-		cost = fast_travel.calculate_travel_cost(current_loc, point.id)
+	# 旅行费用：推荐等级 × 5 银两
+	var cost: int = point.get("level", 1) * 5
+	_travel_cost_label.text = "旅行费用: %d 银两" % cost
+
+	# 境界
+	var cs: Node = get_node_or_null("/root/CharacterSystem")
+	var realm_name := "炼气"
+	if cs:
+		var realm_info: Dictionary = cs.get_current_realm()
+		realm_name = realm_info.get("name", "炼气")
+	_player_realm_label.text = "境界: %s" % realm_name
+
+	# 银两
+	var currency_mgr: Node = get_node_or_null("/root/CurrencyManager")
+	var silver: int = 0
+	if currency_mgr and currency_mgr.has_method("get_currency_amount"):
+		silver = currency_mgr.get_currency_amount(0)
+	_spirit_stone_label.text = "银两: %d" % silver
+
+	# 已在当前区域则禁用旅行
+	_travel_btn.disabled = is_current or silver < cost
+	if is_current:
+		_travel_btn.text = "已在此区域"
+	elif silver < cost:
+		_travel_btn.text = "银两不足"
 	else:
-		cost = 10  # 占位费用
-
-	_travel_cost_label.text = "旅行费用: %d" % cost
-	_player_realm_label.text = "境界: 炼气"  # TODO: 从角色系统读取
-	_spirit_stone_label.text = "灵石: 500"  # TODO: 从经济系统读取
-
-	# TODO: 检查境界和灵石是否足够，不足时禁用旅行按钮
-	_travel_btn.disabled = false
+		_travel_btn.text = "前往"
 
 
 ## 确认旅行
@@ -386,66 +413,66 @@ func _on_travel_confirmed() -> void:
 	if _selected_teleport_index < 0 or _selected_teleport_index >= _teleport_points.size():
 		return
 
-	var point = _teleport_points[_selected_teleport_index]
+	var point: Dictionary = _teleport_points[_selected_teleport_index]
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
+	var currency_mgr: Node = get_node_or_null("/root/CurrencyManager")
 
-	var fast_travel: Node = get_tree().root.get_node_or_null("FastTravelManager")
-	var cost = 0
-	if fast_travel != null and fast_travel.has_method("calculate_travel_cost"):
-		var current_loc = ""
-		if fast_travel.has_method("get_current_location_info"):
-			var loc_info = fast_travel.get_current_location_info()
-			current_loc = loc_info.get("id", "")
-		cost = fast_travel.calculate_travel_cost(current_loc, point.id)
+	var cost: int = point.get("level", 1) * 5
 
-	world_map_travel_confirmed.emit("青云山", point.region, cost)
+	# 扣除银两
+	if currency_mgr and currency_mgr.has_method("spend_currency"):
+		currency_mgr.spend_currency(0, cost)
 
-	# TODO: 调用 FastTravelManager.travel_to_location(point.id)
-	# TODO: 显示加载界面，切换到目标区域
+	# 切换区域
+	if game_loop:
+		var regions: Array = game_loop.REGIONS
+		for i in range(regions.size()):
+			if regions[i].id == point.id:
+				game_loop.select_region(i)
+				break
+
+	var from_region := "当前区域"
+	if game_loop:
+		from_region = game_loop.current_region.get("name", "当前区域")
+
+	world_map_travel_confirmed.emit(from_region, point.name, cost)
 	close_map()
 
 
 ## 更新探索度数据
 func _update_exploration_data() -> void:
-	var explore_mgr: Node = get_tree().root.get_node_or_null("ExploreManager")
-	var overall_pct = 0.0
-
 	_region_list.clear()
 
-	var region_data_list = _get_region_data()
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
+	if game_loop == null:
+		_overall_progress_bar.value = 0
+		_overall_percent_label.text = "0%"
+		return
 
-	if explore_mgr != null and explore_mgr.has_method("get_region_exploration_percentage"):
-		var total_pct = 0.0
-		var region_count = 0
-		for region in region_data_list:
-			var pct = explore_mgr.get_region_exploration_percentage(region.id)
-			if pct > 0:
-				total_pct += pct
-				region_count += 1
-			_region_list.add_item("%s - %d%%" % [region.name, int(pct)])
+	var regions: Array = game_loop.REGIONS
+	var current_id: String = game_loop.current_region.get("id", "")
+	var cs: Node = get_node_or_null("/root/CharacterSystem")
+	var player_level: int = cs.level if cs else 1
 
-		if region_count > 0:
-			overall_pct = total_pct / region_count
-	else:
-		# 使用占位数据
-		for region in region_data_list:
-			_region_list.add_item("%s - %d%%" % [region.name, int(region.exploration)])
-			overall_pct += region.exploration
-		if region_data_list.size() > 0:
-			overall_pct /= region_data_list.size()
+	var discovered_count: int = 0
+	for region in regions:
+		var is_current: bool = (region.id == current_id)
+		var accessible: bool = (player_level >= region.level)
+		var status_text: String
+		if is_current:
+			status_text = "📍 当前"
+			discovered_count += 1
+		elif accessible:
+			status_text = "✓ 可前往"
+			discovered_count += 1
+		else:
+			status_text = "🔒 等级不足 (需Lv.%d)" % region.level
 
+		_region_list.add_item("%s (Lv.%d) — %s" % [region.name, region.level, status_text])
+
+	var overall_pct: float = (float(discovered_count) / float(regions.size())) * 100.0 if regions.size() > 0 else 0.0
 	_overall_progress_bar.value = overall_pct
 	_overall_percent_label.text = "%d%%" % int(overall_pct)
-
-
-## 获取区域数据列表（占位，后续从世界数据系统读取）
-func _get_region_data() -> Array[Dictionary]:
-	return [
-		{"id": "qingyun_mountain", "name": "青云山", "region": "青州", "exploration": 67.0},
-		{"id": "tianjian_sect", "name": "天剑宗", "region": "剑域", "exploration": 35.0},
-		{"id": "jiangnan_town", "name": "江南水乡", "region": "江南", "exploration": 0.0},
-		{"id": "beast_mountain", "name": "兽王山", "region": "西域", "exploration": 0.0},
-		{"id": "dragon_temple", "name": "龙王庙", "region": "东海", "exploration": 0.0},
-	]
 
 
 ## 输入处理
@@ -462,9 +489,9 @@ func _input(event: InputEvent) -> void:
 					close_map()
 				get_viewport().set_input_as_handled()
 			KEY_TAB:
-				# Tab键循环切换Tab页
-				var next_tab = (_tab_bar.current_tab + 1) % _tab_bar.tab_count
-				_tab_bar.current_tab = next_tab
+				if _tab_bar.tab_count > 0:
+					var next_tab = (_tab_bar.current_tab + 1) % _tab_bar.tab_count
+					_tab_bar.current_tab = next_tab
 				get_viewport().set_input_as_handled()
 			KEY_PLUS, KEY_EQUAL:
 				_on_zoom_in()

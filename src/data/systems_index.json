@@ -1,242 +1,242 @@
 {
   "systems": [
-    {
-      "name": "世界流式加载系统",
-      "category": "技术",
-      "description": "处理大型开放世界的动态加载和卸载",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "LOD（细节层次）系统",
-      "category": "技术",
-      "description": "根据距离调整模型和纹理细节以优化性能",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "武学数据库",
-      "category": "数据",
-      "description": "存储所有武学技能的数据结构和属性",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "物品数据库",
-      "category": "数据",
-      "description": "存储所有装备和物品的数据结构和属性",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "随机事件生成器",
-      "category": "游戏机制",
-      "description": "生成随机奇遇事件的核心系统",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "开放世界探索系统",
-      "category": "游戏机制",
-      "description": "允许玩家在江湖中自由探索",
-      "source": "显式",
-      "status": "Approved"
-    },
-    {
-      "name": "地图/小地图系统",
-      "category": "UI",
-      "description": "显示玩家当前位置和已探索区域",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "兴趣点追踪系统",
-      "category": "游戏机制",
-      "description": "跟踪和标记世界中的重要地点",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "快速旅行系统",
-      "category": "游戏机制",
-      "description": "允许玩家在已发现的地点间快速移动",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "世界状态持久化",
-      "category": "技术",
-      "description": "保存和加载世界状态，包括玩家进度",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "武学系统",
-      "category": "游戏机制",
-      "description": "实现武功技能的学习、使用和组合",
-      "source": "显式",
-      "status": "Approved"
-    },
-    {
-      "name": "技能树/学习路径系统",
-      "category": "游戏机制",
-      "description": "管理武学技能的学习顺序和依赖关系",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "内力/能量管理系统",
-      "category": "游戏机制",
-      "description": "管理角色使用武学所需的内力资源",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "武学组合/连招系统",
-      "category": "游戏机制",
-      "description": "实现多个武学技能的组合和连招",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "奇遇系统",
-      "category": "游戏机制",
-      "description": "处理玩家遇到的随机事件和奖励",
-      "source": "显式",
-      "status": "Approved"
-    },
-    {
-      "name": "奇遇条件检查系统",
-      "category": "游戏机制",
-      "description": "检查触发奇遇的条件是否满足",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "奖励分配系统",
-      "category": "游戏机制",
-      "description": "根据奇遇类型分配适当的奖励",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "奇遇历史记录系统",
-      "category": "数据",
-      "description": "记录玩家已经经历过的奇遇",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "战斗系统",
-      "category": "游戏机制",
-      "description": "实现玩家与敌人的战斗交互",
-      "source": "显式",
-      "status": "Approved"
-    },
-    {
-      "name": "伤害计算系统",
-      "category": "游戏机制",
-      "description": "计算攻击造成的伤害值",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "生命值/防御系统",
-      "category": "游戏机制",
-      "description": "管理角色和敌人的生命值和防御属性",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "命中检测系统",
-      "category": "技术",
-      "description": "检测攻击是否命中目标",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "状态效果系统",
-      "category": "游戏机制",
-      "description": "实现中毒、眩晕等状态效果",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "敌人AI系统",
-      "category": "AI",
-      "description": "控制敌人行为和战斗策略",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "战斗UI",
-      "category": "UI",
-      "description": "显示战斗相关信息如血条、伤害数字等",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "角色成长系统",
-      "category": "游戏机制",
-      "description": "实现角色通过经验获得成长",
-      "source": "显式",
-      "status": "Approved"
-    },
-    {
-      "name": "经验值系统",
-      "category": "游戏机制",
-      "description": "管理角色获得和累积的经验值",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "等级提升机制",
-      "category": "游戏机制",
-      "description": "处理角色升级时的属性提升和境界突破",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "属性点分配系统",
-      "category": "游戏机制",
-      "description": "允许玩家自定义角色属性分配",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "成长数据保存",
-      "category": "数据",
-      "description": "保存角色成长相关的数据",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "装备系统",
-      "category": "游戏机制",
-      "description": "管理玩家的装备和物品",
-      "source": "显式",
-      "status": "Approved"
-    },
-    {
-      "name": "装备槽位系统",
-      "category": "游戏机制",
-      "description": "定义角色可以装备的物品位置",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "装备属性计算",
-      "category": "游戏机制",
-      "description": "计算装备对角色属性的影响",
-      "source": "隐式",
-      "status": "Approved"
-    },
-    {
-      "name": "装备UI",
-      "category": "UI",
-      "description": "显示和管理装备界面",
-      "source": "隐式",
-      "status": "Approved"
-    }
+	{
+	  "name": "世界流式加载系统",
+	  "category": "技术",
+	  "description": "处理大型开放世界的动态加载和卸载",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "LOD（细节层次）系统",
+	  "category": "技术",
+	  "description": "根据距离调整模型和纹理细节以优化性能",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "武学数据库",
+	  "category": "数据",
+	  "description": "存储所有武学技能的数据结构和属性",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "物品数据库",
+	  "category": "数据",
+	  "description": "存储所有装备和物品的数据结构和属性",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "随机事件生成器",
+	  "category": "游戏机制",
+	  "description": "生成随机奇遇事件的核心系统",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "开放世界探索系统",
+	  "category": "游戏机制",
+	  "description": "允许玩家在江湖中自由探索",
+	  "source": "显式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "地图/小地图系统",
+	  "category": "UI",
+	  "description": "显示玩家当前位置和已探索区域",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "兴趣点追踪系统",
+	  "category": "游戏机制",
+	  "description": "跟踪和标记世界中的重要地点",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "快速旅行系统",
+	  "category": "游戏机制",
+	  "description": "允许玩家在已发现的地点间快速移动",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "世界状态持久化",
+	  "category": "技术",
+	  "description": "保存和加载世界状态，包括玩家进度",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "武学系统",
+	  "category": "游戏机制",
+	  "description": "实现武功技能的学习、使用和组合",
+	  "source": "显式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "技能树/学习路径系统",
+	  "category": "游戏机制",
+	  "description": "管理武学技能的学习顺序和依赖关系",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "内力/能量管理系统",
+	  "category": "游戏机制",
+	  "description": "管理角色使用武学所需的内力资源",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "武学组合/连招系统",
+	  "category": "游戏机制",
+	  "description": "实现多个武学技能的组合和连招",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "奇遇系统",
+	  "category": "游戏机制",
+	  "description": "处理玩家遇到的随机事件和奖励",
+	  "source": "显式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "奇遇条件检查系统",
+	  "category": "游戏机制",
+	  "description": "检查触发奇遇的条件是否满足",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "奖励分配系统",
+	  "category": "游戏机制",
+	  "description": "根据奇遇类型分配适当的奖励",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "奇遇历史记录系统",
+	  "category": "数据",
+	  "description": "记录玩家已经经历过的奇遇",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "战斗系统",
+	  "category": "游戏机制",
+	  "description": "实现玩家与敌人的战斗交互",
+	  "source": "显式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "伤害计算系统",
+	  "category": "游戏机制",
+	  "description": "计算攻击造成的伤害值",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "生命值/防御系统",
+	  "category": "游戏机制",
+	  "description": "管理角色和敌人的生命值和防御属性",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "命中检测系统",
+	  "category": "技术",
+	  "description": "检测攻击是否命中目标",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "状态效果系统",
+	  "category": "游戏机制",
+	  "description": "实现中毒、眩晕等状态效果",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "敌人AI系统",
+	  "category": "AI",
+	  "description": "控制敌人行为和战斗策略",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "战斗UI",
+	  "category": "UI",
+	  "description": "显示战斗相关信息如血条、伤害数字等",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "角色成长系统",
+	  "category": "游戏机制",
+	  "description": "实现角色通过经验获得成长",
+	  "source": "显式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "经验值系统",
+	  "category": "游戏机制",
+	  "description": "管理角色获得和累积的经验值",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "等级提升机制",
+	  "category": "游戏机制",
+	  "description": "处理角色升级时的属性提升和境界突破",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "属性点分配系统",
+	  "category": "游戏机制",
+	  "description": "允许玩家自定义角色属性分配",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "成长数据保存",
+	  "category": "数据",
+	  "description": "保存角色成长相关的数据",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "装备系统",
+	  "category": "游戏机制",
+	  "description": "管理玩家的装备和物品",
+	  "source": "显式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "装备槽位系统",
+	  "category": "游戏机制",
+	  "description": "定义角色可以装备的物品位置",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "装备属性计算",
+	  "category": "游戏机制",
+	  "description": "计算装备对角色属性的影响",
+	  "source": "隐式",
+	  "status": "Approved"
+	},
+	{
+	  "name": "装备UI",
+	  "category": "UI",
+	  "description": "显示和管理装备界面",
+	  "source": "隐式",
+	  "status": "Approved"
+	}
   ]
 }

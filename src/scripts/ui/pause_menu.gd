@@ -51,9 +51,13 @@ var _has_save: bool = false
 var _subpanel_open: bool = false
 ## 设置面板实例
 var _settings_panel: Node = null
+## 存档槽位面板实例
+var _save_slot_panel: Node = null
 
 
 func _ready() -> void:
+	# 暂停时仍需响应输入
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	# 初始隐藏
 	visible = false
 	_panel.modulate = Color(1, 1, 1, 0)
@@ -81,6 +85,9 @@ func open_menu(area_name: String = "", game_time_str: String = "") -> void:
 	_update_location_hint()
 	_update_save_availability()
 
+	# 暂停游戏逻辑
+	get_tree().paused = true
+
 	# 淡入动画
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
@@ -102,7 +109,10 @@ func close_menu() -> void:
 	tween.tween_property(_panel, "modulate", Color(1, 1, 1, 0), 0.15)
 	tween.set_ease(Tween.EASE_IN)
 	tween.set_trans(Tween.TRANS_CUBIC)
-	tween.tween_callback(func() -> void: visible = false)
+	tween.tween_callback(func() -> void:
+		visible = false
+		get_tree().paused = false
+	)
 
 	pause_menu_closed_continue.emit()
 
@@ -121,7 +131,14 @@ func _update_location_hint() -> void:
 
 ## 根据是否有存档更新按钮状态
 func _update_save_availability() -> void:
-	# 读取存档按钮在无存档时置灰且不可聚焦
+	var save_sys = get_node_or_null("/root/SaveSystem")
+	if save_sys:
+		_has_save = false
+		for i in range(1, save_sys.MAX_SLOTS + 1):
+			if save_sys.has_save(i):
+				_has_save = true
+				break
+
 	if not _has_save:
 		_load_btn.disabled = true
 		_load_btn.focus_mode = Control.FOCUS_NONE
@@ -150,46 +167,31 @@ func _on_continue_pressed() -> void:
 	close_menu()
 
 
-## 保存进度
+## 保存进度 — 打开槽位选择面板
 func _on_save_pressed() -> void:
-	_show_confirm_dialog(
-		"确认保存修炼进度？",
-		"",
-		["确认保存", "取消"],
-		func(result: int) -> void:
-			if result == 0:
-				_do_save()
-			# result == 1: 取消
-	)
+	_subpanel_open = true
+	_ensure_save_slot_panel()
+	_save_slot_panel.open_save()
 
 
-## 读取存档
+## 读取存档 — 打开槽位选择面板
 func _on_load_pressed() -> void:
 	if not _has_save:
 		return
-	# TODO: 打开存档列表子面板 (Z-index=280)
 	_subpanel_open = true
-	# 暂时直接触发保存确认对话框（后续接入存档列表）
-	_show_confirm_dialog(
-		"确认读取存档？",
-		"当前进度将自动保存",
-		["确认读取", "取消"],
-		func(result: int) -> void:
-			if result == 0:
-				_do_load()
-			_on_subpanel_closed()
-	)
+	_ensure_save_slot_panel()
+	_save_slot_panel.open_load()
 
 
 ## 设置
 func _on_settings_pressed() -> void:
 	pause_menu_settings_opened.emit()
 	_subpanel_open = true
-	# 加载设置面板实例（如果未加载）
 	_load_settings_panel()
 	if _settings_panel != null:
 		_settings_panel.open_settings()
-		_settings_panel.settings_closed.connect(_on_settings_closed)
+		if not _settings_panel.settings_closed.is_connected(_on_settings_closed):
+			_settings_panel.settings_closed.connect(_on_settings_closed)
 
 func _on_settings_closed() -> void:
 	pause_menu_settings_closed.emit(true)
@@ -227,6 +229,7 @@ func _on_quit_pressed() -> void:
 				_do_save()
 				await get_tree().create_timer(0.5).timeout
 				pause_menu_quit_confirmed.emit(true)
+				get_tree().quit()
 			# result == 1: 取消
 			if result == 1:
 				pause_menu_quit_cancelled.emit()
@@ -234,20 +237,53 @@ func _on_quit_pressed() -> void:
 
 
 ## 执行保存操作
-func _do_save() -> void:
+func _do_save(slot: int = 1) -> void:
 	pause_menu_save_initiated.emit()
-	# TODO: 调用 SaveSystem.auto_save()
-	await get_tree().create_timer(0.3).timeout
-	pause_menu_save_succeeded.emit(1, Time.get_datetime_string_from_system())
-	_show_save_success_notification()
+	var save_sys = get_node_or_null("/root/SaveSystem")
+	if save_sys:
+		if save_sys.save_to_slot(slot):
+			pause_menu_save_succeeded.emit(slot, Time.get_datetime_string_from_system())
+			_has_save = true
+			_update_save_availability()
+			_show_save_success_notification()
+		else:
+			pause_menu_save_failed.emit("保存失败")
+	else:
+		pause_menu_save_failed.emit("存档系统不可用")
 
 
 ## 执行读取操作
-func _do_load() -> void:
-	pause_menu_load_initiated.emit(1)
-	# TODO: 调用 SaveSystem.load_save(slot_id)
-	await get_tree().create_timer(0.3).timeout
-	pause_menu_load_succeeded.emit(1)
+func _do_load(slot: int = 1) -> void:
+	pause_menu_load_initiated.emit(slot)
+	var save_sys = get_node_or_null("/root/SaveSystem")
+	if save_sys and save_sys.load_from_slot(slot):
+		pause_menu_load_succeeded.emit(slot)
+		close_menu()
+	else:
+		push_warning("[PauseMenu] 读取存档失败")
+
+
+## 初始化存档槽位面板
+func _ensure_save_slot_panel() -> void:
+	if _save_slot_panel != null:
+		return
+	var scene = load("res://src/scenes/ui/save_slot_panel.tscn")
+	if scene == null:
+		push_warning("[PauseMenu] 无法加载存档槽位面板")
+		return
+	_save_slot_panel = scene.instantiate()
+	add_child(_save_slot_panel)
+	_save_slot_panel.slot_selected.connect(_on_slot_selected)
+	_save_slot_panel.slot_panel_cancelled.connect(_on_subpanel_closed)
+
+
+## 槽位选择回调
+func _on_slot_selected(slot: int) -> void:
+	_subpanel_open = false
+	if _save_slot_panel._mode == _save_slot_panel.Mode.SAVE:
+		_do_save(slot)
+	else:
+		_do_load(slot)
 
 
 ## 子面板关闭处理
@@ -257,8 +293,10 @@ func _on_subpanel_closed() -> void:
 
 ## 显示保存成功通知
 func _show_save_success_notification() -> void:
-	# TODO: 使用通知系统显示"修炼进度已保存"，1.5秒后自动关闭
-	pass
+	_location_hint.text = "✓ 修炼进度已保存"
+	_location_hint.visible = true
+	await get_tree().create_timer(1.5).timeout
+	_update_location_hint()
 
 
 ## 显示确认对话框
@@ -289,6 +327,6 @@ func _load_settings_panel() -> void:
 	var scene = load("res://src/scenes/ui/settings_panel.tscn")
 	if scene != null:
 		_settings_panel = scene.instantiate()
-		get_tree().root.add_child(_settings_panel)
+		add_child(_settings_panel)
 	else:
 		push_warning("无法加载设置面板场景")

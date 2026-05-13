@@ -1,300 +1,237 @@
-## CharacterPanelScript
-## 武侠奇遇录 - 角色面板脚本
-## 负责管理角色面板的显示和交互
-##
-## 主要功能：
-## - 待补充
+## 角色面板控制器
+## 负责角色属性显示、属性点分配、战斗属性查看
+## 数据来源: CharacterSystem Autoload
 
 extends Node
 
 class_name CharacterPanelScript
 
-# ============================================================================
-# 常量定义
-# ============================================================================
+## 属性中文名映射
+const ATTR_NAMES: Dictionary = {
+	"strength": "力道",
+	"agility": "身法",
+	"constitution": "根骨",
+	"intelligence": "悟性",
+	"willpower": "定力",
+	"luck": "福缘",
+}
 
-# ============================================================================
-# 信号定义
-# ============================================================================
+## 属性列表（保持固定顺序）
+const ATTR_LIST: Array = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
 
-# ============================================================================
-# 成员变量
-# ============================================================================
+# UI节点引用
+var _panel: Control = null
+var _level_value: Label = null
+var _realm_value: Label = null
+var _attr_points_value: Label = null
+var _exp_value: Label = null
+var _attr_value_labels: Dictionary = {}
+var _attr_add_buttons: Dictionary = {}
+var _close_button: Button = null
+var _reset_button: Button = null
+var _apply_button: Button = null
 
-# ============================================================================
-# 生命周期方法
-# ============================================================================
-
-# ============================================================================
-# 公共方法
-# ============================================================================
-
-# ============================================================================
-# 私有方法
-# ============================================================================
-
-# UI元素引用
-var level_value_label = null
-var realm_value_label = null
-var strength_value_label = null
-var agility_value_label = null
-var constitution_value_label = null
-var intelligence_value_label = null
-var willpower_value_label = null
-var luck_value_label = null
-var attribute_points_value_label = null
-var close_button = null
-var reset_button = null
-var apply_button = null
-var strength_add_button = null
-var agility_add_button = null
-var constitution_add_button = null
-var intelligence_add_button = null
-var willpower_add_button = null
-var luck_add_button = null
-
-# 临时属性存储
-var temp_attributes = {
+# 临时属性增量（未应用前的暂存）
+var _pending_additions: Dictionary = {
 	"strength": 0,
 	"agility": 0,
 	"constitution": 0,
 	"intelligence": 0,
 	"willpower": 0,
-	"luck": 0
+	"luck": 0,
 }
-var temp_attribute_points = 0
+var _pending_points_used: int = 0
 
-func _ready():
-	# 获取UI元素引用
-	var character_panel = get_parent()
-	print("[CharacterPanel] parent = ", character_panel.name if character_panel else "null")
-	print("[CharacterPanel] scene = ", get_parent().scene_file_path if get_parent() else "null")
 
-	if character_panel == null:
-		push_warning("[CharacterPanel] No parent, cannot setup UI")
+func _ready() -> void:
+	_panel = get_parent()
+	if _panel == null:
+		push_warning("[CharacterPanel] 无法获取父节点")
 		return
 
-	level_value_label = character_panel.get_node("Background/LevelInfo/LevelValue")
-	realm_value_label = character_panel.get_node("Background/LevelInfo/RealmValue")
-	strength_value_label = character_panel.get_node("Background/AttributesPanel/StrengthRow/StrengthValue")
-	agility_value_label = character_panel.get_node("Background/AttributesPanel/AgilityRow/AgilityValue")
-	constitution_value_label = character_panel.get_node("Background/AttributesPanel/ConstitutionRow/ConstitutionValue")
-	intelligence_value_label = character_panel.get_node("Background/AttributesPanel/IntelligenceRow/IntelligenceValue")
-	willpower_value_label = character_panel.get_node("Background/AttributesPanel/WillpowerRow/WillpowerValue")
-	luck_value_label = character_panel.get_node("Background/AttributesPanel/LuckRow/LuckValue")
-	attribute_points_value_label = character_panel.get_node("Background/AttributePointsRow/AttributePointsValue")
-	close_button = character_panel.get_node_or_null("Background/CloseButton")
-	reset_button = character_panel.get_node_or_null("Background/ResetButton")
-	apply_button = character_panel.get_node_or_null("Background/ApplyButton")
-	strength_add_button = character_panel.get_node("Background/AttributesPanel/StrengthRow/StrengthAddButton")
-	agility_add_button = character_panel.get_node("Background/AttributesPanel/AgilityRow/AgilityAddButton")
-	constitution_add_button = character_panel.get_node("Background/AttributesPanel/ConstitutionRow/ConstitutionAddButton")
-	intelligence_add_button = character_panel.get_node("Background/AttributesPanel/IntelligenceRow/IntelligenceAddButton")
-	willpower_add_button = character_panel.get_node("Background/AttributesPanel/WillpowerRow/WillpowerAddButton")
-	luck_add_button = character_panel.get_node("Background/AttributesPanel/LuckRow/LuckAddButton")
+	_cache_node_references()
+	_connect_buttons()
 
-	print("[CharacterPanel] close_button = ", close_button.name if close_button else "null")
-	print("[CharacterPanel] reset_button = ", reset_button.name if reset_button else "null")
-	print("[CharacterPanel] apply_button = ", apply_button.name if apply_button else "null")
+	# 面板显示时刷新数据
+	_panel.visibility_changed.connect(_on_visibility_changed)
 
-	# 连接按钮信号
-	if close_button != null:
-		close_button.pressed.connect(_on_close_button_pressed)
-	if reset_button != null:
-		reset_button.pressed.connect(_on_reset_button_pressed)
-	if apply_button != null:
-		apply_button.pressed.connect(_on_apply_button_pressed)
-	if strength_add_button != null:
-		strength_add_button.pressed.connect(_on_strength_add_button_pressed)
-	if agility_add_button != null:
-		agility_add_button.pressed.connect(_on_agility_add_button_pressed)
-	if constitution_add_button != null:
-		constitution_add_button.pressed.connect(_on_constitution_add_button_pressed)
-	if intelligence_add_button != null:
-		intelligence_add_button.pressed.connect(_on_intelligence_add_button_pressed)
-	if willpower_add_button != null:
-		willpower_add_button.pressed.connect(_on_willpower_add_button_pressed)
-	if luck_add_button != null:
-		luck_add_button.pressed.connect(_on_luck_add_button_pressed)
 
-func update_display(character_data):
-	"""更新角色面板显示"""
-	if level_value_label != null:
-		level_value_label.text = str(character_data["level"])
-	
-	if realm_value_label != null:
-		realm_value_label.text = character_data["realm"]
-	
-	if strength_value_label != null:
-		strength_value_label.text = str(character_data["attributes"]["strength"])
-		temp_attributes["strength"] = character_data["attributes"]["strength"]
-	
-	if agility_value_label != null:
-		agility_value_label.text = str(character_data["attributes"]["agility"])
-		temp_attributes["agility"] = character_data["attributes"]["agility"]
-	
-	if constitution_value_label != null:
-		constitution_value_label.text = str(character_data["attributes"]["constitution"])
-		temp_attributes["constitution"] = character_data["attributes"]["constitution"]
-	
-	if intelligence_value_label != null:
-		intelligence_value_label.text = str(character_data["attributes"]["intelligence"])
-		temp_attributes["intelligence"] = character_data["attributes"]["intelligence"]
-	
-	if willpower_value_label != null:
-		willpower_value_label.text = str(character_data["attributes"]["willpower"])
-		temp_attributes["willpower"] = character_data["attributes"]["willpower"]
-	
-	if luck_value_label != null:
-		luck_value_label.text = str(character_data["attributes"]["luck"])
-		temp_attributes["luck"] = character_data["attributes"]["luck"]
-	
-	if attribute_points_value_label != null:
-		attribute_points_value_label.text = str(character_data["attribute_points"])
-		temp_attribute_points = character_data["attribute_points"]
+func _cache_node_references() -> void:
+	_level_value = _panel.get_node_or_null("Background/LevelInfo/LevelValue")
+	_realm_value = _panel.get_node_or_null("Background/LevelInfo/RealmValue")
+	_attr_points_value = _panel.get_node_or_null("Background/AttributePointsRow/AttributePointsValue")
+	_close_button = _panel.get_node_or_null("Background/CloseButton")
+	_reset_button = _panel.get_node_or_null("Background/ResetButton")
+	_apply_button = _panel.get_node_or_null("Background/ApplyButton")
 
-func _on_close_button_pressed():
-	"""关闭按钮回调"""
-	var ui_manager = get_node_or_null("/root/UIManager")
-	if ui_manager != null:
-		ui_manager.switch_to_state(ui_manager.UIState.MAIN_MENU)
-
-func _on_reset_button_pressed():
-	"""重置按钮回调"""
-	# 重置到原始属性值
-	var character_system = get_node_or_null("/root/CharacterSystem")
-	if character_system != null:
-		var original_attributes = character_system.attributes.get_total()
-		temp_attributes["strength"] = original_attributes["strength"]
-		temp_attributes["agility"] = original_attributes["agility"]
-		temp_attributes["constitution"] = original_attributes["constitution"]
-		temp_attributes["intelligence"] = original_attributes["intelligence"]
-		temp_attributes["willpower"] = original_attributes["willpower"]
-		temp_attributes["luck"] = original_attributes["luck"]
-		
-		# 更新显示
-		if strength_value_label != null:
-			strength_value_label.text = str(temp_attributes["strength"])
-		if agility_value_label != null:
-			agility_value_label.text = str(temp_attributes["agility"])
-		if constitution_value_label != null:
-			constitution_value_label.text = str(temp_attributes["constitution"])
-		if intelligence_value_label != null:
-			intelligence_value_label.text = str(temp_attributes["intelligence"])
-		if willpower_value_label != null:
-			willpower_value_label.text = str(temp_attributes["willpower"])
-		if luck_value_label != null:
-			luck_value_label.text = str(temp_attributes["luck"])
-
-func _on_apply_button_pressed():
-	"""应用按钮回调"""
-	var character_system = get_node_or_null("/root/CharacterSystem")
-	if character_system == null:
+	# 属性行引用
+	var attr_panel = _panel.get_node_or_null("Background/AttributesPanel")
+	if attr_panel == null:
 		return
-	
-	# 计算属性点变化
-	var original_attributes = character_system.attributes.get_total()
-	var points_used = 0
-	
-	points_used += temp_attributes["strength"] - original_attributes["strength"]
-	points_used += temp_attributes["agility"] - original_attributes["agility"]
-	points_used += temp_attributes["constitution"] - original_attributes["constitution"]
-	points_used += temp_attributes["intelligence"] - original_attributes["intelligence"]
-	points_used += temp_attributes["willpower"] - original_attributes["willpower"]
-	points_used += temp_attributes["luck"] - original_attributes["luck"]
-	
-	# 检查是否有足够的属性点
-	if points_used > temp_attribute_points:
-		print("❌ 属性点不足，无法应用分配")
+
+	var row_names: Dictionary = {
+		"strength": "StrengthRow",
+		"agility": "AgilityRow",
+		"constitution": "ConstitutionRow",
+		"intelligence": "IntelligenceRow",
+		"willpower": "WillpowerRow",
+		"luck": "LuckRow",
+	}
+
+	for attr_key in ATTR_LIST:
+		var row_name: String = row_names[attr_key]
+		var row = attr_panel.get_node_or_null(row_name)
+		if row == null:
+			continue
+		var capitalized: String = attr_key.capitalize().replace(" ", "")
+		_attr_value_labels[attr_key] = row.get_node_or_null("%sValue" % capitalized)
+		_attr_add_buttons[attr_key] = row.get_node_or_null("%sAddButton" % capitalized)
+
+
+func _connect_buttons() -> void:
+	if _close_button:
+		_close_button.pressed.connect(_on_close_pressed)
+	if _reset_button:
+		_reset_button.pressed.connect(_on_reset_pressed)
+	if _apply_button:
+		_apply_button.pressed.connect(_on_apply_pressed)
+
+	# 属性加点按钮
+	for attr_key in ATTR_LIST:
+		var btn: Button = _attr_add_buttons.get(attr_key)
+		if btn:
+			btn.pressed.connect(_on_attr_add_pressed.bind(attr_key))
+
+
+func _input(event: InputEvent) -> void:
+	if _panel == null or not _panel.visible:
 		return
-	
-	# 应用属性点分配
-	if temp_attributes["strength"] > original_attributes["strength"]:
-		character_system.allocate_attribute_points("strength", temp_attributes["strength"] - original_attributes["strength"])
-	if temp_attributes["agility"] > original_attributes["agility"]:
-		character_system.allocate_attribute_points("agility", temp_attributes["agility"] - original_attributes["agility"])
-	if temp_attributes["constitution"] > original_attributes["constitution"]:
-		character_system.allocate_attribute_points("constitution", temp_attributes["constitution"] - original_attributes["constitution"])
-	if temp_attributes["intelligence"] > original_attributes["intelligence"]:
-		character_system.allocate_attribute_points("intelligence", temp_attributes["intelligence"] - original_attributes["intelligence"])
-	if temp_attributes["willpower"] > original_attributes["willpower"]:
-		character_system.allocate_attribute_points("willpower", temp_attributes["willpower"] - original_attributes["willpower"])
-	if temp_attributes["luck"] > original_attributes["luck"]:
-		character_system.allocate_attribute_points("luck", temp_attributes["luck"] - original_attributes["luck"])
-	
-	print("✅ 属性点分配已应用")
-	
-	# 关闭面板
-	_on_close_button_pressed()
 
-func _on_strength_add_button_pressed():
-	"""力道增加按钮回调"""
-	if temp_attribute_points > 0:
-		temp_attributes["strength"] += 1
-		temp_attribute_points -= 1
-		if strength_value_label != null:
-			strength_value_label.text = str(temp_attributes["strength"])
-		if attribute_points_value_label != null:
-			attribute_points_value_label.text = str(temp_attribute_points)
-	else:
-		print("❌ 没有可用的属性点")
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		_close_panel()
+		get_viewport().set_input_as_handled()
 
-func _on_agility_add_button_pressed():
-	"""身法增加按钮回调"""
-	if temp_attribute_points > 0:
-		temp_attributes["agility"] += 1
-		temp_attribute_points -= 1
-		if agility_value_label != null:
-			agility_value_label.text = str(temp_attributes["agility"])
-		if attribute_points_value_label != null:
-			attribute_points_value_label.text = str(temp_attribute_points)
-	else:
-		print("❌ 没有可用的属性点")
 
-func _on_constitution_add_button_pressed():
-	"""根骨增加按钮回调"""
-	if temp_attribute_points > 0:
-		temp_attributes["constitution"] += 1
-		temp_attribute_points -= 1
-		if constitution_value_label != null:
-			constitution_value_label.text = str(temp_attributes["constitution"])
-		if attribute_points_value_label != null:
-			attribute_points_value_label.text = str(temp_attribute_points)
-	else:
-		print("❌ 没有可用的属性点")
+## 面板可见性变化时刷新
+func _on_visibility_changed() -> void:
+	if _panel.visible:
+		_reset_pending()
+		_refresh_from_system()
 
-func _on_intelligence_add_button_pressed():
-	"""悟性增加按钮回调"""
-	if temp_attribute_points > 0:
-		temp_attributes["intelligence"] += 1
-		temp_attribute_points -= 1
-		if intelligence_value_label != null:
-			intelligence_value_label.text = str(temp_attributes["intelligence"])
-		if attribute_points_value_label != null:
-			attribute_points_value_label.text = str(temp_attribute_points)
-	else:
-		print("❌ 没有可用的属性点")
 
-func _on_willpower_add_button_pressed():
-	"""定力增加按钮回调"""
-	if temp_attribute_points > 0:
-		temp_attributes["willpower"] += 1
-		temp_attribute_points -= 1
-		if willpower_value_label != null:
-			willpower_value_label.text = str(temp_attributes["willpower"])
-		if attribute_points_value_label != null:
-			attribute_points_value_label.text = str(temp_attribute_points)
-	else:
-		print("❌ 没有可用的属性点")
+## 从 CharacterSystem 读取真实数据并刷新UI
+func _refresh_from_system() -> void:
+	var cs = get_node_or_null("/root/CharacterSystem")
+	if cs == null:
+		push_warning("[CharacterPanel] CharacterSystem 未找到")
+		return
 
-func _on_luck_add_button_pressed():
-	"""福缘增加按钮回调"""
-	if temp_attribute_points > 0:
-		temp_attributes["luck"] += 1
-		temp_attribute_points -= 1
-		if luck_value_label != null:
-			luck_value_label.text = str(temp_attributes["luck"])
-		if attribute_points_value_label != null:
-			attribute_points_value_label.text = str(temp_attribute_points)
-	else:
-		print("❌ 没有可用的属性点")
+	# 等级和境界
+	if _level_value:
+		_level_value.text = str(cs.level)
+	if _realm_value:
+		var realm_info: Dictionary = cs.get_current_realm()
+		_realm_value.text = realm_info.get("name", "未知")
+
+	# 可用属性点
+	var available_points: int = cs.total_attribute_points - cs.allocated_attribute_points
+	if _attr_points_value:
+		_attr_points_value.text = str(available_points)
+
+	# 六维属性（基础值）
+	var attrs: Dictionary = cs.attributes.get_total()
+	for attr_key in ATTR_LIST:
+		var label: Label = _attr_value_labels.get(attr_key)
+		if label:
+			label.text = str(attrs.get(attr_key, 0))
+
+	_update_add_button_states(available_points)
+
+
+## 更新加点按钮可用状态
+func _update_add_button_states(available_points: int) -> void:
+	var remaining: int = available_points - _pending_points_used
+	for attr_key in ATTR_LIST:
+		var btn: Button = _attr_add_buttons.get(attr_key)
+		if btn:
+			btn.disabled = remaining <= 0
+
+
+## 属性加点按钮回调
+func _on_attr_add_pressed(attr_key: String) -> void:
+	var cs = get_node_or_null("/root/CharacterSystem")
+	if cs == null:
+		return
+
+	var available: int = cs.total_attribute_points - cs.allocated_attribute_points - _pending_points_used
+	if available <= 0:
+		return
+
+	_pending_additions[attr_key] += 1
+	_pending_points_used += 1
+
+	# 更新显示（基础值+待分配增量）
+	var base_value: int = 0
+	match attr_key:
+		"strength": base_value = cs.attributes.strength
+		"agility": base_value = cs.attributes.agility
+		"constitution": base_value = cs.attributes.constitution
+		"intelligence": base_value = cs.attributes.intelligence
+		"willpower": base_value = cs.attributes.willpower
+		"luck": base_value = cs.attributes.luck
+
+	var label: Label = _attr_value_labels.get(attr_key)
+	if label:
+		var new_val: int = base_value + _pending_additions[attr_key]
+		label.text = str(new_val)
+
+	# 更新剩余点数
+	var remaining: int = cs.total_attribute_points - cs.allocated_attribute_points - _pending_points_used
+	if _attr_points_value:
+		_attr_points_value.text = str(remaining)
+
+	_update_add_button_states(cs.total_attribute_points - cs.allocated_attribute_points)
+
+
+## 应用按钮回调 — 将待分配的点数真正写入 CharacterSystem
+func _on_apply_pressed() -> void:
+	var cs = get_node_or_null("/root/CharacterSystem")
+	if cs == null:
+		return
+
+	if _pending_points_used == 0:
+		return
+
+	for attr_key in ATTR_LIST:
+		var points: int = _pending_additions[attr_key]
+		if points > 0:
+			cs.allocate_attribute_points(attr_key, points)
+
+	print("[CharacterPanel] 已分配 %d 点属性" % _pending_points_used)
+	_reset_pending()
+	_refresh_from_system()
+
+
+## 重置按钮回调 — 撤销未应用的加点
+func _on_reset_pressed() -> void:
+	_reset_pending()
+	_refresh_from_system()
+
+
+## 关闭按钮回调
+func _on_close_pressed() -> void:
+	_close_panel()
+
+
+## 关闭面板（撤销未应用的更改）
+func _close_panel() -> void:
+	_reset_pending()
+	if _panel:
+		_panel.visible = false
+
+
+## 清空待分配状态
+func _reset_pending() -> void:
+	for attr_key in ATTR_LIST:
+		_pending_additions[attr_key] = 0
+	_pending_points_used = 0

@@ -13,6 +13,8 @@ extends CanvasLayer
 @onready var exp_label: Label = $PanelContainer/VBox/RewardBox/ExpLabel
 @onready var silver_label: Label = $PanelContainer/VBox/RewardBox/SilverLabel
 @onready var level_label: Label = $PanelContainer/VBox/RewardBox/LevelLabel
+@onready var drops_label: Label = $PanelContainer/VBox/RewardBox/DropsLabel
+@onready var region_label: Label = $PanelContainer/VBox/RewardBox/RegionLabel
 @onready var continue_button: Button = $PanelContainer/VBox/ContinueButton
 
 var _game_loop: Node = null
@@ -58,11 +60,37 @@ func show_result(reward_data: Dictionary) -> void:
 	silver_label.text = "获得银两: %d" % reward_data.get("silver", 0)
 
 	if reward_data.get("level_up", false):
-		level_label.text = "🎉 升级！当前等级: %d" % reward_data.get("new_level", 1)
+		level_label.text = "升级！当前等级: %d" % reward_data.get("new_level", 1)
 		level_label.show()
 	else:
 		level_label.text = ""
 		level_label.hide()
+
+	# 物品掉落
+	var drops: Array = reward_data.get("drops", [])
+	if not drops.is_empty():
+		var drop_texts: PackedStringArray = []
+		for drop in drops:
+			drop_texts.append("%s x%d" % [drop.get("name", "未知物品"), drop.get("count", 1)])
+		drops_label.text = "掉落物品: %s" % ", ".join(drop_texts)
+		drops_label.show()
+	else:
+		drops_label.text = ""
+		drops_label.hide()
+
+	# 区域信息
+	var region_name: String = reward_data.get("region", "")
+	if region_name != "":
+		region_label.text = "战斗区域: %s" % region_name
+		region_label.show()
+	else:
+		region_label.hide()
+
+	if reward_data.get("fled", false):
+		exp_label.text = "逃跑成功，未获得奖励"
+		silver_label.hide()
+	else:
+		silver_label.show()
 
 	show()
 

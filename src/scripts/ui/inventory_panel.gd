@@ -1,6 +1,7 @@
 ## 背包面板控制器
 ## 对应 UX Spec: design/ux/inventory.md
 ## Z-index = 200（与角色面板同级）
+## 数据源: InventorySystem (Autoload) + CurrencyManager (Autoload)
 
 extends CanvasLayer
 
@@ -23,51 +24,44 @@ signal inventory_sorted
 @onready var _panel: PanelContainer = $PanelContainer
 @onready var _title_label: Label = $PanelContainer/VBox/HeaderHBox/TitleLabel
 @onready var _capacity_label: Label = $PanelContainer/VBox/HeaderHBox/CapacityLabel
+@onready var _silver_label: Label = $PanelContainer/VBox/HeaderHBox/SilverLabel
 @onready var _close_btn: Button = $PanelContainer/VBox/HeaderHBox/CloseButton
-@onready var _tab_bar: TabBar = $PanelContainer/VBox/TabBar
-@onready var _backpack_tab: ScrollContainer = $PanelContainer/VBox/TabContent/BackpackTab
-@onready var _currency_tab: ScrollContainer = $PanelContainer/VBox/TabContent/CurrencyTab
-@onready var _quick_actions_tab: ScrollContainer = $PanelContainer/VBox/TabContent/QuickActionsTab
-@onready var _filter_all_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/FilterHBox/FilterAllButton
-@onready var _filter_equip_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/FilterHBox/FilterEquipButton
-@onready var _filter_consumable_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/FilterHBox/FilterConsumableButton
-@onready var _filter_material_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/FilterHBox/FilterMaterialButton
-@onready var _sort_option: OptionButton = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/FilterHBox/SortOptionButton
-@onready var _item_list: ItemList = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemList
-@onready var _item_name_label: Label = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox/ItemNameLabel
-@onready var _item_desc_label: RichTextLabel = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox/ItemDescLabel
-@onready var _use_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/UseButton
-@onready var _equip_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/EquipButton
-@onready var _sell_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/SellButton
-@onready var _dismantle_btn: Button = $PanelContainer/VBox/TabContent/BackpackTab/BackpackVBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/DismantleButton
-@onready var _spirit_stone_label: Label = $PanelContainer/VBox/TabContent/CurrencyTab/CurrencyVBox/CurrencyGrid/SpiritStoneLabel
-@onready var _gold_label: Label = $PanelContainer/VBox/TabContent/CurrencyTab/CurrencyVBox/CurrencyGrid/GoldLabel
-@onready var _silver_label: Label = $PanelContainer/VBox/TabContent/CurrencyTab/CurrencyVBox/CurrencyGrid/SilverLabel
-@onready var _copper_label: Label = $PanelContainer/VBox/TabContent/CurrencyTab/CurrencyVBox/CurrencyGrid/CopperLabel
-@onready var _contribution_label: Label = $PanelContainer/VBox/TabContent/CurrencyTab/CurrencyVBox/CurrencyGrid/ContributionLabel
-@onready var _sect_points_label: Label = $PanelContainer/VBox/TabContent/CurrencyTab/CurrencyVBox/CurrencyGrid/SectPointsLabel
-@onready var _bulk_sell_btn: Button = $PanelContainer/VBox/TabContent/QuickActionsTab/QuickActionsVBox/BulkSellButton
-@onready var _bulk_dismantle_btn: Button = $PanelContainer/VBox/TabContent/QuickActionsTab/QuickActionsVBox/BulkDismantleButton
-@onready var _sort_backpack_btn: Button = $PanelContainer/VBox/TabContent/QuickActionsTab/QuickActionsVBox/SortBackpackButton
-
-## 物品类型枚举
-enum ItemType { EQUIPMENT, CONSUMABLE, MATERIAL, QUEST_ITEM }
+@onready var _filter_all_btn: Button = $PanelContainer/VBox/FilterHBox/FilterAllButton
+@onready var _filter_equip_btn: Button = $PanelContainer/VBox/FilterHBox/FilterEquipButton
+@onready var _filter_consumable_btn: Button = $PanelContainer/VBox/FilterHBox/FilterConsumableButton
+@onready var _filter_material_btn: Button = $PanelContainer/VBox/FilterHBox/FilterMaterialButton
+@onready var _sort_option: OptionButton = $PanelContainer/VBox/FilterHBox/SortOptionButton
+@onready var _sort_backpack_btn: Button = $PanelContainer/VBox/FilterHBox/SortBackpackButton
+@onready var _item_list: ItemList = $PanelContainer/VBox/ItemList
+@onready var _item_name_label: Label = $PanelContainer/VBox/ItemDetailPanel/ItemDetailVBox/ItemNameLabel
+@onready var _item_desc_label: RichTextLabel = $PanelContainer/VBox/ItemDetailPanel/ItemDetailVBox/ItemDescLabel
+@onready var _use_btn: Button = $PanelContainer/VBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/UseButton
+@onready var _equip_btn: Button = $PanelContainer/VBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/EquipButton
+@onready var _sell_btn: Button = $PanelContainer/VBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/SellButton
+@onready var _dismantle_btn: Button = $PanelContainer/VBox/ItemDetailPanel/ItemDetailVBox/ItemActionHBox/DismantleButton
 
 ## 品阶颜色
 const TIER_COLORS: Dictionary = {
-	"common": Color(1.0, 1.0, 1.0),    # 白色
-	"uncommon": Color(0.0, 1.0, 0.0),  # 绿色
-	"rare": Color(0.0, 0.5, 1.0),      # 蓝色
-	"epic": Color(0.6, 0.2, 0.8),      # 紫色
-	"legendary": Color(1.0, 0.8, 0.0), # 金色
+	"common": Color(1.0, 1.0, 1.0),
+	"uncommon": Color(0.0, 1.0, 0.0),
+	"rare": Color(0.0, 0.5, 1.0),
+	"epic": Color(0.6, 0.2, 0.8),
+	"legendary": Color(1.0, 0.8, 0.0),
+}
+
+## 物品类型映射（items.json type → 过滤分类）
+const TYPE_FILTER_MAP: Dictionary = {
+	"weapon": "equipment",
+	"armor": "equipment",
+	"accessory": "equipment",
+	"consumable": "consumable",
+	"material": "material",
 }
 
 ## 是否打开
 var _is_open: bool = false
-## 背包容量
-var _max_capacity: int = 50
-## 当前物品数据（占位）
-var _inventory_items: Array[Dictionary] = []
+## 当前显示的物品列表（过滤+排序后）
+var _displayed_items: Array[Dictionary] = []
 ## 当前选中物品索引
 var _selected_item_index: int = -1
 ## 当前过滤类型
@@ -79,23 +73,18 @@ var _confirm_dialog: Node = null
 
 
 func _ready() -> void:
-	# 初始隐藏在屏幕右侧之外
 	visible = true
 	_panel.position.x = _panel.size.x
 
-	# 加载确认对话框
 	_load_confirm_dialog()
 
-	# 连接信号
+	# 连接按钮信号
 	_close_btn.pressed.connect(close_panel)
-	_tab_bar.tab_changed.connect(_on_tab_changed)
 	_item_list.item_selected.connect(_on_item_selected)
 	_use_btn.pressed.connect(_on_use_item)
 	_equip_btn.pressed.connect(_on_equip_item)
 	_sell_btn.pressed.connect(_on_sell_item)
 	_dismantle_btn.pressed.connect(_on_dismantle_item)
-	_bulk_sell_btn.pressed.connect(_on_bulk_sell)
-	_bulk_dismantle_btn.pressed.connect(_on_bulk_dismantle)
 	_sort_backpack_btn.pressed.connect(_on_sort_backpack)
 
 	# 过滤按钮
@@ -110,14 +99,18 @@ func _ready() -> void:
 	_sort_option.add_item("按数量")
 	_sort_option.item_selected.connect(_on_sort_changed)
 
-	# 加载设置
 	_reduce_motion = _load_reduce_motion_setting()
 
-	# 初始化背包数据
-	_init_sample_inventory()
+	# 连接 InventorySystem 信号
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv:
+		inv.item_added_to_inventory.connect(_on_inventory_changed)
+		inv.item_removed_from_inventory.connect(_on_inventory_changed)
 
-	# 填充货币Tab
-	_populate_currency_tab()
+	# 连接 CurrencyManager 信号
+	var currency = get_node_or_null("/root/CurrencyManager")
+	if currency:
+		currency.currency_changed.connect(_on_currency_changed)
 
 
 ## 打开背包面板
@@ -127,9 +120,6 @@ func open_panel(source: String = "keyboard", context_items: Array = []) -> void:
 
 	_is_open = true
 
-	# 注意：半模态，遮罩拦截游戏输入但游戏渲染在背后
-
-	# 滑入动画
 	if _reduce_motion:
 		_panel.position.x = 0
 	else:
@@ -138,10 +128,8 @@ func open_panel(source: String = "keyboard", context_items: Array = []) -> void:
 		tween.set_trans(Tween.TRANS_CUBIC)
 		tween.tween_property(_panel, "position:x", 0.0, 0.3)
 
-	# 刷新数据
 	_refresh_inventory()
-
-	# 默认焦点
+	_update_silver_display()
 	_close_btn.grab_focus()
 
 	inventory_panel_opened.emit(source, context_items)
@@ -156,7 +144,6 @@ func close_panel() -> void:
 	_selected_item_index = -1
 	_clear_item_detail()
 
-	# 滑出动画
 	if _reduce_motion:
 		_panel.position.x = _panel.size.x
 	else:
@@ -168,115 +155,147 @@ func close_panel() -> void:
 	inventory_panel_closed.emit()
 
 
-## Tab切换
-func _on_tab_changed(tab_index: int) -> void:
-	var tabs: Array[Control] = [_backpack_tab, _currency_tab, _quick_actions_tab]
-	for i in range(tabs.size()):
-		if tabs[i] != null:
-			tabs[i].visible = (i == tab_index)
-
-
-## 初始化示例背包数据（占位，后续从EconomySystem读取）
-func _init_sample_inventory() -> void:
-	_inventory_items = [
-		{"id": "common_sword", "name": "铁剑", "type": ItemType.EQUIPMENT, "tier": "common", "slot": "weapon", "desc": "普通的铁剑，攻击力+5", "stats": {"attack": 5}, "quantity": 1, "price": 50},
-		{"id": "rare_armor", "name": "精钢甲", "type": ItemType.EQUIPMENT, "tier": "rare", "slot": "chest", "desc": "精钢打造的铠甲，防御力+15", "stats": {"defense": 15}, "quantity": 1, "price": 200},
-		{"id": "health_pill", "name": "回春丹", "type": ItemType.CONSUMABLE, "tier": "common", "desc": "恢复50点生命值", "effects": {"health": 50}, "quantity": 5, "price": 20},
-		{"id": "spirit_stone_small", "name": "小灵石", "type": ItemType.MATERIAL, "tier": "common", "desc": "用于炼丹和炼器的基础材料", "quantity": 12, "price": 10},
-		{"id": "breakthrough_pill", "name": "破境丹", "type": ItemType.CONSUMABLE, "tier": "epic", "desc": "用于境界突破的珍贵丹药", "effects": {"realm_breakthrough": true}, "quantity": 1, "price": 500},
-	]
-
-
-## 刷新背包列表
+## 刷新背包列表（从 InventorySystem 读取）
 func _refresh_inventory() -> void:
 	_item_list.clear()
 
-	var filtered_items = _get_filtered_items()
-	for i in range(filtered_items.size()):
-		var item = filtered_items[i]
-		var display_name = item.name
-		if item.quantity > 1:
-			display_name += " x%d" % item.quantity
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv == null:
+		return
 
-		var tier_color = TIER_COLORS.get(item.tier, Color.WHITE)
+	var all_items = inv.get_all_items_with_data()
+	_displayed_items = _filter_items(all_items)
+	_sort_items(_displayed_items)
+
+	for i in range(_displayed_items.size()):
+		var item = _displayed_items[i]
+		var display_name = item.get("name", item.get("id", "???"))
+		var qty = item.get("quantity", 1)
+		if qty > 1:
+			display_name += " x%d" % qty
+
+		var tier = item.get("tier", "common")
+		var tier_color = TIER_COLORS.get(tier, Color.WHITE)
 		_item_list.add_item(display_name)
 		_item_list.set_item_custom_fg_color(i, tier_color)
 
-	# 更新容量显示
-	var count = _inventory_items.size()
-	_capacity_label.text = "容量: %d/%d" % [count, _max_capacity]
+	# 更新容量
+	var slot_count = inv.get_item_slot_count()
+	_capacity_label.text = "容量: %d/%d" % [slot_count, inv.MAX_INVENTORY_SIZE]
 
-	# 清除详情
 	_clear_item_detail()
 
 
-## 获取过滤后的物品列表
-func _get_filtered_items() -> Array[Dictionary]:
+## 更新银两显示
+func _update_silver_display() -> void:
+	var currency = get_node_or_null("/root/CurrencyManager")
+	if currency == null:
+		_silver_label.text = "银两: 0"
+		return
+
+	var silver = currency.get_currency_amount(currency.CurrencyType.SILVER)
+	_silver_label.text = "银两: %d" % silver
+
+
+## 过滤物品
+func _filter_items(items: Array[Dictionary]) -> Array[Dictionary]:
+	if _current_filter == "all":
+		return items
+
 	var filtered: Array[Dictionary] = []
-
-	match _current_filter:
-		"all":
-			filtered = _inventory_items
-		"equipment":
-			for item in _inventory_items:
-				if item.type == ItemType.EQUIPMENT:
-					filtered.append(item)
-		"consumable":
-			for item in _inventory_items:
-				if item.type == ItemType.CONSUMABLE:
-					filtered.append(item)
-		"material":
-			for item in _inventory_items:
-				if item.type == ItemType.MATERIAL:
-					filtered.append(item)
-
+	for item in items:
+		var item_type = item.get("type", "")
+		var filter_category = TYPE_FILTER_MAP.get(item_type, "material")
+		if filter_category == _current_filter:
+			filtered.append(item)
 	return filtered
+
+
+## 排序物品
+func _sort_items(items: Array[Dictionary]) -> void:
+	var sort_index = _sort_option.selected if _sort_option.selected >= 0 else 0
+	match sort_index:
+		0: # 按名称
+			items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+				return a.get("name", "") < b.get("name", "")
+			)
+		1: # 按品阶
+			var tier_order = {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
+			items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+				return tier_order.get(a.get("tier", "common"), 0) > tier_order.get(b.get("tier", "common"), 0)
+			)
+		2: # 按数量
+			items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+				return a.get("quantity", 1) > b.get("quantity", 1)
+			)
 
 
 ## 物品选中
 func _on_item_selected(index: int) -> void:
 	_selected_item_index = index
-	var filtered = _get_filtered_items()
-	if index < 0 or index >= filtered.size():
+	if index < 0 or index >= _displayed_items.size():
 		_clear_item_detail()
 		return
-
-	var item = filtered[index]
-	_show_item_detail(item)
+	_show_item_detail(_displayed_items[index])
 
 
 ## 显示物品详情
 func _show_item_detail(item: Dictionary) -> void:
-	var tier_color = TIER_COLORS.get(item.tier, Color.WHITE)
-	var tier_name = _get_tier_name(item.tier)
+	var tier = item.get("tier", "common")
+	var tier_color = TIER_COLORS.get(tier, Color.WHITE)
+	var tier_name = _get_tier_name(tier)
 
-	_item_name_label.text = item.name
+	_item_name_label.text = item.get("name", "")
 	_item_name_label.add_theme_color_override("font_color", tier_color)
 
 	var desc = "[color=%s][%s][/color]\n" % [tier_color.to_html(), tier_name]
-	desc += "%s\n\n" % item.get("desc", "")
+	desc += "%s\n\n" % item.get("description", "")
 
-	if item.has("quantity") and item.quantity > 1:
-		desc += "[b]数量:[/b] %d\n" % item.quantity
-	if item.has("slot"):
+	var qty = item.get("quantity", 1)
+	if qty > 1:
+		desc += "[b]数量:[/b] %d\n" % qty
+	if item.has("slot") and item.slot != "inventory":
 		desc += "[b]部位:[/b] %s\n" % item.slot
-	if item.has("stats"):
-		desc += "[b]属性:[/b]\n"
-		for stat in item.stats:
-			desc += "  %s: +%d\n" % [stat, item.stats[stat]]
-	if item.has("effects"):
-		desc += "[b]效果:[/b]\n"
-		for effect in item.effects:
-			desc += "  %s: %s\n" % [effect, item.effects[effect]]
-	desc += "[b]出售价格:[/b] %d 灵石" % item.get("price", 0)
+	if item.has("attributes"):
+		var attrs = item.attributes
+		if attrs.has("combat"):
+			desc += "[b]战斗属性:[/b]\n"
+			for stat in attrs.combat:
+				desc += "  %s: +%s\n" % [stat, str(attrs.combat[stat])]
+		if attrs.has("base"):
+			desc += "[b]基础属性:[/b]\n"
+			for stat in attrs.base:
+				desc += "  %s: +%s\n" % [stat, str(attrs.base[stat])]
+	if item.has("consumable_effect"):
+		desc += "[b]效果:[/b] "
+		var eff = item.consumable_effect
+		match eff.get("type", ""):
+			"heal":
+				desc += "恢复 %d 生命值\n" % eff.get("value", 0)
+			"exp_boost":
+				desc += "获得 %d 修炼经验\n" % eff.get("value", 0)
+			"breakthrough":
+				desc += "用于境界突破\n"
+			"reset_attributes":
+				desc += "重置属性点分配\n"
+			"random":
+				desc += "随机效果（经验 %d~%d）\n" % [int(eff.get("value", 0) * 0.5), int(eff.get("value", 0) * 1.5)]
+			_:
+				desc += "%s\n" % str(eff)
+	if item.has("special_effects"):
+		desc += "[b]特殊效果:[/b]\n"
+		for effect in item.special_effects:
+			desc += "  · %s\n" % effect
 
+	desc += "\n[b]出售价格:[/b] %d 银两" % item.get("value_gold", 0)
 	_item_desc_label.text = desc
 
-	# 更新按钮可见性
-	_use_btn.visible = (item.type == ItemType.CONSUMABLE)
-	_equip_btn.visible = (item.type == ItemType.EQUIPMENT)
-	_sell_btn.visible = (item.type != ItemType.QUEST_ITEM)
-	_dismantle_btn.visible = (item.type == ItemType.EQUIPMENT or item.type == ItemType.MATERIAL)
+	# 按钮可见性
+	var item_type = item.get("type", "")
+	_use_btn.visible = (item_type == "consumable")
+	_equip_btn.visible = (item_type in ["weapon", "armor", "accessory"])
+	_sell_btn.visible = true
+	_dismantle_btn.visible = (item_type in ["weapon", "armor", "accessory"])
 
 
 ## 清除物品详情
@@ -292,103 +311,80 @@ func _clear_item_detail() -> void:
 
 ## 使用物品
 func _on_use_item() -> void:
-	var filtered = _get_filtered_items()
-	if _selected_item_index < 0 or _selected_item_index >= filtered.size():
+	if _selected_item_index < 0 or _selected_item_index >= _displayed_items.size():
 		return
 
-	var item = filtered[_selected_item_index]
-	inventory_item_used.emit(item.id)
-	print("[Inventory] 使用物品: %s" % item.name)
+	var item = _displayed_items[_selected_item_index]
+	var item_id = item.get("id", "")
 
-	# 减少数量或移除
-	_decrement_item(item)
-	_refresh_inventory()
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv and inv.use_item(item_id):
+		inventory_item_used.emit(item_id)
+		print("[Inventory] 使用物品: %s" % item.get("name", item_id))
 
 
 ## 装备物品
 func _on_equip_item() -> void:
-	var filtered = _get_filtered_items()
-	if _selected_item_index < 0 or _selected_item_index >= filtered.size():
+	if _selected_item_index < 0 or _selected_item_index >= _displayed_items.size():
 		return
 
-	var item = filtered[_selected_item_index]
+	var item = _displayed_items[_selected_item_index]
+	var item_id = item.get("id", "")
 	var slot = item.get("slot", "")
-	inventory_item_equipped.emit(item.id, slot)
-	print("[Inventory] 装备物品: %s (部位: %s)" % [item.name, slot])
 
-	# 从背包移除（已装备）
-	_remove_item(item)
-	_refresh_inventory()
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv and inv.equip_item(item_id, slot):
+		inventory_item_equipped.emit(item_id, slot)
+		print("[Inventory] 装备物品: %s (部位: %s)" % [item.get("name", ""), slot])
 
 
 ## 出售物品
 func _on_sell_item() -> void:
-	var filtered = _get_filtered_items()
-	if _selected_item_index < 0 or _selected_item_index >= filtered.size():
+	if _selected_item_index < 0 or _selected_item_index >= _displayed_items.size():
 		return
 
-	var item = filtered[_selected_item_index]
+	var item = _displayed_items[_selected_item_index]
+	var item_id = item.get("id", "")
+	var price = item.get("value_gold", 0)
+
 	_show_confirm_dialog(
 		"确认出售",
-		"确定要出售 %s 吗？\n获得 %d 灵石" % [item.name, item.get("price", 0)],
-		"sell_%s" % item.id,
+		"确定要出售 %s 吗？\n获得 %d 银两" % [item.get("name", ""), price],
+		"sell_%s" % item_id,
 		func() -> void:
-			inventory_item_sold.emit(item.id, item.get("price", 0))
-			_remove_item(item)
-			_refresh_inventory()
+			var inv = get_node_or_null("/root/InventorySystem")
+			if inv and inv.sell_item(item_id):
+				inventory_item_sold.emit(item_id, price)
+				_update_silver_display()
+				print("[Inventory] 出售物品: %s, 获得 %d 银两" % [item.get("name", ""), price])
 	)
 
 
 ## 拆解物品
 func _on_dismantle_item() -> void:
-	var filtered = _get_filtered_items()
-	if _selected_item_index < 0 or _selected_item_index >= filtered.size():
+	if _selected_item_index < 0 or _selected_item_index >= _displayed_items.size():
 		return
 
-	var item = filtered[_selected_item_index]
-	var materials: Dictionary = _get_dismantle_materials(item.tier)
+	var item = _displayed_items[_selected_item_index]
+	var item_id = item.get("id", "")
+	var materials: Dictionary = _get_dismantle_materials(item.get("tier", "common"))
+
 	_show_confirm_dialog(
 		"确认拆解",
-		"确定要拆解 %s 吗？\n获得: %s" % [item.name, _format_materials(materials)],
-		"dismantle_%s" % item.id,
+		"确定要拆解 %s 吗？\n获得: %s" % [item.get("name", ""), _format_materials(materials)],
+		"dismantle_%s" % item_id,
 		func() -> void:
-			inventory_item_dismantled.emit(item.id, materials)
-			_remove_item(item)
-			_refresh_inventory()
-	)
-
-
-## 批量出售
-func _on_bulk_sell() -> void:
-	_show_confirm_dialog(
-		"批量出售",
-		"确定要出售所有可出售物品吗？",
-		"bulk_sell",
-		func() -> void:
-			print("[Inventory] 批量出售已确认")
-	)
-
-
-## 批量拆解
-func _on_bulk_dismantle() -> void:
-	_show_confirm_dialog(
-		"批量拆解",
-		"确定要拆解所有可拆解物品吗？",
-		"bulk_dismantle",
-		func() -> void:
-			print("[Inventory] 批量拆解已确认")
+			var inv = get_node_or_null("/root/InventorySystem")
+			if inv and inv.remove_item(item_id, 1):
+				for mat_id in materials:
+					inv.add_item(mat_id, materials[mat_id])
+				inventory_item_dismantled.emit(item_id, materials)
+				print("[Inventory] 拆解物品: %s" % item.get("name", ""))
 	)
 
 
 ## 整理背包
 func _on_sort_backpack() -> void:
-	# 按类型+品阶排序
-	_inventory_items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-		if a.type != b.type:
-			return a.type < b.type
-		var tier_order = {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
-		return tier_order.get(a.tier, 0) < tier_order.get(b.tier, 0)
-	)
 	_refresh_inventory()
 	inventory_sorted.emit()
 
@@ -403,7 +399,6 @@ func _on_filter_material() -> void: _set_filter("material")
 ## 设置过滤类型
 func _set_filter(filter_type: String) -> void:
 	_current_filter = filter_type
-	# 更新按钮状态
 	_filter_all_btn.button_pressed = (filter_type == "all")
 	_filter_equip_btn.button_pressed = (filter_type == "equipment")
 	_filter_consumable_btn.button_pressed = (filter_type == "consumable")
@@ -412,41 +407,20 @@ func _set_filter(filter_type: String) -> void:
 
 
 ## 排序选项变化
-func _on_sort_changed(index: int) -> void:
-	match index:
-		0: # 按名称
-			_inventory_items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-				return a.name < b.name
-			)
-		1: # 按品阶
-			var tier_order = {"common": 0, "uncommon": 1, "rare": 2, "epic": 3, "legendary": 4}
-			_inventory_items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-				return tier_order.get(a.tier, 0) > tier_order.get(b.tier, 0)
-			)
-		2: # 按数量
-			_inventory_items.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
-				return a.get("quantity", 1) > b.get("quantity", 1)
-			)
+func _on_sort_changed(_index: int) -> void:
 	_refresh_inventory()
 
 
-## 减少物品数量
-func _decrement_item(item: Dictionary) -> void:
-	for i in range(_inventory_items.size()):
-		if _inventory_items[i].id == item.id:
-			if _inventory_items[i].quantity > 1:
-				_inventory_items[i].quantity -= 1
-			else:
-				_inventory_items.remove_at(i)
-			break
+## InventorySystem 信号回调：物品变动时刷新UI
+func _on_inventory_changed(_item_id: String, _count: int) -> void:
+	if _is_open:
+		_refresh_inventory()
 
 
-## 移除物品
-func _remove_item(item: Dictionary) -> void:
-	for i in range(_inventory_items.size()):
-		if _inventory_items[i].id == item.id:
-			_inventory_items.remove_at(i)
-			break
+## CurrencyManager 信号回调：货币变动时刷新
+func _on_currency_changed(_currency_type: int, _old: int, _new: int) -> void:
+	if _is_open:
+		_update_silver_display()
 
 
 ## 获取品阶名称
@@ -460,15 +434,28 @@ func _get_tier_name(tier: String) -> String:
 		_: return "未知"
 
 
-## 填充货币Tab
-func _populate_currency_tab() -> void:
-	# TODO: 从 EconomyManager 读取真实数据
-	_spirit_stone_label.text = "灵石: 500"
-	_gold_label.text = "金币: 0"
-	_silver_label.text = "银币: 0"
-	_copper_label.text = "铜币: 120"
-	_contribution_label.text = "贡献点: 0"
-	_sect_points_label.text = "宗门贡献: 0"
+## 获取拆解材料
+func _get_dismantle_materials(tier: String) -> Dictionary:
+	match tier:
+		"common": return {"iron_ingot": 2}
+		"uncommon": return {"iron_ingot": 3, "spirit_stone_small": 1}
+		"rare": return {"iron_ingot": 5, "spirit_stone_small": 3}
+		"epic": return {"spirit_stone_small": 5}
+		"legendary": return {"spirit_stone_small": 10}
+		_: return {}
+
+
+## 格式化材料显示
+func _format_materials(materials: Dictionary) -> String:
+	var inv = get_node_or_null("/root/InventorySystem")
+	var parts: Array[String] = []
+	for mat_id in materials:
+		var mat_name = mat_id
+		if inv:
+			var data = inv.get_item_data(mat_id)
+			mat_name = data.get("name", mat_id)
+		parts.append("%s x%d" % [mat_name, materials[mat_id]])
+	return ", ".join(parts)
 
 
 ## 输入处理
@@ -484,7 +471,7 @@ func _input(event: InputEvent) -> void:
 					get_viewport().set_input_as_handled()
 
 
-## 加载确认对话框
+## 加载确认对话框（作为自身最后子节点，确保在同一canvas中渲染在最上层）
 func _load_confirm_dialog() -> void:
 	var scene = load("res://src/scenes/ui/confirm_dialog.tscn")
 	if scene != null:
@@ -492,8 +479,7 @@ func _load_confirm_dialog() -> void:
 		add_child(_confirm_dialog)
 		_confirm_dialog.confirmed.connect(_on_dialog_confirmed)
 		_confirm_dialog.cancelled.connect(_on_dialog_cancelled)
-	else:
-		push_warning("无法加载确认对话框场景")
+
 
 ## 显示确认对话框
 func _show_confirm_dialog(title: String, description: String, suppress_key: String, on_confirm: Callable) -> void:
@@ -506,29 +492,6 @@ func _on_dialog_confirmed() -> void:
 
 func _on_dialog_cancelled() -> void:
 	pass
-
-## 获取拆解材料
-func _get_dismantle_materials(tier: String) -> Dictionary:
-	match tier:
-		"common":
-			return {"铁锭": 2}
-		"uncommon":
-			return {"精钢": 2, "灵石": 1}
-		"rare":
-			return {"玄铁": 3, "灵石": 2}
-		"epic":
-			return {"玄铁": 3, "灵石": 3}
-		"legendary":
-			return {"天外陨铁": 2, "灵石": 5}
-		_:
-			return {}
-
-## 格式化材料显示
-func _format_materials(materials: Dictionary) -> String:
-	var parts: Array[String] = []
-	for key in materials:
-		parts.append("%s x%d" % [key, materials[key]])
-	return ", ".join(parts)
 
 
 ## 读取减少运动设置

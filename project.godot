@@ -39,6 +39,10 @@ ActManager="*res://src/scripts/story/act_manager.gd"
 PauseMenuManager="*res://src/scripts/ui/pause_menu_manager.gd"
 CurrencyManager="*res://src/scripts/economy/currency_manager.gd"
 GameLoopManager="*res://src/scripts/core/game_loop_manager.gd"
+InventorySystem="*res://src/scripts/item_system_bridge.gd"
+SaveSystem="*res://src/scripts/save/save_system.gd"
+MartialArtsSystem="*res://src/scripts/combat/martial_arts_system.gd"
+EncounterDataLoader="*res://src/scripts/encounter/encounter_data_loader.gd"
 
 [editor_plugins]
 

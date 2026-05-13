@@ -35,8 +35,6 @@ class_name CombatMenuManager
 ## 战斗菜单管理器 - 管理战斗菜单交互
 ## 处理武学指令菜单、目标选择和用户输入
 
-class_name CombatMenuManager
-
 # 信号定义
 signal menu_interaction_completed(action_data: Dictionary)
 signal menu_opened

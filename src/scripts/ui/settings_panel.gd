@@ -41,6 +41,7 @@ var _has_unapplied_changes: bool = false
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
 	_populate_resolution_options()
 	_populate_quality_options()
@@ -119,6 +120,9 @@ func _load_settings() -> void:
 	_colorblind_option.selected = json.get("colorblind_mode", 0)
 	_screen_reader_check.button_pressed = json.get("screen_reader", false)
 
+	# 加载后立即应用到游戏系统
+	_apply_settings_to_system(json)
+
 
 ## 加载默认设置
 func _load_defaults() -> void:
@@ -144,8 +148,30 @@ func apply_settings() -> void:
 		file.store_string(JSON.stringify(settings, "\t"))
 		file.close()
 
+	_apply_settings_to_system(settings)
 	_has_unapplied_changes = false
 	settings_applied.emit()
+
+
+## 将设置应用到游戏系统
+func _apply_settings_to_system(settings: Dictionary) -> void:
+	# 全屏模式
+	var fullscreen = settings.get("fullscreen", false)
+	if fullscreen:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+	# 分辨率
+	var res_index = settings.get("resolution_index", 0)
+	var resolutions = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(3840, 2160)]
+	if not fullscreen and res_index < resolutions.size():
+		DisplayServer.window_set_size(resolutions[res_index])
+
+	# 音量
+	var master_bus = AudioServer.get_bus_index("Master")
+	if master_bus >= 0:
+		AudioServer.set_bus_volume_db(master_bus, linear_to_db(settings.get("master_volume", 80.0) / 100.0))
 
 
 ## 收集当前设置

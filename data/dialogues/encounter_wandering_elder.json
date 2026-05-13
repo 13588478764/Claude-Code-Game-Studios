@@ -1,0 +1,90 @@
+{
+  "id": "ENCOUNTER_WANDERING_ELDER",
+  "title": "云游长老",
+  "description": "探索中偶遇一位云游长老，可以获得指点",
+  "start_node": "greeting",
+  "metadata": {
+    "author": "encounter_system",
+    "version": "1.0",
+    "encounter_type": "npc_dialogue"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "云游长老",
+      "text": "小友，老夫云游四方，见你根骨不俗。可愿听老夫一言？",
+      "emotion": "wise",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [
+        {
+          "id": "accept_guidance",
+          "text": "晚辈愿闻其详，请前辈指点",
+          "dao_heart_hint": 5,
+          "icon": "righteous",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "grant_exp",
+              "value": 100
+            },
+            {
+              "type": "modify_dao_heart",
+              "value": 3,
+              "reason": "虚心受教"
+            }
+          ],
+          "next_node": "guidance_given"
+        },
+        {
+          "id": "ask_for_item",
+          "text": "前辈可有什么好东西相赠？",
+          "dao_heart_hint": -3,
+          "icon": "neutral",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "grant_item",
+              "item_id": "spirit_stone_small",
+              "count": 3
+            }
+          ],
+          "next_node": "item_given"
+        },
+        {
+          "id": "decline",
+          "text": "多谢好意，晚辈还要赶路",
+          "dao_heart_hint": 0,
+          "icon": "neutral",
+          "conditions": [],
+          "effects": [],
+          "next_node": "END"
+        }
+      ],
+      "next_node": ""
+    },
+    {
+      "id": "guidance_given",
+      "speaker": "云游长老",
+      "text": "修真之道，在于心境。记住——道心坚定，方能破境而入。老夫传你一些修炼心得，望你好生领悟。",
+      "emotion": "wise",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [],
+      "next_node": "END"
+    },
+    {
+      "id": "item_given",
+      "speaker": "云游长老",
+      "text": "哈哈，年轻人倒是直爽。这几颗灵石你拿去，修炼时或许用得上。",
+      "emotion": "amused",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [],
+      "next_node": "END"
+    }
+  ]
+}

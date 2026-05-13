@@ -150,6 +150,11 @@ func _ready() -> void:
 	# 加载设置
 	_reduce_motion = _load_reduce_motion_setting()
 
+	# 连接 InventorySystem 装备变更信号
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv:
+		inv.equipment_changed.connect(_on_equipment_system_changed)
+
 	# 初始化槽位按钮
 	_create_slot_buttons()
 
@@ -266,8 +271,8 @@ func _refresh_wear_tab() -> void:
 		var slot = EQUIPMENT_SLOTS[i]
 		if _equipped_items.has(slot.id) and _equipped_items[slot.id] != null:
 			var item = _equipped_items[slot.id]
-			var tier_color = TIER_COLORS.get(item.tier, Color.WHITE)
-			btn.text = "%s\n+%d" % [item.name, item.get("enhancement_level", 0)]
+			var tier_color = TIER_COLORS.get(item.get("tier", "common"), Color.WHITE)
+			btn.text = "%s\n+%d" % [item.get("name", "???"), item.get("enhancement_level", 0)]
 			btn.add_theme_color_override("font_color", tier_color)
 			btn.add_theme_stylebox_override("normal", _create_tier_stylebox(tier_color))
 		else:
@@ -317,6 +322,25 @@ func _on_unequip() -> void:
 	var slot = EQUIPMENT_SLOTS[_selected_slot_index]
 	if _equipped_items.has(slot.id) and _equipped_items[slot.id] != null:
 		var item = _equipped_items[slot.id]
+
+		# 将面板 slot_id 映射回系统 slot_id
+		var reverse_slot_map: Dictionary = {
+			"main_weapon": "weapon_main",
+			"off_hand": "weapon_offhand",
+			"head": "head",
+			"chest": "body",
+			"hands": "hands",
+			"feet": "feet",
+			"neck": "necklace",
+			"ring_left": "ring_1",
+			"ring_right": "ring_2",
+		}
+		var sys_slot = reverse_slot_map.get(slot.id, slot.id)
+
+		var inv = get_node_or_null("/root/InventorySystem")
+		if inv:
+			inv.unequip_item(sys_slot)
+
 		equipment_item_unequipped.emit(item.id, slot.id)
 		_equipped_items[slot.id] = null
 		_changes_made = true
@@ -576,17 +600,71 @@ func _on_cancel_transmog() -> void:
 		btn.add_theme_stylebox_override("normal", null)
 
 
-## 加载装备快照（占位，后续从EquipmentSystem读取）
+## 从 InventorySystem 加载装备数据
 func _load_equipment_snapshot() -> void:
-	_equipped_items = {
-		"main_weapon": {"id": "iron_sword", "name": "铁剑", "tier": "common", "enhancement_level": 3, "stats": {"attack": 15}, "socket_count": 0},
-		"chest": {"id": "leather_armor", "name": "皮甲", "tier": "common", "enhancement_level": 1, "stats": {"defense": 8}, "socket_count": 0},
-		"ring_left": {"id": "jade_ring", "name": "碧玉环", "tier": "rare", "enhancement_level": 0, "stats": {"luck": 5}, "socket_count": 2, "sockets": [{"color": "red"}]},
+	_equipped_items = {}
+
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv == null:
+		return
+
+	var data = inv.get_equipped_items_data()
+	# 将 InventorySystem 的 slot_id 映射到面板的 slot_id
+	var slot_map: Dictionary = {
+		"weapon_main": "main_weapon",
+		"weapon_offhand": "off_hand",
+		"head": "head",
+		"body": "chest",
+		"hands": "hands",
+		"feet": "feet",
+		"necklace": "neck",
+		"ring_1": "ring_left",
+		"ring_2": "ring_right",
 	}
+
+	for sys_slot in data:
+		var panel_slot = slot_map.get(sys_slot, sys_slot)
+		var item_data = data[sys_slot]
+		if item_data == null:
+			_equipped_items[panel_slot] = null
+		else:
+			# 转换为面板期望的格式
+			var stats: Dictionary = {}
+			if item_data.has("attributes"):
+				var attrs = item_data.attributes
+				if attrs.has("combat"):
+					for stat in attrs.combat:
+						stats[stat] = attrs.combat[stat]
+				if attrs.has("base"):
+					for stat in attrs.base:
+						stats[stat] = attrs.base[stat]
+
+			_equipped_items[panel_slot] = {
+				"id": item_data.get("id", ""),
+				"name": item_data.get("name", ""),
+				"tier": item_data.get("tier", "common"),
+				"enhancement_level": item_data.get("enhancement_level", 0),
+				"stats": stats,
+				"socket_count": item_data.get("socket_count", 0),
+				"sockets": item_data.get("sockets", []),
+			}
+
+
+## InventorySystem 装备变更回调
+func _on_equipment_system_changed(_slot_id: String, _item_id: String) -> void:
+	if _is_open:
+		_load_equipment_snapshot()
+		_refresh_wear_tab()
+		_refresh_power_score()
 
 
 ## 刷新战力评分
 func _refresh_power_score() -> void:
+	var inv = get_node_or_null("/root/InventorySystem")
+	if inv:
+		_power_label.text = "战力: %d" % inv.get_equipment_power_score()
+		return
+
 	var power = 0
 	for slot_id in _equipped_items:
 		var item = _equipped_items[slot_id]
@@ -595,9 +673,6 @@ func _refresh_power_score() -> void:
 		if item.has("stats"):
 			for stat in item.stats:
 				power += item.stats[stat]
-		var level_bonus = item.get("enhancement_level", 0) * 5
-		power += level_bonus
-
 	_power_label.text = "战力: %d" % power
 
 

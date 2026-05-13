@@ -23,6 +23,27 @@ extends CanvasLayer
 var _game_loop: Node = null
 
 # ============================================================================
+# 面板管理
+# ============================================================================
+
+## 快捷键到面板键名的映射
+const HOTKEY_MAP: Dictionary = {
+	KEY_ESCAPE: "pause",
+	KEY_I: "inventory",
+	KEY_E: "equipment",
+	KEY_M: "world_map",
+	KEY_F1: "help",
+	KEY_C: "character",
+	KEY_J: "quest_log",
+}
+
+## 面板节点引用
+var _panels: Dictionary = {}
+
+## 当前打开的面板键名（"" = 无面板打开）
+var _active_panel_key: String = ""
+
+# ============================================================================
 # 生命周期
 # ============================================================================
 
@@ -51,8 +72,169 @@ func _initialize() -> void:
 		dialogue_manager.dialogue_started.connect(_on_dialogue_started)
 		dialogue_manager.dialogue_ended.connect(_on_dialogue_ended)
 
+	_init_panels()
 	_build_region_buttons()
 	_refresh_display()
+
+# ============================================================================
+# 面板初始化
+# ============================================================================
+
+func _init_panels() -> void:
+	var hud_layer = get_node_or_null("/root/MainGameUI/HUDLayer")
+	if hud_layer:
+		_panels["pause"] = hud_layer.get_node_or_null("PauseMenu")
+		_panels["inventory"] = hud_layer.get_node_or_null("InventoryPanel")
+		_panels["equipment"] = hud_layer.get_node_or_null("EquipmentPanel")
+		_panels["world_map"] = hud_layer.get_node_or_null("WorldMap")
+		_panels["help"] = hud_layer.get_node_or_null("HelpPanel")
+		_panels["quest_log"] = hud_layer.get_node_or_null("QuestLogPanel")
+
+	var main_ui = get_node_or_null("/root/MainGameUI")
+	if main_ui:
+		_panels["character"] = main_ui.get_node_or_null("CharacterPanelInstance")
+
+	_connect_panel_close_signals()
+
+	var found := _panels.values().filter(func(p): return p != null).size()
+	print("[ExplorationPanel] 面板初始化: %d/%d" % [found, _panels.size()])
+
+
+func _connect_panel_close_signals() -> void:
+	var pause = _panels.get("pause")
+	if pause and pause.has_signal("pause_menu_closed_continue"):
+		pause.pause_menu_closed_continue.connect(func(): _on_panel_closed())
+
+	var inventory = _panels.get("inventory")
+	if inventory and inventory.has_signal("inventory_panel_closed"):
+		inventory.inventory_panel_closed.connect(func(): _on_panel_closed())
+
+	var equipment = _panels.get("equipment")
+	if equipment and equipment.has_signal("equipment_panel_closed"):
+		equipment.equipment_panel_closed.connect(func(_a, _b, _c): _on_panel_closed())
+
+	var world_map = _panels.get("world_map")
+	if world_map and world_map.has_signal("world_map_closed"):
+		world_map.world_map_closed.connect(func(_a, _b): _on_panel_closed())
+
+	var help = _panels.get("help")
+	if help and help.has_signal("help_panel_closed"):
+		help.help_panel_closed.connect(func(_a, _b): _on_panel_closed())
+
+	var quest_log = _panels.get("quest_log")
+	if quest_log and quest_log.has_signal("quest_log_closed"):
+		quest_log.quest_log_closed.connect(func(): _on_panel_closed())
+
+	var character = _panels.get("character")
+	if character and character is CanvasItem:
+		character.visibility_changed.connect(func():
+			if not character.visible and _active_panel_key == "character":
+				_on_panel_closed()
+		)
+
+
+# ============================================================================
+# 快捷键处理
+# ============================================================================
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not event is InputEventKey or not event.pressed:
+		return
+
+	if _game_loop == null or _game_loop.current_state != 1:
+		return
+
+	var dialogue_box = get_node_or_null("/root/MainGameUI/HUDLayer/DialogueBox")
+	if dialogue_box and dialogue_box.visible:
+		return
+	var encounter_ui_node = get_node_or_null("/root/MainGameUI/HUDLayer/EncounterUI")
+	if encounter_ui_node and encounter_ui_node.visible:
+		return
+
+	var key = event.keycode
+	if not HOTKEY_MAP.has(key):
+		return
+
+	var panel_key: String = HOTKEY_MAP[key]
+	_toggle_panel(panel_key)
+	get_viewport().set_input_as_handled()
+
+
+func _toggle_panel(panel_key: String) -> void:
+	if _active_panel_key == panel_key:
+		_close_active_panel()
+		return
+
+	if _active_panel_key != "":
+		_close_active_panel()
+
+	_open_panel(panel_key)
+
+
+func _open_panel(panel_key: String) -> void:
+	var panel = _panels.get(panel_key)
+	if panel == null:
+		return
+
+	_active_panel_key = panel_key
+	hide()
+
+	match panel_key:
+		"pause":
+			panel.open_menu()
+		"inventory":
+			panel.open_panel()
+		"equipment":
+			panel.open_panel()
+		"world_map":
+			panel.open_map()
+		"help":
+			panel.open_panel()
+		"quest_log":
+			panel.open_panel()
+		"character":
+			panel.visible = true
+
+
+func _close_active_panel() -> void:
+	if _active_panel_key == "":
+		return
+
+	var key := _active_panel_key
+	var panel = _panels.get(key)
+	_active_panel_key = ""
+
+	if panel == null:
+		show()
+		_refresh_display()
+		return
+
+	match key:
+		"pause":
+			panel.close_menu()
+		"inventory":
+			panel.close_panel()
+		"equipment":
+			panel.close_panel()
+		"world_map":
+			panel.close_map()
+		"help":
+			panel.close_panel()
+		"quest_log":
+			panel.close_panel()
+		"character":
+			panel.visible = false
+
+	show()
+	_refresh_display()
+
+
+func _on_panel_closed() -> void:
+	_active_panel_key = ""
+	if _game_loop and _game_loop.current_state == 1:
+		show()
+		_refresh_display()
+
 
 # ============================================================================
 # UI 构建

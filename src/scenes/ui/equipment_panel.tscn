@@ -8,17 +8,17 @@ layer = 200
 
 [node name="DimOverlay" type="ColorRect" parent="."]
 layout_mode = 1
-anchors_right = 1.0
-anchors_bottom = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 color = Color(0, 0, 0, 0.15)
 mouse_filter = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_left = 1.0
-anchors_top = 0.0
-anchors_right = 1.0
-anchors_bottom = 1.0
+anchor_left = 1.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = -600.0
 offset_top = 0.0
 offset_right = 0.0
@@ -27,10 +27,10 @@ offset_bottom = 0.0
 [node name="VBox" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 theme_override_constants/separation = 0
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
-anchors_bottom = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="HeaderHBox" type="HBoxContainer" parent="PanelContainer/VBox"]
 layout_mode = 2
@@ -67,14 +67,16 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="WearTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
-layout_mode = 2
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="WearVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/WearTab"]
 layout_mode = 2
 theme_override_constants/separation = 12
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = -16.0
@@ -89,10 +91,10 @@ layout_mode = 2
 [node name="DetailVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/WearTab/WearVBox/DetailPanel"]
 layout_mode = 2
 theme_override_constants/separation = 8
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
-anchors_bottom = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = 12.0
 offset_top = 12.0
 offset_right = -12.0
@@ -118,15 +120,17 @@ layout_mode = 2
 text = "卸下"
 
 [node name="EnhanceTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
-layout_mode = 2
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
 visible = false
 
 [node name="EnhanceVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/EnhanceTab"]
 layout_mode = 2
 theme_override_constants/separation = 12
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = -16.0
@@ -173,15 +177,17 @@ bbcode_enabled = true
 autowrap_mode = 3
 
 [node name="SocketTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
-layout_mode = 2
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
 visible = false
 
 [node name="SocketVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/SocketTab"]
 layout_mode = 2
 theme_override_constants/separation = 12
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = -16.0
@@ -227,15 +233,17 @@ bbcode_enabled = true
 autowrap_mode = 3
 
 [node name="TransmogTab" type="ScrollContainer" parent="PanelContainer/VBox/TabContent"]
-layout_mode = 2
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 1.0
 visible = false
 
 [node name="TransmogVBox" type="VBoxContainer" parent="PanelContainer/VBox/TabContent/TransmogTab"]
 layout_mode = 2
 theme_override_constants/separation = 12
-anchors_left = 0.0
-anchors_top = 0.0
-anchors_right = 1.0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = -16.0

@@ -1,0 +1,89 @@
+{
+  "id": "ENCOUNTER_HERB_MERCHANT",
+  "title": "行脚药商",
+  "description": "探索中偶遇一位行脚药商，可以交易",
+  "start_node": "greeting",
+  "metadata": {
+    "author": "encounter_system",
+    "version": "1.0",
+    "encounter_type": "npc_dialogue"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "行脚药商",
+      "text": "这位道友，我是走南闯北的药商。看你风尘仆仆，可需要补给？",
+      "emotion": "friendly",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [
+        {
+          "id": "buy_pills",
+          "text": "给我来些回春丹（花费20银两）",
+          "dao_heart_hint": 0,
+          "icon": "neutral",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "grant_item",
+              "item_id": "health_pill",
+              "count": 2
+            },
+            {
+              "type": "grant_silver",
+              "value": -20
+            }
+          ],
+          "next_node": "trade_done"
+        },
+        {
+          "id": "share_info",
+          "text": "药商走南闯北，可有什么见闻？",
+          "dao_heart_hint": 2,
+          "icon": "righteous",
+          "conditions": [],
+          "effects": [
+            {
+              "type": "grant_exp",
+              "value": 50
+            }
+          ],
+          "next_node": "share_rumor"
+        },
+        {
+          "id": "leave",
+          "text": "不用了，告辞",
+          "dao_heart_hint": 0,
+          "icon": "neutral",
+          "conditions": [],
+          "effects": [],
+          "next_node": "END"
+        }
+      ],
+      "next_node": ""
+    },
+    {
+      "id": "trade_done",
+      "speaker": "行脚药商",
+      "text": "好嘞！这药效果不错，道友收好。祝你一路平安！",
+      "emotion": "happy",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [],
+      "next_node": "END"
+    },
+    {
+      "id": "share_rumor",
+      "speaker": "行脚药商",
+      "text": "说来也巧，我前些日子经过青云山，听说那里灵气异变，有不少修士去探查了。你若有兴趣，也可以去看看。",
+      "emotion": "thoughtful",
+      "priority": 1,
+      "conditions": [],
+      "effects": [],
+      "choices": [],
+      "next_node": "END"
+    }
+  ]
+}
