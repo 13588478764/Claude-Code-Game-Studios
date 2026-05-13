@@ -27,8 +27,15 @@
           "id": "mine_carefully",
           "text": "小心翼翼地开采，确保不破坏矿脉结构",
           "effects": [
-            {"type": "item_give", "target": "spirit_stone", "value": 4},
-            {"type": "time_advance", "value": 30}
+            {
+              "type": "item_give",
+              "target": "spirit_stone",
+              "value": 4
+            },
+            {
+              "type": "time_advance",
+              "value": 30
+            }
           ],
           "next_node": "SPIRIT_VEIN_CAREFUL"
         },
@@ -36,7 +43,12 @@
           "id": "mine_quickly",
           "text": "快速开采，能拿多少拿多少",
           "effects": [
-            {"type": "skill_check", "target": "luck", "operator": ">=", "value": 12}
+            {
+              "type": "skill_check",
+              "target": "luck",
+              "operator": ">=",
+              "value": 12
+            }
           ],
           "next_node": "SPIRIT_VEIN_QUICK_CHECK"
         },
@@ -44,7 +56,11 @@
           "id": "mark_location",
           "text": "暂不开采，标记位置日后再来",
           "effects": [
-            {"type": "quest_trigger", "target": "return_spirit_vein", "value": true}
+            {
+              "type": "quest_trigger",
+              "target": "return_spirit_vein",
+              "value": true
+            }
           ],
           "next_node": "SPIRIT_VEIN_MARK"
         }
@@ -54,7 +70,14 @@
       "id": "SPIRIT_VEIN_CAREFUL",
       "speaker": "system",
       "text": "你取出开采工具，小心翼翼地沿着灵石周围的岩层进行剥离。\n\n经过一番精细的操作，你成功开采出了[b]四颗中品灵石[/b]。\n\n虽然花费了不少时间，但矿脉的整体结构保持完好，未来或许还有更多灵石可以开采。\n\n[b]获得：[/b]灵石 × 4\n[b]时间消耗：[/b]较长",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_stone_small",
+          "value": 4
+        }
+      ]
     },
     {
       "id": "SPIRIT_VEIN_QUICK_CHECK",
@@ -66,13 +89,35 @@
       "id": "SPIRIT_VEIN_QUICK_RESULT",
       "speaker": "system",
       "text": "[b]运气不错：[/b]你在矿脉坍塌前抢下了[b]两颗灵石[/b]。\n\n但剩余的矿脉因你的粗暴开采而彻底损毁，再也没有利用价值了。\n\n有些得不偿失……\n\n[b]获得：[/b]灵石 × 2\n[b]损失：[/b]矿脉永久损毁",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_stone_small",
+          "value": 2
+        }
+      ]
     },
     {
       "id": "SPIRIT_VEIN_MARK",
       "speaker": "system",
       "text": "你仔细记住了山洞的位置和路径，用灵力在洞口刻下了一个只有你能辨认的标记。\n\n这条矿脉现在还不算成熟，等修为提升后再来开采，收益会更大。\n\n[b]已标记：[/b]灵石矿脉位置\n[b]解锁后续事件：[/b]重返灵石矿脉",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "quest_trigger",
+          "target": ""
+        },
+        {
+          "type": "give_exp",
+          "value": 10
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_stone_small",
+          "value": 2
+        }
+      ]
     }
   ]
 }

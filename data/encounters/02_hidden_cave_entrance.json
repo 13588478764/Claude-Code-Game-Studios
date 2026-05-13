@@ -5,76 +5,110 @@
   "type": "exploration",
   "probability": 0.05,
   "trigger_conditions": {
-    "region": "qingyun_back_mountain",
-    "min_realm": "qi_refining_late",
-    "cooldown_minutes": 5
+	"region": "qingyun_back_mountain",
+	"min_realm": "qi_refining_late",
+	"cooldown_minutes": 5
   },
   "dao_heart_alignment": "neutral",
   "start_node": "CAVE_START",
   "nodes": [
-    {
-      "id": "CAVE_START",
-      "speaker": "system",
-      "text": "你在山壁间发现一道裂缝，隐约可见内部有灵气流动。\n洞府入口被一层薄膜遮挡，似乎需要特定条件才能进入。",
-      "next_node": "CAVE_CHOICE"
-    },
-    {
-      "id": "CAVE_CHOICE",
-      "speaker": "system",
-      "text": "薄膜上灵气流转，你需要决定如何进入。",
-      "choices": [
-        {
-          "id": "break",
-          "text": "用灵力强行击破薄膜",
-          "effects": [
-            {"type": "combat_check", "target": "spirit_attack", "operator": ">=", "value": 15}
-          ],
-          "next_node": "CAVE_BREAK_CHECK"
-        },
-        {
-          "id": "search",
-          "text": "仔细搜索周围，寻找正确进入方法",
-          "effects": [],
-          "next_node": "CAVE_SEARCH"
-        },
-        {
-          "id": "leave",
-          "text": "记下位置，回去找云中鹤前辈",
-          "effects": [
-            {"type": "relationship_change", "target": "yunzhonghe", "value": 5},
-            {"type": "quest_trigger", "target": "return_with_yun", "value": true}
-          ],
-          "next_node": "CAVE_LEAVE"
-        }
-      ]
-    },
-    {
-      "id": "CAVE_BREAK_CHECK",
-      "speaker": "system",
-      "text": "你汇聚灵力于掌中，狠狠击向薄膜！",
-      "next_node": "CAVE_BREAK_RESULT"
-    },
-    {
-      "id": "CAVE_BREAK_RESULT",
-      "speaker": "system",
-      "text": "[b]突破成功：[/b]薄膜应声碎裂，你安全进入洞府。\n洞府内摆放着几箱灵石，角落还有丹药瓶。\n\n[b]获得：[/b]灵石×3",
-      "next_node": "END"
-    },
-    {
-      "id": "CAVE_SEARCH",
-      "speaker": "system",
-      "text": "你绕着洞府入口仔细搜索，在右侧石壁上发现了一个隐蔽的机关。\n\n轻轻按下，薄膜缓缓消散，露出安全的通道。\n\n[b]获得：[/b]灵石×5 + 随机丹药×1",
-      "effects": [
-        {"type": "item_give", "target": "spirit_stones", "value": 5},
-        {"type": "item_give", "target": "random_pill", "value": 1}
-      ],
-      "next_node": "END"
-    },
-    {
-      "id": "CAVE_LEAVE",
-      "speaker": "system",
-      "text": "你记下了洞府的位置，返回青云镇找到云中鹤。\n\n云中鹤：\"哦？洞府入口有薄膜守护？这应该是某位前辈的考验。走，我带你去。\"\n\n云中鹤带你安全进入洞府，获得了额外奖励。\n\n[b]获得：[/b]额外传承奖励\n[b]云中鹤关系：[/b]+5",
-      "next_node": "END"
-    }
+	{
+	  "id": "CAVE_START",
+	  "speaker": "system",
+	  "text": "你在山壁间发现一道裂缝，隐约可见内部有灵气流动。\n洞府入口被一层薄膜遮挡，似乎需要特定条件才能进入。",
+	  "next_node": "CAVE_CHOICE"
+	},
+	{
+	  "id": "CAVE_CHOICE",
+	  "speaker": "system",
+	  "text": "薄膜上灵气流转，你需要决定如何进入。",
+	  "choices": [
+		{
+		  "id": "break",
+		  "text": "用灵力强行击破薄膜",
+		  "effects": [
+			{
+			  "type": "combat_check",
+			  "target": "spirit_attack",
+			  "operator": ">=",
+			  "value": 15
+			}
+		  ],
+		  "next_node": "CAVE_BREAK_CHECK"
+		},
+		{
+		  "id": "search",
+		  "text": "仔细搜索周围，寻找正确进入方法",
+		  "effects": [],
+		  "next_node": "CAVE_SEARCH"
+		},
+		{
+		  "id": "leave",
+		  "text": "记下位置，回去找云中鹤前辈",
+		  "effects": [
+			{
+			  "type": "relationship_change",
+			  "target": "yunzhonghe",
+			  "value": 5
+			},
+			{
+			  "type": "quest_trigger",
+			  "target": "return_with_yun",
+			  "value": true
+			}
+		  ],
+		  "next_node": "CAVE_LEAVE"
+		}
+	  ]
+	},
+	{
+	  "id": "CAVE_BREAK_CHECK",
+	  "speaker": "system",
+	  "text": "你汇聚灵力于掌中，狠狠击向薄膜！",
+	  "next_node": "CAVE_BREAK_RESULT"
+	},
+	{
+	  "id": "CAVE_BREAK_RESULT",
+	  "speaker": "system",
+	  "text": "[b]突破成功：[/b]薄膜应声碎裂，你安全进入洞府。\n洞府内摆放着几箱灵石，角落还有丹药瓶。\n\n[b]获得：[/b]灵石×3",
+	  "next_node": "END",
+	  "effects": [
+		{
+		  "type": "item_give",
+		  "target": "spirit_stone_small",
+		  "value": 3
+		}
+	  ]
+	},
+	{
+	  "id": "CAVE_SEARCH",
+	  "speaker": "system",
+	  "text": "你绕着洞府入口仔细搜索，在右侧石壁上发现了一个隐蔽的机关。\n\n轻轻按下，薄膜缓缓消散，露出安全的通道。\n\n[b]获得：[/b]灵石×5 + 随机丹药×1",
+	  "effects": [
+		{
+		  "type": "item_give",
+		  "target": "spirit_stones",
+		  "value": 5
+		},
+		{
+		  "type": "item_give",
+		  "target": "random_pill",
+		  "value": 1
+		}
+	  ],
+	  "next_node": "END"
+	},
+	{
+	  "id": "CAVE_LEAVE",
+	  "speaker": "system",
+	  "text": "你记下了洞府的位置，返回青云镇找到云中鹤。\n\n云中鹤：\"哦？洞府入口有薄膜守护？这应该是某位前辈的考验。走，我带你去。\"\n\n云中鹤带你安全进入洞府，获得了额外奖励。\n\n[b]获得：[/b]额外传承奖励\n[b]云中鹤关系：[/b]+5",
+	  "next_node": "END",
+	  "effects": [
+		{
+		  "type": "give_exp",
+		  "value": 10
+		}
+	  ]
+	}
   ]
 }

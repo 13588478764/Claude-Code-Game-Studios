@@ -3,7 +3,7 @@
   "title": "仙缘奇遇 — 灵草园",
   "description": "在一处隐秘山谷中发现了一座灵气充沛的灵草园，园中生长着多种珍稀灵草",
   "type": "item",
-  "probability": 0.10,
+  "probability": 0.1,
   "trigger_conditions": {
     "region": "zhongyuan",
     "min_realm": "qi_refining_mid",
@@ -27,7 +27,12 @@
           "id": "harvest",
           "text": "立即采摘灵草，获取最大收益",
           "effects": [
-            {"type": "skill_check", "target": "herb_skill", "operator": ">=", "value": 12}
+            {
+              "type": "skill_check",
+              "target": "herb_skill",
+              "operator": ">=",
+              "value": 12
+            }
           ],
           "next_node": "HERB_HARVEST_CHECK"
         },
@@ -35,7 +40,12 @@
           "id": "study",
           "text": "先研究灵草园的生长环境和阵法结构",
           "effects": [
-            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 10}
+            {
+              "type": "skill_check",
+              "target": "perception",
+              "operator": ">=",
+              "value": 10
+            }
           ],
           "next_node": "HERB_STUDY_CHECK"
         },
@@ -43,8 +53,16 @@
           "id": "mark",
           "text": "标记位置，暂不采摘，回去报告给可靠的修士",
           "effects": [
-            {"type": "relationship_change", "target": "trusted_sect", "value": 10},
-            {"type": "map_mark", "target": "spirit_herb_garden", "value": true}
+            {
+              "type": "relationship_change",
+              "target": "trusted_sect",
+              "value": 10
+            },
+            {
+              "type": "map_mark",
+              "target": "spirit_herb_garden",
+              "value": true
+            }
           ],
           "next_node": "HERB_MARK"
         }
@@ -60,7 +78,28 @@
       "id": "HERB_HARVEST_RESULT",
       "speaker": "system",
       "text": "[b]采药成功：[/b]你凭借精湛的手法，成功采下了园中最珍贵的几株灵草。\n\n千年灵芝和紫蕴丹参完好无损地收入储物袋中。\n虽然冰心雪莲因寒气过强未能完全保存，但你仍获得了大半药效。\n\n[b]获得：[/b]千年灵芝×1、紫蕴丹参×2、冰心雪莲残片×3\n[b]道心：[/b]+3",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "millennium_lingzhi",
+          "value": 1
+        },
+        {
+          "type": "item_give",
+          "target": "purple_salvia",
+          "value": 2
+        },
+        {
+          "type": "item_give",
+          "target": "snow_lotus_fragment",
+          "value": 3
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 3
+        }
+      ]
     },
     {
       "id": "HERB_STUDY_CHECK",
@@ -72,13 +111,44 @@
       "id": "HERB_STUDY_RESULT",
       "speaker": "system",
       "text": "[b]感知成功：[/b]你发现这座灵草园是一座'聚灵阵法'的产物。\n\n更重要的是，你找到了阵法的核心枢纽，学会了如何维持和扩展这种阵法。\n\n[b]获得：[/b]聚灵阵法·基础篇\n[b]获得：[/b]灵草培育知识\n[b]道心：[/b]+8",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_gathering_formation",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 8
+        }
+      ]
     },
     {
       "id": "HERB_MARK",
       "speaker": "system",
       "text": "你在地图上标记了灵草园的位置，并在入口处留下了隐秘的记号。\n\n虽然放弃了眼前的收益，但你相信将此事报告给宗门会带来更大的回报。\n\n[b]获得：[/b]灵草园位置标记\n[b]关系：[/b]可信宗门 +10\n[b]道心：[/b]+5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        },
+        {
+          "type": "map_mark",
+          "target": "encounter_location",
+          "value": true
+        },
+        {
+          "type": "give_exp",
+          "value": 15
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_herb",
+          "value": 2
+        }
+      ]
     }
   ]
 }

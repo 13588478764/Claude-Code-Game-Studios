@@ -29,9 +29,20 @@
           "id": "righteous",
           "text": "拿起正道功法，将魔道功法封印",
           "effects": [
-            {"type": "dao_heart_change", "value": 15},
-            {"type": "item_give", "target": "righteous_manual", "value": 1},
-            {"type": "reputation_change", "target": "righteous", "value": 10}
+            {
+              "type": "dao_heart_change",
+              "value": 15
+            },
+            {
+              "type": "item_give",
+              "target": "righteous_manual",
+              "value": 1
+            },
+            {
+              "type": "reputation_change",
+              "target": "righteous",
+              "value": 10
+            }
           ],
           "next_node": "DAO_RIGHTEOUS"
         },
@@ -39,8 +50,15 @@
           "id": "dark",
           "text": "拿起魔道功法，无视正道典籍",
           "effects": [
-            {"type": "dao_heart_change", "value": -15},
-            {"type": "item_give", "target": "dark_manual", "value": 1}
+            {
+              "type": "dao_heart_change",
+              "value": -15
+            },
+            {
+              "type": "item_give",
+              "target": "dark_manual",
+              "value": 1
+            }
           ],
           "next_node": "DAO_DARK"
         },
@@ -48,8 +66,15 @@
           "id": "seal_both",
           "text": "这些功法太危险，应该全部封印",
           "effects": [
-            {"type": "dao_heart_change", "value": 10},
-            {"type": "quest_trigger", "target": "seal_manuals", "value": true}
+            {
+              "type": "dao_heart_change",
+              "value": 10
+            },
+            {
+              "type": "quest_trigger",
+              "target": "seal_manuals",
+              "value": true
+            }
           ],
           "next_node": "DAO_SEAL"
         }
@@ -59,19 +84,60 @@
       "id": "DAO_RIGHTEOUS",
       "speaker": "system",
       "text": "你拿起正道功法，一股浩然正气涌入体内。\n随后你将魔道功法用灵气封印，避免其危害他人。\n\n受伤修士微微点头，安心闭目...\n\n[b]获得：[/b]正道功法\n[b]道心：[/b]+15\n[b]正道声望：[/b]+10",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "righteous_technique",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 15
+        }
+      ]
     },
     {
       "id": "DAO_DARK",
       "speaker": "system",
       "text": "你拿起魔道功法，一股血腥之气弥漫开来。\n正道典籍被你丢在一旁...\n\n受伤修士露出一丝诡异的笑容，随即断了气息。\n\n[b]获得：[/b]魔道功法\n[b]道心：[/b]-15",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "demonic_technique",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": -15
+        }
+      ]
     },
     {
       "id": "DAO_SEAL",
       "speaker": "system",
       "text": "你同时拿起两本功法，用灵气将其封印。\n\n这两本功法太过危险，不应该流传于世。\n你决定找一处安全之地，将其彻底封印。\n\n[b]解锁任务：[/b]封印功法\n[b]道心：[/b]+10（完成后额外+10）",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 10
+        },
+        {
+          "type": "quest_trigger",
+          "target": ""
+        },
+        {
+          "type": "give_exp",
+          "value": 30
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_crystal",
+          "value": 1
+        }
+      ]
     }
   ]
 }

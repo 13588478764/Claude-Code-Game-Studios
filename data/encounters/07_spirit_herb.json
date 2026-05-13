@@ -27,7 +27,12 @@
           "id": "pick",
           "text": "小心翼翼地采摘灵草",
           "effects": [
-            {"type": "skill_check", "target": "herb_skill", "operator": ">=", "value": 8}
+            {
+              "type": "skill_check",
+              "target": "herb_skill",
+              "operator": ">=",
+              "value": 8
+            }
           ],
           "next_node": "HERB_PICK_CHECK"
         },
@@ -35,8 +40,15 @@
           "id": "guard",
           "text": "在周围守护，等灵气完全凝聚",
           "effects": [
-            {"type": "time_cost", "value": 30},
-            {"type": "item_give", "target": "spirit_crystal_premium", "value": 1}
+            {
+              "type": "time_cost",
+              "value": 30
+            },
+            {
+              "type": "item_give",
+              "target": "spirit_crystal_premium",
+              "value": 1
+            }
           ],
           "next_node": "HERB_GUARD"
         },
@@ -44,8 +56,16 @@
           "id": "mark",
           "text": "标记位置，等炼丹术提升后再来",
           "effects": [
-            {"type": "quest_trigger", "target": "return_for_herb", "value": true},
-            {"type": "map_mark", "target": "herb_location", "value": true}
+            {
+              "type": "quest_trigger",
+              "target": "return_for_herb",
+              "value": true
+            },
+            {
+              "type": "map_mark",
+              "target": "herb_location",
+              "value": true
+            }
           ],
           "next_node": "HERB_MARK"
         }
@@ -61,19 +81,48 @@
       "id": "HERB_PICK_RESULT",
       "speaker": "system",
       "text": "[b]采摘成功：[/b]你获得了完整的灵草，灵气结晶×2。\n\n灵草在你手中化为纯净的灵气，被妥善保存。\n\n[b]获得：[/b]灵气结晶×2",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_crystal",
+          "value": 2
+        }
+      ]
     },
     {
       "id": "HERB_GUARD",
       "speaker": "system",
       "text": "你在灵草周围布下简易守护阵法，耐心等待灵气凝聚。\n\n三十分钟后，灵草的光芒变得更加明亮，灵气完全收敛到草芯中。\n\n[b]消耗：[/b]30分钟游戏时间\n[b]获得：[/b]高级灵气结晶\n\n[b]注意：[/b]守护期间可能触发其他奇遇或战斗",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_crystal_high",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "HERB_MARK",
       "speaker": "system",
       "text": "你用灵气在灵草周围做了标记，并在地图上标注了位置。\n\n等炼丹术提升了再回来采集，可以获得更多收益。\n\n[b]地图标记：[/b]灵草位置\n[b]解锁任务：[/b]返回采集灵草",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "quest_trigger",
+          "target": ""
+        },
+        {
+          "type": "give_exp",
+          "value": 10
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_herb",
+          "value": 1
+        }
+      ]
     }
   ]
 }

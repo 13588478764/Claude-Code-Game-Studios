@@ -27,7 +27,12 @@
           "id": "participate",
           "text": "报名参加宗门大比，争取优胜奖励",
           "effects": [
-            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 20}
+            {
+              "type": "skill_check",
+              "target": "combat",
+              "operator": ">=",
+              "value": 20
+            }
           ],
           "next_node": "TOURNAMENT_PARTICIPATE_CHECK"
         },
@@ -35,8 +40,15 @@
           "id": "watch",
           "text": "不参赛，在一旁观战学习他人武学",
           "effects": [
-            {"type": "skill_give", "target": "tournament_observation", "value": 1},
-            {"type": "time_advance", "value": 15}
+            {
+              "type": "skill_give",
+              "target": "tournament_observation",
+              "value": 1
+            },
+            {
+              "type": "time_advance",
+              "value": 15
+            }
           ],
           "next_node": "TOURNAMENT_WATCH"
         },
@@ -44,7 +56,11 @@
           "id": "skip",
           "text": "完全不感兴趣，离开继续自己的修行",
           "effects": [
-            {"type": "relationship_change", "target": "host_sect", "value": -5}
+            {
+              "type": "relationship_change",
+              "target": "host_sect",
+              "value": -5
+            }
           ],
           "next_node": "TOURNAMENT_SKIP"
         }
@@ -65,7 +81,12 @@
           "id": "win",
           "text": "全力应战，力争冠军",
           "effects": [
-            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 25}
+            {
+              "type": "skill_check",
+              "target": "combat",
+              "operator": ">=",
+              "value": 25
+            }
           ],
           "next_node": "TOURNAMENT_WIN_CHECK"
         },
@@ -73,8 +94,15 @@
           "id": "honor",
           "text": "虽败犹荣，展现武者风范",
           "effects": [
-            {"type": "reputation_change", "target": "righteous", "value": 10},
-            {"type": "dao_heart_change", "value": 5}
+            {
+              "type": "reputation_change",
+              "target": "righteous",
+              "value": 10
+            },
+            {
+              "type": "dao_heart_change",
+              "value": 5
+            }
           ],
           "next_node": "TOURNAMENT_HONOR"
         }
@@ -90,25 +118,72 @@
       "id": "TOURNAMENT_WIN",
       "speaker": "system",
       "text": "[b]恭喜获得宗门大比冠军！[/b]\n\n你站在太虚峰的最高处，接受各宗修士的祝贺。\n\n[b]获得奖励：[/b]\n- 地阶功法残篇×1\n- 灵石×500\n- 上古秘境进入资格\n- 声望 +20\n\n[b]道心：[/b]+10",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 10
+        },
+        {
+          "type": "give_exp",
+          "value": 40
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_crystal_high",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "TOURNAMENT_HONOR",
       "speaker": "system",
       "text": "虽然最终未能夺冠，但你在比赛中展现出的武者风范令众人敬佩。\n\n李云风也向你抱拳：\"道友武功高强，在下佩服！\"\n\n[b]获得奖励：[/b]\n- 参与奖：灵石×100\n- 声望：正道 +10\n\n[b]道心：[/b]+5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        },
+        {
+          "type": "give_exp",
+          "value": 30
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_crystal",
+          "value": 2
+        }
+      ]
     },
     {
       "id": "TOURNAMENT_WATCH",
       "speaker": "system",
       "text": "你选择在场外观战，仔细观察每一位参赛者的武功路数。\n\n通过观察高手对决，你获益匪浅：\n- 学到了多种战斗技巧\n- 对各宗派的武功特点有了深入了解\n- 发现了几个潜在的战斗破绽模式\n\n[b]获得：[/b]观战感悟·宗门大比\n[b]获得：[/b]各宗武功知识\n[b]道心：[/b]+3",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "skill_give",
+          "target": "tournament_insight",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 3
+        }
+      ]
     },
     {
       "id": "TOURNAMENT_SKIP",
       "speaker": "system",
       "text": "你对宗门大比毫无兴趣，转身离去，继续自己的修行之路。\n\n虽然错过了一场盛会，但你节省了时间和精力用于自身修炼。\n\n主办宗门对你的缺席略有微词。\n\n[b]关系：[/b]主办宗门 -5\n[b]修炼时间：[/b]节省了15分钟",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 5
+        }
+      ]
     }
   ]
 }

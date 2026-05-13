@@ -26,8 +26,16 @@
           "id": "learn",
           "text": "阅读炼丹笔记，尝试炼丹",
           "effects": [
-            {"type": "skill_give", "target": "alchemy_basic", "value": 1},
-            {"type": "item_give", "target": "alchemy_notes", "value": 1}
+            {
+              "type": "skill_give",
+              "target": "alchemy_basic",
+              "value": 1
+            },
+            {
+              "type": "item_give",
+              "target": "alchemy_notes",
+              "value": 1
+            }
           ],
           "next_node": "ALCHEMY_LEARN"
         },
@@ -35,7 +43,12 @@
           "id": "appraise",
           "text": "检查丹炉品阶和价值",
           "effects": [
-            {"type": "skill_check", "target": "appraisal", "operator": ">=", "value": 12}
+            {
+              "type": "skill_check",
+              "target": "appraisal",
+              "operator": ">=",
+              "value": 12
+            }
           ],
           "next_node": "ALCHEMY_APPRAISE_CHECK"
         },
@@ -43,8 +56,15 @@
           "id": "take",
           "text": "将丹炉带回青云镇",
           "effects": [
-            {"type": "item_give", "target": "furnace_basic", "value": 1},
-            {"type": "strength_cost", "value": 10}
+            {
+              "type": "item_give",
+              "target": "furnace_basic",
+              "value": 1
+            },
+            {
+              "type": "strength_cost",
+              "value": 10
+            }
           ],
           "next_node": "ALCHEMY_TAKE"
         }
@@ -54,7 +74,14 @@
       "id": "ALCHEMY_LEARN",
       "speaker": "system",
       "text": "你翻开炼丹笔记，上面记载着基础的炼丹方法和几种常见丹方。\n\n[i]\"炼丹之道，以灵气为火，以药材为料，需掌握火候与凝丹之法...\"[/i]\n\n[b]获得：[/b]炼丹笔记\n[b]解锁：[/b]炼丹系统基础",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "alchemy_note",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "ALCHEMY_APPRAISE_CHECK",
@@ -66,13 +93,27 @@
       "id": "ALCHEMY_APPRAISE_RESULT",
       "speaker": "system",
       "text": "[b]鉴定成功：[/b]这是一尊玄阶丹炉！\n虽然不是极品，但也价值不菲。如果能修复使用，可以炼制玄阶以下的丹药。\n\n[b]获得：[/b]丹炉信息（玄阶）",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "furnace_info",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "ALCHEMY_TAKE",
       "speaker": "system",
       "text": "你将丹炉从山洞中搬出，背在背上带回了青云镇。\n\n丹炉虽然沉重，但你还应付得来。\n\n[b]获得：[/b]基础丹炉\n[b]消耗：[/b]体力-10",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "basic_furnace",
+          "value": 1
+        }
+      ]
     }
   ]
 }

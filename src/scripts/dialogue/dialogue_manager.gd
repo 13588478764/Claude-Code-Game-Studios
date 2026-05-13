@@ -100,6 +100,13 @@ func register_dialogue_tree(tree: DialogueData.DialogueTree) -> bool:
 	print("[对话系统] 注册对话树: %s" % tree.id)
 	return true
 
+## 从字典加载对话树（供 EncounterDataLoader 等外部系统直接传入已解析的数据）
+func load_dialogue_from_dict(data: Dictionary) -> bool:
+	var tree := _parse_dialogue_tree(data)
+	if tree == null:
+		return false
+	return register_dialogue_tree(tree)
+
 ## 从JSON加载对话树
 func load_dialogue_from_json(json_path: String) -> bool:
 	if not FileAccess.file_exists(json_path):
@@ -253,6 +260,17 @@ func _parse_condition(data: Dictionary) -> DialogueData.Condition:
 				data.get("target", ""),
 				data.get("value", true)
 			)
+		"skill_check", "combat_check":
+			condition = DialogueData.Condition.new(DialogueData.Condition.ConditionType.ATTRIBUTE)
+			condition.target = data.get("target", "")
+			condition.operator = data.get("operator", ">=")
+			condition.value = data.get("value", 0)
+		"relationship_check":
+			condition = DialogueData.RelationshipCondition.new(
+				data.get("target", ""),
+				data.get("value", 0),
+				data.get("operator", ">=")
+			)
 		_:
 			condition = DialogueData.Condition.new()
 	
@@ -283,16 +301,21 @@ func _parse_effect(data: Dictionary) -> DialogueData.Effect:
 			effect = DialogueData.UnlockQuestEffect.new(
 				data.get("target", "")
 			)
-		# 给予物品（支持 give_item 和 item_give）
-		"give_item", "item_give":
+		# 给予物品（支持 give_item / item_give / grant_item）
+		"give_item", "item_give", "grant_item":
 			effect = DialogueData.GiveItemEffect.new(
-				data.get("target", ""),
-				data.get("value", 1)
+				data.get("target", data.get("item_id", "")),
+				data.get("value", data.get("count", 1))
 			)
-		"give_exp":
+		"give_exp", "grant_exp":
 			effect = DialogueData.GiveExpEffect.new(
 				data.get("value", 0)
 			)
+		"grant_silver":
+			effect = DialogueData.GiveExpEffect.new(0)
+			effect.type = DialogueData.Effect.EffectType.CUSTOM
+			effect.target = "silver"
+			effect.value = data.get("value", 0)
 		# 设置标志位
 		"set_flag":
 			effect = DialogueData.SetFlagEffect.new(
@@ -343,12 +366,34 @@ func _parse_effect(data: Dictionary) -> DialogueData.Effect:
 			effect = DialogueData.UnlockQuestEffect.new(
 				data.get("target", "")
 			)
+		# 时间推进（等同 time_cost）
+		"time_advance":
+			effect = DialogueData.ConsumeTimeEffect.new(
+				data.get("value", 0)
+			)
+		# 消耗物品（等同 item_cost）
+		"item_consume":
+			effect = DialogueData.ConsumeItemEffect.new(
+				data.get("target", ""),
+				data.get("value", 1)
+			)
+		# 获得技能（等同 skill_give）
+		"skill_gain":
+			effect = DialogueData.GiveSkillEffect.new(
+				data.get("target", ""),
+				data.get("value", 1)
+			)
 		# 被动技能给予
 		"passive_give":
 			effect = DialogueData.GiveSkillEffect.new(
 				data.get("target", ""),
 				1
 			)
+		# 技能检定/战斗检定/关系检定（出现在 effects 中时作为日志效果，暂不影响流程）
+		"skill_check", "combat_check", "relationship_check":
+			effect = DialogueData.Effect.new()
+			effect.target = data.get("target", "")
+			effect.value = data.get("value", 0)
 		# 触发战斗（对话-战斗联动）
 		"trigger_combat":
 			effect = DialogueData.TriggerCombatEffect.new(

@@ -13,7 +13,6 @@
 ## - 无直接依赖
 
 extends Node
-class_name MartialArtsSystem
 
 # ============================================================================
 # 常量定义
@@ -59,10 +58,10 @@ class MartialArtInfo:
 	var fragments_collected: int
 	
 	func _init(p_id: String = "", p_name: String = "", p_description: String = "", p_school: String = "", p_grade: String = "", 
-	           p_weapon_type: String = "", p_base_damage: float = 0.0, p_damage_scale: float = 1.0, p_hit_count: int = 1,
-	           p_element_type: String = "", p_startup_frames: float = 0.0, p_active_frames: float = 0.0, 
-	           p_recovery_frames: float = 0.0, p_total_duration: float = 0.0, p_cost_stamina: float = 0.0, 
-	           p_cost_mana: float = 0.0, p_cooldown: float = 0.0, p_unlock_level: int = 1):
+			   p_weapon_type: String = "", p_base_damage: float = 0.0, p_damage_scale: float = 1.0, p_hit_count: int = 1,
+			   p_element_type: String = "", p_startup_frames: float = 0.0, p_active_frames: float = 0.0, 
+			   p_recovery_frames: float = 0.0, p_total_duration: float = 0.0, p_cost_stamina: float = 0.0, 
+			   p_cost_mana: float = 0.0, p_cooldown: float = 0.0, p_unlock_level: int = 1):
 		id = p_id
 		name = p_name
 		description = p_description
@@ -170,8 +169,30 @@ func load_basic_martial_arts():
 		1
 	)
 	
+	var basic_palm = MartialArtInfo.new(
+		"palm_basic_01",
+		"基础掌法",
+		"以柔克刚的掌法，适合近身搏击",
+		"通用",
+		"黄阶",
+		"Palm",
+		55.0,
+		1.0,
+		1,
+		"无",
+		0.4,
+		0.5,
+		0.8,
+		1.7,
+		6.0,
+		12.0,
+		2.0,
+		1
+	)
+
 	martial_arts_database[basic_sword.id] = basic_sword
 	martial_arts_database[basic_fist.id] = basic_fist
+	martial_arts_database[basic_palm.id] = basic_palm
 
 # 获取武学数据
 func get_martial_art_data(martial_art_id: String):

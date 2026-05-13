@@ -27,8 +27,15 @@
           "id": "accept",
           "text": "恭敬拜师，接受凌虚子的剑道传授",
           "effects": [
-            {"type": "skill_give", "target": "ancient_sword_technique", "value": 1},
-            {"type": "dao_heart_change", "value": 5}
+            {
+              "type": "skill_give",
+              "target": "ancient_sword_technique",
+              "value": 1
+            },
+            {
+              "type": "dao_heart_change",
+              "value": 5
+            }
           ],
           "next_node": "SWORD_ACCEPT"
         },
@@ -36,7 +43,12 @@
           "id": "challenge",
           "text": "向凌虚子发起挑战，以战证道",
           "effects": [
-            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 18}
+            {
+              "type": "skill_check",
+              "target": "combat",
+              "operator": ">=",
+              "value": 18
+            }
           ],
           "next_node": "SWORD_CHALLENGE_CHECK"
         },
@@ -44,7 +56,10 @@
           "id": "decline",
           "text": "恭敬拒绝，表示自己已有修行之路",
           "effects": [
-            {"type": "dao_heart_change", "value": 8}
+            {
+              "type": "dao_heart_change",
+              "value": 8
+            }
           ],
           "next_node": "SWORD_DECLINE"
         }
@@ -54,7 +69,18 @@
       "id": "SWORD_ACCEPT",
       "speaker": "system",
       "text": "你恭敬地向古剑行礼：\"晚辈愿向前辈学习剑道。\"\n\n凌虚子发出一声轻笑：\"好，好！老夫观你根骨不错，今日便传你'太虚剑诀'的基础篇章。\"\n\n一股凌厉的剑意从古剑中涌出，融入你的经脉之中。\n\n[b]获得：[/b]太虚剑诀·基础篇\n[b]剑道修为：[/b]大幅提升\n[b]道心：[/b]+5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "taixu_sword_basic",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        }
+      ]
     },
     {
       "id": "SWORD_CHALLENGE_CHECK",
@@ -66,13 +92,34 @@
       "id": "SWORD_CHALLENGE_RESULT",
       "speaker": "system",
       "text": "[b]挑战成功：[/b]你以巧妙的招式化解了凌虚子的攻势，甚至在最后一刻反将一军。\n\n凌虚子收起剑势，哈哈大笑：\"好！好！好！老夫数百年未遇如此胆识过人的后辈。\"\n\n\"这一战，你赢了。老夫便将'太虚剑诀'全本相赠！\"\n\n[b]获得：[/b]太虚剑诀·全本\n[b]声望：[/b]+15\n[b]道心：[/b]+12",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "taixu_sword_complete",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 12
+        }
+      ]
     },
     {
       "id": "SWORD_DECLINE",
       "speaker": "system",
       "text": "你向凌虚子深深一礼：\"前辈剑道高深，晚辈感激不尽。但晚辈已有自己的修行之路，不便另学他法。\"\n\n凌虚子沉默片刻，随即叹息道：\"好一个'自己的修行之路'。你有此信念，已是难得。\"\n\n\"既如此，老夫便赠你一句话——'剑道在心，不在形'。你好自为之。\"\n\n古剑的光芒渐渐消散，但你感到自己的道心因此更加坚定。\n\n[b]道心：[/b]+8\n[b]感悟：[/b]剑道在心，不在形",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 8
+        },
+        {
+          "type": "give_exp",
+          "value": 10
+        }
+      ]
     }
   ]
 }

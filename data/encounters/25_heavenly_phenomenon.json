@@ -27,8 +27,16 @@
           "id": "observe_closely",
           "text": "运转灵力，仔细观察天象的变化规律",
           "effects": [
-            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 15},
-            {"type": "dao_heart_change", "value": 3}
+            {
+              "type": "skill_check",
+              "target": "perception",
+              "operator": ">=",
+              "value": 15
+            },
+            {
+              "type": "dao_heart_change",
+              "value": 3
+            }
           ],
           "next_node": "HEAVENLY_OBSERVE_CHECK"
         },
@@ -36,8 +44,16 @@
           "id": "approach_center",
           "text": "靠近异象中心，看能否获得更多机缘",
           "effects": [
-            {"type": "skill_check", "target": "courage", "operator": ">=", "value": 18},
-            {"type": "dao_heart_change", "value": -3}
+            {
+              "type": "skill_check",
+              "target": "courage",
+              "operator": ">=",
+              "value": 18
+            },
+            {
+              "type": "dao_heart_change",
+              "value": -3
+            }
           ],
           "next_node": "HEAVENLY_APPROACH_CHECK"
         },
@@ -45,7 +61,10 @@
           "id": "keep_distance",
           "text": "保持安全距离，等待异象自然消散",
           "effects": [
-            {"type": "time_advance", "value": 20}
+            {
+              "type": "time_advance",
+              "value": 20
+            }
           ],
           "next_node": "HEAVENLY_WAIT_END"
         }
@@ -61,13 +80,26 @@
       "id": "HEAVENLY_OBSERVE_RESULT",
       "speaker": "system",
       "text": "你观察到灵气化龙的运行轨迹，发现它正朝着某个方向飞去。\n\n[b]获得：[/b]灵气化龙的行进方向信息\n[b]道心：[/b]+3\n\n若能追踪这股灵气，或许能发现一处灵气汇聚之地。",
-      "next_node": "HEAVENLY_TRACK_CHOICE"
+      "next_node": "HEAVENLY_TRACK_CHOICE",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 3
+        }
+      ]
     },
     {
       "id": "HEAVENLY_APPROACH_CHECK",
       "speaker": "system",
       "text": "你冒险靠近异象中心，强大的灵气压迫让你几乎无法呼吸。\n\n就在你即将支撑不住时，一道精纯的灵气精华落入你的体内...\n\n[b]获得：[/b]灵气精华 x1（可用于突破境界）",
-      "next_node": "HEAVENLY_APPROACH_END"
+      "next_node": "HEAVENLY_APPROACH_END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_essence",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "HEAVENLY_WAIT_END",
@@ -84,8 +116,14 @@
           "id": "meditate_here",
           "text": "在此地打坐修炼，借助浓郁灵气提升修为",
           "effects": [
-            {"type": "dao_heart_change", "value": 5},
-            {"type": "time_advance", "value": 60}
+            {
+              "type": "dao_heart_change",
+              "value": 5
+            },
+            {
+              "type": "time_advance",
+              "value": 60
+            }
           ],
           "next_node": "HEAVENLY_MEDITATE_END"
         },
@@ -93,8 +131,17 @@
           "id": "search_treasures",
           "text": "在灵脉附近搜寻天材地宝",
           "effects": [
-            {"type": "item_give", "target": "spirit_herb", "value": 3},
-            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 10}
+            {
+              "type": "item_give",
+              "target": "spirit_herb",
+              "value": 3
+            },
+            {
+              "type": "skill_check",
+              "target": "perception",
+              "operator": ">=",
+              "value": 10
+            }
           ],
           "next_node": "HEAVENLY_SEARCH_END"
         }
@@ -104,25 +151,65 @@
       "id": "HEAVENLY_MEDITATE_END",
       "speaker": "system",
       "text": "你在此灵脉节点处打坐修炼，浓郁的灵气源源不断地涌入体内。\n\n[b]修为提升：[/b]灵气吸收效率大幅提升\n[b]道心：[/b]+5\n[b]时间流逝：[/b]60分钟\n\n这是一次难得的修炼良机。",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        },
+        {
+          "type": "give_exp",
+          "value": 30
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_crystal",
+          "value": 2
+        }
+      ]
     },
     {
       "id": "HEAVENLY_SEARCH_END",
       "speaker": "system",
       "text": "你在灵脉附近仔细搜寻，发现了几株生长在灵气充沛之地的灵草。\n\n[b]获得：[/b]灵草 x3\n\n这些灵草是炼制丹药的上好材料。",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_herb",
+          "value": 3
+        }
+      ]
     },
     {
       "id": "HEAVENLY_WATCH_RESULT",
       "speaker": "system",
       "text": "异象完全消散后，你感到自己的心境有所提升。\n\n虽然没有获得实质的宝物，但对天道的感悟本身就是一种机缘。\n\n[b]获得：[/b]天道感悟",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "skill_give",
+          "target": "heavenly_dao_insight",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "HEAVENLY_APPROACH_END",
       "speaker": "system",
       "text": "你成功从异象中心获得灵气精华，冒险得到了回报。\n\n这股精纯的灵气足以帮助你在关键时刻突破瓶颈。\n\n[b]灵气精华已收入储物袋中。[/b]",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 20
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_stone_small",
+          "value": 3
+        }
+      ]
     }
   ]
 }

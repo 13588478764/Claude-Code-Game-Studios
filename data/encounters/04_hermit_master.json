@@ -7,7 +7,10 @@
   "trigger_conditions": {
     "region": "zhongyuan",
     "min_realm": "qi_refining_late",
-    "relationship_requirement": {"npc": "yunzhonghe", "min_value": 20},
+    "relationship_requirement": {
+      "npc": "yunzhonghe",
+      "min_value": 20
+    },
     "cooldown_minutes": 5,
     "once_per_player": true
   },
@@ -29,8 +32,15 @@
           "id": "ask_learn",
           "text": "前辈所言极是，晚辈愿意受教",
           "effects": [
-            {"type": "skill_give", "target": "sword_bone_insight", "value": 1},
-            {"type": "dao_heart_change", "value": 5}
+            {
+              "type": "skill_give",
+              "target": "sword_bone_insight",
+              "value": 1
+            },
+            {
+              "type": "dao_heart_change",
+              "value": 5
+            }
           ],
           "next_node": "HERMIT_ASK"
         },
@@ -38,7 +48,12 @@
           "id": "doubt",
           "text": "前辈是何人？为何要帮我？",
           "effects": [
-            {"type": "relationship_check", "target": "yunzhonghe", "operator": ">=", "value": 30}
+            {
+              "type": "relationship_check",
+              "target": "yunzhonghe",
+              "operator": ">=",
+              "value": 30
+            }
           ],
           "next_node": "HERMIT_DOUBT_CHECK"
         },
@@ -46,8 +61,15 @@
           "id": "refuse",
           "text": "多谢前辈好意，我想靠自己",
           "effects": [
-            {"type": "dao_heart_change", "value": -5},
-            {"type": "relationship_change", "target": "yunzhonghe", "value": -5}
+            {
+              "type": "dao_heart_change",
+              "value": -5
+            },
+            {
+              "type": "relationship_change",
+              "target": "yunzhonghe",
+              "value": -5
+            }
           ],
           "next_node": "HERMIT_REFUSE"
         }
@@ -57,7 +79,18 @@
       "id": "HERMIT_ASK",
       "speaker": "system",
       "text": "老者微微点头，眼中闪过一丝赞赏。\n\n\"不错，有胆识。\"他伸出手指轻轻点在你的眉心。\n\n一股暖流涌入，你对剑骨体质的理解更加深刻了。\n\n[b]获得：[/b]\"剑骨洞察\"被动技能（修炼速度+10%）\n[b]道心：[/b]+5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "skill_give",
+          "target": "sword_bone_insight",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        }
+      ]
     },
     {
       "id": "HERMIT_DOUBT_CHECK",
@@ -69,13 +102,29 @@
       "id": "HERMIT_DOUBT_RESULT",
       "speaker": "system",
       "text": "老者：\"哈哈，谨慎是好事。既然你与云中鹤那小子关系不错，我便多说一句——\"\n\n\"告诉他，故人还在等他。他自会明白。\"\n\n老者又指点了几句剑道，随即飘然离去。\n\n[b]获得：[/b]额外剑道指导",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 15
+        }
+      ]
     },
     {
       "id": "HERMIT_REFUSE",
       "speaker": "system",
       "text": "老者微微叹息：\"也罢，年轻人有年轻人的路。\n只是记住，剑道孤独，好自为之。\"\n\n老者摇头离开。云中鹤后来得知此事，表达了遗憾。\n\n[b]道心：[/b]-5\n[b]云中鹤关系：[/b]-5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": -5
+        },
+        {
+          "type": "give_exp",
+          "value": 5
+        }
+      ]
     }
   ]
 }

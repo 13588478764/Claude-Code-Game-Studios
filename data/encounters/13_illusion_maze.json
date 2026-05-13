@@ -27,7 +27,12 @@
           "id": "follow_heart",
           "text": "静心凝神，跟随内心指引前行",
           "effects": [
-            {"type": "skill_check", "target": "willpower", "operator": ">=", "value": 15}
+            {
+              "type": "skill_check",
+              "target": "willpower",
+              "operator": ">=",
+              "value": 15
+            }
           ],
           "next_node": "ILLUSION_HEART_CHECK"
         },
@@ -35,7 +40,11 @@
           "id": "seek_guidance",
           "text": "通过传讯符联系云中鹤前辈，寻求破阵之法",
           "effects": [
-            {"type": "relationship_change", "target": "yunzhonghe", "value": 5}
+            {
+              "type": "relationship_change",
+              "target": "yunzhonghe",
+              "value": 5
+            }
           ],
           "next_node": "ILLUSION_GUIDANCE"
         },
@@ -43,7 +52,12 @@
           "id": "force_through",
           "text": "以灵力强行破除迷雾，硬闯出去",
           "effects": [
-            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 18}
+            {
+              "type": "skill_check",
+              "target": "combat",
+              "operator": ">=",
+              "value": 18
+            }
           ],
           "next_node": "ILLUSION_FORCE_CHECK"
         }
@@ -53,13 +67,39 @@
       "id": "ILLUSION_HEART_CHECK",
       "speaker": "system",
       "text": "你盘膝坐下，摒弃一切杂念，将心神完全沉浸在内视之中。\n\n渐渐地，迷雾在你眼中变得透明起来，一条散发着微光的小路浮现而出。\n\n你跟随内心的指引，稳步向前走去——\n\n[b]意志检定通过：[/b]幻境在你坚定的道心面前土崩瓦解。\n\n[b]道心：[/b]+10\n你感到自己的心境更加澄明，对大道的领悟又深了一层。",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 10
+        },
+        {
+          "type": "give_exp",
+          "value": 20
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_crystal",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "ILLUSION_GUIDANCE",
       "speaker": "yunzhonghe",
       "text": "「哼，区区幻境迷阵也敢困住你？」\n\n云中鹤的声音从传讯符中传来，带着几分不屑但更多的是关切。\n\n「听好了——幻境之术，核心在于迷惑人心。你只需闭上双眼，感受脚下灵气的流动，跟随那股最纯净的灵力前行即可。」\n\n你依言而行，果然在迷雾中找到了一条出路。\n\n[b]云中鹤关系：[/b]+5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 15
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_stone_small",
+          "value": 2
+        }
+      ]
     },
     {
       "id": "ILLUSION_FORCE_CHECK",
@@ -71,7 +111,13 @@
       "id": "ILLUSION_FORCE_RESULT",
       "speaker": "system",
       "text": "[b]灵力冲击成功：[/b]幻境阵法的阵眼被你一击震碎，整个迷阵瞬间崩溃。\n\n然而，强行的灵力冲击也让你消耗了不少元气。\n\n虽然成功脱困，但你的修为因此损耗了几分。\n\n[b]灵力消耗：[/b]较大\n[b]获得经验：[/b]对阵法之道的领悟 +3",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 10
+        }
+      ]
     }
   ]
 }

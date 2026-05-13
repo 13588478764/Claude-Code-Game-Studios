@@ -27,7 +27,12 @@
           "id": "intervene",
           "text": "出手制止双方，强行介入战斗",
           "effects": [
-            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 15}
+            {
+              "type": "skill_check",
+              "target": "combat",
+              "operator": ">=",
+              "value": 15
+            }
           ],
           "next_node": "CLASH_INTERVENE_CHECK"
         },
@@ -35,8 +40,16 @@
           "id": "help_weak",
           "text": "帮助处于劣势的那一方",
           "effects": [
-            {"type": "reputation_change", "target": "righteous", "value": 8},
-            {"type": "reputation_change", "target": "dark", "value": -5}
+            {
+              "type": "reputation_change",
+              "target": "righteous",
+              "value": 8
+            },
+            {
+              "type": "reputation_change",
+              "target": "dark",
+              "value": -5
+            }
           ],
           "next_node": "CLASH_HELP_WEAK"
         },
@@ -44,7 +57,12 @@
           "id": "report",
           "text": "暂时旁观，记录双方信息后回报各自宗门",
           "effects": [
-            {"type": "skill_check", "target": "diplomacy", "operator": ">=", "value": 12}
+            {
+              "type": "skill_check",
+              "target": "diplomacy",
+              "operator": ">=",
+              "value": 12
+            }
           ],
           "next_node": "CLASH_REPORT_CHECK"
         }
@@ -60,13 +78,35 @@
       "id": "CLASH_INTERVENE_RESULT",
       "speaker": "system",
       "text": "[b]制止成功：[/b]你以绝对实力将双方分开，两人惊疑不定地退开。\n\n你调解了这场冲突，双方各自离去。\n作为感谢你调解，青云门弟子将法宝碎片的一半交予你。\n\n[b]获得：[/b]法宝碎片（半块）\n[b]道心：[/b]+8",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "artifact_fragment_half",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 8
+        }
+      ]
     },
     {
       "id": "CLASH_HELP_WEAK",
       "speaker": "system",
       "text": "你选择帮助处于劣势的青云门弟子，联手击退了血煞宗修士。\n\n青云门弟子感激地向你行礼：\"多谢道友出手相助！\"\n\n[b]获得：[/b]青云门好感\n[b]声望：[/b]正道 +8\n[b]失去：[/b]血煞宗好感",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 20
+        },
+        {
+          "type": "item_give",
+          "target": "healing_pill",
+          "value": 2
+        }
+      ]
     },
     {
       "id": "CLASH_REPORT_CHECK",
@@ -78,7 +118,18 @@
       "id": "CLASH_REPORT_RESULT",
       "speaker": "system",
       "text": "[b]外交成功：[/b]你将战斗详情分别告知两宗高层。\n两宗对你的公正态度表示赞赏，各送你一份谢礼。\n\n[b]获得：[/b]青云门谢礼、血煞宗谢礼\n[b]声望：[/b]中立 +5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 15
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_stone_small",
+          "value": 2
+        }
+      ]
     }
   ]
 }

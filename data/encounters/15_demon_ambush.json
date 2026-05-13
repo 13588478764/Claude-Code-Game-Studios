@@ -27,7 +27,12 @@
           "id": "fight",
           "text": "迎战魔修，以正义之力降妖除魔",
           "effects": [
-            {"type": "skill_check", "target": "combat", "operator": ">=", "value": 18}
+            {
+              "type": "skill_check",
+              "target": "combat",
+              "operator": ">=",
+              "value": 18
+            }
           ],
           "next_node": "DEMON_FIGHT_CHECK"
         },
@@ -35,7 +40,12 @@
           "id": "flee",
           "text": "施展身法，迅速逃离包围",
           "effects": [
-            {"type": "skill_check", "target": "speed", "operator": ">=", "value": 16}
+            {
+              "type": "skill_check",
+              "target": "speed",
+              "operator": ">=",
+              "value": 16
+            }
           ],
           "next_node": "DEMON_FLEE_CHECK"
         },
@@ -43,7 +53,12 @@
           "id": "negotiate",
           "text": "尝试与魔修交涉，以言词化解危机",
           "effects": [
-            {"type": "skill_check", "target": "charisma", "operator": ">=", "value": 14}
+            {
+              "type": "skill_check",
+              "target": "charisma",
+              "operator": ">=",
+              "value": 14
+            }
           ],
           "next_node": "DEMON_NEGOTIATE_CHECK"
         }
@@ -59,7 +74,28 @@
       "id": "DEMON_FIGHT_RESULT",
       "speaker": "system",
       "text": "[b]战斗胜利：[/b]\n\n你以精妙的武学和高超的战术，将三名魔修尽数击溃。\n\n虽然受了一些轻伤，但你的浩然正气在这场战斗中愈发凝练。\n\n从魔修的储物袋中，你获得了不少战利品——看来这些人确实掠夺了不少无辜修士。\n\n[b]获得：[/b]灵石 × 3，低阶法器 × 1，魔修储物袋\n[b]道心：[/b]+5（正义之举）\n[b]声望：[/b]+3",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "spirit_stone_small",
+          "value": 3
+        },
+        {
+          "type": "item_give",
+          "target": "low_tier_artifact",
+          "value": 1
+        },
+        {
+          "type": "item_give",
+          "target": "demonic_storage_bag",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        }
+      ]
     },
     {
       "id": "DEMON_FLEE_CHECK",
@@ -71,7 +107,13 @@
       "id": "DEMON_FLEE_RESULT",
       "speaker": "system",
       "text": "[b]逃脱成功：[/b]\n\n你凭借迅捷的身法，成功摆脱了魔修的追击。\n\n虽然没能获得战利品，但保全了自身才是最重要的。\n\n那几名魔修日后若有机缘，定要替天行道。\n\n[b]灵力消耗：[/b]中等",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 10
+        }
+      ]
     },
     {
       "id": "DEMON_NEGOTIATE_CHECK",
@@ -83,7 +125,22 @@
       "id": "DEMON_NEGOTIATE_RESULT",
       "speaker": "system",
       "text": "[b]交涉成功：[/b]\n\n为首的魔修眯着眼睛打量了你一番，似乎被你的言辞打动了——或者说，他评估了一下你的实力，觉得强攻未必能占到便宜。\n\n「算你识相。」他冷冷说道，挥手示意手下退下。\n\n你付出了一些灵石，好歹全身而退。\n\n不过，放走这些魔修，日后不知又有多少无辜修士会遭其毒手……\n\n[b]失去：[/b]灵石 × 2\n[b]道心：[/b]-2（纵容魔修）",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": -2
+        },
+        {
+          "type": "give_exp",
+          "value": 20
+        },
+        {
+          "type": "item_give",
+          "target": "intelligence_clue",
+          "value": 1
+        }
+      ]
     }
   ]
 }

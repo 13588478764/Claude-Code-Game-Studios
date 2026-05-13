@@ -27,7 +27,11 @@
           "id": "accept",
           "text": "接受邀请，准时前往云隐山参加聚会",
           "effects": [
-            {"type": "quest_trigger", "target": "secret_gathering_event", "value": true}
+            {
+              "type": "quest_trigger",
+              "target": "secret_gathering_event",
+              "value": true
+            }
           ],
           "next_node": "INVITATION_ACCEPT"
         },
@@ -41,7 +45,12 @@
           "id": "investigate",
           "text": "先调查发函者的身份，再做决定",
           "effects": [
-            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 22}
+            {
+              "type": "skill_check",
+              "target": "perception",
+              "operator": ">=",
+              "value": 22
+            }
           ],
           "next_node": "INVITATION_INVESTIGATE_CHECK"
         }
@@ -51,19 +60,47 @@
       "id": "INVITATION_ACCEPT",
       "speaker": "system",
       "text": "十五之夜，你如约来到云隐山深处。\n\n穿过层层迷雾，一座隐秘的洞府出现在眼前。洞府中已有数位修士到场，他们看到你来，纷纷点头致意。\n\n一位白发老者缓步走出，微笑道：\"阁下果然来了。今夜之事，关乎修真界的一场大变……\"\n\n[b]解锁特殊事件：[/b]云隐山秘密聚会\n[b]剧情推进：[/b]修真界重大事宜即将揭晓",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 20
+        },
+        {
+          "type": "item_give",
+          "target": "intelligence_clue",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "INVITATION_DECLINE",
       "speaker": "system",
       "text": "你将邀请函封存于密室之中，决定不去蹚这趟浑水。\n\n数日后，你听闻云隐山方向有异常灵力波动，但很快又归于平静。那晚到底发生了什么，你不得而知。\n\n也许错过了一次重要的机缘，但至少避开了未知的风险。\n\n[b]道心：[/b]+3（明哲保身，心安理得）",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 3
+        },
+        {
+          "type": "give_exp",
+          "value": 10
+        }
+      ]
     },
     {
       "id": "INVITATION_INVESTIGATE_CHECK",
       "speaker": "system",
       "text": "你仔细研究那枚奇特的印记，又以灵力探查信函的来处。\n\n[b]（若感知判定成功）[/b]\n经过一番追查，你发现这封信来自一个名为\"天机阁\"的隐秘组织。他们是修真界的情报中枢，每十年举办一次秘密聚会，邀请有潜力的修士共商大事。\n\n得知这一信息后，你对这次聚会的性质有了清晰的判断。\n\n[b]获得：[/b]天机阁情报线索\n[b]解锁：[/b]可选择是否接受邀请\n[b]感知：[/b]+2\n\n[b]（若感知判定失败）[/b]\n你多方打探，却一无所获。那枚印记仿佛不存在于任何记载之中。\n\n看来对方行事极为隐秘，贸然前往恐怕风险不小。\n\n[b]线索：[/b]调查无果，建议谨慎行事",
-      "next_node": "INVITATION_CHOICE"
+      "next_node": "INVITATION_CHOICE",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "intelligence_clue",
+          "value": 1
+        }
+      ]
     }
   ]
 }

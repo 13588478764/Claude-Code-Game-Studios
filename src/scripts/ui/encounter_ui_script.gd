@@ -25,32 +25,8 @@ var encounter_integration: EncounterIntegration = null
 # 当前奇遇数据
 var current_encounter_data: Dictionary = {}
 
-# 奇遇类型到中文名称的映射
-const ENCOUNTER_TYPE_NAMES = {
-	"wise_master_guidance": "高人指点",
-	"secret_realm_discovery": "秘境发现",
-	"heavenly_treasure": "天材地宝",
-	"lost_martial_scroll": "失传秘籍",
-	"jianghu_rumor": "江湖传闻"
-}
-
-# 奇遇类型到描述的映射
-const ENCOUNTER_DESCRIPTIONS = {
-	"wise_master_guidance": "你在竹林中遇到了一位白发老者，他似乎看出了你的修炼天赋。\n\n老者微笑道：'小友骨骼清奇，是个修炼的好苗子。老夫这里有一本心法，不知你可愿意学习？'",
-	"secret_realm_discovery": "你在山洞深处发现了一处隐秘的修炼场所，灵气浓郁，似乎是前人留下的秘境。\n\n在此修炼必能事半功倍！",
-	"heavenly_treasure": "你在集市中偶然发现了一株罕见的灵药，散发着淡淡的光芒。\n\n摊主似乎不识货，正在低价出售。",
-	"lost_martial_scroll": "你在古籍中发现了一本失传已久的武学秘籍，上面记载着精妙的招式。\n\n若能参悟，必能大幅提升武学造诣！",
-	"jianghu_rumor": "你听闻江湖中流传着一个关于绝世高手的传说，或许能从中获得启发。\n\n这些传闻往往蕴含着深刻的武学智慧。"
-}
-
-# 奇遇类型到背景类型的映射
-const ENCOUNTER_BACKGROUNDS = {
-	"wise_master_guidance": "bamboo",
-	"secret_realm_discovery": "cave",
-	"heavenly_treasure": "market",
-	"lost_martial_scroll": "bamboo",
-	"jianghu_rumor": "market"
-}
+# EncounterDataLoader 引用（数据驱动的奇遇内容）
+var encounter_data_loader: Node = null
 
 func _ready() -> void:
 	print("[EncounterUI] Initialized")
@@ -60,6 +36,8 @@ func _ready() -> void:
 	character_system = get_node_or_null("/root/CharacterSystem")
 	encounter_integration = get_node_or_null("/root/EncounterIntegration")
 	
+	encounter_data_loader = get_node_or_null("/root/EncounterDataLoader")
+
 	if not character_system:
 		push_warning("[EncounterUI] CharacterSystem not found!")
 	
@@ -201,37 +179,44 @@ func _on_try_button_pressed() -> void:
 # ============================================================================
 
 func _on_encounter_triggered(encounter_type: String, encounter_id: String, probability: float) -> void:
-	"""奇遇触发事件"""
 	print("[EncounterUI] Encounter triggered: %s (ID: %s, Probability: %.2f%%)" % [encounter_type, encounter_id, probability * 100])
-	
-	var encounter_data = {
-		"title": ENCOUNTER_TYPE_NAMES.get(encounter_type, "奇遇事件"),
-		"description": ENCOUNTER_DESCRIPTIONS.get(encounter_type, "你遇到了一个奇遇事件..."),
-		"type": ENCOUNTER_BACKGROUNDS.get(encounter_type, "default"),
+
+	# 从 EncounterDataLoader 获取真实数据
+	var meta := {}
+	if encounter_data_loader:
+		meta = encounter_data_loader.get_encounter_meta(encounter_id)
+
+	var encounter_data_dict = {
+		"title": meta.get("title", "奇遇事件"),
+		"description": meta.get("description", "你遇到了一个奇遇事件..."),
+		"type": meta.get("type", "default"),
 		"player_luck": character_system.attributes.luck if character_system else 0,
 		"encounter_type": encounter_type,
 		"encounter_id": encounter_id
 	}
-	
-	current_encounter_data = encounter_data
-	show_encounter(encounter_data)
+
+	current_encounter_data = encounter_data_dict
+	show_encounter(encounter_data_dict)
 
 func _on_encounter_event_processed(encounter_type: String, encounter_id: String, reward_data: Dictionary) -> void:
-	"""奇遇事件处理完成，显示UI"""
 	print("[EncounterUI] Encounter event processed: %s (ID: %s)" % [encounter_type, encounter_id])
-	
-	var encounter_data = {
-		"title": ENCOUNTER_TYPE_NAMES.get(encounter_type, "奇遇事件"),
-		"description": ENCOUNTER_DESCRIPTIONS.get(encounter_type, "你遇到了一个奇遇事件..."),
-		"type": ENCOUNTER_BACKGROUNDS.get(encounter_type, "default"),
+
+	var meta := {}
+	if encounter_data_loader:
+		meta = encounter_data_loader.get_encounter_meta(encounter_id)
+
+	var encounter_data_dict = {
+		"title": meta.get("title", "奇遇事件"),
+		"description": meta.get("description", "你遇到了一个奇遇事件..."),
+		"type": meta.get("type", "default"),
 		"player_luck": character_system.attributes.luck if character_system else 0,
 		"encounter_type": encounter_type,
 		"encounter_id": encounter_id,
 		"reward_data": reward_data
 	}
-	
-	current_encounter_data = encounter_data
-	show_encounter(encounter_data)
+
+	current_encounter_data = encounter_data_dict
+	show_encounter(encounter_data_dict)
 
 func _on_reward_granted(reward_type: String, amount: int) -> void:
 	"""奖励发放事件"""
@@ -290,14 +275,18 @@ func trigger_guaranteed_encounter(encounter_type: String = "") -> void:
 	var encounter_id = "guaranteed_encounter_%s_%d" % [encounter_type, randi()]
 	
 	# 构建奇遇数据并直接显示
-	var encounter_data = {
-		"title": ENCOUNTER_TYPE_NAMES.get(encounter_type, "奇遇事件"),
-		"description": ENCOUNTER_DESCRIPTIONS.get(encounter_type, "你遇到了一个奇遇事件..."),
-		"type": ENCOUNTER_BACKGROUNDS.get(encounter_type, "default"),
+	var meta := {}
+	if encounter_data_loader:
+		meta = encounter_data_loader.get_encounter_meta(encounter_id)
+
+	var encounter_data_dict = {
+		"title": meta.get("title", "奇遇事件"),
+		"description": meta.get("description", "你遇到了一个奇遇事件..."),
+		"type": meta.get("type", "default"),
 		"player_luck": character_system.attributes.luck if character_system else 0,
 		"encounter_type": encounter_type,
 		"encounter_id": encounter_id
 	}
-	
-	current_encounter_data = encounter_data
-	show_encounter(encounter_data)
+
+	current_encounter_data = encounter_data_dict
+	show_encounter(encounter_data_dict)

@@ -275,9 +275,11 @@ class GiveItemEffect extends Effect:
 		super._init(EffectType.GIVE_ITEM)
 		target = item_id
 		value = count
-	
+
 	func execute() -> void:
-		# 需要访问物品管理器
+		var inv = Engine.get_main_loop().root.get_node_or_null("InventorySystem")
+		if inv and inv.has_method("add_item"):
+			inv.add_item(target, int(value))
 		print("[对话效果] 给予物品: %s x%d" % [target, value])
 
 ## 给予经验效果
@@ -285,9 +287,11 @@ class GiveExpEffect extends Effect:
 	func _init(exp_amount: int = 0) -> void:
 		super._init(EffectType.GIVE_EXP)
 		value = exp_amount
-	
+
 	func execute() -> void:
-		# 需要访问经验管理器
+		var char_sys = Engine.get_main_loop().root.get_node_or_null("CharacterSystem")
+		if char_sys and char_sys.has_method("add_experience"):
+			char_sys.add_experience(int(value))
 		print("[对话效果] 给予经验: %d" % value)
 
 ## 设置标志位效果

@@ -27,8 +27,15 @@
           "id": "accept",
           "text": "静心感悟，尝试接受这段传承",
           "effects": [
-            {"type": "item_give", "target": "ancient_martial_art_fragment", "value": 1},
-            {"type": "dao_heart_change", "value": 5}
+            {
+              "type": "item_give",
+              "target": "ancient_martial_art_fragment",
+              "value": 1
+            },
+            {
+              "type": "dao_heart_change",
+              "value": 5
+            }
           ],
           "next_node": "INHERITANCE_ACCEPT"
         },
@@ -36,7 +43,12 @@
           "id": "observe",
           "text": "先观察是否有陷阱或阵法",
           "effects": [
-            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 10}
+            {
+              "type": "skill_check",
+              "target": "perception",
+              "operator": ">=",
+              "value": 10
+            }
           ],
           "next_node": "INHERITANCE_OBSERVE_CHECK"
         },
@@ -44,8 +56,16 @@
           "id": "leave",
           "text": "拓印碑文，回去研究",
           "effects": [
-            {"type": "item_give", "target": "rune_rubbing_fragment", "value": 1},
-            {"type": "quest_trigger", "target": "find_full_inheritance", "value": true}
+            {
+              "type": "item_give",
+              "target": "rune_rubbing_fragment",
+              "value": 1
+            },
+            {
+              "type": "quest_trigger",
+              "target": "find_full_inheritance",
+              "value": true
+            }
           ],
           "next_node": "INHERITANCE_LEAVE"
         }
@@ -55,7 +75,18 @@
       "id": "INHERITANCE_ACCEPT",
       "speaker": "system",
       "text": "你盘膝坐下，静心感悟石碑上传来的信息。\n\n一股温暖的灵力涌入你的体内，一段残缺的功法在脑海中闪现...\n\n[b]获得：[/b]上古功法残篇（黄阶）\n[b]道心：[/b]+5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "ancient_martial_art_fragment",
+          "value": 1
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        }
+      ]
     },
     {
       "id": "INHERITANCE_OBSERVE_CHECK",
@@ -67,13 +98,31 @@
       "id": "INHERITANCE_OBSERVE_RESULT",
       "speaker": "system",
       "text": "[b]感知成功：[/b]你发现石碑后方隐藏着一处小型洞府的入口线索。\n石碑只是一个引子，真正的传承在洞府深处。\n\n[b]获得：[/b]洞府位置线索",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "cave_location_clue",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "INHERITANCE_LEAVE",
       "speaker": "system",
       "text": "你小心翼翼地拓印了碑文，将符文碎片收入怀中。\n\n这块石碑绝不简单，回去找云中鹤前辈研究一下。\n\n[b]获得：[/b]符文拓片\n[b]解锁任务：[/b]寻找完整传承",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "item_give",
+          "target": "rune_rubbing_fragment",
+          "value": 1
+        },
+        {
+          "type": "quest_trigger",
+          "target": ""
+        }
+      ]
     }
   ]
 }

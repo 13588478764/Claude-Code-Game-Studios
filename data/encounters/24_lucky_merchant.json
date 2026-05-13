@@ -27,8 +27,16 @@
           "id": "browse_carefully",
           "text": "仔细浏览摊位上的物品，寻找有价值的东西",
           "effects": [
-            {"type": "skill_check", "target": "perception", "operator": ">=", "value": 8},
-            {"type": "time_advance", "value": 5}
+            {
+              "type": "skill_check",
+              "target": "perception",
+              "operator": ">=",
+              "value": 8
+            },
+            {
+              "type": "time_advance",
+              "value": 5
+            }
           ],
           "next_node": "LUCKY_MERCHANT_BROWSE"
         },
@@ -36,7 +44,11 @@
           "id": "ask_about_rare",
           "text": "询问是否有稀世珍宝",
           "effects": [
-            {"type": "item_cost", "target": "spirit_stones", "value": 50}
+            {
+              "type": "item_cost",
+              "target": "spirit_stones",
+              "value": 50
+            }
           ],
           "next_node": "LUCKY_MERCHANT_ASK"
         },
@@ -44,7 +56,12 @@
           "id": "bargain",
           "text": "尝试与商人讨价还价",
           "effects": [
-            {"type": "skill_check", "target": "charisma", "operator": ">=", "value": 12}
+            {
+              "type": "skill_check",
+              "target": "charisma",
+              "operator": ">=",
+              "value": 12
+            }
           ],
           "next_node": "LUCKY_MERCHANT_BARGAIN_CHECK"
         }
@@ -77,8 +94,16 @@
           "id": "buy_stone",
           "text": "购买灵石原石",
           "effects": [
-            {"type": "item_cost", "target": "spirit_stones", "value": 10},
-            {"type": "item_give", "target": "spirit_stone_raw", "value": 1}
+            {
+              "type": "item_cost",
+              "target": "spirit_stones",
+              "value": 10
+            },
+            {
+              "type": "item_give",
+              "target": "spirit_stone_raw",
+              "value": 1
+            }
           ],
           "next_node": "LUCKY_MERCHANT_PURCHASE_END"
         },
@@ -86,8 +111,16 @@
           "id": "buy_pill",
           "text": "购买筑基丹",
           "effects": [
-            {"type": "item_cost", "target": "spirit_stones", "value": 50},
-            {"type": "item_give", "target": "foundation_pill", "value": 1}
+            {
+              "type": "item_cost",
+              "target": "spirit_stones",
+              "value": 50
+            },
+            {
+              "type": "item_give",
+              "target": "foundation_pill",
+              "value": 1
+            }
           ],
           "next_node": "LUCKY_MERCHANT_PURCHASE_END"
         },
@@ -95,8 +128,16 @@
           "id": "buy_manual",
           "text": "购买功法残卷",
           "effects": [
-            {"type": "item_cost", "target": "spirit_stones", "value": 30},
-            {"type": "item_give", "target": "martial_art_fragment_yellow", "value": 1}
+            {
+              "type": "item_cost",
+              "target": "spirit_stones",
+              "value": 30
+            },
+            {
+              "type": "item_give",
+              "target": "martial_art_fragment_yellow",
+              "value": 1
+            }
           ],
           "next_node": "LUCKY_MERCHANT_PURCHASE_END"
         },
@@ -104,9 +145,21 @@
           "id": "buy_jade",
           "text": "购买神秘古玉",
           "effects": [
-            {"type": "item_cost", "target": "spirit_stones", "value": 20},
-            {"type": "item_give", "target": "mysterious_jade", "value": 1},
-            {"type": "quest_trigger", "target": "investigate_jade_origin", "value": true}
+            {
+              "type": "item_cost",
+              "target": "spirit_stones",
+              "value": 20
+            },
+            {
+              "type": "item_give",
+              "target": "mysterious_jade",
+              "value": 1
+            },
+            {
+              "type": "quest_trigger",
+              "target": "investigate_jade_origin",
+              "value": true
+            }
           ],
           "next_node": "LUCKY_MERCHANT_PURCHASE_END"
         },
@@ -122,13 +175,30 @@
       "id": "LUCKY_MERCHANT_PURCHASE_END",
       "speaker": "system",
       "text": "交易完成后，商人微笑着收起物品。\n\n[b]\"道友好眼力，日后若有机缘，我们还会再见的。\"[/b]\n\n说完，摊位和商人一起消失在雾气中，仿佛从未出现过一般...",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 10
+        },
+        {
+          "type": "item_give",
+          "target": "random_pill",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "LUCKY_MERCHANT_LEAVE_END",
       "speaker": "system",
       "text": "你决定暂时不购买任何物品，转身离去。\n\n身后传来商人的声音：\"道友若有需要，随时可以来此寻找老朽...\"\n\n回头一看，摊位已经消失不见，仿佛一切只是一场幻梦。",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 5
+        }
+      ]
     }
   ]
 }

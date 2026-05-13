@@ -27,7 +27,11 @@
           "id": "use_pill",
           "text": "使用进化丹药，确保进化成功",
           "effects": [
-            {"type": "item_consume", "target": "evolution_pill", "value": 1}
+            {
+              "type": "item_consume",
+              "target": "evolution_pill",
+              "value": 1
+            }
           ],
           "next_node": "PET_EVOLUTION_PILL_CHECK"
         },
@@ -35,7 +39,12 @@
           "id": "natural_evolution",
           "text": "让灵宠自然进化，顺应天道",
           "effects": [
-            {"type": "skill_check", "target": "luck", "operator": ">=", "value": 20}
+            {
+              "type": "skill_check",
+              "target": "luck",
+              "operator": ">=",
+              "value": 20
+            }
           ],
           "next_node": "PET_EVOLUTION_NATURAL_CHECK"
         },
@@ -43,7 +52,12 @@
           "id": "bond_evolution",
           "text": "与灵宠深度沟通，以羁绊之力触发进化",
           "effects": [
-            {"type": "skill_check", "target": "relationship_pet", "operator": ">=", "value": 30}
+            {
+              "type": "skill_check",
+              "target": "relationship_pet",
+              "operator": ">=",
+              "value": 30
+            }
           ],
           "next_node": "PET_EVOLUTION_BOND_CHECK"
         }
@@ -53,19 +67,46 @@
       "id": "PET_EVOLUTION_PILL_CHECK",
       "speaker": "system",
       "text": "你将进化丹药喂给灵宠。\n\n丹药入口即化，磅礴的药力瞬间融入灵宠体内。灵宠发出一声长鸣，全身被耀眼的灵光笼罩。\n\n片刻之后，灵光散去——灵宠已成功进化！体型变得更加矫健，灵力也更加充沛。\n\n[b]结果：[/b]灵宠进化成功！\n[b]灵宠属性：[/b]全属性大幅提升\n[b]消耗：[/b]进化丹药×1",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 15
+        }
+      ]
     },
     {
       "id": "PET_EVOLUTION_NATURAL_CHECK",
       "speaker": "system",
       "text": "你选择让灵宠顺应天道，自然完成进化。\n\n灵宠周身灵气如潮水般涌动，进化过程颇为艰难。在关键时刻，灵气突然失控……\n\n[b]（若判定成功）[/b]\n灵宠顶住了进化的压力，完成了蜕变！虽然没有丹药辅助，但自然进化的灵宠根基更加扎实。\n[b]结果：[/b]灵宠自然进化成功！根基更加稳固\n\n[b]（若判定失败）[/b]\n灵宠未能承受进化的压力，灵气溃散，修为倒退了一个小境界。\n[b]结果：[/b]进化失败，灵宠修为倒退\n[b]道心：[/b]-3（未能护住灵宠）",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": -3
+        },
+        {
+          "type": "give_exp",
+          "value": 20
+        }
+      ]
     },
     {
       "id": "PET_EVOLUTION_BOND_CHECK",
       "speaker": "system",
       "text": "你将灵宠轻轻抱在怀中，闭上眼睛，将自身灵力缓缓注入灵宠体内。\n\n你们的心意在灵力中交融，多年的羁绊化为最纯净的力量。灵宠感受到了你毫无保留的信任与关爱。\n\n一道温暖的光芒从你们之间绽放，灵宠在羁绊的引导下顺利完成了进化。\n\n进化后的灵宠与你的默契度大幅提升，甚至能通过心灵感应与你交流。\n\n[b]结果：[/b]灵宠羁绊进化成功！\n[b]灵宠属性：[/b]全属性提升，默契度大幅提升\n[b]解锁：[/b]灵宠心灵感应能力",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "give_exp",
+          "value": 25
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_essence",
+          "value": 1
+        }
+      ]
     }
   ]
 }

@@ -27,7 +27,12 @@
           "id": "observe",
           "text": "保持冷静，观察幻境的变化规律",
           "effects": [
-            {"type": "skill_check", "target": "willpower", "operator": ">=", "value": 15}
+            {
+              "type": "skill_check",
+              "target": "willpower",
+              "operator": ">=",
+              "value": 15
+            }
           ],
           "next_node": "ILLUSION_OBSERVE_CHECK"
         },
@@ -35,7 +40,10 @@
           "id": "embrace",
           "text": "主动走入渴望之镜，直面内心执念",
           "effects": [
-            {"type": "dao_heart_change", "value": -5}
+            {
+              "type": "dao_heart_change",
+              "value": -5
+            }
           ],
           "next_node": "ILLUSION_EMBRACE_CHOICE"
         },
@@ -43,7 +51,12 @@
           "id": "break_free",
           "text": "以自身修为强行破除幻境",
           "effects": [
-            {"type": "skill_check", "target": "cultivation", "operator": ">=", "value": 16}
+            {
+              "type": "skill_check",
+              "target": "cultivation",
+              "operator": ">=",
+              "value": 16
+            }
           ],
           "next_node": "ILLUSION_BREAK_CHECK"
         }
@@ -59,7 +72,22 @@
       "id": "ILLUSION_OBSERVE_RESULT",
       "speaker": "system",
       "text": "[b]意志坚定：[/b]你识破了幻境的核心机制。\n\n两面镜子并非考验，而是机缘——记忆之镜可以帮助你看清自己的修行误区，渴望之镜则能让你提前预览突破后的境界。\n\n你在幻境中获得了宝贵的领悟。\n\n[b]道心：[/b]+15\n[b]修为感悟：[/b]境界突破概率提升",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 15
+        },
+        {
+          "type": "give_exp",
+          "value": 25
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_crystal",
+          "value": 1
+        }
+      ]
     },
     {
       "id": "ILLUSION_EMBRACE_CHOICE",
@@ -76,7 +104,10 @@
           "id": "let_go",
           "text": "明白这是幻象，主动放下执念",
           "effects": [
-            {"type": "dao_heart_change", "value": 12}
+            {
+              "type": "dao_heart_change",
+              "value": 12
+            }
           ],
           "next_node": "ILLUSION_LET_GO"
         },
@@ -84,8 +115,14 @@
           "id": "stay",
           "text": "沉溺于幻境之中，不愿醒来",
           "effects": [
-            {"type": "dao_heart_change", "value": -15},
-            {"type": "time_advance", "value": 30}
+            {
+              "type": "dao_heart_change",
+              "value": -15
+            },
+            {
+              "type": "time_advance",
+              "value": 30
+            }
           ],
           "next_node": "ILLUSION_STAY"
         }
@@ -95,13 +132,33 @@
       "id": "ILLUSION_LET_GO",
       "speaker": "system",
       "text": "你看着镜中的美好画面，轻声道：\"这些都是假的。\"\n\n幻境开始崩塌，但你的道心却因此变得更加纯粹。\n\n[b]道心：[/b]+12\n[b]境界：[/b]心境突破",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 12
+        },
+        {
+          "type": "give_exp",
+          "value": 30
+        }
+      ]
     },
     {
       "id": "ILLUSION_STAY",
       "speaker": "system",
       "text": "你沉浸在幻境的美好中，不知过了多久...\n\n等你终于清醒过来时，发现外界已经过去了很长时间。\n\n虽然从幻境中脱身，但你的道心因此受到了损伤。\n\n[b]道心：[/b]-15\n[b]时间流逝：[/b]30分钟",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": -15
+        },
+        {
+          "type": "give_exp",
+          "value": 15
+        }
+      ]
     },
     {
       "id": "ILLUSION_BREAK_CHECK",
@@ -113,7 +170,22 @@
       "id": "ILLUSION_BREAK_RESULT",
       "speaker": "system",
       "text": "[b]破除成功：[/b]你以强大的修为之力将幻境撕裂，重新回到了现实世界。\n\n虽然方式粗暴，但你的修为因此得到了一次淬炼。\n\n[b]修为：[/b]灵力小幅提升\n[b]道心：[/b]+5",
-      "next_node": "END"
+      "next_node": "END",
+      "effects": [
+        {
+          "type": "dao_heart_change",
+          "value": 5
+        },
+        {
+          "type": "give_exp",
+          "value": 35
+        },
+        {
+          "type": "item_give",
+          "target": "spirit_essence",
+          "value": 1
+        }
+      ]
     }
   ]
 }
