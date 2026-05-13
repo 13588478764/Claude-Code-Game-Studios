@@ -236,7 +236,9 @@ func _populate_skill_list() -> void:
 				has_energy = player_unit.current_internal_energy >= int(ma.cost_mana)
 
 			var btn := Button.new()
-			btn.text = "%s (内力:%d 威力:%d)" % [ma.name, int(ma.cost_mana), int(ma.base_damage)]
+			var grade_str: String = ma.grade if ma.grade else ""
+			var elem_str: String = (" " + ma.element_type) if (ma.element_type and ma.element_type != "无") else ""
+			btn.text = "%s [%s%s] (内力:%d 威力:%d)" % [ma.name, grade_str, elem_str, int(ma.cost_mana), int(ma.base_damage)]
 			btn.custom_minimum_size = Vector2(200, 36)
 			btn.disabled = not has_energy
 			if not has_energy:

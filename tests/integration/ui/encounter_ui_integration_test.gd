@@ -303,24 +303,32 @@ func test_complete_encounter_flow():
 	# Given: 角色福缘为50
 	character_system.attributes.luck = 50
 	var initial_points = character_system.total_attribute_points
-	
+
 	# When: 完整的奇遇流程
 	# 1. 触发奇遇（保证成功）
 	var result = encounter_integration.trigger_encounter_with_integration(1.0, "test_complete_001")
 	await wait_physics_frames(1)
-	
+
 	# Then: 奇遇应该触发
 	assert_true(result["triggered"], "Encounter should trigger")
 	assert_not_null(result["encounter_type"], "Should have encounter type")
-	
+
+	# 奖励由UI"接受"按钮触发（trigger_encounter_with_integration 不再自动发放）
+	# 模拟玩家点击接受按钮
+	encounter_ui.current_encounter_data = {
+		"encounter_type": result["encounter_type"],
+		"id": "test_complete_001"
+	}
+	encounter_ui._on_accept_button_pressed()
+	await wait_physics_frames(1)
+
 	# 验证奖励已发放（根据奇遇类型）
-	# 注意：由于奇遇类型是随机的，我们只验证某些数据发生了变化
 	var data_changed = (
 		character_system.total_attribute_points > initial_points or
 		character_system.experience > 0 or
 		character_system.total_talent_points > 1
 	)
-	assert_true(data_changed, "Some character data should have changed")
+	assert_true(data_changed, "Some character data should have changed after accepting")
 
 func test_ui_responds_to_encounter_integration_signals():
 	# Given: UI已初始化

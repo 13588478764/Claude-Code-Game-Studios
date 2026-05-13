@@ -231,6 +231,9 @@ var _game_events: Node = null
 ## 回合计数器（用于 GameEvents 信号）
 var _turn_counter: int = 0
 
+## 本场战斗中使用过的武学 ID（战后批量提升熟练度）
+var _used_martial_arts: Array[String] = []
+
 # ============================================================================
 # 生命周期方法
 # ============================================================================
@@ -335,6 +338,7 @@ func _reset_battle_state() -> void:
 	action_queue.clear()
 	battle_log.clear()
 	_turn_counter = 0
+	_used_martial_arts.clear()
 
 ## 初始化战斗单位
 ## @param units: 参战单位数组
@@ -421,7 +425,8 @@ func _calculate_battle_result() -> Dictionary:
 	return {
 		"victory": player_alive,
 		"winner": alive_units,
-		"battle_log": battle_log.duplicate()
+		"battle_log": battle_log.duplicate(),
+		"used_martial_arts": _used_martial_arts.duplicate(),
 	}
 
 # ============================================================================
@@ -549,9 +554,14 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 	user.link_gauge = min(max_link_gauge, user.link_gauge + skill_link_gauge_increase)
 	unit_resource_changed.emit(user, "link_gauge", old_link, user.link_gauge)
 	
+	# 记录使用的武学 ID（用于战后熟练度提升）
+	var ma_id: String = skill_data.get("martial_art_id", "")
+	if not ma_id.is_empty() and not _used_martial_arts.has(ma_id):
+		_used_martial_arts.append(ma_id)
+
 	# 记录战斗日志
 	_log_battle_action("%s 使用了技能 %s" % [_unit_name(user), skill_data.get("name", "未知技能")])
-	
+
 	return {
 		"success": true,
 		"type": "skill",
@@ -619,7 +629,7 @@ func _calculate_damage_fallback(attacker: BattleUnit, target: BattleUnit, attack
 func set_damage_calculator(calc: DamageCalculator) -> void:
 	_damage_calculator = calc
 
-## 应用技能效果
+## 应用技能效果（支持 MartialArtsSystem 熟练度加成）
 ## @param user: 使用者战斗单位
 ## @param skill_data: 技能数据字典
 ## @return 技能效果字典
@@ -630,18 +640,30 @@ func apply_skill_effect(user: BattleUnit, skill_data: Dictionary) -> Dictionary:
 
 	var target: BattleUnit = battle_units[target_idx]
 	var power: int = skill_data.get("power", 1)
-
 	var attack_attr: int = user.attributes.get("force", 10)
 	var defend_attr: int = target.attributes.get("constitution", 0)
-	var damage: int = max(1, power + attack_attr - defend_attr / 3)
+
+	# 基础伤害 = 武学威力 + 力道属性 - 目标防御/3
+	var damage: float = float(max(1, power + attack_attr - defend_attr / 3))
+
+	# 从 MartialArtsSystem 读取熟练度加成（每级 +2%）
+	var ma_id: String = skill_data.get("martial_art_id", "")
+	var martial_sys: Node = get_node_or_null("/root/MartialArtsSystem")
+	if martial_sys and not ma_id.is_empty():
+		var ma_data = martial_sys.get_player_martial_art(ma_id)
+		if ma_data:
+			var prof_bonus: float = 1.0 + ma_data.proficiency_level * 0.02
+			damage *= prof_bonus
+
+	var final_damage: int = max(1, int(damage))
 
 	var old_hp: int = target.current_hp
-	target.current_hp = max(0, target.current_hp - damage)
+	target.current_hp = max(0, target.current_hp - final_damage)
 	unit_hp_changed.emit(target, old_hp, target.current_hp)
 
-	_log_battle_action("%s 的技能对 %s 造成了 %d 点伤害 (剩余HP: %d/%d)" % [_unit_name(user), _unit_name(target), damage, target.current_hp, target.max_hp])
+	_log_battle_action("%s 的技能对 %s 造成了 %d 点伤害 (剩余HP: %d/%d)" % [_unit_name(user), _unit_name(target), final_damage, target.current_hp, target.max_hp])
 
-	return {"type": "skill_effect", "damage": damage, "target_hp_left": target.current_hp}
+	return {"type": "skill_effect", "damage": final_damage, "target_hp_left": target.current_hp}
 
 # ============================================================================
 # 资源管理

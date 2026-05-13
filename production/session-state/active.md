@@ -1,15 +1,15 @@
 # Session State - Active Story
 
-## Current Session — 奇遇数据清理与物品定义补全
+## Current Session — Sprint 4 Must Have 全部完成
 
 **Date**: 2026-05-13
-**Story**: 修复奇遇效果错误数据，补全物品定义
+**Story**: Sprint 4 Must Have 三项任务
 **Status**: Complete
 **Mode**: 用户授权自主执行
 
 <!-- STATUS -->
-Epic: 奇遇系统
-Feature: 奇遇效果数据修复
+Epic: Sprint 4
+Feature: Must Have 任务
 Task: 全部完成
 <!-- /STATUS -->
 
@@ -17,26 +17,31 @@ Task: 全部完成
 
 | # | 任务 | 状态 | 说明 |
 |---|------|------|------|
-| 1 | 修复6个错误的数字目标 | 已完成 | 5个文件中的item_give target为数字而非物品ID |
-| 2 | 删除调试日志 | 已完成 | game_loop_manager.gd 中的奇遇检定debug print |
-| 3 | 补全42个物品定义 | 已完成 | items.json 从17增至59条 |
+| s4-01 | 武学技能接入战斗 | 已完成 | CombatManager 接入熟练度加成，战后自动提升武学熟练度 |
+| s4-03 | 任务日志UI面板 | 已完成 | Sprint 3 已实现，验证通过无需修改 |
+| s4-05 | 测试回归修复 | 已完成 | 修复 encounter_ui_integration_test 中奖励解耦回归 |
+| s4-02 | 奇遇事件接入探索循环 | 已完成 | （之前完成） |
+| s4-04 | 多存档槽位UI | 已完成 | （之前完成） |
 
 ### 修改文件
 
-- `data/encounters/05_cultivation_conflict.json` — 删除错误的item_give(5)，保留reputation_change
-- `data/encounters/06_ancient_memory.json` — 删除错误的item_give(10)，保留give_exp
-- `data/encounters/10_mystery_merchant.json` — 替换item_give(20)为set_flag(merchant_discount)
-- `data/encounters/11_cultivation_bottleneck.json` — 删除item_give(30)，添加item_consume(qi_gathering_pill)
-- `data/encounters/18_ancient_battlefield.json` — 修正item_give target "1"→"broken_flying_sword"
-- `src/scripts/core/game_loop_manager.gd` — 删除奇遇检定调试日志
-- `src/data/items.json` — 添加42个新物品（丹药、灵草、功法残卷、法宝、任务物品）
+- `src/scripts/combat/combat_manager.gd` — 添加 _used_martial_arts 跟踪，apply_skill_effect 接入熟练度
+- `src/scripts/core/game_loop_manager.gd` — 战后武学熟练度分发
+- `src/scripts/ui/combat_action_panel.gd` — 技能按钮显示品阶/属性
+- `tests/integration/ui/encounter_ui_integration_test.gd` — 修复 test_complete_encounter_flow
+- `production/sprint-status.yaml` — 更新 s4-01/s4-03/s4-05 为 done
+
+### Sprint 4 状态
+
+- Must Have: 5/5 完成
+- Should Have: 0/3 完成
+- Nice to Have: 0/3 完成
 
 ---
 
-## Previous Session — Sprint 4 全部完成
+## Previous Session — 奇遇数据清理与物品定义补全
 
 **Date**: 2026-05-13
-**Story**: Sprint 4 全部 story 自主实现
 **Status**: Complete
 
 ---

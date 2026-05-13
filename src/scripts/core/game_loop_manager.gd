@@ -459,6 +459,7 @@ func _on_combat_ended(victory: bool, result: Dictionary) -> void:
 	var reward_data := {}
 	if victory and not fled:
 		reward_data = _calculate_rewards()
+		reward_data["used_martial_arts"] = result.get("used_martial_arts", [])
 		_distribute_rewards(reward_data)
 	else:
 		reward_data = {"victory": false, "exp": 0, "silver": 0}
@@ -521,7 +522,15 @@ func _distribute_rewards(rewards: Dictionary) -> void:
 		for drop in drops:
 			inv.add_item(drop.item_id, drop.count)
 
-	print("[GameLoopManager] 奖励分发: 经验 %d, 银两 %d, 掉落 %d 种" % [rewards.get("exp", 0), rewards.get("silver", 0), drops.size()])
+	# 武学熟练度提升（战斗中使用过的武学各获得 1 点熟练度）
+	var used_arts: Array = rewards.get("used_martial_arts", [])
+	var martial = get_node_or_null("/root/MartialArtsSystem")
+	if martial and not used_arts.is_empty():
+		for ma_id in used_arts:
+			martial.increase_proficiency(ma_id, 1)
+		rewards["proficiency_ups"] = used_arts.size()
+
+	print("[GameLoopManager] 奖励分发: 经验 %d, 银两 %d, 掉落 %d 种, 武学熟练 %d 种" % [rewards.get("exp", 0), rewards.get("silver", 0), drops.size(), used_arts.size()])
 
 # ============================================================================
 # 状态管理

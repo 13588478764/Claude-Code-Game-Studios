@@ -637,11 +637,12 @@ stories:
   name: 武学技能接入战斗
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: Gameplay Programmer
   estimate_days: 2
   blocker: ''
-  completed: ''
+  completed: '2026-05-13'
+  notes: CombatManager接入MartialArtsSystem熟练度加成，战后自动提升武学熟练度，技能按钮显示品阶/属性
 - id: s4-02
   name: 奇遇事件接入探索循环
   file: ''
@@ -656,11 +657,12 @@ stories:
   name: 任务日志UI面板
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: UI Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-13'
+  notes: 已完整实现（Sprint 3完成），J键开关、标签页切换、任务详情显示均正常
 - id: s4-04
   name: 多存档槽位UI
   file: ''
@@ -675,11 +677,12 @@ stories:
   name: 测试回归修复
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: QA/Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-13'
+  notes: 修复encounter_ui_integration_test中奖励解耦后的回归断言（模拟Accept按钮点击）
 - id: s4-06
   name: 战斗结算面板
   file: ''
