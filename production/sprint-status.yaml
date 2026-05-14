@@ -743,3 +743,111 @@ stories:
   blocker: ''
   completed: '2026-05-14'
   notes: MartialArtsComboSystem接入CombatManager.execute_skill()，协同伤害倍率/内力回流/连携槽/UI提示
+---
+sprint: 5
+goal: 实现角色关系系统的完整游戏循环：礼物系统、对话集成、事件触发、关系UI
+start: '2026-05-14'
+end: '2026-05-28'
+generated: '2026-05-14'
+updated: '2026-05-14'
+stories:
+- id: s5-01
+  name: NPC数据配置
+  file: ''
+  priority: must-have
+  status: done
+  owner: Game Designer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-14'
+  notes: 6个核心NPC(npcs.json)+9个礼物物品(items.json)+RelationshipManager NPC数据库加载
+- id: s5-02
+  name: 礼物系统实现
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 2
+  blocker: ''
+  completed: '2026-05-14'
+  notes: give_gift/can_give_gift/freshness计算/生日加成/每日限制/save_data集成
+- id: s5-03
+  name: 对话系统集成
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 1.5
+  blocker: ''
+  completed: '2026-05-14'
+  notes: GameManager占位替换为Engine.get_main_loop().root实际访问，relationship/dao_heart条件和效果接通，npc_yunzhonghe.json对话文件创建
+- id: s5-04
+  name: 存档系统集成
+  file: ''
+  priority: must-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-14'
+  notes: SaveSystem._collect_save_data/restore接入RelationshipManager.save_data/load_data
+- id: s5-05
+  name: 关系系统单元测试
+  file: ''
+  priority: must-have
+  status: done
+  owner: QA/Programmer
+  estimate_days: 1.5
+  blocker: ''
+  completed: '2026-05-14'
+  notes: 3个测试文件共~50个用例：relationship_system_test(25)、gift_system_test(18)、npc_data_validation_test(8)
+- id: s5-06
+  name: 关系事件触发系统
+  file: ''
+  priority: should-have
+  status: done
+  owner: Gameplay Programmer
+  estimate_days: 2
+  blocker: ''
+  completed: '2026-05-14'
+  notes: relationship_event_system.gd(事件注册/阈值检查/触发标记/save_load)+22个默认事件+SaveSystem集成+12个测试
+- id: s5-07
+  name: 关系UI面板
+  file: ''
+  priority: should-have
+  status: done
+  owner: UI Programmer
+  estimate_days: 1.5
+  blocker: ''
+  completed: '2026-05-14'
+  notes: relationship_panel.gd+tscn，R键开关，NPC列表/进度条/等级颜色/道心指示器，面板互斥，挂载到MainGameUI
+- id: s5-08
+  name: 结局判定系统
+  file: ''
+  priority: nice-to-have
+  status: done
+  owner: Systems Designer
+  estimate_days: 1
+  blocker: ''
+  completed: '2026-05-14'
+  notes: ending_determination.gd(4结局+默认，优先级判定，tolerance调节)+15个测试
+- id: s5-09
+  name: 战斗系统GDD同步
+  file: ''
+  priority: nice-to-have
+  status: done
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-14'
+  notes: combat-system.md状态更新为Approved，补充Sprint 4实现同步记录
+- id: s5-10
+  name: 角色成长系统GDD同步
+  file: ''
+  priority: nice-to-have
+  status: done
+  owner: Architecture
+  estimate_days: 0.5
+  blocker: ''
+  completed: '2026-05-14'
+  notes: character-progression-system.md状态更新为Approved，补充Sprint 1-3实现同步记录

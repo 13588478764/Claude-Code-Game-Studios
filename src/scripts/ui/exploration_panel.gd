@@ -35,6 +35,7 @@ const HOTKEY_MAP: Dictionary = {
 	KEY_F1: "help",
 	KEY_C: "character",
 	KEY_J: "quest_log",
+	KEY_R: "relationship",
 }
 
 ## 面板节点引用
@@ -89,6 +90,7 @@ func _init_panels() -> void:
 		_panels["world_map"] = hud_layer.get_node_or_null("WorldMap")
 		_panels["help"] = hud_layer.get_node_or_null("HelpPanel")
 		_panels["quest_log"] = hud_layer.get_node_or_null("QuestLogPanel")
+		_panels["relationship"] = hud_layer.get_node_or_null("RelationshipPanel")
 
 	var main_ui = get_node_or_null("/root/MainGameUI")
 	if main_ui:
@@ -124,6 +126,10 @@ func _connect_panel_close_signals() -> void:
 	var quest_log = _panels.get("quest_log")
 	if quest_log and quest_log.has_signal("quest_log_closed"):
 		quest_log.quest_log_closed.connect(func(): _on_panel_closed())
+
+	var relationship = _panels.get("relationship")
+	if relationship and relationship.has_signal("relationship_panel_closed"):
+		relationship.relationship_panel_closed.connect(func(): _on_panel_closed())
 
 	var character = _panels.get("character")
 	if character and character is CanvasItem:
@@ -192,6 +198,8 @@ func _open_panel(panel_key: String) -> void:
 			panel.open_panel()
 		"quest_log":
 			panel.open_panel()
+		"relationship":
+			panel.open_panel()
 		"character":
 			panel.visible = true
 
@@ -221,6 +229,8 @@ func _close_active_panel() -> void:
 		"help":
 			panel.close_panel()
 		"quest_log":
+			panel.close_panel()
+		"relationship":
 			panel.close_panel()
 		"character":
 			panel.visible = false

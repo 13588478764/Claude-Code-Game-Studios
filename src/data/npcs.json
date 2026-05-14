@@ -1,0 +1,98 @@
+{
+  "yunzhonghe": {
+    "id": "yunzhonghe",
+    "name": "云中鹤",
+    "title": "青云剑仙",
+    "alignment": "righteous",
+    "sect": "青云门",
+    "gift_preferences": {
+      "loves": ["ancient_sword", "sword_manual"],
+      "likes": ["tea", "calligraphy", "wine"],
+      "dislikes": ["cheap_jewelry"]
+    },
+    "birthday": 88,
+    "dialogue_node_ref": "npc_yunzhonghe",
+    "initial_relationship": 5,
+    "is_romance_candidate": false
+  },
+  "liuruyan": {
+    "id": "liuruyan",
+    "name": "柳如烟",
+    "title": "翠微仙子",
+    "alignment": "righteous",
+    "sect": "翠微宫",
+    "gift_preferences": {
+      "loves": ["jade_pendant", "poetry_book"],
+      "likes": ["flowers", "tea", "calligraphy"],
+      "dislikes": ["cheap_jewelry", "wine"]
+    },
+    "birthday": 215,
+    "dialogue_node_ref": "npc_liuruyan",
+    "initial_relationship": 0,
+    "is_romance_candidate": true
+  },
+  "xuanjizhenren": {
+    "id": "xuanjizhenren",
+    "name": "玄机真人",
+    "title": "天机阁主",
+    "alignment": "righteous",
+    "sect": "天机阁",
+    "gift_preferences": {
+      "loves": ["calligraphy", "poetry_book"],
+      "likes": ["tea", "sword_manual"],
+      "dislikes": ["cheap_jewelry", "wine"]
+    },
+    "birthday": 42,
+    "dialogue_node_ref": "npc_xuanjizhenren",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "xiaohanye": {
+    "id": "xiaohanye",
+    "name": "萧寒夜",
+    "title": "万魔少主",
+    "alignment": "evil",
+    "sect": "万魔宗",
+    "gift_preferences": {
+      "loves": ["ancient_sword", "wine"],
+      "likes": ["sword_manual", "tea"],
+      "dislikes": ["flowers", "poetry_book"]
+    },
+    "birthday": 300,
+    "dialogue_node_ref": "npc_xiaohanye",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "xuewuhen": {
+    "id": "xuewuhen",
+    "name": "血无痕",
+    "title": "血刹教主",
+    "alignment": "evil",
+    "sect": "血刹教",
+    "gift_preferences": {
+      "loves": ["ancient_sword", "sword_manual"],
+      "likes": ["wine"],
+      "dislikes": ["flowers", "poetry_book", "calligraphy"]
+    },
+    "birthday": 177,
+    "dialogue_node_ref": "npc_xuewuhen",
+    "initial_relationship": -10,
+    "is_romance_candidate": false
+  },
+  "murongxue": {
+    "id": "murongxue",
+    "name": "慕容雪",
+    "title": "逍遥散人",
+    "alignment": "neutral",
+    "sect": "无门无派",
+    "gift_preferences": {
+      "loves": ["jade_pendant", "flowers"],
+      "likes": ["poetry_book", "tea", "calligraphy"],
+      "dislikes": ["cheap_jewelry"]
+    },
+    "birthday": 133,
+    "dialogue_node_ref": "npc_murongxue",
+    "initial_relationship": 0,
+    "is_romance_candidate": true
+  }
+}

@@ -8,12 +8,21 @@ signal relationship_level_changed(npc_id: String, old_level: RelationshipData.Re
 signal dao_heart_changed(old_value: int, new_value: int)
 signal dao_heart_level_changed(old_level: RelationshipData.DaoHeartLevel, new_level: RelationshipData.DaoHeartLevel)
 signal dao_heart_extreme_change()
+signal gift_given(npc_id: String, item_id: String, relationship_gain: int)
+
+const NPC_DATA_PATH: String = "res://src/data/npcs.json"
+
+## NPC静态数据库 {npc_id: Dictionary}（从npcs.json加载）
+var _npc_database: Dictionary = {}
 
 ## NPC关系数据字典 {npc_id: NPCRelationship}
 var _npc_relationships: Dictionary = {}
 
 ## 玩家道心数据
 var _player_dao_heart: RelationshipData.PlayerDaoHeart = null
+
+## 礼物赠送记录 {npc_id: {last_gift_day: int, consecutive_gifts: int, total_gifts: int}}
+var _gift_history: Dictionary = {}
 
 ## 关系变化历史
 var _relationship_history: Array[RelationshipData.RelationshipChangeEvent] = []
@@ -32,6 +41,9 @@ var current_game_day: int = 0
 
 func _init() -> void:
 	_player_dao_heart = RelationshipData.PlayerDaoHeart.new(0)
+
+func _ready() -> void:
+	_load_npc_database()
 
 ## 获取或创建NPC关系
 func get_or_create_relationship(npc_id: String) -> RelationshipData.NPCRelationship:
@@ -201,6 +213,121 @@ func get_shop_discount(npc_id: String) -> float:
 		_:
 			return 0.0  # 无折扣
 
+## ============================================================================
+## 礼物系统
+## ============================================================================
+
+## 赠送礼物给NPC，返回结果字典 {success, gain, reason, preference}
+func give_gift(npc_id: String, item_id: String) -> Dictionary:
+	var result := {"success": false, "gain": 0, "reason": "", "preference": "normal"}
+
+	# 检查NPC是否存在
+	if not _npc_database.has(npc_id):
+		result.reason = "NPC不存在"
+		return result
+
+	# 检查每日赠送限制
+	if not can_give_gift(npc_id):
+		result.reason = "今日已赠送"
+		return result
+
+	# 确定喜好等级
+	var preference := get_gift_preference_level(npc_id, item_id)
+	result.preference = preference
+
+	# 计算基础值
+	var base_value := _get_gift_base_value(preference)
+
+	# 计算新鲜度
+	var freshness := _calculate_freshness(npc_id)
+
+	# 计算生日加成
+	var birthday_bonus := 2.0 if _is_npc_birthday(npc_id) else 1.0
+
+	# GDD公式: relationship_gain = int(base_value * freshness_factor * birthday_bonus)
+	var gain := int(base_value * freshness * birthday_bonus)
+	result.gain = gain
+
+	# 应用关系值变化
+	var reason := "赠送礼物: %s" % item_id
+	if birthday_bonus > 1.0:
+		reason += " (生日加成)"
+	modify_relationship(npc_id, gain, reason)
+
+	# 更新礼物记录
+	if not _gift_history.has(npc_id):
+		_gift_history[npc_id] = {"last_gift_day": 0, "consecutive_gifts": 0, "total_gifts": 0}
+	var history: Dictionary = _gift_history[npc_id]
+	if history.last_gift_day == current_game_day - 1:
+		history.consecutive_gifts += 1
+	elif history.last_gift_day != current_game_day:
+		history.consecutive_gifts = 1
+	history.last_gift_day = current_game_day
+	history.total_gifts += 1
+
+	# 更新NPC关系数据的gifts_given
+	var rel := get_or_create_relationship(npc_id)
+	rel.gifts_given += 1
+
+	result.success = true
+	gift_given.emit(npc_id, item_id, gain)
+	return result
+
+## 检查是否可以向NPC赠送礼物（每日限制1个）
+func can_give_gift(npc_id: String) -> bool:
+	if not _gift_history.has(npc_id):
+		return true
+	return _gift_history[npc_id].last_gift_day != current_game_day
+
+## 获取物品对NPC的喜好等级
+func get_gift_preference_level(npc_id: String, item_id: String) -> String:
+	var prefs := get_npc_gift_preferences(npc_id)
+	if prefs.is_empty():
+		return "normal"
+
+	var loves: Array = prefs.get("loves", [])
+	var likes: Array = prefs.get("likes", [])
+	var dislikes: Array = prefs.get("dislikes", [])
+
+	if item_id in loves:
+		return "loves"
+	elif item_id in likes:
+		return "likes"
+	elif item_id in dislikes:
+		return "dislikes"
+	return "normal"
+
+## 获取喜好等级对应的基础关系值
+func _get_gift_base_value(preference: String) -> int:
+	match preference:
+		"loves":
+			return 15
+		"likes":
+			return 10
+		"normal":
+			return 5
+		"dislikes":
+			return -5
+		_:
+			return 5
+
+## 计算新鲜度因子 GDD公式: max(0.5, 1.0 - (consecutive_gifts * 0.17))
+func _calculate_freshness(npc_id: String) -> float:
+	if not _gift_history.has(npc_id):
+		return 1.0
+	var history: Dictionary = _gift_history[npc_id]
+	# 只有连续天数赠送才累积
+	if history.last_gift_day < current_game_day - 1:
+		return 1.0
+	return maxf(0.5, 1.0 - (history.consecutive_gifts * 0.17))
+
+## 检查当前是否为NPC生日
+func _is_npc_birthday(npc_id: String) -> bool:
+	if not _npc_database.has(npc_id):
+		return false
+	var birthday: int = _npc_database[npc_id].get("birthday", -1)
+	return birthday == current_game_day % 365
+
 ## 处理时间衰减（每游戏周调用一次）
 func process_time_decay() -> void:
 	if not enable_time_decay:
@@ -250,9 +377,10 @@ func save_data() -> Dictionary:
 			"evil_actions": _player_dao_heart.evil_actions
 		},
 		"current_game_day": current_game_day,
-		"global_multiplier": global_multiplier
+		"global_multiplier": global_multiplier,
+		"gift_history": _gift_history.duplicate(true)
 	}
-	
+
 	# 保存NPC关系
 	for npc_id in _npc_relationships.keys():
 		var rel: RelationshipData.NPCRelationship = _npc_relationships[npc_id]
@@ -295,6 +423,9 @@ func load_data(data: Dictionary) -> void:
 			rel.betrayals = rel_data.get("betrayals", 0)
 			_npc_relationships[npc_id] = rel
 	
+	# 加载礼物记录
+	_gift_history = data.get("gift_history", {})
+
 	# 加载其他数据
 	current_game_day = data.get("current_game_day", 0)
 	global_multiplier = data.get("global_multiplier", 1.0)
@@ -305,6 +436,7 @@ func reset_all() -> void:
 	_player_dao_heart = RelationshipData.PlayerDaoHeart.new(0)
 	_relationship_history.clear()
 	_dao_heart_history.clear()
+	_gift_history.clear()
 	current_game_day = 0
 	global_multiplier = 1.0
 
@@ -328,8 +460,75 @@ func _on_dao_heart_level_changed(old_level: RelationshipData.DaoHeartLevel, new_
 ## 道心极端转换回调
 func _on_dao_heart_extreme_change() -> void:
 	print("[关系系统] 道心剧变！")
-	
-	# 触发所有NPC的态度重新评估
+
+	# 触发所有NPC的态度重新评估，根据NPC立场调整关系值
 	for npc_id in _npc_relationships.keys():
-		var rel: RelationshipData.NPCRelationship = _npc_relationships[npc_id]
-		# 这里可以根据NPC立场调整关系值
+		var alignment := get_npc_alignment(npc_id)
+		if alignment == "righteous":
+			modify_relationship(npc_id, -20 if get_dao_heart_value() < 0 else 20, "道心剧变")
+		elif alignment == "evil":
+			modify_relationship(npc_id, 20 if get_dao_heart_value() < 0 else -20, "道心剧变")
+
+## ============================================================================
+## NPC 数据库
+## ============================================================================
+
+## 加载NPC静态数据
+func _load_npc_database() -> void:
+	if not FileAccess.file_exists(NPC_DATA_PATH):
+		push_warning("[关系系统] NPC数据文件不存在: %s" % NPC_DATA_PATH)
+		return
+
+	var file := FileAccess.open(NPC_DATA_PATH, FileAccess.READ)
+	if file == null:
+		push_warning("[关系系统] 无法打开NPC数据文件")
+		return
+
+	var json_text := file.get_as_text()
+	file.close()
+
+	var parsed = JSON.parse_string(json_text)
+	if parsed == null or not (parsed is Dictionary):
+		push_warning("[关系系统] NPC数据解析失败")
+		return
+
+	_npc_database = parsed
+
+	# 根据NPC初始关系值初始化关系数据
+	for npc_id in _npc_database.keys():
+		var npc_data: Dictionary = _npc_database[npc_id]
+		if not _npc_relationships.has(npc_id):
+			var initial_value: int = npc_data.get("initial_relationship", 0)
+			_npc_relationships[npc_id] = RelationshipData.NPCRelationship.new(npc_id, initial_value)
+
+	print("[关系系统] 加载了 %d 个NPC定义" % _npc_database.size())
+
+## 获取NPC静态数据
+func get_npc_data(npc_id: String) -> Dictionary:
+	if _npc_database.has(npc_id):
+		return _npc_database[npc_id].duplicate()
+	return {}
+
+## 获取NPC立场
+func get_npc_alignment(npc_id: String) -> String:
+	if _npc_database.has(npc_id):
+		return _npc_database[npc_id].get("alignment", "neutral")
+	return "neutral"
+
+## 获取NPC礼物偏好
+func get_npc_gift_preferences(npc_id: String) -> Dictionary:
+	if _npc_database.has(npc_id):
+		return _npc_database[npc_id].get("gift_preferences", {}).duplicate()
+	return {}
+
+## 获取所有NPC ID列表
+func get_all_npc_ids() -> Array[String]:
+	var ids: Array[String] = []
+	ids.assign(_npc_database.keys())
+	return ids
+
+## 检查NPC是否为恋爱候选
+func is_romance_candidate(npc_id: String) -> bool:
+	if _npc_database.has(npc_id):
+		return _npc_database[npc_id].get("is_romance_candidate", false)
+	return false

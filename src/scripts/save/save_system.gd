@@ -174,6 +174,16 @@ func _collect_save_data() -> Dictionary:
 	if encounter_loader and encounter_loader.has_method("save_data"):
 		data["encounter_data"] = encounter_loader.save_data()
 
+	# 角色关系系统
+	var relationship = get_node_or_null("/root/RelationshipManager")
+	if relationship:
+		data["relationship"] = relationship.save_data()
+
+	# 关系事件触发记录
+	var rel_events = get_node_or_null("/root/RelationshipEventSystem")
+	if rel_events and rel_events.has_method("save_data"):
+		data["relationship_events"] = rel_events.save_data()
+
 	return data
 
 
@@ -268,3 +278,13 @@ func _restore_save_data(data: Dictionary) -> void:
 	var encounter_loader = get_node_or_null("/root/EncounterDataLoader")
 	if encounter_loader and encounter_loader.has_method("load_data") and data.has("encounter_data"):
 		encounter_loader.load_data(data.encounter_data)
+
+	# 角色关系系统
+	var relationship = get_node_or_null("/root/RelationshipManager")
+	if relationship and data.has("relationship"):
+		relationship.load_data(data.relationship)
+
+	# 关系事件触发记录
+	var rel_events = get_node_or_null("/root/RelationshipEventSystem")
+	if rel_events and rel_events.has_method("load_data") and data.has("relationship_events"):
+		rel_events.load_data(data.relationship_events)

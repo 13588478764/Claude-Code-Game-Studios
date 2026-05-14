@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://help_panel_scene" path="res://src/scenes/ui/help_panel.tscn" id="17"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/combat_action_panel.tscn" id="18"]
 [ext_resource type="PackedScene" path="res://src/scenes/ui/quest_log_panel.tscn" id="19"]
+[ext_resource type="PackedScene" path="res://src/scenes/ui/relationship_panel.tscn" id="20"]
 
 [node name="MainGameUI" type="Node2D" unique_id=73997892]
 script = ExtResource("1")
@@ -154,4 +155,8 @@ visible = false
 
 ; QuestLogPanel 默认隐藏，由快捷键 J 触发
 [node name="QuestLogPanel" parent="HUDLayer" instance=ExtResource("19")]
+visible = false
+
+; RelationshipPanel 默认隐藏，由快捷键 R 触发
+[node name="RelationshipPanel" parent="HUDLayer" instance=ExtResource("20")]
 visible = false

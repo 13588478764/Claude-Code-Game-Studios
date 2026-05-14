@@ -114,30 +114,14 @@ class RelationshipCondition extends Condition:
 		target = npc_id
 		value = min_value
 		operator = op
-	
+
 	func evaluate() -> bool:
-		# 需要访问关系管理器
-		if not GameManager.has_node("RelationshipManager"):
+		var rel_manager = DialogueData._get_relationship_manager()
+		if rel_manager == null:
 			return false
-		
-		var rel_manager: RelationshipManager = GameManager.get_node("RelationshipManager")
-		var current_value := rel_manager.get_relationship_value(target)
-		
-		match operator:
-			"==":
-				return current_value == value
-			"!=":
-				return current_value != value
-			">":
-				return current_value > value
-			"<":
-				return current_value < value
-			">=":
-				return current_value >= value
-			"<=":
-				return current_value <= value
-			_:
-				return false
+
+		var current_value: int = rel_manager.get_relationship_value(target)
+		return DialogueData._compare(current_value, operator, value)
 
 ## 道心值条件
 class DaoHeartCondition extends Condition:
@@ -145,29 +129,14 @@ class DaoHeartCondition extends Condition:
 		super._init(ConditionType.DAO_HEART)
 		value = min_value
 		operator = op
-	
+
 	func evaluate() -> bool:
-		if not GameManager.has_node("RelationshipManager"):
+		var rel_manager = DialogueData._get_relationship_manager()
+		if rel_manager == null:
 			return false
-		
-		var rel_manager: RelationshipManager = GameManager.get_node("RelationshipManager")
-		var current_value := rel_manager.get_dao_heart_value()
-		
-		match operator:
-			"==":
-				return current_value == value
-			"!=":
-				return current_value != value
-			">":
-				return current_value > value
-			"<":
-				return current_value < value
-			">=":
-				return current_value >= value
-			"<=":
-				return current_value <= value
-			_:
-				return false
+
+		var current_value: int = rel_manager.get_dao_heart_value()
+		return DialogueData._compare(current_value, operator, value)
 
 ## 任务状态条件
 class QuestStatusCondition extends Condition:
@@ -237,13 +206,12 @@ class ModifyRelationshipEffect extends Effect:
 		target = npc_id
 		value = delta
 		reason = cause
-	
+
 	func execute() -> void:
-		if not GameManager.has_node("RelationshipManager"):
+		var rel_manager = DialogueData._get_relationship_manager()
+		if rel_manager == null:
 			return
-		
-		var rel_manager: RelationshipManager = GameManager.get_node("RelationshipManager")
-		rel_manager.modify_relationship(target, value, reason)
+		rel_manager.modify_relationship(target, int(value), reason)
 
 ## 修改道心值效果
 class ModifyDaoHeartEffect extends Effect:
@@ -251,13 +219,12 @@ class ModifyDaoHeartEffect extends Effect:
 		super._init(EffectType.MODIFY_DAO_HEART)
 		value = delta
 		reason = cause
-	
+
 	func execute() -> void:
-		if not GameManager.has_node("RelationshipManager"):
+		var rel_manager = DialogueData._get_relationship_manager()
+		if rel_manager == null:
 			return
-		
-		var rel_manager: RelationshipManager = GameManager.get_node("RelationshipManager")
-		rel_manager.modify_dao_heart(value, reason)
+		rel_manager.modify_dao_heart(int(value), reason)
 
 ## 解锁任务效果
 class UnlockQuestEffect extends Effect:
@@ -447,10 +414,34 @@ class DialogueTree:
 		
 		return true
 
-## GameManager占位符（实际项目中应该是自动加载的单例）
-class GameManager:
-	static func has_node(node_name: String) -> bool:
-		return false
-	
-	static func get_node(node_name: String) -> Node:
+## 通过SceneTree根节点访问Autoload单例
+static func _get_scene_root() -> Node:
+	var main_loop := Engine.get_main_loop()
+	if main_loop == null:
 		return null
+	return main_loop.root
+
+static func _get_relationship_manager():
+	var root := _get_scene_root()
+	if root == null:
+		return null
+	return root.get_node_or_null("RelationshipManager")
+
+## 比较运算辅助函数
+static func _compare(current: int, op: String, target_val: Variant) -> bool:
+	var tv: int = int(target_val)
+	match op:
+		"==":
+			return current == tv
+		"!=":
+			return current != tv
+		">":
+			return current > tv
+		"<":
+			return current < tv
+		">=":
+			return current >= tv
+		"<=":
+			return current <= tv
+		_:
+			return false

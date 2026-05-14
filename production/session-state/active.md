@@ -1,49 +1,53 @@
 # Session State - Active Story
 
-## Current Session — Sprint 4 全部完成
+## Current Session — Sprint 5 全部完成
 
 **Date**: 2026-05-14
-**Story**: Sprint 4 Should Have + Nice to Have 全部完成
+**Story**: Sprint 5 — 10/10 stories done
 **Status**: Complete
 **Mode**: 用户授权自主执行
 
 <!-- STATUS -->
-Epic: Sprint 4
-Feature: Should Have + Nice to Have
-Task: 全部完成
+Epic: 角色关系系统
+Feature: Sprint 5 完成
+Task: 无
 <!-- /STATUS -->
 
-### 执行结果
+### 已完成 (10/10)
 
 | # | 任务 | 状态 | 说明 |
 |---|------|------|------|
-| s4-06 | 战斗结算面板 | 已完成 | 验证确认：battle_result_panel.gd 已实现并挂载 |
-| s4-07 | 内力系统接入战斗UI | 已完成 | combat_action_panel 连接 unit_resource_changed 实时刷新内力条 |
-| s4-08 | 对话系统接入探索 | 已完成 | 验证确认：GameLoopManager→DialogueManager→DialogueBox 链路完整 |
-| s4-09 | ADR-006 奇遇架构审核 | 已完成 | 撰写 adr-006-encounter-system-architecture.md |
-| s4-10 | ADR-007 对话架构审核 | 已完成 | 撰写 adr-007-dialogue-system-architecture.md |
-| s4-11 | 战斗连招系统接入 | 已完成 | MartialArtsComboSystem 接入 CombatManager.execute_skill() |
+| s5-01 | NPC数据配置 | 已完成 | 6个NPC + 9个礼物物品 + RelationshipManager数据加载 |
+| s5-02 | 礼物系统实现 | 已完成 | give_gift/freshness/birthday/daily_limit/save_data |
+| s5-03 | 对话系统集成 | 已完成 | GameManager占位→Engine.root实访问，条件/效果接通，NPC对话文件 |
+| s5-04 | 存档系统集成 | 已完成 | SaveSystem._collect/_restore接入RelationshipManager+RelationshipEventSystem |
+| s5-05 | 关系系统单元测试 | 已完成 | 3个测试文件~50用例：relationship/gift/npc_data_validation |
+| s5-06 | 关系事件触发系统 | 已完成 | relationship_event_system.gd+22个默认事件+SaveSystem集成+12个测试 |
+| s5-07 | 关系UI面板 | 已完成 | relationship_panel.gd+tscn，R键开关，NPC列表/进度条/等级颜色/道心指示器 |
+| s5-08 | 结局判定系统 | 已完成 | ending_determination.gd(4结局+默认，优先级判定)+15个测试 |
+| s5-09 | 战斗系统GDD同步 | 已完成 | combat-system.md → Approved，Sprint 4实现同步 |
+| s5-10 | 角色成长GDD同步 | 已完成 | character-progression-system.md → Approved，Sprint 1-3实现同步 |
 
-### 修改文件
+### 关键文件变更
 
-- `src/scripts/ui/combat_action_panel.gd` — 连接 unit_resource_changed 信号实时刷新内力条，添加连招协同提示，skill_data 增加 tags/internal_energy_cost
-- `src/scripts/combat/combat_manager.gd` — 接入 MartialArtsComboSystem，execute_skill 增加连招处理/内力回流/协同日志，apply_skill_effect 增加 damage_multiplier 参数
-- `docs/architecture/adr-006-encounter-system-architecture.md` — 新建 ADR
-- `docs/architecture/adr-007-dialogue-system-architecture.md` — 新建 ADR
-- `production/sprint-status.yaml` — 更新 s4-06~s4-11 为 done
-
-### Sprint 4 状态
-
-- Must Have: 5/5 完成
-- Should Have: 3/3 完成
-- Nice to Have: 3/3 完成
-- **Sprint 4 全部 11/11 完成**
+- `src/scripts/relationship/relationship_manager.gd` — 礼物系统+NPC数据库
+- `src/scripts/relationship/relationship_event_system.gd` — 新建，事件触发系统
+- `src/scripts/relationship/ending_determination.gd` — 新建，结局判定
+- `src/scripts/dialogue/dialogue_data.gd` — 修复GameManager占位
+- `src/scripts/save/save_system.gd` — 集成关系+事件存档
+- `src/scripts/ui/relationship_panel.gd` — 新建，关系面板
+- `src/scripts/ui/exploration_panel.gd` — 注册R键关系面板
+- `src/scenes/main_game_ui.tscn` — 挂载RelationshipPanel
+- `design/gdd/combat-system.md` — Approved
+- `design/gdd/character-progression-system.md` — Approved
+- `tests/unit/relationship/` — 5个测试文件~95用例
 
 ---
 
-## Previous Session — Sprint 4 Must Have 全部完成
+## Previous Session — Sprint 4 全部完成
 
-**Date**: 2026-05-13
+**Date**: 2026-05-14
 **Status**: Complete
+**Sprint 4**: 11/11 完成
 
 ---

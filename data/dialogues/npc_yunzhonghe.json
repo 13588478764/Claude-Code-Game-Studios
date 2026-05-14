@@ -1,0 +1,194 @@
+{
+  "id": "npc_yunzhonghe",
+  "title": "云中鹤对话",
+  "description": "青云剑仙云中鹤的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "yunzhonghe",
+    "npc_name": "云中鹤",
+    "location": "青云门"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "yunzhonghe",
+      "text": "少侠，来青云门有何贵干？",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_sword",
+          "text": "请教前辈剑术心得",
+          "next_node": "sword_teaching",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "yunzhonghe",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_ask_news",
+          "text": "最近江湖上有什么消息？",
+          "next_node": "news"
+        },
+        {
+          "id": "choice_gift",
+          "text": "晚辈有一点薄礼...",
+          "next_node": "gift_response"
+        },
+        {
+          "id": "choice_leave",
+          "text": "告辞",
+          "next_node": "END"
+        }
+      ]
+    },
+    {
+      "id": "sword_teaching",
+      "speaker": "yunzhonghe",
+      "text": "你的剑意有所进步，不错。记住，剑道在于心正，心正则剑正。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "yunzhonghe",
+          "value": 3,
+          "reason": "请教剑术"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 2,
+          "reason": "受正道指点"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_deep_teaching",
+          "text": "请前辈传授更高深的剑法",
+          "next_node": "deep_teaching",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "yunzhonghe",
+              "value": 50,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_thank",
+          "text": "多谢前辈指点",
+          "next_node": "END"
+        }
+      ]
+    },
+    {
+      "id": "deep_teaching",
+      "speaker": "yunzhonghe",
+      "text": "既然你心意诚恳，我便将青云九式的入门心法传授于你。望你善用此术，匡扶正道。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "yunzhonghe",
+          "value": 5,
+          "reason": "传授心法"
+        },
+        {
+          "type": "skill_give",
+          "target": "qingyun_sword_basic",
+          "value": 1
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "news",
+      "speaker": "yunzhonghe",
+      "text": "听闻万魔宗近日异动频频，各派弟子外出行走须多加小心。",
+      "emotion": "serious",
+      "choices": [
+        {
+          "id": "choice_righteous_response",
+          "text": "正道弟子定当除魔卫道！",
+          "next_node": "righteous_approval",
+          "dao_heart_hint": 5
+        },
+        {
+          "id": "choice_neutral_response",
+          "text": "正邪之争，由来已久...",
+          "next_node": "neutral_response"
+        },
+        {
+          "id": "choice_evil_response",
+          "text": "魔道未必全是坏人",
+          "next_node": "evil_disapproval",
+          "conditions": [
+            {
+              "type": "dao_heart",
+              "value": 0,
+              "operator": "<="
+            }
+          ],
+          "dao_heart_hint": -3
+        }
+      ]
+    },
+    {
+      "id": "righteous_approval",
+      "speaker": "yunzhonghe",
+      "text": "好！有你这般心志，正道后继有人。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "yunzhonghe",
+          "value": 5,
+          "reason": "正道立场获得认同"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 5,
+          "reason": "表达正道立场"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "neutral_response",
+      "speaker": "yunzhonghe",
+      "text": "唉...年轻人，是非黑白不可不分。望你日后能明辨正邪。",
+      "emotion": "sad",
+      "next_node": "END"
+    },
+    {
+      "id": "evil_disapproval",
+      "speaker": "yunzhonghe",
+      "text": "此言差矣！魔道中人行事不择手段，岂能与之为伍？你需好自为之。",
+      "emotion": "angry",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "yunzhonghe",
+          "value": -5,
+          "reason": "为魔道辩护"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": -3,
+          "reason": "为魔道辩护"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "gift_response",
+      "speaker": "yunzhonghe",
+      "text": "哦？让我看看...",
+      "emotion": "curious",
+      "next_node": "END"
+    }
+  ]
+}

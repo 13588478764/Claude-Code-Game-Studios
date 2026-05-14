@@ -1,9 +1,15 @@
 # 战斗系统
 
-> **状态**: 设计中
+> **状态**: Approved
 > **作者**: 用户 + 代理
-> **最后更新**: 2026-04-28
+> **最后更新**: 2026-05-14
 > **实现支柱**: 支柱1：深度武学系统
+>
+> **Sprint 4 实现同步**:
+> - 武学技能接入战斗: CombatManager 接入 MartialArtsSystem 熟练度加成，战后自动提升武学熟练度
+> - 连招系统接入: MartialArtsComboSystem 接入 CombatManager.execute_skill()，协同伤害倍率/内力回流/连携槽
+> - 内力UI实时刷新: combat_action_panel 连接 unit_resource_changed 信号
+> - 战斗结算面板: battle_result_panel.gd 显示胜负/经验/银两/掉落/升级
 
 ## 概述
 
