@@ -630,8 +630,8 @@ goal: 深化战斗系统（接入武学/内力/连招），丰富探索内容（
 start: '2026-05-14'
 end: '2026-05-28'
 generated: '2026-05-13'
-updated: '2026-05-13'
-verified: '2026-05-13'
+updated: '2026-05-14'
+verified: '2026-05-14'
 stories:
 - id: s4-01
   name: 武学技能接入战斗
@@ -687,53 +687,59 @@ stories:
   name: 战斗结算面板
   file: ''
   priority: should-have
-  status: backlog
+  status: done
   owner: UI Programmer
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
+  notes: 已完整实现（battle_result_panel.gd），连接combat_result_ready信号，显示胜负/经验/银两/掉落/升级
 - id: s4-07
   name: 内力/气系统接入战斗UI
   file: ''
   priority: should-have
-  status: backlog
+  status: done
   owner: Gameplay Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
+  notes: combat_action_panel连接unit_resource_changed信号实时刷新内力条，内力回复日志提示
 - id: s4-08
   name: 对话系统接入探索
   file: ''
   priority: should-have
-  status: backlog
+  status: done
   owner: Gameplay Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
+  notes: 已完整实现，GameLoopManager→DialogueManager→DialogueBox链路完整，30个奇遇通过对话系统交互
 - id: s4-09
   name: ADR-006奇遇架构审核
-  file: ''
+  file: 'docs/architecture/adr-006-encounter-system-architecture.md'
   priority: nice-to-have
-  status: backlog
+  status: done
   owner: Architecture
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
+  notes: 记录EncounterDataLoader+DialogueManager复用架构
 - id: s4-10
   name: ADR-007对话架构审核
-  file: ''
+  file: 'docs/architecture/adr-007-dialogue-system-architecture.md'
   priority: nice-to-have
-  status: backlog
+  status: done
   owner: Architecture
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
+  notes: 记录DialogueManager+DialogueData+DialogueBox三层架构
 - id: s4-11
   name: 战斗连招系统接入
   file: ''
   priority: nice-to-have
-  status: backlog
+  status: done
   owner: Gameplay Programmer
   estimate_days: 1.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
+  notes: MartialArtsComboSystem接入CombatManager.execute_skill()，协同伤害倍率/内力回流/连携槽/UI提示

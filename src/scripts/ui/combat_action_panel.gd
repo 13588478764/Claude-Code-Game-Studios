@@ -60,6 +60,7 @@ func _initialize() -> void:
 		_combat_system.turn_started.connect(_on_turn_started)
 		_combat_system.action_executed.connect(_on_action_executed)
 		_combat_system.unit_hp_changed.connect(_on_unit_hp_changed)
+		_combat_system.unit_resource_changed.connect(_on_unit_resource_changed)
 
 	if _game_loop:
 		_game_loop.battle_log_updated.connect(_on_battle_log_updated)
@@ -145,10 +146,27 @@ func _on_action_executed(result: Dictionary) -> void:
 				_add_log_line("你使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
 			else:
 				_add_log_line("敌人使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
+			var synergy_name: String = result.get("synergy_name", "")
+			if synergy_name != "":
+				var multiplier: float = result.get("damage_multiplier", 1.0)
+				_add_log_line("✨ 协同效果 [%s]！伤害 x%.1f" % [synergy_name, multiplier])
 
 
 func _on_unit_hp_changed(_unit, _old_hp: int, _new_hp: int) -> void:
 	_refresh_hp_display()
+
+
+func _on_unit_resource_changed(unit, resource_type: String, old_value: int, new_value: int) -> void:
+	if resource_type != "internal_energy":
+		return
+	if not _is_player_unit(unit):
+		return
+	_player_mp_bar.max_value = unit.max_internal_energy
+	_player_mp_bar.value = unit.current_internal_energy
+	_player_mp_label.text = "内力  %d / %d" % [unit.current_internal_energy, unit.max_internal_energy]
+	var delta: int = new_value - old_value
+	if delta > 0:
+		_add_log_line("内力回复 +%d" % delta)
 
 
 func _on_battle_log_updated(message: String) -> void:
@@ -250,6 +268,8 @@ func _populate_skill_list() -> void:
 				"cost": int(ma.cost_mana),
 				"power": int(ma.base_damage),
 				"martial_art_id": ma.id,
+				"tags": [ma.element_type] if ma.element_type and ma.element_type != "无" else [],
+				"internal_energy_cost": float(ma.cost_mana),
 			}
 			btn.pressed.connect(_on_skill_selected.bind(skill_data))
 			_skill_list_box.add_child(btn)

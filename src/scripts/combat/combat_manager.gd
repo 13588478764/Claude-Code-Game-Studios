@@ -234,6 +234,9 @@ var _turn_counter: int = 0
 ## 本场战斗中使用过的武学 ID（战后批量提升熟练度）
 var _used_martial_arts: Array[String] = []
 
+## 武学连招系统
+var _combo_system: MartialArtsComboSystem = null
+
 # ============================================================================
 # 生命周期方法
 # ============================================================================
@@ -262,6 +265,10 @@ func _initialize_dependencies() -> void:
 	if has_node("/root/GameEvents"):
 		_game_events = get_node("/root/GameEvents")
 	
+	# 初始化连招系统
+	_combo_system = MartialArtsComboSystem.new()
+	add_child(_combo_system)
+
 	# 连接战斗信号到 GameEvents（如果可用）
 	_connect_global_signals()
 
@@ -339,6 +346,8 @@ func _reset_battle_state() -> void:
 	battle_log.clear()
 	_turn_counter = 0
 	_used_martial_arts.clear()
+	if _combo_system:
+		_combo_system.reset_combo_state()
 
 ## 初始化战斗单位
 ## @param units: 参战单位数组
@@ -546,14 +555,36 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 	user.current_internal_energy -= skill_cost
 	unit_resource_changed.emit(user, "internal_energy", old_energy, user.current_internal_energy)
 	
-	# 根据技能类型执行不同效果
-	var effect_result: Dictionary = apply_skill_effect(user, skill_data)
-	
-	# 更新连携槽
+	# 连招系统处理
+	var combo_result: Dictionary = {}
+	var damage_multiplier: float = 1.0
+	if _combo_system:
+		var tags: Array = skill_data.get("tags", [])
+		var target_idx: int = skill_data.get("target_index", -1)
+		var target_status: Array = []
+		if target_idx >= 0 and target_idx < battle_units.size():
+			target_status = battle_units[target_idx].attributes.get("status_effects", [])
+		combo_result = _combo_system.process_skill_usage(skill_data, target_status)
+		damage_multiplier = combo_result.get("damage_multiplier", 1.0)
+
+		# 内力回流
+		var refund: int = int(combo_result.get("internal_energy_refund", 0.0))
+		if refund > 0:
+			var pre_energy: int = user.current_internal_energy
+			user.current_internal_energy = min(user.max_internal_energy, user.current_internal_energy + refund)
+			if user.current_internal_energy != pre_energy:
+				unit_resource_changed.emit(user, "internal_energy", pre_energy, user.current_internal_energy)
+
+	# 根据技能类型执行不同效果（含连招伤害加成）
+	var effect_result: Dictionary = apply_skill_effect(user, skill_data, damage_multiplier)
+
+	# 更新连携槽（连招系统增量 + 基础增量取较大值）
+	var link_change: int = combo_result.get("link_gauge_change", 0)
+	var total_link_increase: int = max(skill_link_gauge_increase, link_change)
 	var old_link: int = user.link_gauge
-	user.link_gauge = min(max_link_gauge, user.link_gauge + skill_link_gauge_increase)
+	user.link_gauge = min(max_link_gauge, user.link_gauge + total_link_increase)
 	unit_resource_changed.emit(user, "link_gauge", old_link, user.link_gauge)
-	
+
 	# 记录使用的武学 ID（用于战后熟练度提升）
 	var ma_id: String = skill_data.get("martial_art_id", "")
 	if not ma_id.is_empty() and not _used_martial_arts.has(ma_id):
@@ -561,15 +592,21 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 
 	# 记录战斗日志
 	_log_battle_action("%s 使用了技能 %s" % [_unit_name(user), skill_data.get("name", "未知技能")])
+	if combo_result.get("synergy_triggered", false):
+		_log_battle_action("协同效果 [%s] 触发！伤害 x%.1f" % [combo_result.get("synergy_name", ""), damage_multiplier])
 
-	return {
+	var result: Dictionary = {
 		"success": true,
 		"type": "skill",
 		"skill_name": skill_data.get("name", "未知技能"),
 		"damage_dealt": effect_result.get("damage", 0),
 		"target_hp_left": effect_result.get("target_hp_left", 0),
-		"effect": effect_result
+		"effect": effect_result,
 	}
+	if combo_result.get("synergy_triggered", false):
+		result["synergy_name"] = combo_result.get("synergy_name", "")
+		result["damage_multiplier"] = damage_multiplier
+	return result
 
 # ============================================================================
 # 伤害计算
@@ -633,7 +670,7 @@ func set_damage_calculator(calc: DamageCalculator) -> void:
 ## @param user: 使用者战斗单位
 ## @param skill_data: 技能数据字典
 ## @return 技能效果字典
-func apply_skill_effect(user: BattleUnit, skill_data: Dictionary) -> Dictionary:
+func apply_skill_effect(user: BattleUnit, skill_data: Dictionary, damage_multiplier: float = 1.0) -> Dictionary:
 	var target_idx: int = skill_data.get("target_index", -1)
 	if target_idx < 0 or target_idx >= battle_units.size():
 		return {"type": "skill_effect", "damage": 0}
@@ -654,6 +691,9 @@ func apply_skill_effect(user: BattleUnit, skill_data: Dictionary) -> Dictionary:
 		if ma_data:
 			var prof_bonus: float = 1.0 + ma_data.proficiency_level * 0.02
 			damage *= prof_bonus
+
+	# 连招协同伤害倍率
+	damage *= damage_multiplier
 
 	var final_damage: int = max(1, int(damage))
 
