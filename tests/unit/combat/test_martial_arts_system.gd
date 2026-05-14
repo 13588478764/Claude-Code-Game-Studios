@@ -4,10 +4,11 @@
 
 extends GutTest
 
-var ma_system: MartialArtsSystem
+var ma_system: Node
 
 func before_each():
-	ma_system = MartialArtsSystem.new()
+	var script = load("res://src/scripts/combat/martial_arts_system.gd")
+	ma_system = script.new()
 	add_child_autofree(ma_system)
 
 func after_each():

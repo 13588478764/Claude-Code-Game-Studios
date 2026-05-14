@@ -17,10 +17,11 @@ func before_each():
 	manager = StatusEffectManager.new()
 	manager.set_character_stats(1000.0, 500.0, 50.0)
 	
-	# 创建道具系统桥接器
+	# 创建道具系统桥接器（必须 add_child 触发 _ready 加载物品数据库）
 	var ItemSystemBridge = load("res://src/scripts/item_system_bridge.gd")
 	item_system = ItemSystemBridge.new()
-	
+	add_child_autofree(item_system)
+
 	# 创建游戏配置管理器
 	var GameConfigManager = load("res://src/scripts/game_config_manager.gd")
 	game_config = GameConfigManager.new()
@@ -37,10 +38,8 @@ func after_each():
 	if manager:
 		manager.free()
 		manager = null
-	if item_system:
-		item_system.free()
-		item_system = null
-	# game_config 已用 add_child_autofree，GUT 会自动清理，这里不能再 free 一次
+	# item_system 和 game_config 已用 add_child_autofree，GUT 会自动清理
+	item_system = null
 	game_config = null
 
 # ============================================================================

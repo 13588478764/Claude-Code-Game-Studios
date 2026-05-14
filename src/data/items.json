@@ -1092,5 +1092,24 @@
     "max_stack": 99,
     "value_gold": 80,
     "weight": 0.01
+  },
+  "golden_wound_medicine": {
+    "id": "golden_wound_medicine",
+    "name": "金创药",
+    "description": "珍贵的外伤药物，使用后持续恢复生命。",
+    "tier": "rare",
+    "type": "consumable",
+    "slot": "inventory",
+    "required_level": 1,
+    "required_realm": 0,
+    "consumable_effect": {
+      "type": "regen",
+      "value": 3,
+      "coefficient": 0.02
+    },
+    "stackable": true,
+    "max_stack": 99,
+    "value_gold": 150,
+    "weight": 0.02
   }
 }
