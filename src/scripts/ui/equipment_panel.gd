@@ -509,7 +509,22 @@ func _refresh_socket_tab() -> void:
 ## 镶嵌装备选中变化
 func _on_socket_equip_selected(index: int) -> void:
 	_socket_selected_index = index
-	_socket_preview_label.text = "孔洞: 0/3"  # TODO: 实际数据
+
+	# 从当前已装备物品中读取实际孔洞数据
+	var socket_count: int = 0
+	var filled_count: int = 0
+	var equip_index: int = 0
+	for slot in EQUIPMENT_SLOTS:
+		if _equipped_items.has(slot.id) and _equipped_items[slot.id] != null:
+			if equip_index == index:
+				var item: Dictionary = _equipped_items[slot.id]
+				socket_count = item.get("socket_count", 0)
+				if item.has("sockets"):
+					filled_count = item.sockets.size()
+				break
+			equip_index += 1
+
+	_socket_preview_label.text = "孔洞: %d/%d" % [filled_count, socket_count]
 
 
 ## 执行镶嵌

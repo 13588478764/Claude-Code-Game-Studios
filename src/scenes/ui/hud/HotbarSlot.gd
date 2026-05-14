@@ -58,13 +58,44 @@ func set_item(item_id: String, quantity: int) -> void:
 	if item_id.is_empty():
 		_icon_label.text = ""
 		_quantity_label.text = ""
+		tooltip_text = ""
 	else:
-		# TODO: 从物品系统获取图标
 		_icon_label.text = item_id.substr(0, 1).to_upper()
 		if quantity > 1:
 			_quantity_label.text = str(quantity)
 		else:
 			_quantity_label.text = ""
+		_update_tooltip(item_id, quantity)
+
+
+## 更新tooltip显示物品信息
+func _update_tooltip(item_id: String, quantity: int) -> void:
+	var inv: Node = Engine.get_singleton("InventorySystem") if Engine.has_singleton("InventorySystem") else null
+	if inv == null:
+		inv = _get_node_safe("/root/InventorySystem")
+
+	var item_name: String = item_id
+	var item_desc: String = ""
+
+	if inv and inv.has_method("get_item_data"):
+		var data: Dictionary = inv.get_item_data(item_id)
+		if not data.is_empty():
+			item_name = data.get("name", item_id)
+			item_desc = data.get("description", "")
+
+	var tip: String = item_name
+	if quantity > 1:
+		tip += " x%d" % quantity
+	if item_desc != "":
+		tip += "\n%s" % item_desc
+	tooltip_text = tip
+
+
+func _get_node_safe(path: String) -> Node:
+	var tree: SceneTree = Engine.get_main_loop() as SceneTree
+	if tree == null:
+		return null
+	return tree.root.get_node_or_null(path)
 
 func set_cooldown(remaining: float, total: float) -> void:
 	if total > 0:

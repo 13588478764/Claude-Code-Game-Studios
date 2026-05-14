@@ -1,53 +1,55 @@
 # Session State - Active Story
 
-## Current Session — Sprint 5 全部完成
+## Current Session — Sprint 6 全部完成
 
 **Date**: 2026-05-14
-**Story**: Sprint 5 — 10/10 stories done
+**Story**: Sprint 6 — 11/11 stories done
 **Status**: Complete
 **Mode**: 用户授权自主执行
 
 <!-- STATUS -->
-Epic: 角色关系系统
-Feature: Sprint 5 完成
+Epic: 端到端可玩体验
+Feature: Sprint 6 完成
 Task: 无
 <!-- /STATUS -->
 
-### 已完成 (10/10)
+### 已完成 (11/11)
 
 | # | 任务 | 状态 | 说明 |
 |---|------|------|------|
-| s5-01 | NPC数据配置 | 已完成 | 6个NPC + 9个礼物物品 + RelationshipManager数据加载 |
-| s5-02 | 礼物系统实现 | 已完成 | give_gift/freshness/birthday/daily_limit/save_data |
-| s5-03 | 对话系统集成 | 已完成 | GameManager占位→Engine.root实访问，条件/效果接通，NPC对话文件 |
-| s5-04 | 存档系统集成 | 已完成 | SaveSystem._collect/_restore接入RelationshipManager+RelationshipEventSystem |
-| s5-05 | 关系系统单元测试 | 已完成 | 3个测试文件~50用例：relationship/gift/npc_data_validation |
-| s5-06 | 关系事件触发系统 | 已完成 | relationship_event_system.gd+22个默认事件+SaveSystem集成+12个测试 |
-| s5-07 | 关系UI面板 | 已完成 | relationship_panel.gd+tscn，R键开关，NPC列表/进度条/等级颜色/道心指示器 |
-| s5-08 | 结局判定系统 | 已完成 | ending_determination.gd(4结局+默认，优先级判定)+15个测试 |
-| s5-09 | 战斗系统GDD同步 | 已完成 | combat-system.md → Approved，Sprint 4实现同步 |
-| s5-10 | 角色成长GDD同步 | 已完成 | character-progression-system.md → Approved，Sprint 1-3实现同步 |
+| s6-01 | 设置面板功能接通 | 已完成 | ConfigFile持久化 + 4总线音量控制 + 分辨率切换 |
+| s6-02 | 新游戏开场流程 | 已完成 | 系统重置 + intro_yunzhonghe对话 + 进入探索 |
+| s6-03 | 加载游戏流程 | 已完成 | SaveSystem.has_save() + load_from_slot + 错误处理 |
+| s6-04 | NPC对话触发接入 | 已完成 | 6个NPC按钮 + DialogueManager.start_dialogue_with_npc |
+| s6-05 | 音频总线控制 | 已完成 | AudioServer 5总线 + 静音/取消静音 + 实时生效 |
+| s6-06 | 支线任务触发验证 | 已完成 | register_all_npc_questlines() 自动调用 |
+| s6-07 | 暂停菜单功能完善 | 已完成 | _return_to_main_menu() + GameLoopManager.return_to_menu() |
+| s6-08 | 主菜单制作人员/帮助入口 | 已完成 | CreditsPanel滚动字幕 + 场景创建 |
+| s6-09 | 装备面板孔洞数据接通 | 已完成 | 从_equipped_items读取socket_count/sockets |
+| s6-10 | HotbarSlot tooltip | 已完成 | tooltip_text + _update_tooltip从物品系统获取 |
+| s6-11 | 集成测试补充 | 已完成 | 7个测试文件覆盖设置/游戏流程/对话/任务/音频/E2E |
 
 ### 关键文件变更
 
-- `src/scripts/relationship/relationship_manager.gd` — 礼物系统+NPC数据库
-- `src/scripts/relationship/relationship_event_system.gd` — 新建，事件触发系统
-- `src/scripts/relationship/ending_determination.gd` — 新建，结局判定
-- `src/scripts/dialogue/dialogue_data.gd` — 修复GameManager占位
-- `src/scripts/save/save_system.gd` — 集成关系+事件存档
-- `src/scripts/ui/relationship_panel.gd` — 新建，关系面板
-- `src/scripts/ui/exploration_panel.gd` — 注册R键关系面板
-- `src/scenes/main_game_ui.tscn` — 挂载RelationshipPanel
-- `design/gdd/combat-system.md` — Approved
-- `design/gdd/character-progression-system.md` — Approved
-- `tests/unit/relationship/` — 5个测试文件~95用例
+- `src/default_bus_layout.tres` — 新建音频总线布局(5总线)
+- `src/scripts/ui/settings_panel.gd` — 重写：ConfigFile持久化 + 全总线控制
+- `src/scripts/audio/audio_system.gd` — 新增 apply_volume_settings / _apply_bus
+- `src/scripts/ui/main_menu.gd` — 重写：新游戏流程 + 加载流程 + 制作人员入口
+- `src/scripts/ui/exploration_panel.gd` — 新增NPC交谈按钮区域
+- `src/scripts/quest/quest_trigger_manager.gd` — _ready()自动注册支线
+- `src/scripts/ui/pause_menu.gd` — 新增_return_to_main_menu()
+- `src/scripts/ui/credits_panel.gd` — 新建制作人员面板
+- `src/scenes/ui/credits_panel.tscn` — 新建制作人员场景
+- `src/scripts/ui/equipment_panel.gd` — 孔洞数据接通
+- `src/scenes/ui/hud/HotbarSlot.gd` — tooltip功能
+- 7个新测试文件 in tests/
 
 ---
 
-## Previous Session — Sprint 4 全部完成
+## Previous Session — Sprint 5 全部完成
 
 **Date**: 2026-05-14
 **Status**: Complete
-**Sprint 4**: 11/11 完成
+**Sprint 5**: 10/10 完成
 
 ---

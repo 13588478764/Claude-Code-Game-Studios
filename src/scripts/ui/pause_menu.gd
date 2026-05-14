@@ -206,15 +206,32 @@ func _on_return_pressed() -> void:
 		["保存并返回", "不保存直接返回", "取消"],
 		func(result: int) -> void:
 			if result == 0:
-				# 保存并返回
 				_do_save()
 				await get_tree().create_timer(0.5).timeout
-				pause_menu_return_to_main.emit(true)
+				_return_to_main_menu(true)
 			elif result == 1:
-				# 不保存直接返回
-				pause_menu_return_to_main.emit(false)
-			# result == 2: 取消
+				_return_to_main_menu(false)
 	)
+
+
+## 执行返回主菜单
+func _return_to_main_menu(saved: bool) -> void:
+	get_tree().paused = false
+	visible = false
+
+	# 通知 GameLoopManager 返回菜单状态
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
+	if game_loop and game_loop.has_method("return_to_menu"):
+		game_loop.return_to_menu()
+
+	# 显示主菜单
+	var main_menu: Control = get_node_or_null("/root/MainGameUI/MainMenu")
+	if main_menu and main_menu.has_method("show_menu"):
+		main_menu.show_menu()
+	elif main_menu:
+		main_menu.visible = true
+
+	pause_menu_return_to_main.emit(saved)
 
 
 ## 退出游戏

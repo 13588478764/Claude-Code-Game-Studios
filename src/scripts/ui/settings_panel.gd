@@ -32,11 +32,17 @@ signal settings_reset_to_defaults
 @onready var _preview_btn: Button = $MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox/PreviewButton
 @onready var _reset_defaults_btn: Button = $MainPanel/VBox/TabContent/ControlTab/ControlVBox/ResetDefaultsButton
 
-const CONFIG_PATH: String = "user://settings.json"
+const CONFIG_PATH: String = "user://settings.cfg"
+
+const RESOLUTIONS: Array[Vector2i] = [
+	Vector2i(1280, 720),
+	Vector2i(1920, 1080),
+	Vector2i(2560, 1440),
+	Vector2i(3840, 2160),
+]
 
 enum ColorblindMode { OFF, RED_GREEN, BLUE_YELLOW }
 
-## 设置变更是否已应用
 var _has_unapplied_changes: bool = false
 
 
@@ -47,7 +53,6 @@ func _ready() -> void:
 	_populate_quality_options()
 	_populate_colorblind_options()
 
-	# 连接信号
 	_close_btn.pressed.connect(close_settings)
 	_tab_bar.tab_changed.connect(_on_tab_changed)
 	_apply_btn.pressed.connect(apply_settings)
@@ -55,22 +60,16 @@ func _ready() -> void:
 	_preview_btn.pressed.connect(_preview_graphics)
 	_reset_defaults_btn.pressed.connect(_reset_keybinds)
 
-	# 音量滑块即时生效（无需应用确认）
 	_master_volume.value_changed.connect(_on_master_volume_changed)
 	_music_volume.value_changed.connect(_on_music_volume_changed)
 	_sfx_volume.value_changed.connect(_on_sfx_volume_changed)
 	_voice_volume.value_changed.connect(_on_voice_volume_changed)
-
-	# UI缩放即时生效
 	_ui_scale_slider.value_changed.connect(_on_ui_scale_changed)
-
-	# 减少运动即时生效
 	_reduce_motion_check.toggled.connect(_on_reduce_motion_changed)
 
 	_load_settings()
 
 
-## 打开设置面板
 func open_settings() -> void:
 	visible = true
 	_tab_bar.current_tab = 0
@@ -78,53 +77,40 @@ func open_settings() -> void:
 	settings_opened.emit()
 
 
-## 关闭设置面板
 func close_settings() -> void:
 	visible = false
 	settings_closed.emit()
 
 
-## 加载设置
+## 从 ConfigFile 加载设置
 func _load_settings() -> void:
-	if not FileAccess.file_exists(CONFIG_PATH):
+	var config := ConfigFile.new()
+	var err := config.load(CONFIG_PATH)
+
+	if err != OK:
 		_load_defaults()
+		_apply_audio_to_buses()
 		return
 
-	var file = FileAccess.open(CONFIG_PATH, FileAccess.READ)
-	if file == null:
-		_load_defaults()
-		return
+	_resolution_option.selected = config.get_value("graphics", "resolution_index", 0)
+	_quality_option.selected = config.get_value("graphics", "quality_index", 1)
+	_fullscreen_check.button_pressed = config.get_value("graphics", "fullscreen", false)
+	_reduce_motion_check.button_pressed = config.get_value("graphics", "reduce_motion", false)
 
-	var json = JSON.parse_string(file.get_as_text())
-	file.close()
+	_master_volume.value = config.get_value("audio", "master_volume", 80.0)
+	_music_volume.value = config.get_value("audio", "music_volume", 70.0)
+	_sfx_volume.value = config.get_value("audio", "sfx_volume", 80.0)
+	_voice_volume.value = config.get_value("audio", "voice_volume", 90.0)
 
-	if json == null:
-		_load_defaults()
-		return
-
-	# 画面设置
-	_resolution_option.selected = json.get("resolution_index", 0)
-	_quality_option.selected = json.get("quality_index", 1)
-	_fullscreen_check.button_pressed = json.get("fullscreen", false)
-	_reduce_motion_check.button_pressed = json.get("reduce_motion", false)
-
-	# 音量
-	_master_volume.value = json.get("master_volume", 80.0)
-	_music_volume.value = json.get("music_volume", 70.0)
-	_sfx_volume.value = json.get("sfx_volume", 80.0)
-	_voice_volume.value = json.get("voice_volume", 90.0)
-
-	# 无障碍
-	_ui_scale_slider.value = json.get("ui_scale", 1.0)
+	_ui_scale_slider.value = config.get_value("accessibility", "ui_scale", 1.0)
 	_ui_scale_label.text = "UI缩放: %d%%" % int(_ui_scale_slider.value * 100)
-	_colorblind_option.selected = json.get("colorblind_mode", 0)
-	_screen_reader_check.button_pressed = json.get("screen_reader", false)
+	_colorblind_option.selected = config.get_value("accessibility", "colorblind_mode", 0)
+	_screen_reader_check.button_pressed = config.get_value("accessibility", "screen_reader", false)
 
-	# 加载后立即应用到游戏系统
-	_apply_settings_to_system(json)
+	_apply_audio_to_buses()
+	_apply_graphics()
 
 
-## 加载默认设置
 func _load_defaults() -> void:
 	_resolution_option.selected = 0
 	_quality_option.selected = 1
@@ -140,79 +126,85 @@ func _load_defaults() -> void:
 	_screen_reader_check.button_pressed = false
 
 
-## 应用设置
+## 应用设置（保存到磁盘 + 应用画面）
 func apply_settings() -> void:
-	var settings = _collect_settings()
-	var file = FileAccess.open(CONFIG_PATH, FileAccess.WRITE)
-	if file != null:
-		file.store_string(JSON.stringify(settings, "\t"))
-		file.close()
-
-	_apply_settings_to_system(settings)
+	_save_to_config()
+	_apply_graphics()
 	_has_unapplied_changes = false
 	settings_applied.emit()
 
 
-## 将设置应用到游戏系统
-func _apply_settings_to_system(settings: Dictionary) -> void:
-	# 全屏模式
-	var fullscreen = settings.get("fullscreen", false)
-	if fullscreen:
+## 保存到 ConfigFile
+func _save_to_config() -> void:
+	var config := ConfigFile.new()
+
+	config.set_value("graphics", "resolution_index", _resolution_option.selected)
+	config.set_value("graphics", "quality_index", _quality_option.selected)
+	config.set_value("graphics", "fullscreen", _fullscreen_check.button_pressed)
+	config.set_value("graphics", "reduce_motion", _reduce_motion_check.button_pressed)
+
+	config.set_value("audio", "master_volume", _master_volume.value)
+	config.set_value("audio", "music_volume", _music_volume.value)
+	config.set_value("audio", "sfx_volume", _sfx_volume.value)
+	config.set_value("audio", "voice_volume", _voice_volume.value)
+
+	config.set_value("accessibility", "ui_scale", _ui_scale_slider.value)
+	config.set_value("accessibility", "colorblind_mode", _colorblind_option.selected)
+	config.set_value("accessibility", "screen_reader", _screen_reader_check.button_pressed)
+
+	config.save(CONFIG_PATH)
+
+
+## 将音量应用到 AudioServer 总线
+func _apply_audio_to_buses() -> void:
+	_set_bus_volume("Master", _master_volume.value)
+	_set_bus_volume("Music", _music_volume.value)
+	_set_bus_volume("SFX", _sfx_volume.value)
+	_set_bus_volume("Voice", _voice_volume.value)
+
+
+## 设置指定总线音量（0-100 线性值）
+func _set_bus_volume(bus_name: String, linear_percent: float) -> void:
+	var bus_idx: int = AudioServer.get_bus_index(bus_name)
+	if bus_idx < 0:
+		return
+
+	var linear: float = linear_percent / 100.0
+	if linear <= 0.0:
+		AudioServer.set_bus_mute(bus_idx, true)
+	else:
+		AudioServer.set_bus_mute(bus_idx, false)
+		AudioServer.set_bus_volume_db(bus_idx, linear_to_db(linear))
+
+
+## 应用画面设置
+func _apply_graphics() -> void:
+	if _fullscreen_check.button_pressed:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-
-	# 分辨率
-	var res_index = settings.get("resolution_index", 0)
-	var resolutions = [Vector2i(1280, 720), Vector2i(1920, 1080), Vector2i(2560, 1440), Vector2i(3840, 2160)]
-	if not fullscreen and res_index < resolutions.size():
-		DisplayServer.window_set_size(resolutions[res_index])
-
-	# 音量
-	var master_bus = AudioServer.get_bus_index("Master")
-	if master_bus >= 0:
-		AudioServer.set_bus_volume_db(master_bus, linear_to_db(settings.get("master_volume", 80.0) / 100.0))
+		var res_index: int = _resolution_option.selected
+		if res_index >= 0 and res_index < RESOLUTIONS.size():
+			DisplayServer.window_set_size(RESOLUTIONS[res_index])
 
 
-## 收集当前设置
-func _collect_settings() -> Dictionary:
-	return {
-		"resolution_index": _resolution_option.selected,
-		"quality_index": _quality_option.selected,
-		"fullscreen": _fullscreen_check.button_pressed,
-		"reduce_motion": _reduce_motion_check.button_pressed,
-		"master_volume": _master_volume.value,
-		"music_volume": _music_volume.value,
-		"sfx_volume": _sfx_volume.value,
-		"voice_volume": _voice_volume.value,
-		"ui_scale": _ui_scale_slider.value,
-		"colorblind_mode": _colorblind_option.selected,
-		"screen_reader": _screen_reader_check.button_pressed,
-	}
-
-
-## 恢复所有设置到默认
 func _reset_all_settings() -> void:
 	_load_defaults()
+	_apply_audio_to_buses()
 	_has_unapplied_changes = true
 	settings_reset_to_defaults.emit()
 
 
-## 重置键位到默认
 func _reset_keybinds() -> void:
-	# TODO: 重置键位配置
 	pass
 
 
-## 预览画面更改
 func _preview_graphics() -> void:
-	# TODO: 应用分辨率/画质预览
-	pass
+	_apply_graphics()
 
 
-## Tab切换
 func _on_tab_changed(tab_index: int) -> void:
-	var tabs = [
+	var tabs: Array[Control] = [
 		$"MainPanel/VBox/TabContent/GraphicsTab",
 		$"MainPanel/VBox/TabContent/SoundTab",
 		$"MainPanel/VBox/TabContent/ControlTab",
@@ -223,60 +215,40 @@ func _on_tab_changed(tab_index: int) -> void:
 			tabs[i].visible = (i == tab_index)
 
 
-## 音量变更即时生效
 func _on_master_volume_changed(value: float) -> void:
-	var bus_idx = AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
+	_set_bus_volume("Master", value)
 	_has_unapplied_changes = true
 
 
 func _on_music_volume_changed(value: float) -> void:
-	# TODO: 设置音乐总线音量
-	# var bus_idx = AudioServer.get_bus_index("Music")
-	# AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
+	_set_bus_volume("Music", value)
 	_has_unapplied_changes = true
 
 
 func _on_sfx_volume_changed(value: float) -> void:
-	# TODO: 设置音效总线音量
-	# var bus_idx = AudioServer.get_bus_index("SFX")
-	# AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
+	_set_bus_volume("SFX", value)
 	_has_unapplied_changes = true
 
 
 func _on_voice_volume_changed(value: float) -> void:
-	# TODO: 设置语音总线音量
-	# var bus_idx = AudioServer.get_bus_index("Voice")
-	# AudioServer.set_bus_volume_db(bus_idx, linear_to_db(value / 100.0))
+	_set_bus_volume("Voice", value)
 	_has_unapplied_changes = true
 
 
-## UI缩放即时生效
 func _on_ui_scale_changed(value: float) -> void:
 	_ui_scale_label.text = "UI缩放: %d%%" % int(value * 100)
-	# TODO: 应用到根Control的size
 	_has_unapplied_changes = true
 
 
-## 减少运动即时生效
-func _on_reduce_motion_changed(enabled: bool) -> void:
-	# TODO: 应用到全局动画设置
+func _on_reduce_motion_changed(_enabled: bool) -> void:
 	_has_unapplied_changes = true
 
 
-## 填充分辨率选项
 func _populate_resolution_options() -> void:
-	var resolutions = [
-		"1280x720",
-		"1920x1080",
-		"2560x1440",
-		"3840x2160",
-	]
-	for res in resolutions:
-		_resolution_option.add_item(res)
+	for res in RESOLUTIONS:
+		_resolution_option.add_item("%dx%d" % [res.x, res.y])
 
 
-## 填充画质选项
 func _populate_quality_options() -> void:
 	_quality_option.add_item("低")
 	_quality_option.add_item("中")
@@ -284,7 +256,6 @@ func _populate_quality_options() -> void:
 	_quality_option.add_item("极高")
 
 
-## 填充色盲模式选项
 func _populate_colorblind_options() -> void:
 	_colorblind_option.add_item("关闭")
 	_colorblind_option.add_item("红色盲")

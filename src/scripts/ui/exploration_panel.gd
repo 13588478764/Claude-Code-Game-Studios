@@ -21,6 +21,17 @@ extends CanvasLayer
 @onready var log_label: Label = $PanelContainer/VBox/LogBox/LogLabel
 
 var _game_loop: Node = null
+var _npc_container: VBoxContainer = null
+
+## 核心NPC列表（RelationshipManager._npc_database 降级后备）
+const NPC_FALLBACK: Array[Dictionary] = [
+	{"id": "yunzhonghe", "name": "云中鹤", "sect": "青云门"},
+	{"id": "liuruyan", "name": "柳如烟", "sect": "翠微宫"},
+	{"id": "xuanjizhenren", "name": "玄机真人", "sect": "天机阁"},
+	{"id": "xiaohanye", "name": "萧寒夜", "sect": "万魔宗"},
+	{"id": "xuewuhen", "name": "血无痕", "sect": "血刹教"},
+	{"id": "murongxue", "name": "慕容雪", "sect": "无门无派"},
+]
 
 # ============================================================================
 # 面板管理
@@ -75,6 +86,7 @@ func _initialize() -> void:
 
 	_init_panels()
 	_build_region_buttons()
+	_build_npc_buttons()
 	_refresh_display()
 
 # ============================================================================
@@ -265,6 +277,65 @@ func _build_region_buttons() -> void:
 		var idx := i
 		btn.pressed.connect(func(): _on_region_selected(idx))
 		region_list.add_child(btn)
+
+# ============================================================================
+# NPC 交谈 (s6-04)
+# ============================================================================
+
+func _build_npc_buttons() -> void:
+	var panel_container: PanelContainer = $PanelContainer
+	var vbox: VBoxContainer = $PanelContainer/VBox
+	if vbox == null:
+		return
+
+	# 创建NPC区域容器
+	var separator := HSeparator.new()
+	vbox.add_child(separator)
+
+	var npc_label := Label.new()
+	npc_label.text = "附近的修士"
+	npc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(npc_label)
+
+	_npc_container = VBoxContainer.new()
+	_npc_container.name = "NPCList"
+	vbox.add_child(_npc_container)
+
+	# 从 RelationshipManager 获取 NPC 数据
+	var npc_list: Array[Dictionary] = []
+	var relationship_mgr: Node = get_node_or_null("/root/RelationshipManager")
+	if relationship_mgr and relationship_mgr._npc_database.size() > 0:
+		for npc_id in relationship_mgr._npc_database:
+			var npc_data: Dictionary = relationship_mgr._npc_database[npc_id]
+			npc_list.append({
+				"id": npc_data.get("id", npc_id),
+				"name": npc_data.get("name", npc_id),
+				"sect": npc_data.get("sect", ""),
+			})
+	else:
+		npc_list.assign(NPC_FALLBACK)
+
+	for npc in npc_list:
+		var btn := Button.new()
+		var sect_text: String = " (%s)" % npc.sect if npc.sect != "" else ""
+		btn.text = "与 %s 交谈%s" % [npc.name, sect_text]
+		btn.custom_minimum_size = Vector2(200, 32)
+		var npc_id: String = npc.id
+		var npc_name: String = npc.name
+		btn.pressed.connect(_on_npc_talk_pressed.bind(npc_id, npc_name))
+		_npc_container.add_child(btn)
+
+
+func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
+	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
+	if dialogue_mgr == null:
+		log_label.text = "（对话系统不可用）"
+		return
+
+	var success: bool = dialogue_mgr.start_dialogue_with_npc(npc_id)
+	if not success:
+		log_label.text = "（%s没有什么特别想说的）" % npc_name
+
 
 # ============================================================================
 # 事件处理

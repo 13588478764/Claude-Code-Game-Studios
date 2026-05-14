@@ -273,17 +273,38 @@ func set_master_volume(volume):
 	if current_bgm != null:
 		current_bgm.volume_db = linear_to_db(config["music_volume"] * config["master_volume"])
 
-func linear_to_db(linear):
-	"""线性音量转换为分贝"""
-	if linear <= 0:
-		return -80
-	return log(linear) * 8.685889638  # 20 * log10(linear)
+## 将百分比音量(0-100)应用到所有 AudioServer 总线
+func apply_volume_settings(master: float, music: float, sfx: float, voice: float) -> void:
+	config["master_volume"] = clamp(master / 100.0, 0.0, 1.0)
+	config["music_volume"] = clamp(music / 100.0, 0.0, 1.0)
+	config["sfx_volume"] = clamp(sfx / 100.0, 0.0, 1.0)
+	config["voice_volume"] = clamp(voice / 100.0, 0.0, 1.0)
 
-func db_to_linear(db):
-	"""分贝转换为线性音量"""
-	if db <= -80:
-		return 0
-	return pow(10, db / 20.0)
+	_apply_bus("Master", config["master_volume"])
+	_apply_bus("Music", config["music_volume"])
+	_apply_bus("SFX", config["sfx_volume"])
+	_apply_bus("Voice", config["voice_volume"])
+
+	if current_bgm != null:
+		current_bgm.volume_db = linear_to_db(config["music_volume"] * config["master_volume"])
+
+
+## 设置单个总线静音状态
+func set_bus_muted(bus_name: String, muted: bool) -> void:
+	var idx: int = AudioServer.get_bus_index(bus_name)
+	if idx >= 0:
+		AudioServer.set_bus_mute(idx, muted)
+
+
+func _apply_bus(bus_name: String, linear_value: float) -> void:
+	var idx: int = AudioServer.get_bus_index(bus_name)
+	if idx < 0:
+		return
+	if linear_value <= 0.0:
+		AudioServer.set_bus_mute(idx, true)
+	else:
+		AudioServer.set_bus_mute(idx, false)
+		AudioServer.set_bus_volume_db(idx, linear_to_db(linear_value))
 
 func tween_volume(audio_player, from_db, to_db, duration):
 	"""淡入淡出音量"""

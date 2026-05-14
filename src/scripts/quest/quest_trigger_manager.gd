@@ -106,6 +106,9 @@ func _ready():
 		if _quest_manager.has_signal("quest_completed"):
 			_quest_manager.quest_completed.connect(_on_quest_completed)
 	
+	# 自动注册NPC个人线
+	register_all_npc_questlines()
+
 	print("[QuestTriggerManager] 任务触发管理器已初始化")
 
 # ============================================================================

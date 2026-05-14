@@ -863,98 +863,98 @@ stories:
   name: 设置面板功能接通
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: UI Programmer
   estimate_days: 1.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-02
   name: 新游戏开场流程
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: Gameplay Programmer
   estimate_days: 1.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-03
   name: 加载游戏流程
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: Gameplay Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-04
   name: NPC对话触发接入
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: Gameplay Programmer
   estimate_days: 2
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-05
   name: 音频总线控制
   file: ''
   priority: must-have
-  status: ready-for-dev
+  status: done
   owner: Gameplay Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-06
   name: 支线任务触发验证
   file: ''
   priority: should-have
-  status: backlog
+  status: done
   owner: QA/Programmer
   estimate_days: 1.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-07
   name: 暂停菜单功能完善
   file: ''
   priority: should-have
-  status: backlog
+  status: done
   owner: UI Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-08
   name: 主菜单制作人员/帮助入口
   file: ''
   priority: should-have
-  status: backlog
+  status: done
   owner: UI Programmer
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-09
   name: 装备面板孔洞数据接通
   file: ''
   priority: nice-to-have
-  status: backlog
+  status: done
   owner: Gameplay Programmer
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-10
   name: HotbarSlot tooltip实现
   file: ''
   priority: nice-to-have
-  status: backlog
+  status: done
   owner: UI Programmer
   estimate_days: 0.5
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
 - id: s6-11
   name: 集成测试补充
   file: ''
   priority: nice-to-have
-  status: backlog
+  status: done
   owner: QA/Programmer
   estimate_days: 1
   blocker: ''
-  completed: ''
+  completed: '2026-05-14'
