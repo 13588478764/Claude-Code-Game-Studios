@@ -31,6 +31,9 @@ var _dialogue_queue: Array[Dictionary] = []
 ## 是否正在对话中
 var _is_in_dialogue: bool = false
 
+## 是否等待玩家输入推进
+var _waiting_for_advance: bool = false
+
 ## 关系管理器引用
 var _relationship_manager: RelationshipManager = null
 
@@ -146,7 +149,12 @@ func _parse_dialogue_tree(data: Dictionary) -> DialogueData.DialogueTree:
 	tree.description = data.get("description", "")
 	tree.start_node = data.get("start_node", "")
 	tree.metadata = data.get("metadata", {})
-	
+
+	# 将顶层字段合并到 metadata（side_quests 等文件的 npc_id 在顶层）
+	for key in ["npc_id", "quest_line", "min_realm"]:
+		if data.has(key) and not tree.metadata.has(key):
+			tree.metadata[key] = data[key]
+
 	# 解析节点
 	var nodes_data: Array = data.get("nodes", [])
 	for node_data in nodes_data:
@@ -453,13 +461,18 @@ func get_current_dialogue_id() -> String:
 	return _current_dialogue.id
 
 ## 通过NPC ID触发对应对话（用于NPC交互触发）
+## 优先匹配 npc_ 前缀的专用对话，避免触发剧情事件对话
 func start_dialogue_with_npc(npc_id: String) -> bool:
-	# 遍历所有已加载的对话，查找与NPC匹配的对话树
+	var fallback_id: String = ""
 	for dialogue_id in _dialogue_trees:
 		var tree: DialogueData.DialogueTree = _dialogue_trees[dialogue_id]
 		if tree.metadata.has("npc_id") and tree.metadata.npc_id == npc_id:
-			return start_dialogue(dialogue_id)
-	
+			if dialogue_id.begins_with("npc_"):
+				return start_dialogue(dialogue_id)
+			if fallback_id.is_empty():
+				fallback_id = dialogue_id
+	if not fallback_id.is_empty():
+		return start_dialogue(fallback_id)
 	push_warning("没有找到NPC %s 的对话树" % npc_id)
 	return false
 
@@ -493,16 +506,23 @@ func _display_current_node() -> void:
 	# 发送信号
 	node_displayed.emit(_current_node)
 	
-	# 如果没有选择，自动继续
+	# 如果没有选择，等待玩家输入推进
 	if _current_node.choices.is_empty():
-		if not _current_node.next_node.is_empty():
-			# 延迟跳转，给UI时间显示
-			var scene_tree := get_tree()
-			if scene_tree != null:
-				await scene_tree.create_timer(0.5).timeout
-				_goto_node(_current_node.next_node)
-		else:
-			end_dialogue()
+		_waiting_for_advance = true
+
+## 玩家点击推进对话（无选项时）
+func advance_dialogue() -> void:
+	if not _is_in_dialogue or not _waiting_for_advance:
+		return
+	_waiting_for_advance = false
+	if _current_node == null:
+		end_dialogue()
+		return
+	if not _current_node.next_node.is_empty():
+		_goto_node(_current_node.next_node)
+	else:
+		end_dialogue()
+
 
 ## 选择选项
 func select_choice(choice_index: int) -> void:

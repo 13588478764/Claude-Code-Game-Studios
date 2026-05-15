@@ -144,19 +144,15 @@ func _on_node_displayed(node: DialogueData.DialogueNode) -> void:
 		show_dialogue()
 	_update_speaker(node.speaker)
 	_update_text(node.text)
-	
+
 	var choices = node.get_available_choices()
 	if not choices.is_empty():
 		_show_choices(choices)
 		_waiting_for_input = true
 	else:
-		# DialogueManager auto-advances for nodes without choices
-		# Show a brief hint to indicate auto-advance is happening
+		_hide_all_choices()
 		_show_continue_hint()
-		# Hide the hint after a short delay (auto-advance is ~0.5s per DialogueManager)
-		await get_tree().create_timer(0.3).timeout
-		if _continue_hint != null:
-			_continue_hint.visible = false
+		_waiting_for_input = true
 
 ## 对话结束
 func _on_dialogue_ended(_dialogue_id: String) -> void:
@@ -179,6 +175,22 @@ func _on_close_pressed() -> void:
 		_dialogue_manager.end_dialogue()
 
 
+func _advance() -> void:
+	_waiting_for_input = false
+	_continue_hint.visible = false
+	if _dialogue_manager != null:
+		_dialogue_manager.advance_dialogue()
+
+
+func _gui_input(event: InputEvent) -> void:
+	if not visible or _has_choices:
+		return
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _waiting_for_input:
+			_advance()
+			accept_event()
+
+
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
@@ -192,12 +204,8 @@ func _input(event: InputEvent) -> void:
 			return
 		
 		if event.keycode == KEY_SPACE or event.keycode == KEY_ENTER:
-			# 如果有选择，不处理空格继续
 			if _has_choices:
 				return
-			
 			if _waiting_for_input:
-				_waiting_for_input = false
-				_continue_hint.visible = false
-				# DialogueManager already handles auto-advance for nodes without choices
-				# No additional action needed here
+				_advance()
+				get_viewport().set_input_as_handled()

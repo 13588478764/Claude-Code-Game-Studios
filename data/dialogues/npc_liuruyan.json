@@ -1,0 +1,175 @@
+{
+  "id": "npc_liuruyan",
+  "title": "柳如烟对话",
+  "description": "翠微宫弟子柳如烟的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "liuruyan",
+    "npc_name": "柳如烟",
+    "location": "翠微宫"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "liuruyan",
+      "text": "你来了？翠微宫虽不比那些大宗门声名显赫，但我们自有一番天地。",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_sect",
+          "text": "翠微宫是怎样的门派？",
+          "next_node": "sect_intro"
+        },
+        {
+          "id": "choice_ask_cultivation",
+          "text": "最近修炼可有心得？",
+          "next_node": "cultivation_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "liuruyan",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_ask_news",
+          "text": "江湖上有什么新鲜事？",
+          "next_node": "news"
+        },
+        {
+          "id": "choice_leave",
+          "text": "告辞",
+          "next_node": "END"
+        }
+      ]
+    },
+    {
+      "id": "sect_intro",
+      "speaker": "liuruyan",
+      "text": "翠微宫以医术和毒术闻名修真界。救人与杀人，不过一念之差。我们追求的是对天地万物的理解。",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "liuruyan",
+          "value": 3,
+          "reason": "了解翠微宫"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_admire",
+          "text": "医毒双修，令人敬佩",
+          "next_node": "admire_response",
+          "dao_heart_hint": 2
+        },
+        {
+          "id": "choice_doubt",
+          "text": "毒术伤人，终非正道",
+          "next_node": "doubt_response",
+          "dao_heart_hint": -2
+        }
+      ]
+    },
+    {
+      "id": "admire_response",
+      "speaker": "liuruyan",
+      "text": "难得你能如此理解。世人多对毒术心存偏见，能不以偏概全者，实属少见。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "liuruyan",
+          "value": 5,
+          "reason": "理解翠微宫理念"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 2,
+          "reason": "包容看待不同修炼之道"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "doubt_response",
+      "speaker": "liuruyan",
+      "text": "哼，又是这等迂腐之见。毒能害人，药亦能害人，刀剑更能害人。关键在于用它的人。",
+      "emotion": "angry",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "liuruyan",
+          "value": -3,
+          "reason": "质疑毒术"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "cultivation_talk",
+      "speaker": "liuruyan",
+      "text": "最近在研习一味古方，据说能以灵草之毒反哺经脉，增进修为。不过此法颇为凶险...",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "liuruyan",
+          "value": 3,
+          "reason": "交流修炼心得"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_warn",
+          "text": "此法太过凶险，还请三思",
+          "next_node": "warn_response"
+        },
+        {
+          "id": "choice_help",
+          "text": "若有需要，我可以帮忙寻找灵草",
+          "next_node": "help_response"
+        }
+      ]
+    },
+    {
+      "id": "warn_response",
+      "speaker": "liuruyan",
+      "text": "...你的关心我记下了。放心，我自有分寸。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "liuruyan",
+          "value": 2,
+          "reason": "关心安危"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "help_response",
+      "speaker": "liuruyan",
+      "text": "哦？你倒是爽快。若真有心相助，日后我自会找你。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "liuruyan",
+          "value": 5,
+          "reason": "主动提出帮助"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "news",
+      "speaker": "liuruyan",
+      "text": "听说天机阁的玄机真人最近频繁推演天象，似乎预见了什么大变。各派都在暗中准备。",
+      "emotion": "serious",
+      "next_node": "END"
+    }
+  ]
+}

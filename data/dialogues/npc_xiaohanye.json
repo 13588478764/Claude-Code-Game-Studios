@@ -1,0 +1,147 @@
+{
+  "id": "npc_xiaohanye",
+  "title": "萧寒夜对话",
+  "description": "万魔宗弟子萧寒夜的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "xiaohanye",
+    "npc_name": "萧寒夜",
+    "location": "万魔宗"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "xiaohanye",
+      "text": "又见面了。你这正道修士，倒是不怕和我这魔道中人打交道。",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_past",
+          "text": "你为何加入万魔宗？",
+          "next_node": "past_story"
+        },
+        {
+          "id": "choice_spar",
+          "text": "切磋一下如何？",
+          "next_node": "spar_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "xiaohanye",
+              "value": 15,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_ask_news",
+          "text": "万魔宗最近有什么动静？",
+          "next_node": "news"
+        },
+        {
+          "id": "choice_leave",
+          "text": "告辞",
+          "next_node": "END"
+        }
+      ]
+    },
+    {
+      "id": "past_story",
+      "speaker": "xiaohanye",
+      "text": "...我曾是正道宗门弟子。后来发现所谓正道不过是虚伪的遮羞布，便转投了万魔宗。至少在这里，没有人假装善良。",
+      "emotion": "sad",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xiaohanye",
+          "value": 3,
+          "reason": "倾听过往"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_sympathize",
+          "text": "每个人都有自己的苦衷",
+          "next_node": "sympathize_response",
+          "dao_heart_hint": -2
+        },
+        {
+          "id": "choice_disagree",
+          "text": "正道虽有瑕疵，但大义不可否认",
+          "next_node": "disagree_response",
+          "dao_heart_hint": 5
+        }
+      ]
+    },
+    {
+      "id": "sympathize_response",
+      "speaker": "xiaohanye",
+      "text": "...你是我见过的第一个不急着说教的正道修士。也许你和那些人不一样。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xiaohanye",
+          "value": 8,
+          "reason": "不带偏见"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": -2,
+          "reason": "同情魔道"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "disagree_response",
+      "speaker": "xiaohanye",
+      "text": "哼，大义？你没见过那些长老们在暗处做的事。不过...你若真信这些，我倒也不会阻拦。",
+      "emotion": "angry",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xiaohanye",
+          "value": -2,
+          "reason": "立场不合"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 5,
+          "reason": "坚持正道信念"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "spar_talk",
+      "speaker": "xiaohanye",
+      "text": "切磋？有意思。万魔宗的'灭世七杀'可不是闹着玩的。不过今日就不动手了，改日我在荒原等你。",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xiaohanye",
+          "value": 5,
+          "reason": "以武会友"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "news",
+      "speaker": "xiaohanye",
+      "text": "万魔宗内部也不太平。教主近日闭关修炼禁术，几个长老蠢蠢欲动...我劝你离万魔宗的事远一点。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xiaohanye",
+          "value": 2,
+          "reason": "善意提醒"
+        }
+      ],
+      "next_node": "END"
+    }
+  ]
+}

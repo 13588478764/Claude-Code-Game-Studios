@@ -24,30 +24,14 @@ var _game_loop: Node = null
 var _npc_container: VBoxContainer = null
 
 ## 核心NPC列表（RelationshipManager._npc_database 降级后备）
-const NPC_FALLBACK: Array[Dictionary] = [
-	{"id": "yunzhonghe", "name": "云中鹤", "sect": "青云门"},
-	{"id": "liuruyan", "name": "柳如烟", "sect": "翠微宫"},
-	{"id": "xuanjizhenren", "name": "玄机真人", "sect": "天机阁"},
-	{"id": "xiaohanye", "name": "萧寒夜", "sect": "万魔宗"},
-	{"id": "xuewuhen", "name": "血无痕", "sect": "血刹教"},
-	{"id": "murongxue", "name": "慕容雪", "sect": "无门无派"},
-]
+var NPC_FALLBACK: Array = []
 
 # ============================================================================
 # 面板管理
 # ============================================================================
 
 ## 快捷键到面板键名的映射
-const HOTKEY_MAP: Dictionary = {
-	KEY_ESCAPE: "pause",
-	KEY_I: "inventory",
-	KEY_E: "equipment",
-	KEY_M: "world_map",
-	KEY_F1: "help",
-	KEY_C: "character",
-	KEY_J: "quest_log",
-	KEY_R: "relationship",
-}
+var HOTKEY_MAP: Dictionary = {}
 
 ## 面板节点引用
 var _panels: Dictionary = {}
@@ -61,6 +45,24 @@ var _active_panel_key: String = ""
 
 func _ready() -> void:
 	layer = 100
+	HOTKEY_MAP = {
+		KEY_ESCAPE: "pause",
+		KEY_I: "inventory",
+		KEY_E: "equipment",
+		KEY_M: "world_map",
+		KEY_F1: "help",
+		KEY_C: "character",
+		KEY_J: "quest_log",
+		KEY_R: "relationship",
+	}
+	NPC_FALLBACK = [
+		{"id": "yunzhonghe", "name": "云中鹤", "sect": "青云门"},
+		{"id": "liuruyan", "name": "柳如烟", "sect": "翠微宫"},
+		{"id": "xuanjizhenren", "name": "玄机真人", "sect": "天机阁"},
+		{"id": "xiaohanye", "name": "萧寒夜", "sect": "万魔宗"},
+		{"id": "xuewuhen", "name": "血无痕", "sect": "血刹教"},
+		{"id": "murongxue", "name": "慕容雪", "sect": "无门无派"},
+	]
 	call_deferred("_initialize")
 
 
@@ -70,12 +72,13 @@ func _initialize() -> void:
 		push_warning("[ExplorationPanel] GameLoopManager 未找到")
 		return
 
+	print("[ExplorationPanel] 初始化成功，GameLoopManager 已找到")
 	explore_button.pressed.connect(_on_explore_pressed)
 	_game_loop.exploration_result.connect(_on_exploration_result)
 	_game_loop.battle_log_updated.connect(_on_battle_log)
 	_game_loop.game_state_changed.connect(_on_game_state_changed)
 
-	var encounter_ui = get_node_or_null("/root/MainGameUI/HUDLayer/EncounterUI")
+	var encounter_ui = get_node_or_null("/root/EncounterUI")
 	if encounter_ui:
 		encounter_ui.visibility_changed.connect(_on_encounter_ui_visibility_changed.bind(encounter_ui))
 
@@ -94,19 +97,14 @@ func _initialize() -> void:
 # ============================================================================
 
 func _init_panels() -> void:
-	var hud_layer = get_node_or_null("/root/MainGameUI/HUDLayer")
-	if hud_layer:
-		_panels["pause"] = hud_layer.get_node_or_null("PauseMenu")
-		_panels["inventory"] = hud_layer.get_node_or_null("InventoryPanel")
-		_panels["equipment"] = hud_layer.get_node_or_null("EquipmentPanel")
-		_panels["world_map"] = hud_layer.get_node_or_null("WorldMap")
-		_panels["help"] = hud_layer.get_node_or_null("HelpPanel")
-		_panels["quest_log"] = hud_layer.get_node_or_null("QuestLogPanel")
-		_panels["relationship"] = hud_layer.get_node_or_null("RelationshipPanel")
-
-	var main_ui = get_node_or_null("/root/MainGameUI")
-	if main_ui:
-		_panels["character"] = main_ui.get_node_or_null("CharacterPanelInstance")
+	var root: Node = get_tree().root
+	_panels["pause"] = root.get_node_or_null("PauseMenu")
+	_panels["inventory"] = root.get_node_or_null("InventoryPanel")
+	_panels["equipment"] = root.get_node_or_null("EquipmentPanel")
+	_panels["world_map"] = root.get_node_or_null("WorldMap")
+	_panels["help"] = root.get_node_or_null("HelpPanel")
+	_panels["quest_log"] = root.get_node_or_null("QuestLogPanel")
+	_panels["relationship"] = root.get_node_or_null("RelationshipPanel")
 
 	_connect_panel_close_signals()
 
@@ -162,10 +160,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if _game_loop == null or _game_loop.current_state != 1:
 		return
 
-	var dialogue_box = get_node_or_null("/root/MainGameUI/HUDLayer/DialogueBox")
+	var dialogue_box = get_node_or_null("/root/DialogueBox")
 	if dialogue_box and dialogue_box.visible:
 		return
-	var encounter_ui_node = get_node_or_null("/root/MainGameUI/HUDLayer/EncounterUI")
+	var encounter_ui_node = get_node_or_null("/root/EncounterUI")
 	if encounter_ui_node and encounter_ui_node.visible:
 		return
 
@@ -195,7 +193,7 @@ func _open_panel(panel_key: String) -> void:
 		return
 
 	_active_panel_key = panel_key
-	hide()
+	visible = false
 
 	match panel_key:
 		"pause":
@@ -225,7 +223,7 @@ func _close_active_panel() -> void:
 	_active_panel_key = ""
 
 	if panel == null:
-		show()
+		visible = true
 		_refresh_display()
 		return
 
@@ -247,14 +245,14 @@ func _close_active_panel() -> void:
 		"character":
 			panel.visible = false
 
-	show()
+	visible = true
 	_refresh_display()
 
 
 func _on_panel_closed() -> void:
 	_active_panel_key = ""
 	if _game_loop and _game_loop.current_state == 1:
-		show()
+		visible = true
 		_refresh_display()
 
 
@@ -302,7 +300,7 @@ func _build_npc_buttons() -> void:
 	vbox.add_child(_npc_container)
 
 	# 从 RelationshipManager 获取 NPC 数据
-	var npc_list: Array[Dictionary] = []
+	var npc_list: Array = []
 	var relationship_mgr: Node = get_node_or_null("/root/RelationshipManager")
 	if relationship_mgr and relationship_mgr._npc_database.size() > 0:
 		for npc_id in relationship_mgr._npc_database:
@@ -365,31 +363,33 @@ func _on_battle_log(message: String) -> void:
 
 
 func _on_dialogue_started(_dialogue_id: String) -> void:
-	hide()
+	visible = false
 
 
 func _on_dialogue_ended(_dialogue_id: String) -> void:
 	if _game_loop and _game_loop.current_state == 1:  # EXPLORING
-		show()
+		visible = true
 		_refresh_display()
 
 
 func _on_encounter_ui_visibility_changed(encounter_ui: Control) -> void:
 	if encounter_ui.visible:
-		hide()
+		visible = false
 	elif _game_loop and _game_loop.current_state == 1:  # EXPLORING
-		show()
+		visible = true
 		_refresh_display()
 
 
 func _on_game_state_changed(new_state: int) -> void:
 	# 0=MENU, 1=EXPLORING, 2=IN_COMBAT, 3=COMBAT_RESULT
+	print("[ExplorationPanel] 收到状态变化: %d, 当前visible=%s" % [new_state, str(visible)])
 	match new_state:
 		1:  # EXPLORING
-			show()
+			visible = true
+			print("[ExplorationPanel] 设置 visible=true, 实际=%s, layer=%d" % [str(visible), layer])
 			_refresh_display()
 		_:
-			hide()
+			visible = false
 
 # ============================================================================
 # 刷新显示

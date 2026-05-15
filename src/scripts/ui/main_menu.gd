@@ -30,6 +30,9 @@ var _save_region: String = ""
 var _save_slot: int = 1
 var _settings_panel: Node = null
 var _credits_panel: Node = null
+var _exploration_panel: Node = null
+var _dialogue_box: Node = null
+var _game_panels: Array = []
 var _transitioning: bool = false
 
 
@@ -52,6 +55,10 @@ func _ready() -> void:
 
 	_play_intro_animation()
 
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
+	if game_loop:
+		game_loop.game_state_changed.connect(_on_game_state_changed)
+
 	await get_tree().create_timer(0.5).timeout
 	_check_save_status()
 
@@ -62,6 +69,17 @@ func show_menu() -> void:
 	visible = true
 	_check_save_status()
 	_new_game_btn.grab_focus()
+
+
+func _on_game_state_changed(new_state: int) -> void:
+	if new_state == 0:
+		show_menu()
+		for panel in _game_panels:
+			if is_instance_valid(panel):
+				panel.queue_free()
+		_game_panels.clear()
+		_exploration_panel = null
+		_dialogue_box = null
 
 
 func _play_intro_animation() -> void:
@@ -227,11 +245,80 @@ func _on_intro_dialogue_ended(_dialogue_id: String) -> void:
 	_enter_exploration()
 
 
-func _enter_exploration() -> void:
+func _enter_exploration(is_new_game: bool = true) -> void:
+	if is_new_game:
+		_initialize_game_systems()
+	_load_game_panels()
 	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
 	if game_loop:
 		game_loop.enter_exploration()
 	_transitioning = false
+
+
+func _initialize_game_systems() -> void:
+	var character: Node = get_node_or_null("/root/CharacterSystem")
+	if character and character.has_method("initialize_character"):
+		character.initialize_character()
+		character.add_experience(100)
+
+	var currency_mgr: Node = get_node_or_null("/root/CurrencyManager")
+	if currency_mgr:
+		currency_mgr.add_currency(currency_mgr.CurrencyType.SILVER, 100)
+
+	var inv: Node = get_node_or_null("/root/InventorySystem")
+	if inv:
+		inv.add_item("common_sword", 1)
+		inv.add_item("common_helmet", 1)
+		inv.add_item("health_pill", 3)
+		inv.add_item("spirit_stone_small", 5)
+		inv.equip_item("common_sword", "weapon_main")
+		inv.equip_item("common_helmet", "head")
+
+	var martial_arts: Node = get_node_or_null("/root/MartialArtsSystem")
+	if martial_arts:
+		for ma_id in ["sword_basic_01", "fist_basic_01", "palm_basic_01"]:
+			var ma_data = martial_arts.get_martial_art_data(ma_id)
+			if ma_data:
+				martial_arts.player_martial_arts[ma_id] = ma_data.duplicate(true)
+		martial_arts.equip_martial_art("sword_basic_01", 0)
+		martial_arts.equip_martial_art("fist_basic_01", 1)
+		martial_arts.equip_martial_art("palm_basic_01", 2)
+
+
+func _load_game_panels() -> void:
+	if _exploration_panel != null:
+		_exploration_panel.visible = true
+		return
+
+	var panels_to_load: Array[Dictionary] = [
+		{"path": "res://src/scenes/ui/exploration_panel.tscn", "visible": true},
+		{"path": "res://src/scenes/ui/dialogue_box.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/pause_menu.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/inventory_panel.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/equipment_panel.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/world_map.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/help_panel.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/quest_log_panel.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/relationship_panel.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/encounter_ui.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/combat_action_panel.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/battle_result_panel.tscn", "visible": false},
+	]
+
+	for panel_info in panels_to_load:
+		var scene: PackedScene = load(panel_info.path)
+		if scene != null:
+			var instance: Node = scene.instantiate()
+			if instance is CanvasItem or instance is CanvasLayer:
+				instance.visible = panel_info.visible
+			get_tree().root.add_child(instance)
+			_game_panels.append(instance)
+			if panel_info.path.ends_with("exploration_panel.tscn"):
+				_exploration_panel = instance
+			elif panel_info.path.ends_with("dialogue_box.tscn"):
+				_dialogue_box = instance
+		else:
+			push_warning("无法加载面板: %s" % panel_info.path)
 
 
 ## ============================================================================
@@ -269,7 +356,7 @@ func _on_continue_pressed() -> void:
 
 func _on_load_completed(_slot: int) -> void:
 	visible = false
-	_enter_exploration()
+	_enter_exploration(false)
 
 
 func _on_load_failed(_slot: int, error: String) -> void:

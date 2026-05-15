@@ -1,0 +1,232 @@
+{
+  "id": "npc_murongxue",
+  "title": "慕容雪对话",
+  "description": "无门无派的慕容雪的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "murongxue",
+    "npc_name": "慕容雪",
+    "location": "无门无派"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "murongxue",
+      "text": "呀，又碰到你了。说起来，我最近在研究一种很有趣的古阵法呢。",
+      "emotion": "happy",
+      "choices": [
+        {
+          "id": "choice_ask_array",
+          "text": "什么古阵法？",
+          "next_node": "array_talk"
+        },
+        {
+          "id": "choice_ask_travel",
+          "text": "你一个人行走江湖，不觉得危险吗？",
+          "next_node": "travel_talk"
+        },
+        {
+          "id": "choice_ask_past",
+          "text": "你为何不加入宗门？",
+          "next_node": "past_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "murongxue",
+              "value": 15,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "下次再聊吧",
+          "next_node": "END"
+        }
+      ]
+    },
+    {
+      "id": "array_talk",
+      "speaker": "murongxue",
+      "text": "是上古遗迹中发现的聚灵阵残图。若能复原，也许能大幅提升修炼速度。不过缺少几味关键灵材...",
+      "emotion": "curious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 3,
+          "reason": "对阵法感兴趣"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_help_find",
+          "text": "我可以帮你寻找灵材",
+          "next_node": "help_response"
+        },
+        {
+          "id": "choice_warn_danger",
+          "text": "上古遗迹的东西，小心有危险",
+          "next_node": "warn_response"
+        }
+      ]
+    },
+    {
+      "id": "help_response",
+      "speaker": "murongxue",
+      "text": "真的吗？太好了！你人真好！如果找到了，我一定分你一份阵法心得作为答谢。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 8,
+          "reason": "主动帮助"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 2,
+          "reason": "乐于助人"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "warn_response",
+      "speaker": "murongxue",
+      "text": "嗯，你说得有道理。我会小心的，谢谢你的提醒。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 3,
+          "reason": "关心安全"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "travel_talk",
+      "speaker": "murongxue",
+      "text": "危险？哈哈，我从小就一个人走南闯北了。再说，无门无派反而没有那些门派恩怨的牵绊，自由自在的。",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 2,
+          "reason": "关心"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_admire_free",
+          "text": "不受拘束，倒是令人羡慕",
+          "next_node": "admire_response"
+        },
+        {
+          "id": "choice_offer_protect",
+          "text": "若遇到麻烦，尽管来找我",
+          "next_node": "protect_response"
+        }
+      ]
+    },
+    {
+      "id": "admire_response",
+      "speaker": "murongxue",
+      "text": "自由虽好，有时也会寂寞呢...不过现在认识了你，倒是多了个可以说话的人。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 5,
+          "reason": "真诚交流"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "protect_response",
+      "speaker": "murongxue",
+      "text": "哎呀，你还挺会照顾人的嘛。好，那我记住你这句话了哦。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 6,
+          "reason": "愿意保护"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 2,
+          "reason": "侠义心肠"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "past_talk",
+      "speaker": "murongxue",
+      "text": "...这个问题啊。说来话长。我小时候被一位散修收养，他教了我很多，但从未提起过我的身世。后来他不知所踪，我便一直在寻找他的下落。",
+      "emotion": "sad",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 5,
+          "reason": "倾听心事"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_comfort",
+          "text": "你一定会找到他的",
+          "next_node": "comfort_response"
+        },
+        {
+          "id": "choice_help_search",
+          "text": "我帮你一起找",
+          "next_node": "help_search_response"
+        }
+      ]
+    },
+    {
+      "id": "comfort_response",
+      "speaker": "murongxue",
+      "text": "谢谢...有你这句话，我就安心多了。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 3,
+          "reason": "安慰"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "help_search_response",
+      "speaker": "murongxue",
+      "text": "你...你愿意帮我？我、我不知道该说什么好...谢谢你！",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "murongxue",
+          "value": 10,
+          "reason": "愿意帮助寻人"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 3,
+          "reason": "重义气"
+        }
+      ],
+      "next_node": "END"
+    }
+  ]
+}

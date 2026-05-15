@@ -1,0 +1,138 @@
+{
+  "id": "npc_xuanjizhenren",
+  "title": "玄机真人对话",
+  "description": "天机阁掌门玄机真人的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "xuanjizhenren",
+    "npc_name": "玄机真人",
+    "location": "天机阁"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "xuanjizhenren",
+      "text": "哦，是你。天机有变，故人来访...一切皆在卦象之中。",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_fate",
+          "text": "真人可否为我卜上一卦？",
+          "next_node": "divination"
+        },
+        {
+          "id": "choice_ask_tianjige",
+          "text": "天机阁以何闻名？",
+          "next_node": "sect_intro"
+        },
+        {
+          "id": "choice_ask_secret",
+          "text": "天象可有异变？",
+          "next_node": "heavenly_secret",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "xuanjizhenren",
+              "value": 20,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "打扰了，告辞",
+          "next_node": "END"
+        }
+      ]
+    },
+    {
+      "id": "divination",
+      "speaker": "xuanjizhenren",
+      "text": "有趣...你的命格中有一缕剑骨之气，前路虽有波折，但终不失光明。不过，天机不可泄露太多。",
+      "emotion": "curious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuanjizhenren",
+          "value": 3,
+          "reason": "求卦问命"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_believe",
+          "text": "多谢真人指点",
+          "next_node": "believe_response",
+          "dao_heart_hint": 3
+        },
+        {
+          "id": "choice_doubt",
+          "text": "命运之说，未免太过玄虚",
+          "next_node": "doubt_response"
+        }
+      ]
+    },
+    {
+      "id": "believe_response",
+      "speaker": "xuanjizhenren",
+      "text": "信命而不认命，方为上策。你若遇到困惑，尽可再来找老夫。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuanjizhenren",
+          "value": 5,
+          "reason": "尊重天机之术"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 3,
+          "reason": "信命不认命"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "doubt_response",
+      "speaker": "xuanjizhenren",
+      "text": "哈哈，年轻人质疑天命，倒也无妨。天机阁从不强求他人相信。",
+      "emotion": "neutral",
+      "next_node": "END"
+    },
+    {
+      "id": "sect_intro",
+      "speaker": "xuanjizhenren",
+      "text": "天机阁以推演天道、卜算命数为本。我们不争名利，只求窥探天地运行的至理。修真界的许多大事，都曾被天机阁提前预知。",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuanjizhenren",
+          "value": 2,
+          "reason": "了解天机阁"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "heavenly_secret",
+      "speaker": "xuanjizhenren",
+      "text": "你既诚心相问...近来卦象晦暗不明，封印之地似有松动之兆。此事关乎修真界存亡，万不可掉以轻心。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuanjizhenren",
+          "value": 5,
+          "reason": "分享天机"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 2,
+          "reason": "关注天下大事"
+        }
+      ],
+      "next_node": "END"
+    }
+  ]
+}

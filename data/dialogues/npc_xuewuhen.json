@@ -1,0 +1,177 @@
+{
+  "id": "npc_xuewuhen",
+  "title": "血无痕对话",
+  "description": "血刹教弟子血无痕的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "xuewuhen",
+    "npc_name": "血无痕",
+    "location": "血刹教"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "xuewuhen",
+      "text": "...你胆子不小，竟敢主动接近血刹教的人。说吧，找我何事？",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_purpose",
+          "text": "血刹教究竟意欲何为？",
+          "next_node": "purpose"
+        },
+        {
+          "id": "choice_ask_strength",
+          "text": "听闻你实力不凡，可否指点一二？",
+          "next_node": "strength_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "xuewuhen",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_ask_news",
+          "text": "最近有什么消息？",
+          "next_node": "news"
+        },
+        {
+          "id": "choice_leave",
+          "text": "没什么，告辞",
+          "next_node": "END"
+        }
+      ]
+    },
+    {
+      "id": "purpose",
+      "speaker": "xuewuhen",
+      "text": "血刹教追求的是力量的极致。正道伪善，以仁义之名行压制之实。我们不过是不愿受那些条条框框束缚罢了。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuewuhen",
+          "value": 2,
+          "reason": "愿意了解血刹教"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_understand",
+          "text": "各有各的道理",
+          "next_node": "understand_response",
+          "dao_heart_hint": -3
+        },
+        {
+          "id": "choice_reject",
+          "text": "力量若无正义约束，终将为祸",
+          "next_node": "reject_response",
+          "dao_heart_hint": 5
+        }
+      ]
+    },
+    {
+      "id": "understand_response",
+      "speaker": "xuewuhen",
+      "text": "哼...你倒不像那些满口仁义的伪君子。也许你我之间还有得聊。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuewuhen",
+          "value": 5,
+          "reason": "不抱偏见"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": -3,
+          "reason": "认同魔道理念"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "reject_response",
+      "speaker": "xuewuhen",
+      "text": "哼，又是一个被正道洗了脑的。罢了，道不同不相为谋。",
+      "emotion": "angry",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuewuhen",
+          "value": -5,
+          "reason": "否定魔道"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": 5,
+          "reason": "坚守正道立场"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "strength_talk",
+      "speaker": "xuewuhen",
+      "text": "指点？血刹教的功法可不是随便能学的。不过看你筋骨尚可...我且告诉你一个秘密：真正的力量来自于突破极限的痛苦。",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuewuhen",
+          "value": 3,
+          "reason": "交流修炼"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_interested",
+          "text": "愿闻其详",
+          "next_node": "dark_teaching"
+        },
+        {
+          "id": "choice_decline",
+          "text": "多谢好意，我自有修炼之法",
+          "next_node": "decline_response"
+        }
+      ]
+    },
+    {
+      "id": "dark_teaching",
+      "speaker": "xuewuhen",
+      "text": "血刹教有一式'血影步'，以血气为引，速度可在瞬息间提升数倍。不过此法反噬不小...你若有兴趣，改日我可以演示一番。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuewuhen",
+          "value": 5,
+          "reason": "愿意了解血刹教功法"
+        },
+        {
+          "type": "dao_heart_change",
+          "value": -2,
+          "reason": "接触魔道功法"
+        }
+      ],
+      "next_node": "END"
+    },
+    {
+      "id": "decline_response",
+      "speaker": "xuewuhen",
+      "text": "随你。不过记住，正道的那套花拳绣腿，真到了生死关头可救不了你。",
+      "emotion": "neutral",
+      "next_node": "END"
+    },
+    {
+      "id": "news",
+      "speaker": "xuewuhen",
+      "text": "我只关心一件事——变强。至于其他的...你去问那些闲人吧。",
+      "emotion": "neutral",
+      "next_node": "END"
+    }
+  ]
+}
