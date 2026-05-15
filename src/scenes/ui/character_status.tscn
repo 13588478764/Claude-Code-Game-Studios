@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[node name="CharacterStatus" type="PanelContainer"]
+custom_minimum_size = Vector2(200, 60)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="PortraitTexture" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(48, 48)
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "角色名"
+
+[node name="HPBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+
+[node name="MPBar" type="ProgressBar" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false

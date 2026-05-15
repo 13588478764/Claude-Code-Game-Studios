@@ -1,41 +1,8 @@
-## CombatHud
-## CombatHud系统
-##
-## 主要功能：
-## - 待补充
-
-extends Node
+## 战斗HUD — 常驻元素、状态图标栏、伤害飘字和分辨率适配
+extends CanvasLayer
 
 class_name CombatHud
 
-# ============================================================================
-# 常量定义
-# ============================================================================
-
-# ============================================================================
-# 信号定义
-# ============================================================================
-
-# ============================================================================
-# 成员变量
-# ============================================================================
-
-# ============================================================================
-# 生命周期方法
-# ============================================================================
-
-# ============================================================================
-# 公共方法
-# ============================================================================
-
-# ============================================================================
-# 私有方法
-# ============================================================================
-
-# 战斗HUD显示
-# 实现常驻HUD元素、状态效果图标栏、伤害飘字和分辨率适配
-
-# 信号定义
 signal hud_updated
 
 # UI元素引用
@@ -45,9 +12,9 @@ signal hud_updated
 @onready var floating_text_container = $CombatHUD/FloatingTextContainer
 
 # HUD元素预制体路径
-var character_status_prefab = preload("res://src/scenes/ui/character_status.tscn")
-var turn_order_prefab = preload("res://src/scenes/ui/turn_order.tscn")
-var status_icon_prefab = preload("res://src/scenes/ui/status_icon.tscn")
+var character_status_prefab: PackedScene = load("res://src/scenes/ui/character_status.tscn")
+var turn_order_prefab: PackedScene = load("res://src/scenes/ui/turn_order.tscn")
+var status_icon_prefab: PackedScene = load("res://src/scenes/ui/status_icon.tscn")
 
 # 分辨率适配参数
 var base_resolution = Vector2(1920, 1080)
