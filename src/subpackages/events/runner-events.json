@@ -1,0 +1,593 @@
+[
+  {
+    "id": "runner-001-rain-rush",
+    "text": "暴雨预警。系统派单激增，单价 ×1.5。但路面湿滑。",
+    "tags": ["weather", "peak"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "雨衣一披冲就完事",
+      "icon": "⛈️",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 50 }, { "target": "mood", "value": -10 }],
+      "risk": {
+        "chance": 0.25,
+        "success": { "effects": [{ "target": "money", "value": 30 }] },
+        "fail": { "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -20 }, { "target": "money", "value": -40 }] }
+      }
+    },
+    "choiceB": {
+      "text": "停接保平安",
+      "icon": "🏠",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "mood", "value": 5 }, { "target": "money", "value": -10 }]
+    }
+  },
+  {
+    "id": "runner-002-bad-review",
+    "text": "顾客一星差评：『送晚了 2 分钟』。系统扣 50 元 + 评分降 0.1。",
+    "tags": ["review", "system"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "申诉到底",
+      "icon": "📜",
+      "effects": [{ "target": "energy", "value": -10 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 50 }, { "target": "mood", "value": 18 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "认了下一单争取五星",
+      "icon": "💪",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "runner-003-stairs-no-elevator",
+    "text": "送到地址：8 楼，电梯坏了。订单备注『不要敲门要轻声』。",
+    "tags": ["delivery", "stairs"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "硬爬 8 楼",
+      "icon": "🪜",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "请顾客下来取",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -3 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 18 }] },
+        "fail": { "effects": [{ "target": "money", "value": -55 }, { "target": "mood", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "runner-004-traffic-jam",
+    "text": "前面堵成停车场。手机里 3 单倒计时齐刷刷在跳。",
+    "tags": ["traffic", "stress"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "走人行道见缝插针",
+      "icon": "🛵",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 25 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "money", "value": -100 }, { "target": "energy", "value": -20 }, { "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "老老实实排队",
+      "icon": "🚦",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": -30 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "runner-005-restaurant-slow",
+    "text": "餐馆出餐慢。同行小哥已经接了别的单，让你『等等就当休息』。",
+    "tags": ["restaurant", "wait"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "去摧老板出餐",
+      "icon": "🔥",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 15 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "坐下来歇一会",
+      "icon": "🪑",
+      "effects": [{ "target": "energy", "value": 12 }, { "target": "money", "value": -15 }, { "target": "mood", "value": 8 }]
+    }
+  },
+  {
+    "id": "runner-006-tip-customer",
+    "text": "送到豪宅区。顾客开门递 20 元小费：『辛苦了。』",
+    "tags": ["customer", "tip"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "收下道谢",
+      "icon": "🙇",
+      "effects": [{ "target": "money", "value": 20 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "礼貌推辞说不收",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "runner-007-bike-flat",
+    "text": "电动车没电了，离最近充电桩 3 公里。",
+    "tags": ["accident", "vehicle"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "推车走过去",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "叫拖车 + 多花钱",
+      "icon": "🚚",
+      "effects": [{ "target": "money", "value": -40 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "runner-008-cold-food",
+    "text": "顾客投诉：『饭凉了！』。距离接单到这里你只用了 25 分钟，按规则之内。",
+    "tags": ["complaint", "system"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "解释规则 + 让顾客自己取消",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -5 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 18 }] },
+        "fail": { "effects": [{ "target": "money", "value": -45 }, { "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "直接道歉补偿 5 元红包",
+      "icon": "💵",
+      "effects": [{ "target": "money", "value": -5 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "runner-009-station-meeting",
+    "text": "站长开会：『本月人均要 80 单，达不到的下个月有惊喜。』",
+    "tags": ["station", "kpi"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "卷起来冲单数",
+      "icon": "🚀",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 50 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "开个小号分担",
+      "icon": "👥",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 15 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [{ "target": "money", "value": 25 }] },
+        "fail": { "effects": [{ "target": "money", "value": -80 }, { "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "runner-010-fellow-fall",
+    "text": "前面同行小哥摔倒了。手机派单还在响。",
+    "tags": ["social", "moral"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "停下来扶他",
+      "icon": "🤝",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": -25 }, { "target": "mood", "value": 30 }]
+    },
+    "choiceB": {
+      "text": "假装没看见赶单",
+      "icon": "👀",
+      "effects": [{ "target": "money", "value": 20 }, { "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "runner-011-elevator-trapped",
+    "text": "送餐途中被困电梯里 15 分钟。3 单都超时了。",
+    "tags": ["crisis", "delivery"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "保持冷静等救援",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": -50 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "拍视频发抖音",
+      "icon": "📱",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "runner-012-gas-station-coffee",
+    "text": "加油站便利店。架子上 5 元一杯的咖啡。",
+    "tags": ["energy", "daily"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "买一杯续命",
+      "icon": "☕",
+      "effects": [{ "target": "money", "value": -5 }, { "target": "energy", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "省下 5 块继续硬撑",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "runner-013-helmet-cop",
+    "text": "交警查头盔。你今天忘戴了。",
+    "tags": ["police", "rule"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "认错求情",
+      "icon": "🙇",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "假装没看见冲过去",
+      "icon": "🛵",
+      "effects": [{ "target": "energy", "value": -5 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "money", "value": -200 }, { "target": "mood", "value": -30 }] }
+      }
+    }
+  },
+  {
+    "id": "runner-014-burger-temptation",
+    "text": "送到的汉堡飘出香味。你已经 6 小时没吃东西了。",
+    "tags": ["temptation", "moral"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "继续送，自己买一个",
+      "icon": "🍔",
+      "effects": [{ "target": "money", "value": -20 }, { "target": "energy", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "偷拿一根薯条",
+      "icon": "🍟",
+      "risk": {
+        "chance": 0.7,
+        "success": { "effects": [{ "target": "energy", "value": 8 }] },
+        "fail": { "effects": [{ "target": "money", "value": -30 }, { "target": "mood", "value": -25 }] }
+      },
+      "effects": []
+    }
+  },
+  {
+    "id": "runner-015-app-glitch",
+    "text": "APP 突然显示『系统繁忙』，所有派单消失了。同时保单数计数减少。",
+    "tags": ["system", "tech"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "重启 APP 反复登录",
+      "icon": "🔄",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "去站点投诉",
+      "icon": "🏪",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": -10 }, { "target": "mood", "value": 8 }]
+    }
+  },
+  {
+    "id": "runner-016-overtime-bonus",
+    "text": "晚高峰：站长说前 5 名能拿 100 元加单奖。还有 1 小时。",
+    "tags": ["bonus", "competition"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "玩命冲前五",
+      "icon": "🏃",
+      "effects": [{ "target": "energy", "value": -35 }, { "target": "mood", "value": -10 }],
+      "risk": {
+        "chance": 0.45,
+        "success": { "effects": [{ "target": "money", "value": 100 }, { "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "money", "value": 25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "正常节奏不卷",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 30 }]
+    }
+  },
+  {
+    "id": "runner-017-dog-attack",
+    "text": "送到一户人家，开门就是一只没拴的大狗。",
+    "tags": ["danger", "delivery"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "镇定放下餐离开",
+      "icon": "🧘",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "money", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "撒腿就跑",
+      "icon": "🏃",
+      "effects": [{ "target": "energy", "value": -15 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 18 }] },
+        "fail": { "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": -30 }, { "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "runner-018-night-shift-snack",
+    "text": "深夜 11 点，最后一单。回站点路上 24 小时便利店亮着灯。",
+    "tags": ["night", "daily"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "买个关东煮慢慢吃",
+      "icon": "🍢",
+      "effects": [{ "target": "money", "value": -15 }, { "target": "energy", "value": 18 }, { "target": "mood", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "回家吃泡面省钱",
+      "icon": "🍜",
+      "effects": [{ "target": "money", "value": -3 }, { "target": "energy", "value": 8 }]
+    }
+  },
+  {
+    "id": "runner-019-five-star-streak",
+    "text": "今天连续 12 单五星好评。系统提示：『再 3 单解锁\"金牌骑手\"奖励』。",
+    "tags": ["streak", "reward"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "再硬撑 3 单",
+      "icon": "🏆",
+      "effects": [{ "target": "energy", "value": -25 }],
+      "risk": {
+        "chance": 0.6,
+        "success": { "effects": [{ "target": "money", "value": 80 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "见好就收回家",
+      "icon": "🏠",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": 18 }, { "target": "money", "value": -15 }]
+    }
+  },
+  {
+    "id": "runner-020-station-quitting",
+    "text": "同事老李在群里告别：『不干了，送外卖 2 年存了 8 万，回家开店。』",
+    "tags": ["mood", "social"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "默默把存款记一遍",
+      "icon": "💰",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "energy", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "在群里调侃 + 发红包",
+      "icon": "🧧",
+      "effects": [{ "target": "money", "value": -20 }, { "target": "mood", "value": 12 }]
+    }
+  },
+
+  {
+    "id": "runner-021-customer-tip-test",
+    "text": "顾客备注：『准时送到+10 元小费，迟到 1 分钟扣 5 元。』",
+    "tags": ["customer", "deadline"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "全速冲",
+      "icon": "💨",
+      "effects": [{ "target": "energy", "value": -25 }],
+      "risk": {
+        "chance": 0.6,
+        "success": { "effects": [{ "target": "money", "value": 25 }, { "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "money", "value": -10 }, { "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "正常送 + 不接小费",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 12 }]
+    }
+  },
+  {
+    "id": "runner-022-customer-cancel-arrive",
+    "text": "到楼下，顾客说『不要了，刚去外面吃了』。订单标记『已签收』。",
+    "tags": ["customer", "loss"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "自己吃了 + 当午餐",
+      "icon": "🍱",
+      "effects": [{ "target": "energy", "value": 25 }, { "target": "money", "value": -15 }, { "target": "mood", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "扔了 + 申诉拿赔偿",
+      "icon": "🗑️",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 20 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "runner-023-mall-entrance-blocked",
+    "text": "送进商场。保安：『骑手禁入。从员工通道走，绕 800 米。』",
+    "tags": ["delivery", "rule"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "认了 + 绕路",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "硬闯",
+      "icon": "💨",
+      "effects": [{ "target": "energy", "value": -10 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 18 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -40 }] }
+      }
+    }
+  },
+  {
+    "id": "runner-024-platform-strike-call",
+    "text": "骑手群在号召今天罢工反抗低单价。同行已经响应一半。",
+    "tags": ["platform", "social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "加入罢工 + 出去喝茶",
+      "icon": "✊",
+      "effects": [{ "target": "energy", "value": 18 }, { "target": "money", "value": -60 }, { "target": "mood", "value": 22 }]
+    },
+    "choiceB": {
+      "text": "趁机多接单（少了竞争）",
+      "icon": "🚀",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 120 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "runner-025-rider-charity",
+    "text": "看见路边老人摔了。手里 2 单倒计时。",
+    "tags": ["moral", "social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "停车帮忙 + 叫救护",
+      "icon": "🆘",
+      "effects": [{ "target": "money", "value": -80 }, { "target": "mood", "value": 35 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "打 110 + 自己赶单",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": 15 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "runner-026-app-update-glitch",
+    "text": "APP 更新后接单界面卡顿。同行说『回滚旧版』。",
+    "tags": ["tech", "platform"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "回滚旧版",
+      "icon": "🔄",
+      "effects": [{ "target": "energy", "value": -8 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 30 }, { "target": "mood", "value": 12 }] },
+        "fail": { "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -20 }] }
+      }
+    },
+    "choiceB": {
+      "text": "硬用新版 + 慢半拍",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": -15 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "runner-027-flat-tire",
+    "text": "路上压到玻璃，前胎瘪了。修车铺 1 公里外。",
+    "tags": ["vehicle", "crisis"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "推车去修 + 付费",
+      "icon": "🔧",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": -50 }]
+    },
+    "choiceB": {
+      "text": "求路过同行借工具自修",
+      "icon": "🛠️",
+      "effects": [{ "target": "energy", "value": -15 }],
+      "risk": {
+        "chance": 0.6,
+        "success": { "effects": [{ "target": "money", "value": -10 }, { "target": "mood", "value": 18 }] },
+        "fail": { "effects": [{ "target": "money", "value": -80 }, { "target": "energy", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "runner-028-vip-customer-recognition",
+    "text": "送到一户人家，开门是上次给你 20 元小费的老顾客。她记得你。",
+    "tags": ["customer", "social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "微笑寒暄 + 送货",
+      "icon": "😊",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": 25 }, { "target": "mood", "value": 22 }]
+    },
+    "choiceB": {
+      "text": "公事公办放下就走",
+      "icon": "🚶",
+      "effects": [{ "target": "money", "value": 15 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "runner-029-helmet-fashion",
+    "text": "新同行说：『现在流行小米头盔，年轻多了。』他的旧头盔在你眼前。",
+    "tags": ["social", "consume"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "立刻下单",
+      "icon": "🛒",
+      "effects": [{ "target": "money", "value": -180 }, { "target": "mood", "value": 22 }, { "target": "energy", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "继续用现在的",
+      "icon": "🪖",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "runner-030-station-leaderboard",
+    "text": "站点公告：本月单王榜你排第 3。前两名是你最近常碰到的两个老哥。",
+    "tags": ["station", "competition"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "请前两名喝啤酒套近乎",
+      "icon": "🍺",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "energy", "value": -10 }, { "target": "mood", "value": 30 }]
+    },
+    "choiceB": {
+      "text": "下个月卷死他们",
+      "icon": "🔥",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 40 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "runner-cond-001-bad-weather-quota",
+    "text": "暴雨预警 + 平台爆单 + 双倍补贴。但你的电动车今天后轮已经异响。",
+    "tags": ["crisis", "rain"],
+    "weight": 2.8,
+    "conditions": [{ "type": "maxHealth", "value": 60 }],
+    "choiceA": {
+      "text": "出门冲一波 — 钱比命重要",
+      "icon": "🌧️",
+      "effects": [{ "target": "money", "value": 250 }, { "target": "health", "value": -15 }, { "target": "energy", "value": -25 }]
+    },
+    "choiceB": {
+      "text": "留在站点等天放晴",
+      "icon": "🛌",
+      "effects": [{ "target": "health", "value": 10 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "runner-cond-002-station-manager",
+    "text": "你 Lv3 了，站长想培养你当组长，每月固定 800 补贴，但要负责带新人。",
+    "tags": ["milestone", "promotion"],
+    "weight": 1.8,
+    "conditions": [{ "type": "minCareerLevel", "value": 3 }],
+    "choiceA": {
+      "text": "接 — 收入稳定 + 不用风吹日晒",
+      "icon": "📋",
+      "effects": [{ "target": "money", "value": 400 }, { "target": "mood", "value": 20 }, { "target": "energy", "value": 10 }],
+      "careerScoreDelta": 25
+    },
+    "choiceB": {
+      "text": "拒 — 自由跑单更适合我",
+      "icon": "🛵",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "money", "value": -100 }]
+    }
+  }
+]

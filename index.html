@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>打工轮回</title>
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_2553510_t4tio9j5x6c.css" />
+    <style>
+      html, body, #app {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background: #0f0a26;
+        color: #eee;
+        font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      }
+      /* H5 preview: mimic mobile viewport on desktop */
+      @media (min-width: 600px) {
+        body {
+          display: flex;
+          justify-content: center;
+          background: #000;
+        }
+        #app {
+          width: 414px;
+          max-width: 414px;
+          min-height: 100vh;
+          box-shadow: 0 0 32px rgba(0, 0, 0, 0.8);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

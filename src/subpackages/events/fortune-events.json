@@ -1,0 +1,406 @@
+[
+  {
+    "id": "fortune-001-relationship-asker",
+    "text": "客户：『我和前男友还有复合可能吗？』她已经哭花了妆。",
+    "tags": ["customer", "love"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "卦象显示：『近期有桃花』",
+      "icon": "🌸",
+      "effects": [{ "target": "money", "value": 80 }, { "target": "energy", "value": -10 }],
+      "risk": {
+        "chance": 0.7,
+        "success": { "effects": [{ "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "诚实说『卦象显示放下』",
+      "icon": "🕊️",
+      "effects": [{ "target": "money", "value": 30 }, { "target": "mood", "value": 18 }]
+    }
+  },
+  {
+    "id": "fortune-002-rich-client",
+    "text": "戴金表的中年男人坐下：『我想问股市运势。』掏出一沓现金。",
+    "tags": ["customer", "money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "扯一通『天机不可泄』",
+      "icon": "🌟",
+      "effects": [{ "target": "money", "value": 200 }, { "target": "energy", "value": -15 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "money", "value": -100 }, { "target": "mood", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "诚实推说不懂",
+      "icon": "🤷",
+      "effects": [{ "target": "money", "value": -10 }, { "target": "mood", "value": 12 }]
+    }
+  },
+  {
+    "id": "fortune-003-livestream-debut",
+    "text": "晚上 8 点开直播。在线 12 人。其中 8 个是机器人。",
+    "tags": ["livestream", "social"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "硬扯 2 小时人气运",
+      "icon": "🎤",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }],
+      "risk": {
+        "chance": 0.35,
+        "success": { "effects": [{ "target": "money", "value": 100 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "money", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "心累，关播",
+      "icon": "📵",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "fortune-004-curse-buyer",
+    "text": "客户问：『有人欺负我，能不能下个咒？』她已经摸出银行卡了。",
+    "tags": ["customer", "ethics"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "象征性烧个符画个圈",
+      "icon": "🔥",
+      "effects": [{ "target": "money", "value": 150 }, { "target": "mood", "value": -25 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "教她用法律手段",
+      "icon": "⚖️",
+      "effects": [{ "target": "money", "value": 20 }, { "target": "mood", "value": 25 }]
+    }
+  },
+  {
+    "id": "fortune-005-friend-asking-fake",
+    "text": "朋友找你算命：『你别糊弄我啊，是不是都是骗人的？』",
+    "tags": ["social", "friend"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "诚实承认套路 + 朋友价",
+      "icon": "🤝",
+      "effects": [{ "target": "money", "value": 30 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "煞有介事算一卦",
+      "icon": "🎴",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "money", "value": 60 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "fortune-006-haters-comment",
+    "text": "短视频底下：『大师好，能算一下你妈生你的时候用了多少卫生纸吗？』点赞 2.3k。",
+    "tags": ["social", "haters"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "下场对线",
+      "icon": "⚔️",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -20 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "拉黑 + 截图发朋友圈卖惨",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": 10 }, { "target": "money", "value": 35 }]
+    }
+  },
+  {
+    "id": "fortune-007-marriage-blocked",
+    "text": "客户问：『大师我和这个男孩八字合吗？』他家给了 50 万彩礼。",
+    "tags": ["customer", "marriage"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "卦象大好 + 红线已现",
+      "icon": "💒",
+      "effects": [{ "target": "money", "value": 120 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "建议再考察 3 个月",
+      "icon": "⏳",
+      "effects": [{ "target": "money", "value": 35 }, { "target": "mood", "value": 12 }]
+    }
+  },
+  {
+    "id": "fortune-008-feng-shui-job",
+    "text": "公司老板请你看风水。说办公室最近不顺。",
+    "tags": ["client", "fengshui"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "煞有介事画堆图 + 卖貔貅",
+      "icon": "🐅",
+      "effects": [{ "target": "money", "value": 250 }, { "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "实诚说『可能是空调坏了』",
+      "icon": "❄️",
+      "effects": [{ "target": "money", "value": -20 }, { "target": "mood", "value": 25 }]
+    }
+  },
+  {
+    "id": "fortune-009-cards-deck-broken",
+    "text": "你的塔罗牌被女儿涂了画。客户预约今晚 8 点。",
+    "tags": ["tool", "crisis"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "买新牌 + 涨价说『神秘加持』",
+      "icon": "🎴",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "凑活用 + 全程紧张",
+      "icon": "😅",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 40 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "fortune-010-disciple-asking",
+    "text": "粉丝跪求：『大师收徒吧，学费随便给。』",
+    "tags": ["fans", "social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "象征性收 800 + 教点皮毛",
+      "icon": "🎓",
+      "effects": [{ "target": "money", "value": 80 }, { "target": "mood", "value": 25 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "推辞『师徒缘分未到』",
+      "icon": "🙏",
+      "effects": [{ "target": "mood", "value": 15 }]
+    }
+  },
+  {
+    "id": "fortune-011-rain-empty-store",
+    "text": "暴雨。一整天没人来店。房租明天到期。",
+    "tags": ["weather", "money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "直播《雨天算运势》",
+      "icon": "📹",
+      "effects": [{ "target": "energy", "value": -15 }],
+      "risk": {
+        "chance": 0.45,
+        "success": { "effects": [{ "target": "money", "value": 80 }, { "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "关门吃火锅",
+      "icon": "🍲",
+      "effects": [{ "target": "money", "value": -40 }, { "target": "mood", "value": 25 }, { "target": "energy", "value": 12 }]
+    }
+  },
+  {
+    "id": "fortune-012-police-investigation",
+    "text": "派出所民警来店里：『有人投诉你诈骗。』",
+    "tags": ["crisis", "police"],
+    "weight": 0.4,
+    "choiceA": {
+      "text": "配合调查 + 退款息事宁人",
+      "icon": "👮",
+      "effects": [{ "target": "money", "value": -150 }, { "target": "mood", "value": -25 }, { "target": "energy", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "拿出『弘扬传统文化』话术",
+      "icon": "📜",
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "money", "value": -300 }, { "target": "mood", "value": -40 }] }
+      },
+      "effects": []
+    }
+  },
+  {
+    "id": "fortune-013-mlm-recruiter",
+    "text": "一个『连锁灵修品牌』来谈合作，说月入 5 万起。听起来像传销。",
+    "tags": ["opportunity", "trap"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "签约 + 拉人头",
+      "icon": "💼",
+      "effects": [{ "target": "money", "value": 50 }, { "target": "mood", "value": -20 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [{ "target": "money", "value": 150 }] },
+        "fail": { "effects": [{ "target": "money", "value": -200 }, { "target": "mood", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "礼貌拒绝",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": 18 }, { "target": "money", "value": -10 }]
+    }
+  },
+  {
+    "id": "fortune-014-celebrity-asking",
+    "text": "一个戴墨镜的女明星偷偷预约：『下个月签新公司，吉不吉？』",
+    "tags": ["celebrity", "win"],
+    "weight": 0.4,
+    "choiceA": {
+      "text": "出具详细命盘报告",
+      "icon": "🌟",
+      "effects": [{ "target": "money", "value": 500 }, { "target": "energy", "value": -25 }, { "target": "mood", "value": 35 }]
+    },
+    "choiceB": {
+      "text": "建议她自己想清楚",
+      "icon": "🤔",
+      "effects": [{ "target": "money", "value": 40 }, { "target": "mood", "value": 20 }]
+    }
+  },
+  {
+    "id": "fortune-015-old-master-message",
+    "text": "微信收到陌生消息：『后辈，你画的符不对。师承哪里？』头像是老人。",
+    "tags": ["mentor", "social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "虚心请教",
+      "icon": "🙇",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "回怼『新时代不一样』",
+      "icon": "⚡",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "fortune-016-app-algorithm",
+    "text": "短视频平台改算法。你的播放量从 10w 暴跌到 1k。",
+    "tags": ["platform", "crisis"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "买流量 + 强行起号",
+      "icon": "💸",
+      "effects": [{ "target": "money", "value": -100 }, { "target": "energy", "value": -15 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 200 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "转去别的平台从头开始",
+      "icon": "🔄",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": 12 }]
+    }
+  },
+  {
+    "id": "fortune-017-stalker-fan",
+    "text": "一个粉丝连续 7 天在店门口蹲守，说要『跟着师父修行』。",
+    "tags": ["fans", "creepy"],
+    "weight": 0.5,
+    "choiceA": {
+      "text": "礼貌劝退",
+      "icon": "🚪",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "报警",
+      "icon": "🚓",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": 18 }]
+    }
+  },
+  {
+    "id": "fortune-018-tax-bureau",
+    "text": "税务局来电话：『请您来核实一下收入情况。』",
+    "tags": ["tax", "crisis"],
+    "weight": 0.5,
+    "choiceA": {
+      "text": "诚实补税",
+      "icon": "📋",
+      "effects": [{ "target": "money", "value": -200 }, { "target": "mood", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "找会计想办法",
+      "icon": "🧮",
+      "effects": [{ "target": "money", "value": -80 }, { "target": "energy", "value": -10 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "fortune-019-mom-call",
+    "text": "妈妈打电话：『隔壁王阿姨说你电视上算的特准，能不能帮她也算一卦？』",
+    "tags": ["family", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "免费算 + 给妈面子",
+      "icon": "👵",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 28 }]
+    },
+    "choiceB": {
+      "text": "推说『最近闭关』",
+      "icon": "🚪",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "fortune-020-self-doubt",
+    "text": "深夜独自一人。突然想：『我自己的命，到底准不准呢？』",
+    "tags": ["mood", "philosophy"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "给自己算一卦",
+      "icon": "🔮",
+      "effects": [{ "target": "energy", "value": -5 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": -10 }] }
+      }
+    },
+    "choiceB": {
+      "text": "把卦盘收起来睡觉",
+      "icon": "🌙",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "fortune-cond-001-investor-knock",
+    "text": "Lv3 后口碑出圈。一个穿西装的人敲门：『想投你 50 万做线上算命平台』。",
+    "tags": ["milestone", "investor"],
+    "weight": 2.0,
+    "conditions": [{ "type": "minCareerLevel", "value": 3 }],
+    "choiceA": {
+      "text": "签合同 + 当老板",
+      "icon": "📝",
+      "effects": [],
+      "risk": {
+        "chance": 0.5,
+        "success": { "text": "上线即火，分成滚滚来", "effects": [{ "target": "money", "value": 800 }, { "target": "mood", "value": 30 }] },
+        "fail": { "text": "技术外包跑路 + 平台凉凉 + 投资人讨债", "effects": [{ "target": "money", "value": -400 }, { "target": "mood", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "婉拒 — 守着街角小店挺好",
+      "icon": "🏮",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "money", "value": 50 }]
+    }
+  },
+  {
+    "id": "fortune-cond-002-misread-shame",
+    "text": "上周给一对夫妇算复婚『成』，结果他们今天上门骂街：『你这骗子！』",
+    "tags": ["crisis", "reputation"],
+    "weight": 2.5,
+    "conditions": [{ "type": "minWeek", "value": 2 }],
+    "choiceA": {
+      "text": "退全款 + 写道歉信",
+      "icon": "💸",
+      "effects": [{ "target": "money", "value": -150 }, { "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "硬刚：『天机不可强求，是你们没诚意』",
+      "icon": "🗡️",
+      "effects": [],
+      "risk": {
+        "chance": 0.4,
+        "success": { "text": "围观吃瓜群众居然觉得你有理", "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "text": "客户朋友圈一发，下周客流减半", "effects": [{ "target": "money", "value": -200 }, { "target": "mood", "value": -25 }] }
+      }
+    }
+  }
+]

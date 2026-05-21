@@ -1,0 +1,1494 @@
+[
+  {
+    "id": "prog-001-pm-simple-change",
+    "text": "老板突然站在你身后：『这个需求很简单嘛，改一下就好了。』你的git log显示这个『简单需求』上次改了3天。",
+    "tags": ["pm", "boss"],
+    "weight": 1.5,
+    "choiceA": {
+      "text": "笑着说好的马上",
+      "icon": "😅",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "打开commit记录给他看",
+      "icon": "📜",
+      "effects": [{ "target": "mood", "value": -20 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-002-prod-bug",
+    "text": "下午3点你发现昨晚上线的代码有个bug。用户已经在群里@你了。你的咖啡刚好喝完。",
+    "tags": ["bug", "urgent"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "先修bug再说",
+      "icon": "🔧",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "去接杯咖啡冷静",
+      "icon": "☕",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-003-prd-novel",
+    "text": "产品经理拿着写满红字的PRD走来：『这个功能我们讨论一下，大概要多久？』PRD有47页。",
+    "tags": ["pm"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "认真看完再评估",
+      "icon": "📖",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "随口说两周吧",
+      "icon": "🤷",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "prog-004-pr-comments",
+    "text": "code review，同事在你的PR下留了23条comment。其中20条是『建议改个变量名』。",
+    "tags": ["review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "一条一条认真改",
+      "icon": "✏️",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "回复『下个版本优化』",
+      "icon": "😏",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-005-late-bug",
+    "text": "晚上8点你的代码终于跑通了！正要下班，钉钉响了：『在吗？线上有个紧急问题。』",
+    "tags": ["overtime", "bug"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "留下来加班处理",
+      "icon": "🌙",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 20 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "假装没网说『明天一早处理』",
+      "icon": "📵",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": 10 }]
+    }
+  },
+  {
+    "id": "prog-006-perf-talk",
+    "text": "年度绩效沟通。领导说：『你今年表现不错，但名额有限...』你知道后面是什么意思。",
+    "tags": ["perf", "boss"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "微笑点头说『理解』",
+      "icon": "🙃",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "直接问『那我的涨薪呢』",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 15 }]
+    }
+  },
+  {
+    "id": "prog-007-friday-rush",
+    "text": "周五下午5点。还有一个小时下班。你的精力已经所剩无几，但积压了3个待办。",
+    "tags": ["pace"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "最后冲刺清完",
+      "icon": "🏃",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": 10 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "摸鱼到下班",
+      "icon": "🐟",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-008-meeting-summon",
+    "text": "午休时间，你趴在桌上快睡着了。突然被拍肩膀：『开会了快来。』会议主题：本周复盘。",
+    "tags": ["meeting"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "打起精神去开会",
+      "icon": "😪",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "说『我肚子疼』溜了",
+      "icon": "🏃",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-009-ai-takeover",
+    "text": "今天大模型版本又更新了。你看见隔壁同事用Cursor 5分钟搞定了你昨天写3小时的功能。",
+    "tags": ["ai", "anxiety"],
+    "weight": 1.4,
+    "choiceA": {
+      "text": "也开始学AI辅助",
+      "icon": "🤖",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "坚信自己写的更好",
+      "icon": "💪",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-010-ai-write-prd",
+    "text": "PM说：『你看这个PRD是我用GPT写的，你1天能搞完吗？』里面有十几个互斥的功能描述。",
+    "tags": ["ai", "pm"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "硬着头皮做",
+      "icon": "🤖",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "把矛盾点甩回去",
+      "icon": "↩️",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-011-35-crisis",
+    "text": "你刷招聘网站，发现90%的岗位写着『年龄35以下』。你今年34。",
+    "tags": ["career", "anxiety"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "化焦虑为动力学技术",
+      "icon": "📚",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "刷到天亮焦虑发作",
+      "icon": "😰",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "prog-012-hc-frozen",
+    "text": "HR在群里发：『公司HC全面冻结，原计划招聘的岗位暂停。』你想起你下面那个本来要进的实习生。",
+    "tags": ["company", "anxiety"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "心里凉一截继续干",
+      "icon": "🧊",
+      "effects": [{ "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "悄悄打开BOSS直聘",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "prog-013-layoff-rumor",
+    "text": "群里突然多了一个新人：『各位大佬好。』你点开他履历——他来自某个刚被合并的兄弟部门。",
+    "tags": ["company", "anxiety"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "热情欢迎",
+      "icon": "🙋",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -3 }]
+    },
+    "choiceB": {
+      "text": "默默打开自己工资条看",
+      "icon": "💸",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-014-rto-callback",
+    "text": "公司宣布取消居家办公，下周一所有人必须到岗打卡。你的工位被清理了。",
+    "tags": ["company", "wfh"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "买盆绿植抢新工位",
+      "icon": "🪴",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "怒投简历",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-015-pip-warning",
+    "text": "leader找你聊：『这个季度要给你设个P-I-P，给你三个月时间。』他笑得很温和。",
+    "tags": ["perf", "boss", "anxiety"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "立刻反向调研",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "卷起来证明自己",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 15 }]
+    }
+  },
+  {
+    "id": "prog-016-okr-double",
+    "text": "下季度OKR：你的目标全部翻倍。leader说『现在大家都得能扛事』。",
+    "tags": ["perf", "okr"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "默默接受",
+      "icon": "🥲",
+      "effects": [{ "target": "mood", "value": -20 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "据理力争砍一半",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-017-weekly-report",
+    "text": "周报模板又改版了。从200字升级到必须配3张图、5个数据指标。",
+    "tags": ["report"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认真编故事",
+      "icon": "📝",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "把上周的复制粘贴改日期",
+      "icon": "📋",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "prog-018-double-time",
+    "text": "公司宣布：从下周开始单休，但福利更好。福利清单是公司食堂换了供应商。",
+    "tags": ["company", "policy"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "在群里转发哭脸",
+      "icon": "😭",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "默默更新简历",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "prog-019-side-hustle",
+    "text": "前同事来私信：『有个外包活，报酬5000。但要在你周末做。』",
+    "tags": ["money", "side"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "接，赚点奶粉钱",
+      "icon": "💰",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 50 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "婉拒，周末是命",
+      "icon": "🛌",
+      "effects": [{ "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "prog-020-down-offer",
+    "text": "你最近面的那家小公司给offer了。但比现在工资低15%。你正在考虑。",
+    "tags": ["career", "money"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "果断跳槽求稳",
+      "icon": "✈️",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "money", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "继续骑驴找马",
+      "icon": "🐴",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-021-feishu-form",
+    "text": "飞书又来一个新表单：『关于工作流改进的100道问卷』。截止今晚12点。",
+    "tags": ["report", "policy"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "一题题填",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "全选B做完",
+      "icon": "🎯",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-022-anti-fraud",
+    "text": "你早上加了一个客户微信。下午接到反诈中心电话：『你近期有可疑添加行为，需要核实。』",
+    "tags": ["funny", "policy"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "如实解释",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "挂电话装作没事",
+      "icon": "📵",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-023-social-comparison",
+    "text": "你发现隔壁同事薪资比你高30%，干的活还没你多。你拿到他工资条复印件时手抖了。",
+    "tags": ["money", "anxiety"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "化悲愤为动力，悄悄投简历",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "算了比上不足比下有余",
+      "icon": "😔",
+      "effects": [{ "target": "mood", "value": -15 }],
+      "buff": { "id": "buff-emo", "name": "emo中", "icon": "💔", "type": "debuff", "days": 2, "moodMul": 1.3 }
+    }
+  },
+  {
+    "id": "prog-024-boss-smile",
+    "text": "老板在群里发了：『明天做好加班准备。』配了一个微笑emoji。那个emoji让你后背发凉。",
+    "tags": ["boss", "overtime"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "默默点赞表示收到",
+      "icon": "👍",
+      "effects": [{ "target": "mood", "value": -20 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "装死不回复",
+      "icon": "💀",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-025-elevator-greeting",
+    "text": "周一早上电梯里遇到老板，他笑眯眯地说：『年轻人最近怎么样？』你脑子里飞速运转。",
+    "tags": ["boss", "chain"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "笑着说很好很好",
+      "icon": "😊",
+      "effects": [{ "target": "mood", "value": -3 }],
+      "followUpId": "prog-025-followup-a"
+    },
+    "choiceB": {
+      "text": "如实说压力大",
+      "icon": "😩",
+      "effects": [{ "target": "mood", "value": -5 }],
+      "followUpId": "prog-025-followup-b"
+    }
+  },
+  {
+    "id": "prog-025-followup-a",
+    "text": "[后续] 三天后老板转给你一个紧急项目：『你最近状态好我才给你的。』",
+    "tags": ["followup"],
+    "weight": 0,
+    "choiceA": {
+      "text": "硬着头皮接",
+      "icon": "💀",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 30 }]
+    },
+    "choiceB": {
+      "text": "委婉拒绝",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "prog-025-followup-b",
+    "text": "[后续] 第二天HR约你聊：『听说你压力大？』她的笑容意味深长。",
+    "tags": ["followup"],
+    "weight": 0,
+    "choiceA": {
+      "text": "硬着头皮聊",
+      "icon": "🥲",
+      "effects": [{ "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "改口说没事啦",
+      "icon": "😬",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-026-overtime-chain",
+    "text": "晚上8点老板让你紧急加个班，周末调休。你看了看手机里的电影票，周六的。",
+    "tags": ["boss", "chain", "overtime"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "答应加班",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 25 }],
+      "followUpId": "prog-026-followup-a"
+    },
+    "choiceB": {
+      "text": "拒绝去看电影",
+      "icon": "🎬",
+      "effects": [{ "target": "mood", "value": 15 }],
+      "followUpId": "prog-026-followup-b"
+    }
+  },
+  {
+    "id": "prog-026-followup-a",
+    "text": "[后续] 第二天老板请全组喝奶茶感谢你，还有人偷偷加你微信。",
+    "tags": ["followup"],
+    "weight": 0,
+    "choiceA": {
+      "text": "受宠若惊",
+      "icon": "🥺",
+      "effects": [{ "target": "mood", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "保持距离",
+      "icon": "😶",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-026-followup-b",
+    "text": "[后续] 周一例会老板当众点名表扬同事小李的奉献精神。",
+    "tags": ["followup"],
+    "weight": 0,
+    "choiceA": {
+      "text": "无所谓",
+      "icon": "🙄",
+      "effects": [{ "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "默默emo",
+      "icon": "😞",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-027-prd-v8",
+    "text": "产品改了第8版需求，还说『就是个微调』。你已经准备开口怼了。",
+    "tags": ["pm", "chain"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "深呼吸再做",
+      "icon": "🧘",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "当场摆烂",
+      "icon": "🔥",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "energy", "value": -5 }],
+      "followUpId": "prog-027-followup-b"
+    }
+  },
+  {
+    "id": "prog-027-followup-b",
+    "text": "[后续] 产品在群里@所有人：『某些人的态度我已经向上反馈了。』",
+    "tags": ["followup"],
+    "weight": 0,
+    "choiceA": {
+      "text": "硬刚到底",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "私聊道歉",
+      "icon": "🙏",
+      "effects": [{ "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "prog-028-fake-sick",
+    "text": "今天是周三你超想请假。但月底绩效表上每个请假都会被记录。",
+    "tags": ["risk", "policy"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "装病请病假",
+      "icon": "🤒",
+      "effects": [],
+      "risk": {
+        "chance": 0.7,
+        "success": { "text": "成功在家躺平一天", "effects": [{ "target": "energy", "value": 35 }, { "target": "mood", "value": 25 }] },
+        "fail": { "text": "HR查岗你穿着睡衣开了视频", "effects": [{ "target": "mood", "value": -30 }, { "target": "money", "value": -20 }] }
+      }
+    },
+    "choiceB": {
+      "text": "硬撑去上班",
+      "icon": "😪",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-029-legacy-shit",
+    "text": "你接手了离职同事的项目。代码里没有注释，函数名是 `doShit2()`、`doShit2Fix()`、`doShit2FixFinal()`。",
+    "tags": ["tech", "legacy"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "全部重构",
+      "icon": "♻️",
+      "effects": [{ "target": "energy", "value": -35 }, { "target": "mood", "value": -10 }, { "target": "money", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "在屎山上继续堆",
+      "icon": "💩",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-030-rollback-nightmare",
+    "text": "你刚发布的版本被回滚了。leader在群里@你：『晚上来一下我办公室。』",
+    "tags": ["bug", "boss"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "复盘到深夜",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "提前写好甩锅文档",
+      "icon": "📋",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-031-on-call",
+    "text": "本月你值oncall。周日凌晨2点电话响：『线上挂了所有用户登不上。』",
+    "tags": ["oncall", "overtime"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "起床上线处理",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "推给下个oncall",
+      "icon": "📵",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-032-aigc-coworker",
+    "text": "新来的同事什么都不会，只会用AI。但他的产出比你还多，速度更快。",
+    "tags": ["ai", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "向他请教",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "默默较劲卷起来",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 10 }]
+    }
+  },
+  {
+    "id": "prog-033-share-meeting",
+    "text": "leader说：『你最近做的项目不错，下周分享会上你来讲一下，全公司都听。』",
+    "tags": ["meeting", "boss"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "认真准备PPT",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 15 }, { "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "随便糊弄一下",
+      "icon": "🤏",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-034-domestic-stack",
+    "text": "公司宣布：核心系统全部信创替代，原MySQL改为某国产数据库。你负责迁移。",
+    "tags": ["tech", "policy"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "开始啃文档",
+      "icon": "📚",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "假装很难做拖延",
+      "icon": "🐢",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "prog-035-mass-meeting",
+    "text": "全员大会2小时，老板讲了40分钟『降本增效』和『拥抱变化』。然后让大家各抒己见。",
+    "tags": ["meeting", "boss"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "举手发言拍马屁",
+      "icon": "🙋",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "低头刷手机",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-036-stand-up",
+    "text": "每日站会7分钟变25分钟。你已经站到腿麻。",
+    "tags": ["meeting"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "假装上厕所溜了",
+      "icon": "🚽",
+      "effects": [{ "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "继续站到完",
+      "icon": "🧎",
+      "effects": [{ "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-037-good-news",
+    "text": "公司公告：『鉴于经营压力，五险一金缴纳基数将下调至最低。』",
+    "tags": ["money", "policy"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "在群里发表声明抗议",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "默默接受麻木",
+      "icon": "😶",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-038-end-year-bonus",
+    "text": "年终奖发放公告：『今年因经营调整，年终奖以0.5个月薪资为标准。表现优秀者可上浮。』",
+    "tags": ["money", "perf"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "找leader要『优秀』",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "认命发个朋友圈",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "prog-039-comp-review",
+    "text": "你被通知调岗，从核心组转到一个新成立的『AI转型组』。新组只有你一个程序员。",
+    "tags": ["career", "policy"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "硬着头皮去",
+      "icon": "🚶",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "拒绝并主动离职",
+      "icon": "✊",
+      "effects": [{ "target": "mood", "value": 20 }, { "target": "money", "value": -50 }, { "target": "energy", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-040-startup-poach",
+    "text": "猎头打电话：『有个startup挖你，工资+20%，但是无社保只发现金。CEO是连续创业者。』",
+    "tags": ["risk", "career"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "搏一搏",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.4,
+        "success": { "text": "公司起飞期权变现", "effects": [{ "target": "money", "value": 100 }, { "target": "mood", "value": 30 }] },
+        "fail": { "text": "三个月后CEO跑路", "effects": [{ "target": "mood", "value": -30 }, { "target": "money", "value": -40 }] }
+      }
+    },
+    "choiceB": {
+      "text": "拒绝求稳",
+      "icon": "🛡️",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-041-bonus-vesting",
+    "text": "你的期权要再等2年才解锁。但公司估值今年已经跌了30%。",
+    "tags": ["money", "anxiety"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "继续熬期权",
+      "icon": "⏳",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "放弃期权跳槽",
+      "icon": "🚪",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "money", "value": -30 }]
+    }
+  },
+  {
+    "id": "prog-042-coworker-poached",
+    "text": "你最好的同事突然提了离职，去了一家工资翻倍的对家。leader找你：『你接他的活。』",
+    "tags": ["social", "boss"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "默默接活",
+      "icon": "🥲",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "也开始投简历",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-043-promotion-blocked",
+    "text": "你提了职级答辩。HR说：『今年公司晋升通道收紧，你的资料先放着。』",
+    "tags": ["career"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "继续等机会",
+      "icon": "⏳",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "心灰意冷投简历",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "prog-044-meeting-bingo",
+    "text": "今天是开会马拉松日：6个会议8小时。你的代码PR还没合。",
+    "tags": ["meeting"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "开会时偷偷写代码",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "认真听会",
+      "icon": "👂",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-045-doc-mandate",
+    "text": "leader说：『从下周开始所有代码必须配文档，文档不全的PR一律不许合。』他刚被领导骂。",
+    "tags": ["policy", "tech"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "认真补文档",
+      "icon": "📄",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "用AI生成糊弄",
+      "icon": "🤖",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-046-budget-cut",
+    "text": "新政策：所有云服务、SaaS订阅必须申请。你常用的Copilot、Notion预算被砍。",
+    "tags": ["policy", "tech"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "自掏腰包续费",
+      "icon": "💸",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "energy", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "用免费替代品凑合",
+      "icon": "🥲",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-047-coworker-rat",
+    "text": "你发现一直跟你协作的同事背后给leader打小报告。下次需求评审又要跟他对接。",
+    "tags": ["social"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "保持距离少交流",
+      "icon": "🙅",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "当面对质",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-048-team-rotation",
+    "text": "公司搞『岗位轮岗活动』，鼓励程序员去做产品体验。你接了。第一天发现PM每天9点上班10点下班。",
+    "tags": ["funny", "career"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "咬牙坚持轮岗",
+      "icon": "🥲",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "申请提前回来",
+      "icon": "↩️",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-049-ai-replace-team",
+    "text": "公司宣布裁掉整个测试团队，理由是『AI完全可以做自动化测试』。leader让你接手。",
+    "tags": ["ai", "tech"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "硬着头皮接",
+      "icon": "🧪",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 20 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "委婉表示不专业",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-050-promotion-bait",
+    "text": "leader：『下半年有个P7名额给你。你看这几个项目都得你来扛。』他列了6个。",
+    "tags": ["career", "boss"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "硬扛冲晋升",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 20 }, { "target": "mood", "value": 5 }],
+      "buff": { "id": "buff-tired", "name": "疲惫", "icon": "😪", "type": "debuff", "days": 2, "energyMul": 1.3 }
+    },
+    "choiceB": {
+      "text": "婉拒只接2个",
+      "icon": "🤏",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-051-team-build-mountain",
+    "text": "团建升级版：『周末户外团建——爬山30公里。HR说自愿参加。』",
+    "tags": ["social"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "去爬山",
+      "icon": "🏔️",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "找借口推掉",
+      "icon": "🙅",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": 10 }]
+    }
+  },
+  {
+    "id": "prog-052-meeting-camera",
+    "text": "新政策：所有线上会议必须开摄像头。但你今天没洗头还穿着睡衣。",
+    "tags": ["meeting", "wfh"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "挂个虚拟背景",
+      "icon": "🖼️",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "假装摄像头坏了",
+      "icon": "📷",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "prog-053-pr-merge-conflict",
+    "text": "你和同事的PR都改了同一个文件，他先合了。你的PR现在300+冲突需要手动解。",
+    "tags": ["tech"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认真解冲突",
+      "icon": "🔧",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "重新基于他的代码改",
+      "icon": "♻️",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-054-bug-blame",
+    "text": "线上一个P0 bug追溯到3年前的一行代码。git blame指向已离职的同事。但leader找的是你。",
+    "tags": ["bug", "boss"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "默默修了别说话",
+      "icon": "🔧",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "甩锅给离职同事",
+      "icon": "↩️",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-055-deprecated-stack",
+    "text": "公司核心系统用的某个开源库停止维护了。重构需要3个月。",
+    "tags": ["tech"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "立项重构",
+      "icon": "♻️",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "继续用着等下次再说",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "prog-056-junior-question",
+    "text": "新人来问你一个非常基础的问题。你已经回答过3次。他还是不会。",
+    "tags": ["social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "再耐心讲一次",
+      "icon": "🙇",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "丢一个文档链接",
+      "icon": "📄",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "prog-057-prod-data-deletion",
+    "text": "你不小心在生产库执行了 DELETE，忘记加 WHERE。心脏停了2秒。",
+    "tags": ["bug", "panic", "risk"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "赌备份能恢复",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.6,
+        "success": { "text": "DBA救场恢复了备份", "effects": [{ "target": "mood", "value": -15 }, { "target": "money", "value": -20 }] },
+        "fail": { "text": "备份也坏了，公关大灾", "effects": [{ "target": "mood", "value": -50 }, { "target": "money", "value": -100 }] }
+      }
+    },
+    "choiceB": {
+      "text": "立即上报老板",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": -15 }]
+    }
+  },
+  {
+    "id": "prog-058-tech-share",
+    "text": "组内技术分享，本周轮到你。你最近根本没空学新东西。",
+    "tags": ["meeting"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "讲一个老技术",
+      "icon": "🧓",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "请病假跳过",
+      "icon": "🤒",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-059-coworker-stealing",
+    "text": "你写的方案被同事在leader面前讲成是他的想法。leader还点头夸他。",
+    "tags": ["social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "私下找他对质",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "在群里晒文档时间戳",
+      "icon": "📋",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "prog-060-bonus-distribution",
+    "text": "项目奖金发了。你拿到的是『团队人均』，但你是干活最多的一个。",
+    "tags": ["money", "social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "找leader申诉",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "默默接受",
+      "icon": "😔",
+      "effects": [{ "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "prog-061-emergency-deploy",
+    "text": "周五晚上9点，leader说：『需要紧急上线，这次不走灰度，直接全量。』你心里一紧。",
+    "tags": ["bug", "risk"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "直接全量",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.65,
+        "success": { "text": "上线一切正常获得表扬", "effects": [{ "target": "mood", "value": 15 }, { "target": "money", "value": 20 }] },
+        "fail": { "text": "线上炸了用户投诉爆", "effects": [{ "target": "mood", "value": -30 }, { "target": "energy", "value": -25 }, { "target": "money", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "坚持先灰度",
+      "icon": "🛡️",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-062-tech-debt-meeting",
+    "text": "技术债评审会。leader：『大家提一下最近遇到的技术债。』话一出全场沉默。",
+    "tags": ["meeting", "tech"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "如实说一堆",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "说『没什么大问题』",
+      "icon": "🤏",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-063-meeting-no-show",
+    "text": "你被拉进一个关于支付的会议。但你做的是登录模块。会议室已经满。",
+    "tags": ["meeting"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "进去坐着听",
+      "icon": "👂",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "假装没看见会议邀请",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": 8 }]
+    }
+  },
+  {
+    "id": "prog-064-laptop-broken",
+    "text": "你的工作笔记本突然黑屏。IT说要送去维修3天，先给你一台8年前的备机。",
+    "tags": ["tech"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "用备机硬撑3天",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "请假等修好",
+      "icon": "🛌",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "money", "value": -20 }]
+    }
+  },
+  {
+    "id": "prog-065-leader-monologue",
+    "text": "leader拉你1on1，说要『听听你的想法』。然后他自己讲了55分钟。",
+    "tags": ["meeting", "boss"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "认真附和",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "全程走神",
+      "icon": "😶",
+      "effects": [{ "target": "energy", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-066-customer-feedback",
+    "text": "用户投诉：『你们的APP昨天升级后变得超级难用！』调查发现是你做的改动。",
+    "tags": ["bug"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "立即回滚改动",
+      "icon": "↩️",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "解释这是为他们好",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-067-fake-deadline",
+    "text": "PM说deadline是周三。你赶完了。然后他说：『其实是下周三我说错了。』",
+    "tags": ["pm"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "在群里艾特他骂",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "默默心碎",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -25 }]
+    }
+  },
+  {
+    "id": "prog-068-promotion-rejection",
+    "text": "你提的P7答辩没通过。HR说：『这次评委对你的『系统思考能力』有疑虑。』",
+    "tags": ["career"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "明年再战",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "考虑跳槽",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-069-paid-side-tools",
+    "text": "你看到一个付费AI编程工具能让效率提升10倍。但要订阅50美元/月。公司不报销。",
+    "tags": ["ai", "money"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "自费订阅",
+      "icon": "💸",
+      "effects": [{ "target": "money", "value": -60 }, { "target": "energy", "value": 15 }, { "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "用免费工具凑合",
+      "icon": "🤷",
+      "effects": [{ "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-070-toxic-meeting",
+    "text": "复盘会上leader大发雷霆：『这个事故是谁负责的？！』所有人都看你。",
+    "tags": ["meeting", "bug"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "承担责任",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "甩锅给同事",
+      "icon": "↩️",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "prog-071-fake-celebrate",
+    "text": "公司宣布上市冲刺成功。HR要求大家在群里发『恭喜公司！』和emoji。",
+    "tags": ["social", "policy"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "复制粘贴一下",
+      "icon": "🎉",
+      "effects": [{ "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "假装没看群",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-072-recruiter-call",
+    "text": "猎头：『某大厂P8坑等你。但要去深圳。年薪+50万。』你老婆在北京。",
+    "tags": ["career", "money"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "约面试聊聊",
+      "icon": "📞",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "拒绝以家庭为重",
+      "icon": "🏡",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-073-tech-blog",
+    "text": "leader：『你最近做的优化效果不错，写篇技术博客发到掘金，提升团队影响力。』",
+    "tags": ["meeting", "policy"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "认真写一篇",
+      "icon": "✍️",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 10 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "用AI生成糊弄",
+      "icon": "🤖",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-074-coworker-quit-call",
+    "text": "前同事打电话过来：『有个大厂面试机会要不要内推你？基本薪资能涨30%。』",
+    "tags": ["career"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "试试看",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "暂时不动",
+      "icon": "🛡️",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-075-domain-block",
+    "text": "你访问GitHub出现大量延迟。同事说：『公司新策略，所有外网走代理，慢点忍忍。』",
+    "tags": ["tech", "policy"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "用公司代理硬撑",
+      "icon": "🐢",
+      "effects": [{ "target": "energy", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "自费买梯子",
+      "icon": "🪜",
+      "effects": [{ "target": "money", "value": -30 }, { "target": "energy", "value": 5 }]
+    }
+  },
+  {
+    "id": "prog-076-onboarding-buddy",
+    "text": "leader让你当新人buddy。新人天天问基础问题，还动不动就发牢骚。",
+    "tags": ["social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "认真带",
+      "icon": "🙇",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 10 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "丢一堆文档",
+      "icon": "📚",
+      "effects": [{ "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "prog-077-coding-ban",
+    "text": "leader在群里说：『从今天起，所有提交必须有commit message规范，缺了的一律reject。』",
+    "tags": ["policy", "tech"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "认真按规范来",
+      "icon": "📝",
+      "effects": [{ "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "全部用『fix』作为消息",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "prog-078-fitness-mandate",
+    "text": "公司新政策：『鼓励员工健康，每周三下午4点全员强制做体能训练30分钟。』",
+    "tags": ["policy", "health"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "假装认真做",
+      "icon": "🤸",
+      "effects": [{ "target": "energy", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "找借口请假",
+      "icon": "🙅",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "prog-079-feature-flag-confusion",
+    "text": "你刚交付的功能在测试环境正常，生产却报错。debug 4小时发现是feature flag没开。",
+    "tags": ["bug", "tech"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "悄悄修了别说",
+      "icon": "🔧",
+      "effects": [{ "target": "energy", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "在群里吐槽流程",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-080-coworker-poach-back",
+    "text": "前同事跳槽到对家3个月，又回来求你帮内推。说『那家不行』。",
+    "tags": ["social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "帮内推",
+      "icon": "🤝",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "婉拒『公司HC冻结了』",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "prog-081-project-cancelled",
+    "text": "你做了3个月的项目突然被砍。leader说：『公司战略调整，下个月会安排新工作。』",
+    "tags": ["company", "career"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "默默接受",
+      "icon": "😔",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "怒投简历",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "prog-082-stupid-rule",
+    "text": "公司新规：每天上下班必须打卡4次。除了上下班，午饭出门和回来也要打卡。",
+    "tags": ["policy"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "认真打卡",
+      "icon": "📋",
+      "effects": [{ "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "故意漏打看会怎样",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.6,
+        "success": { "text": "没人发现", "effects": [{ "target": "mood", "value": 10 }] },
+        "fail": { "text": "HR约谈警告全员通报", "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -50 }] }
+      }
+    }
+  },
+  {
+    "id": "prog-cond-001-tech-debt-detonates",
+    "text": "三年前你提的『以后再优化』PR 终于在生产环境炸了。CTO 在大群里 @你：还要不要救？",
+    "tags": ["crisis", "tech-debt"],
+    "weight": 2.5,
+    "conditions": [{ "type": "minWeek", "value": 2 }],
+    "choiceA": {
+      "text": "通宵 hotfix + 把锅背起来",
+      "icon": "🔥",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }, { "target": "money", "value": 100 }],
+      "buff": { "id": "burn-out", "name": "燃尽", "icon": "😵", "type": "debuff", "days": 2, "energyMul": 1.3 }
+    },
+    "choiceB": {
+      "text": "甩锅给 AI Copilot：『代码是它写的』",
+      "icon": "🤖",
+      "effects": [],
+      "risk": {
+        "chance": 0.4,
+        "success": { "text": "技术老大也烦上面的 KPI，给放过了", "effects": [{ "target": "mood", "value": 15 }] },
+        "fail": { "text": "全组都知道你甩锅了，靠近你的人变少", "effects": [{ "target": "mood", "value": -30 }] }
+      }
+    }
+  },
+  {
+    "id": "prog-cond-002-fang-offer",
+    "text": "猎头来电：『有家 FANG 给你开 1.5 倍工资，但要立刻入职』。",
+    "tags": ["milestone", "offer"],
+    "weight": 2.0,
+    "conditions": [{ "type": "minCareerLevel", "value": 3 }],
+    "choiceA": {
+      "text": "立刻签 — 钱多事少（暂时）",
+      "icon": "✍️",
+      "effects": [{ "target": "money", "value": 500 }, { "target": "mood", "value": 25 }, { "target": "energy", "value": -10 }],
+      "careerScoreDelta": 30
+    },
+    "choiceB": {
+      "text": "用 offer 跟现公司谈涨薪",
+      "icon": "💼",
+      "effects": [],
+      "risk": {
+        "chance": 0.55,
+        "success": { "text": "HR 真的批了 30% 加薪", "effects": [{ "target": "money", "value": 250 }, { "target": "mood", "value": 20 }] },
+        "fail": { "text": "HR 冷淡地说『感谢，祝你前程似锦』", "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "prog-cond-003-zero-bug-week",
+    "text": "罕见的奇迹：本周所有 bug ticket 都被你 review 通过 + 零回退。年终评级有戏。",
+    "tags": ["milestone", "reward"],
+    "weight": 1.5,
+    "conditions": [
+      { "type": "minWeek", "value": 3 },
+      { "type": "minHealth", "value": 70 }
+    ],
+    "choiceA": {
+      "text": "请全组喝奶茶 + 巩固人缘",
+      "icon": "🥤",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": 20 }],
+      "careerScoreDelta": 20
+    },
+    "choiceB": {
+      "text": "低调收着，明天该撕逼还撕逼",
+      "icon": "🤫",
+      "effects": [{ "target": "mood", "value": 10 }],
+      "careerScoreDelta": 10
+    }
+  }
+]

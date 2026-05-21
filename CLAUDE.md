@@ -5,22 +5,26 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## Technology Stack
 
-- **Engine**: [CHOOSE: Godot 4 / Unity / Unreal Engine 5]
-- **Language**: [CHOOSE: GDScript / C# / C++ / Blueprint]
+- **Engine**: 无传统游戏引擎（Web小程序项目）
+- **Framework**: uni-app (Vue 3 + TypeScript)
+- **Language**: TypeScript
 - **Version Control**: Git with trunk-based development
-- **Build System**: [SPECIFY after choosing engine]
-- **Asset Pipeline**: [SPECIFY after choosing engine]
+- **Build System**: HBuilderX / Vite
+- **Asset Pipeline**: 静态资源 + JSON数据驱动配置
+- **Target Platforms**: 微信小程序、抖音小程序、支付宝小程序
 
-> **Note**: Engine-specialist agents exist for Godot, Unity, and Unreal with
-> dedicated sub-specialists. Use the set matching your engine.
+> **Note**: 本项目不使用传统游戏引擎。技术栈为前端框架 uni-app，
+> 编译为多平台小程序。不需要引擎专家代理。
 
 ## Project Structure
 
 @.claude/docs/directory-structure.md
 
-## Engine Version Reference
+## Framework Reference
 
-@docs/engine-reference/godot/VERSION.md
+> uni-app 文档: https://uniapp.dcloud.net.cn/
+> Vue 3 文档: https://cn.vuejs.org/
+> 框架版本在 training data 范围内，无需额外 reference docs。
 
 ## Technical Preferences
 

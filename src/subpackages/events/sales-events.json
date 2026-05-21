@@ -1,0 +1,670 @@
+[
+  {
+    "id": "sales-001-kpi-double",
+    "text": "新季度KPI：在原来基础上翻倍。leader说『今年市场就这样，大家加油』。",
+    "tags": ["kpi", "boss"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "默默接受卷起来",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 15 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "据理力争砍下来",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-002-customer-ghost",
+    "text": "你跟了3个月的大客户突然不回消息。听说他换了新的对接人。",
+    "tags": ["customer"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "继续追问",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "默认丢单",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -30 }]
+    }
+  },
+  {
+    "id": "sales-003-drink-meet",
+    "text": "客户说『今晚一起吃个饭』。你知道意思是『一起喝到吐』。明天还要见董事。",
+    "tags": ["customer", "drink"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "陪客户喝",
+      "icon": "🍻",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -15 }, { "target": "money", "value": 30 }]
+    },
+    "choiceB": {
+      "text": "找借口推掉",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "money", "value": -20 }]
+    }
+  },
+  {
+    "id": "sales-004-circle-of-life",
+    "text": "leader：『朋友圈每天发3条以上，行业内容、客户反馈、生活感悟，缺一不可。』",
+    "tags": ["chore"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认真发",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "复制别人的",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -3 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "sales-005-anti-fraud",
+    "text": "你想加客户微信。对方说：『你先打钱我看看，证明你不是骗子。』",
+    "tags": ["funny"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "解释身份",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "拉黑算了",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "sales-006-rank-public",
+    "text": "本月销售排名公示。你倒数第二。第一名是上个月才入职的新人。",
+    "tags": ["kpi"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "化压力为动力",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "找新人取经",
+      "icon": "🙇",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "sales-007-commission-delay",
+    "text": "本月提成延迟发放。财务说『等客户回款后再发』。客户已经付了一周了。",
+    "tags": ["money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "找财务催",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "等公司流程",
+      "icon": "⏳",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "sales-008-rival-poach",
+    "text": "你的同事抢了你跟了2个月的单。leader说『谁签谁的』。",
+    "tags": ["unfair"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "私下质问同事",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "向leader申诉",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 10 }]
+    }
+  },
+  {
+    "id": "sales-009-target-customer",
+    "text": "你接到一个潜在大客户。但他要求先送『见面礼』，估计要两万。公司不报销。",
+    "tags": ["money", "risk"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "自掏腰包博一把",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.4,
+        "success": { "text": "签下大单提成3万", "effects": [{ "target": "money", "value": 100 }, { "target": "mood", "value": 30 }] },
+        "fail": { "text": "客户消失礼物打水漂", "effects": [{ "target": "money", "value": -100 }, { "target": "mood", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "婉拒",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-010-team-call",
+    "text": "周一早上8:30的销售晨会。每个人轮流分享『本周作战计划』，迟到罚款50。",
+    "tags": ["meeting"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认真准备",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "随便讲讲",
+      "icon": "🤏",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "sales-011-customer-flake",
+    "text": "客户突然反悔：『我们决定不签了，预算不够。』你的提成已经在路上了。",
+    "tags": ["customer"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "想办法挽回",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 20 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "认了再找新客户",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -25 }]
+    }
+  },
+  {
+    "id": "sales-012-fake-data",
+    "text": "leader暗示：『可以美化一下这个月数字，年底再补回来。』你知道这是慢慢的坑。",
+    "tags": ["risk", "boss"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "照做",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.5,
+        "success": { "text": "年底真的补上了奖金安全", "effects": [{ "target": "money", "value": 30 }, { "target": "mood", "value": 10 }] },
+        "fail": { "text": "审计发现你被处分", "effects": [{ "target": "mood", "value": -40 }, { "target": "money", "value": -80 }] }
+      }
+    },
+    "choiceB": {
+      "text": "拒绝如实上报",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "money", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-013-customer-suicide",
+    "text": "你客户跟你抱怨：『最近压力很大，已经一周没睡好。』你怀疑他状态不太对。",
+    "tags": ["customer"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "认真听他倾诉",
+      "icon": "🤗",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }, { "target": "money", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "礼貌岔开话题",
+      "icon": "🤏",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-014-festival-customer",
+    "text": "中秋节，老板让你回访所有客户送礼盒。一共23家。",
+    "tags": ["chore"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "亲自跑一遍",
+      "icon": "🚗",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "快递寄过去",
+      "icon": "📦",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "sales-015-customer-drama",
+    "text": "客户的产品出了bug。客户在群里@你：『你们这破东西怎么回事？！』",
+    "tags": ["customer"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "立即道歉协调",
+      "icon": "🙇",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -10 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "把问题转给技术",
+      "icon": "↩️",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "sales-016-team-pep",
+    "text": "leader激情演讲：『拼到最后才是赢家！这周必须每天加班！谁不拼就走人！』",
+    "tags": ["meeting", "boss"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "在群里发『冲！』",
+      "icon": "💪",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "私下吐槽",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "sales-017-customer-poached",
+    "text": "你的核心客户被对家挖走了。对家给的折扣低5%。leader要你解释。",
+    "tags": ["customer", "boss"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "硬扛说自己负责",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -20 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "解释市场环境",
+      "icon": "📊",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-018-overtime-call",
+    "text": "晚上11点客户突然电话：『现在能聊一下吗？我有个紧急需求。』",
+    "tags": ["customer", "overtime"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "接电话谈",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 20 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "明天再说",
+      "icon": "📵",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "money", "value": -15 }]
+    }
+  },
+  {
+    "id": "sales-019-rejected-proposal",
+    "text": "你做了一周的方案被客户当场推翻：『你完全没理解我们的需求。』",
+    "tags": ["customer"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "立即重做",
+      "icon": "♻️",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "坚持解释自己的逻辑",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-020-bonus-clawback",
+    "text": "leader：『你上季度的提成需要追回，因为客户违约了。下个月工资抵扣。』",
+    "tags": ["money"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "据理力争",
+      "icon": "⚔️",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "默默接受",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -50 }]
+    }
+  },
+  {
+    "id": "sales-021-rude-prospect",
+    "text": "你电话推销，客户接起来直接说：『谁找你打扰我？再打报警。』",
+    "tags": ["customer"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "继续打下一个",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "停下喘口气",
+      "icon": "🍵",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "sales-022-coworker-merit",
+    "text": "你帮新同事谈下了第一个客户。leader在大会上夸他：『他第一个月就有产出，你们要学他。』",
+    "tags": ["unfair"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "默默接受",
+      "icon": "😔",
+      "effects": [{ "target": "mood", "value": -20 }]
+    },
+    "choiceB": {
+      "text": "公开自己的贡献",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-023-customer-friend",
+    "text": "客户把你当朋友，每天发各种生活吐槽。占用你大量时间。但他还没下单。",
+    "tags": ["customer"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "继续陪聊",
+      "icon": "💬",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "委婉聊回业务",
+      "icon": "💼",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "money", "value": 10 }]
+    }
+  },
+  {
+    "id": "sales-024-lone-warrior",
+    "text": "公司组织的销售大赛今天截止。最后一小时，你离冠军只差5万。",
+    "tags": ["risk", "kpi"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "拼命打电话求一单",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.45,
+        "success": { "text": "签下小单逆转夺冠", "effects": [{ "target": "money", "value": 80 }, { "target": "mood", "value": 30 }] },
+        "fail": { "text": "全部拒绝差5万落选", "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "下班接受第二",
+      "icon": "🥈",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 20 }]
+    }
+  },
+  {
+    "id": "sales-025-leader-reset",
+    "text": "leader突然换人。新leader第一周就要每个销售单独『过一下业务』。",
+    "tags": ["boss"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "认真准备资料",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "随便讲讲看反应",
+      "icon": "🤏",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -5 }]
+    }
+  },
+
+  {
+    "id": "sales-026-cold-call-100",
+    "text": "今天的 KPI：打 100 个陌生电话。已经打了 60 个，被挂 58 个。",
+    "tags": ["cold-call", "grind"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "继续硬打到 100",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -15 }, { "target": "money", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "造点假数据填表",
+      "icon": "📝",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "money", "value": 10 }],
+      "risk": {
+        "chance": 0.75,
+        "success": { "effects": [{ "target": "mood", "value": 18 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -50 }] }
+      }
+    }
+  },
+  {
+    "id": "sales-027-big-fish-bites",
+    "text": "跟了 2 个月的大客户终于说『可以谈谈合同细节』。但你在请假途中。",
+    "tags": ["client", "opportunity"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "立刻取消请假飞回去",
+      "icon": "✈️",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 150 }, { "target": "mood", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "线上谈 + 给同事打掩护",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 50 }, { "target": "mood", "value": 8 }]
+    }
+  },
+  {
+    "id": "sales-028-vendor-kickback",
+    "text": "上游供应商私下找你：『单子走我这边，每单给你 5% 回扣。』",
+    "tags": ["ethics", "money"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "答应 + 双方共赢",
+      "icon": "🤝",
+      "effects": [{ "target": "money", "value": 200 }, { "target": "mood", "value": -10 }],
+      "risk": {
+        "chance": 0.7,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "money", "value": -300 }, { "target": "mood", "value": -35 }] }
+      }
+    },
+    "choiceB": {
+      "text": "婉拒 + 报告主管",
+      "icon": "🛡️",
+      "effects": [{ "target": "mood", "value": 25 }, { "target": "money", "value": 15 }]
+    }
+  },
+  {
+    "id": "sales-029-quarterly-bottom",
+    "text": "季末排名出来了。你倒数第三。倒数前两个已经走了。",
+    "tags": ["kpi", "mood"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "下周冲刺 + 通宵开发新客户",
+      "icon": "🚀",
+      "effects": [{ "target": "energy", "value": -35 }, { "target": "money", "value": 80 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "更新简历 + 骑驴找马",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 15 }]
+    }
+  },
+  {
+    "id": "sales-030-customer-baby",
+    "text": "重要客户朋友圈刚生宝宝。明天就要签 200 万的合同。",
+    "tags": ["customer", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "送 1000 元红包道贺",
+      "icon": "🧧",
+      "effects": [{ "target": "money", "value": -100 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "默默点赞算了",
+      "icon": "👍",
+      "effects": [{ "target": "mood", "value": -5 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "money", "value": -100 }, { "target": "mood", "value": -20 }] }
+      }
+    }
+  },
+  {
+    "id": "sales-031-canceled-deal",
+    "text": "客户突然取消已经签好的合同。这单本来是你这个月奖金 50%。",
+    "tags": ["client", "crisis"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "找原因 + 想办法挽回",
+      "icon": "🔄",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -15 }],
+      "risk": {
+        "chance": 0.35,
+        "success": { "effects": [{ "target": "money", "value": 150 }, { "target": "mood", "value": 35 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }] }
+      }
+    },
+    "choiceB": {
+      "text": "认栽 + 喝个酒",
+      "icon": "🍻",
+      "effects": [{ "target": "money", "value": -60 }, { "target": "energy", "value": 5 }, { "target": "mood", "value": 12 }]
+    }
+  },
+  {
+    "id": "sales-032-train-station-cold-pitch",
+    "text": "出差等高铁。旁边一个西装大叔在打电话。听口音像目标客户。",
+    "tags": ["opportunity", "social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "厚脸皮搭话 + 加微信",
+      "icon": "💼",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -5 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [{ "target": "money", "value": 100 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "假装没听见",
+      "icon": "👀",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -3 }]
+    }
+  },
+  {
+    "id": "sales-033-team-celebration",
+    "text": "组长签下今年最大单子。叫全组下班去蹦迪庆祝。明早 9 点早会。",
+    "tags": ["team", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "去 + 喝到凌晨 3 点",
+      "icon": "🍻",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": -80 }, { "target": "mood", "value": 35 }]
+    },
+    "choiceB": {
+      "text": "找借口早回家",
+      "icon": "🏠",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "sales-034-customer-anger-call",
+    "text": "客户暴怒来电：『你卖给我的方案有问题，立刻解决！』",
+    "tags": ["client", "crisis"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "立刻去现场 + 当面解决",
+      "icon": "🚗",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": -50 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "电话里安抚 + 推给售后",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -10 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "mood", "value": 12 }] },
+        "fail": { "effects": [{ "target": "money", "value": -100 }, { "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "sales-035-commission-day",
+    "text": "提成日。打开工资条：本月 12000，是底薪的 4 倍。",
+    "tags": ["money", "win"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "买只名表犒劳自己",
+      "icon": "⌚",
+      "effects": [{ "target": "money", "value": -500 }, { "target": "mood", "value": 40 }, { "target": "energy", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "存起来攒首付",
+      "icon": "🏦",
+      "effects": [{ "target": "mood", "value": 25 }]
+    }
+  },
+  {
+    "id": "sales-cond-001-quota-crisis",
+    "text": "季度倒数第二周。KPI 完成率 32%。老板甩话：『最后两周做不到 80%，给我自己滚。』",
+    "tags": ["crisis", "quota"],
+    "weight": 3.0,
+    "conditions": [{ "type": "minWeek", "value": 3 }],
+    "choiceA": {
+      "text": "扫楼地推 + 老客户回访",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 200 }],
+      "careerScoreDelta": 25
+    },
+    "choiceB": {
+      "text": "找老客户『刷一单』走 KPI",
+      "icon": "🤝",
+      "effects": [],
+      "risk": {
+        "chance": 0.6,
+        "success": { "text": "客户卖你面子下了单", "effects": [{ "target": "money", "value": 400 }, { "target": "mood", "value": 20 }] },
+        "fail": { "text": "客户翻脸举报你『搞虚假交易』", "effects": [{ "target": "mood", "value": -35 }, { "target": "money", "value": -200 }] }
+      }
+    }
+  },
+  {
+    "id": "sales-cond-002-vip-trust",
+    "text": "你做到了 Lv3，VIP 大客户开始指名要你接待。这次是个国企采购。",
+    "tags": ["milestone", "vip"],
+    "weight": 1.8,
+    "conditions": [{ "type": "minCareerLevel", "value": 3 }],
+    "choiceA": {
+      "text": "精心准备方案 + 高定位陈述",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 600 }, { "target": "mood", "value": 25 }],
+      "careerScoreDelta": 30
+    },
+    "choiceB": {
+      "text": "走流程 + 价格优势主打",
+      "icon": "💰",
+      "effects": [{ "target": "money", "value": 300 }, { "target": "mood", "value": 10 }],
+      "careerScoreDelta": 10
+    }
+  },
+  {
+    "id": "sales-cond-003-burnout-warning",
+    "text": "连续 3 周 80 小时。今天客户在饭桌上调侃你『黑眼圈像熊猫』。",
+    "tags": ["crisis", "health"],
+    "weight": 2.5,
+    "conditions": [
+      { "type": "maxHealth", "value": 50 },
+      { "type": "minWeek", "value": 2 }
+    ],
+    "choiceA": {
+      "text": "请病假休息 3 天 + 给团队交接",
+      "icon": "🛌",
+      "effects": [{ "target": "health", "value": 25 }, { "target": "energy", "value": 30 }, { "target": "money", "value": -150 }]
+    },
+    "choiceB": {
+      "text": "继续顶 — 月底冲一波再说",
+      "icon": "💪",
+      "effects": [{ "target": "money", "value": 200 }, { "target": "health", "value": -10 }, { "target": "mood", "value": -10 }]
+    }
+  }
+]

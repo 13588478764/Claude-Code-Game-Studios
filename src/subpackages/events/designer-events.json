@@ -1,0 +1,580 @@
+[
+  {
+    "id": "designer-001-logo-bigger",
+    "text": "甲方说：『LOGO能不能再大一点？』你已经把它放大了三次了。",
+    "tags": ["client", "logo"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "再大一点（第四次）",
+      "icon": "🔍",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -25 }, { "target": "money", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "解释设计原则",
+      "icon": "🎨",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -10 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }, { "target": "energy", "value": -10 }] }
+      }
+    }
+  },
+  {
+    "id": "designer-002-color-vibe",
+    "text": "甲方：『我想要一种红色，但又不是红色，要那种不红不绿的红。』",
+    "tags": ["client", "color"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "出 30 个色板让他选",
+      "icon": "🌈",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "随便给一个赌他喜欢",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [{ "target": "money", "value": 30 }, { "target": "mood", "value": 15 }] },
+        "fail": { "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -20 }] }
+      }
+    }
+  },
+  {
+    "id": "designer-003-deadline-tonight",
+    "text": "周三下午4点。甲方：『明早9点要看到 V8 版本。』V7 是上周的。",
+    "tags": ["deadline", "overtime"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "通宵改 + 喝功能饮料",
+      "icon": "🥤",
+      "effects": [{ "target": "energy", "value": -40 }, { "target": "money", "value": 30 }, { "target": "mood", "value": -15 }],
+      "buff": {
+        "id": "creative-burst",
+        "name": "创意爆发",
+        "icon": "✨",
+        "type": "buff",
+        "days": 1,
+        "moodMul": 0.8
+      }
+    },
+    "choiceB": {
+      "text": "明早再说，先睡了",
+      "icon": "😴",
+      "effects": [{ "target": "energy", "value": 25 }, { "target": "mood", "value": 10 }, { "target": "money", "value": -20 }]
+    }
+  },
+  {
+    "id": "designer-004-stock-photo",
+    "text": "你引以为豪的插画被甲方说『不如直接用图库的』。",
+    "tags": ["client", "ego"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "微笑改成图库版",
+      "icon": "😐",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "据理力争原创价值",
+      "icon": "📢",
+      "effects": [{ "target": "mood", "value": 10 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 35 }, { "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "money", "value": -10 }, { "target": "mood", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "designer-005-feedback-roulette",
+    "text": "甲方周一说要 A 风格，周二改要 B 风格，周三说还是 A。今天周四。",
+    "tags": ["client", "feedback"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "再做两版同时给",
+      "icon": "📑",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "发邮件抄送领导确认",
+      "icon": "📧",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 15 }]
+    }
+  },
+  {
+    "id": "designer-006-pixel-perfect",
+    "text": "前端工程师抱怨：『这个 8px 间距怎么实现啊』他写完是 7.7px。",
+    "tags": ["dev", "handover"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "强迫症发作非要 8px 整",
+      "icon": "📐",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "算了 7.7 就 7.7",
+      "icon": "🤷",
+      "effects": [{ "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "designer-007-self-doubt",
+    "text": "翻看自己一年前的作品，突然觉得现在做的还不如那时候。",
+    "tags": ["mood", "growth"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "重做一遍最近的设计",
+      "icon": "🔄",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "刷小红书找灵感",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "designer-008-shutterstock-trap",
+    "text": "用了一个免费图库的素材，发布后被原作者发律师函。",
+    "tags": ["legal", "crisis"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "私下赔款息事宁人",
+      "icon": "💵",
+      "effects": [{ "target": "money", "value": -100 }, { "target": "mood", "value": -20 }]
+    },
+    "choiceB": {
+      "text": "找公司法务支援",
+      "icon": "⚖️",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -25 }]
+    }
+  },
+  {
+    "id": "designer-009-mentor-asking",
+    "text": "新人设计师跑来问你：『这个设计灵感哪来的？』他眼里有光。",
+    "tags": ["mentor", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认真讲 30 分钟",
+      "icon": "🎓",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "敷衍两句让他百度",
+      "icon": "🔍",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "designer-010-reference-pixel",
+    "text": "甲方：『这个 banner 我看了 Apple 那种感觉就行。』",
+    "tags": ["client", "reference"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "做 Apple 风：极简 + 留白",
+      "icon": "🍎",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 30 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "委婉问『具体哪一块』",
+      "icon": "❓",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": -5 }]
+    }
+  },
+  {
+    "id": "designer-011-screen-color",
+    "text": "你的 MacBook 屏幕显示和甲方 PC 显示器颜色完全不一样。",
+    "tags": ["tech", "annoyance"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "买色彩校准仪",
+      "icon": "🎯",
+      "effects": [{ "target": "money", "value": -80 }, { "target": "mood", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "把屏幕调到最丑当默认",
+      "icon": "👁️",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "designer-012-portfolio-update",
+    "text": "猎头来挖你，说大厂在招资深设计。但你的 portfolio 上一次更新是一年前。",
+    "tags": ["career", "opportunity"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "晚上熬夜整理 portfolio",
+      "icon": "📂",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "回复『晚点联系』结果忘了",
+      "icon": "🤐",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "designer-013-aesthetic-burnout",
+    "text": "做了 8 小时 PPT 调整。回家看自己手机壁纸，突然觉得也很丑。",
+    "tags": ["burnout", "mood"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "出门散步一小时",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "mood", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "继续刷 Behance 加深焦虑",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "designer-014-procreate-vs-illustrator",
+    "text": "新同事问：『你为啥不用 Procreate？现在大家都用 Procreate 了。』你的 Illustrator 已经买了 5 年。",
+    "tags": ["tools", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "买 iPad + Procreate 跟潮流",
+      "icon": "💎",
+      "effects": [{ "target": "money", "value": -120 }, { "target": "mood", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "坚持 Illustrator 是经典",
+      "icon": "🛡️",
+      "effects": [{ "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "designer-015-anonymous-praise",
+    "text": "你设计的海报被同行匿名点赞，但下面评论说『感觉抄袭某某』。",
+    "tags": ["mood", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "下场对线",
+      "icon": "⚔️",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "截图屏蔽然后吃顿好的",
+      "icon": "🍱",
+      "effects": [{ "target": "money", "value": -25 }, { "target": "mood", "value": 18 }]
+    }
+  },
+  {
+    "id": "designer-016-print-disaster",
+    "text": "印刷厂打样回来：颜色严重偏差。明天就要交付。",
+    "tags": ["crisis", "deadline"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "通宵守在印刷厂",
+      "icon": "🌙",
+      "effects": [{ "target": "energy", "value": -45 }, { "target": "money", "value": 50 }]
+    },
+    "choiceB": {
+      "text": "甩锅给印刷厂",
+      "icon": "📞",
+      "effects": [{ "target": "mood", "value": 10 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 30 }] },
+        "fail": { "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "designer-017-grid-purist",
+    "text": "新来的同事完全不用栅格系统，对齐随便。你看了头疼。",
+    "tags": ["aesthetic", "team"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "约他喝咖啡聊设计原则",
+      "icon": "☕",
+      "effects": [{ "target": "money", "value": -15 }, { "target": "mood", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "私下吐槽给同组",
+      "icon": "💬",
+      "effects": [{ "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "designer-018-revisions-100",
+    "text": "项目结算文档：本月你共完成修改 137 次。客户问『为什么这么慢』。",
+    "tags": ["client", "kpi"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "甩出 137 次修改记录",
+      "icon": "📜",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "默默接受继续修",
+      "icon": "🤐",
+      "effects": [{ "target": "mood", "value": -20 }, { "target": "money", "value": 15 }]
+    }
+  },
+  {
+    "id": "designer-019-coffee-spill",
+    "text": "把咖啡洒在了画了一上午的草图上。Apple Pencil 也滚到桌下了。",
+    "tags": ["accident", "daily"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "重画一遍可能更好",
+      "icon": "✏️",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "把咖啡渍 P 进设计当肌理",
+      "icon": "🎨",
+      "effects": [],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "mood", "value": 20 }, { "target": "money", "value": 15 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -10 }] }
+      }
+    }
+  },
+  {
+    "id": "designer-020-art-school-friend",
+    "text": "美院的老同学朋友圈晒：开了自己的设计工作室。你看了一眼自己的工位。",
+    "tags": ["mood", "social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "评论区祝贺一下",
+      "icon": "🎊",
+      "effects": [{ "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "关闭朋友圈一周",
+      "icon": "🚫",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": -8 }]
+    }
+  },
+
+  {
+    "id": "designer-021-figma-version-lost",
+    "text": "Figma 历史版本只剩 30 天，你想恢复 31 天前的旧稿。",
+    "tags": ["tool", "crisis"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "充会员解锁全历史",
+      "icon": "💎",
+      "effects": [{ "target": "money", "value": -45 }, { "target": "mood", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "凭记忆重画",
+      "icon": "🎨",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "designer-022-client-uses-comic-sans",
+    "text": "客户的反馈文档全部用 Comic Sans MS 字体写的。他还认真在标注『字体选择很重要』。",
+    "tags": ["client", "aesthetic"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "深呼吸 + 默默接受",
+      "icon": "😮‍💨",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "money", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "委婉给他普及字体史",
+      "icon": "📚",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 18 }]
+    }
+  },
+  {
+    "id": "designer-023-design-system-violation",
+    "text": "前端来吐槽：『你这个按钮没用 design system，自己又写了一遍。』",
+    "tags": ["team", "process"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认错 + 改回 design system",
+      "icon": "✅",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "辩驳『这个场景就是要不一样』",
+      "icon": "⚔️",
+      "effects": [{ "target": "energy", "value": -8 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "designer-024-emoji-debate",
+    "text": "团队讨论用 🎉 还是 ✨ 庆祝按钮。已经吵了 1 小时。",
+    "tags": ["team", "trivial"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "提议两个都用",
+      "icon": "🎉",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "甩出 emoji 在不同系统的渲染图",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 15 }, { "target": "mood", "value": 18 }]
+    }
+  },
+  {
+    "id": "designer-025-tablet-stolen",
+    "text": "去咖啡厅画图，去趟厕所回来 iPad 没了。",
+    "tags": ["crisis", "tool"],
+    "weight": 0.5,
+    "choiceA": {
+      "text": "立刻报警 + 远程锁定",
+      "icon": "🚓",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -20 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "money", "value": -400 }, { "target": "mood", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "认栽 + 买新的",
+      "icon": "💸",
+      "effects": [{ "target": "money", "value": -800 }, { "target": "mood", "value": -25 }]
+    }
+  },
+  {
+    "id": "designer-026-pitch-meeting-laugh",
+    "text": "你 pitch 设计方案。讲到一半，客户突然笑了。但他没说什么。",
+    "tags": ["client", "anxiety"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "继续讲不当回事",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -10 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 60 }, { "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "停下来问他在笑啥",
+      "icon": "😅",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "designer-027-ai-generated-rival",
+    "text": "客户来微信：『MidJourney 生成的图也挺好的，你下次报价能不能降一点？』",
+    "tags": ["ai", "industry"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "降价 50% 留住客户",
+      "icon": "📉",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -25 }]
+    },
+    "choiceB": {
+      "text": "辞别这个客户 + 强调原创价值",
+      "icon": "🎨",
+      "effects": [{ "target": "mood", "value": 20 }, { "target": "money", "value": -30 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "designer-028-mood-board-rejected",
+    "text": "你做的 moodboard 客户全否：『再来。』他没说想要什么。",
+    "tags": ["client", "moodboard"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "做 5 个完全不同方向",
+      "icon": "🌈",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "让客户先发参考图",
+      "icon": "📥",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 12 }]
+    }
+  },
+  {
+    "id": "designer-029-color-blind-feedback",
+    "text": "色弱用户反馈：『你这个设计我完全看不清红绿对比按钮。』你才意识到没考虑过。",
+    "tags": ["accessibility", "growth"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "立刻重做 + 上色弱模拟器",
+      "icon": "♿",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": 30 }]
+    },
+    "choiceB": {
+      "text": "标注『仅供主流用户』",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "designer-030-design-conf-ticket",
+    "text": "国际设计大会票 ¥2800。你工资刚发 ¥8000。",
+    "tags": ["growth", "money"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "豁出去 + 这是投资",
+      "icon": "🎫",
+      "effects": [{ "target": "money", "value": -280 }, { "target": "mood", "value": 30 }, { "target": "energy", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "等明年公司报销机会",
+      "icon": "⏳",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "designer-cond-001-revision-hell",
+    "text": "客户第 18 版反馈：『再大胆一点，但不要太冒险』。同事建议：『辞职就好了』。",
+    "tags": ["crisis", "revision"],
+    "weight": 2.5,
+    "conditions": [
+      { "type": "minWeek", "value": 2 },
+      { "type": "maxHealth", "value": 60 }
+    ],
+    "choiceA": {
+      "text": "强行交付 + 让客户自己选",
+      "icon": "📤",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -15 }, { "target": "money", "value": 150 }]
+    },
+    "choiceB": {
+      "text": "推掉项目 + 找老板要换人",
+      "icon": "🙅",
+      "effects": [],
+      "risk": {
+        "chance": 0.5,
+        "success": { "text": "老板换了 PM 接锅，你解脱", "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "text": "老板让你『自己负责到底』", "effects": [{ "target": "mood", "value": -30 }, { "target": "energy", "value": -20 }] }
+      }
+    }
+  },
+  {
+    "id": "designer-cond-002-brand-account",
+    "text": "Lv3 + 良好口碑。一线品牌方找上门要你独立负责他们的年度视觉。",
+    "tags": ["milestone", "brand"],
+    "weight": 1.8,
+    "conditions": [{ "type": "minCareerLevel", "value": 3 }],
+    "choiceA": {
+      "text": "接！这是简历金字招牌",
+      "icon": "🏆",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 500 }, { "target": "mood", "value": 30 }],
+      "careerScoreDelta": 30
+    },
+    "choiceB": {
+      "text": "婉拒 — 现有项目已经满了",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": 5 }],
+      "careerScoreDelta": -5
+    }
+  }
+]

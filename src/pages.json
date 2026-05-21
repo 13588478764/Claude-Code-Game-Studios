@@ -1,0 +1,72 @@
+{
+    "pages": [
+        {
+            "path": "pages/job-select/index",
+            "style": {
+                "navigationBarTitleText": "选份工",
+                "navigationBarBackgroundColor": "#1e1b3a",
+                "navigationBarTextStyle": "white",
+                "backgroundColor": "#0f0a26"
+            }
+        },
+        {
+            "path": "pages/index/index",
+            "style": {
+                "navigationBarTitleText": "打工轮回",
+                "navigationBarBackgroundColor": "#1e1b3a",
+                "navigationBarTextStyle": "white",
+                "backgroundColor": "#0f0a26"
+            }
+        },
+        {
+            "path": "pages/settle/index",
+            "style": {
+                "navigationBarTitleText": "结算",
+                "navigationBarBackgroundColor": "#1e1b3a",
+                "navigationBarTextStyle": "white",
+                "backgroundColor": "#0f0a26"
+            }
+        }
+    ],
+    "subPackages": [
+        {
+            "root": "subpackages/events",
+            "pages": []
+        },
+        {
+            "root": "subpackages/ui",
+            "pages": [
+                {
+                    "path": "menu/index",
+                    "style": {
+                        "navigationBarTitleText": "图鉴",
+                        "navigationBarBackgroundColor": "#1e1b3a",
+                        "navigationBarTextStyle": "white",
+                        "backgroundColor": "#0f0a26"
+                    }
+                },
+                {
+                    "path": "shop/index",
+                    "style": {
+                        "navigationBarTitleText": "商店",
+                        "navigationBarBackgroundColor": "#1e1b3a",
+                        "navigationBarTextStyle": "white",
+                        "backgroundColor": "#0f0a26"
+                    }
+                }
+            ]
+        }
+    ],
+    "preloadRule": {
+        "pages/job-select/index": {
+            "packages": ["subpackages/events", "subpackages/ui"],
+            "network": "all"
+        }
+    },
+    "globalStyle": {
+        "navigationBarTitleText": "打工轮回",
+        "navigationBarBackgroundColor": "#1e1b3a",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#0f0a26"
+    }
+}

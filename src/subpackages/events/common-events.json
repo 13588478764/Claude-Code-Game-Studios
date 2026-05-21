@@ -1,0 +1,1341 @@
+[
+  {
+    "id": "common-001-toilet-full",
+    "text": "厕所坑位全满。你已经憋了40分钟了。隔壁组的人进去20分钟还没出来，疑似在刷短视频。",
+    "tags": ["daily", "toilet"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "去楼下碰运气",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "继续等顺便摸鱼",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-002-lunch-choice",
+    "text": "午饭时间到了。公司楼下三个选择：35块的轻食沙拉、15块的黄焖鸡、或者泡面。",
+    "tags": ["daily", "lunch"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "黄焖鸡平衡之选",
+      "icon": "🍚",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "money", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "泡面省钱就是赚钱",
+      "icon": "🍜",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -10 }, { "target": "money", "value": -3 }]
+    }
+  },
+  {
+    "id": "common-003-cafe-machine",
+    "text": "茶水间咖啡机刚换豆子。隔壁小姐姐说：『这个冲出来超提神，但喝完晚上别想睡。』",
+    "tags": ["daily", "cafe"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "整一杯黑咖啡",
+      "icon": "☕",
+      "effects": [{ "target": "energy", "value": 8 }, { "target": "money", "value": -5 }],
+      "buff": { "id": "buff-caffeine", "name": "亢奋", "icon": "⚡", "type": "buff", "days": 1, "energyMul": 0.7 }
+    },
+    "choiceB": {
+      "text": "白开水就行",
+      "icon": "💧",
+      "effects": [{ "target": "energy", "value": 3 }]
+    }
+  },
+  {
+    "id": "common-004-commute-jam",
+    "text": "你今早想偷懒迟到。打车app显示堵车要40分钟。地铁挤但准时。",
+    "tags": ["daily", "commute", "risk"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "赌打车不堵",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.5,
+        "success": { "text": "运气爆棚一路绿灯！", "effects": [{ "target": "energy", "value": 10 }, { "target": "money", "value": -15 }] },
+        "fail": { "text": "堵了一个半小时迟到挨骂", "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "老老实实地铁",
+      "icon": "🚇",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": -3 }]
+    }
+  },
+  {
+    "id": "common-005-teambuilding",
+    "text": "团建通知：周五下班后聚餐+KTV，『自愿参加』。括号里写着（不参加的请说明理由）。",
+    "tags": ["daily", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "去吧混个脸熟",
+      "icon": "🍻",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -10 }, { "target": "money", "value": -30 }]
+    },
+    "choiceB": {
+      "text": "假装没看到消息",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-006-hr-suspense",
+    "text": "HR突然找你：『方便聊一下吗？』你的心跳瞬间加速到180。结果她只是通知你工位要搬。",
+    "tags": ["daily", "hr"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "虚惊一场",
+      "icon": "😮‍💨",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "心有余悸悄悄投简历",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "common-007-back-pain",
+    "text": "连续坐了3小时，腰已经直不起来了。工位旁的按摩椅要扫码付费。",
+    "tags": ["daily", "health"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "花10块按摩15分钟",
+      "icon": "💆",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "money", "value": -10 }, { "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "站着扭扭腰算了",
+      "icon": "🤸",
+      "effects": [{ "target": "energy", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-008-canteen-line",
+    "text": "中午食堂排队半小时。回到工位你只剩20分钟午休。",
+    "tags": ["daily", "lunch"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "睡20分钟",
+      "icon": "😴",
+      "effects": [{ "target": "energy", "value": 10 }],
+      "buff": { "id": "buff-nap", "name": "回血中", "icon": "💤", "type": "buff", "days": 1, "energyMul": 0.7 }
+    },
+    "choiceB": {
+      "text": "刷会儿短视频",
+      "icon": "📱",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "common-009-gossip",
+    "text": "同事在茶水间小声聊：『你听说没？XX组要被裁了。』她看见你立刻闭嘴。",
+    "tags": ["daily", "gossip"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "假装没听见",
+      "icon": "🙃",
+      "effects": [{ "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "凑过去打听",
+      "icon": "👂",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-010-vacation-policy",
+    "text": "今年的调休日历公布了：周日上班，下下周二补休一天，但不能跟节假日合并。",
+    "tags": ["daily", "policy"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "无所谓认命",
+      "icon": "🙏",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "在群里阴阳",
+      "icon": "💬",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-011-cake-fund",
+    "text": "群里发起『同事生日蛋糕基金』，自愿AA每人100。你跟他不熟。",
+    "tags": ["daily", "social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "出钱表示存在感",
+      "icon": "🎂",
+      "effects": [{ "target": "money", "value": -100 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "假装没看群消息",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-012-bathroom-meeting",
+    "text": "你蹲坑时听到隔壁两人在讨论你。一个说『他能力一般』，另一个说『但人不错』。",
+    "tags": ["daily", "gossip"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "默默冲水离开",
+      "icon": "🚪",
+      "effects": [{ "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "故意大力冲水让他们听见",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-013-lottery",
+    "text": "公司年会抽奖。还剩三个奖：iPhone、500元卡、洗发水。你的号还没被抽。",
+    "tags": ["daily", "risk", "social"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "祈祷大奖",
+      "icon": "🎰",
+      "effects": [],
+      "risk": {
+        "chance": 0.25,
+        "success": { "text": "中了iPhone！飞起来", "effects": [{ "target": "mood", "value": 40 }, { "target": "money", "value": 80 }] },
+        "fail": { "text": "啥也没中只剩寂寞", "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "中途溜了回家",
+      "icon": "🚪",
+      "effects": [{ "target": "energy", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-014-rainy-day",
+    "text": "下班时突降暴雨。你忘带伞。便利店伞25一把。",
+    "tags": ["daily", "weather"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "买伞了事",
+      "icon": "☂️",
+      "effects": [{ "target": "money", "value": -25 }]
+    },
+    "choiceB": {
+      "text": "冲回家",
+      "icon": "🏃",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-015-elevator",
+    "text": "电梯门快关上了。你看见老板正快步走来，他还没看见你。",
+    "tags": ["daily", "boss"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "礼貌按住开门",
+      "icon": "🤲",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    },
+    "choiceB": {
+      "text": "假装没看见关门",
+      "icon": "😶",
+      "effects": [{ "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "common-016-takeout-mistake",
+    "text": "外卖送错单。店家是你最讨厌的麻辣烫，你点的是粥。退款要等3小时。",
+    "tags": ["daily", "lunch"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "凑合吃",
+      "icon": "😣",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "重新点一份等着",
+      "icon": "🍱",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": -25 }]
+    }
+  },
+  {
+    "id": "common-017-payday",
+    "text": "今天是发薪日。你打开APP一看，扣了五险一金降基数后的工资比预期少了800。",
+    "tags": ["daily", "money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "发个朋友圈阴阳",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "默默存起来",
+      "icon": "💰",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-018-unauthorized-charity",
+    "text": "公司在群里发了募捐链接，HR备注『建议每人不少于200元，名单会汇总给老板』。",
+    "tags": ["daily", "social", "money"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "捐200买个心安",
+      "icon": "🙏",
+      "effects": [{ "target": "money", "value": -200 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "捐50装作没看完",
+      "icon": "🤏",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "common-019-flu-season",
+    "text": "整个公司在咳嗽。你的喉咙也开始痒。家里没药。",
+    "tags": ["daily", "health"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "下班绕路买药",
+      "icon": "💊",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": -30 }]
+    },
+    "choiceB": {
+      "text": "硬抗几天就好了",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "common-020-coworker-favor",
+    "text": "同事请你帮带杯奶茶，说『一会儿微信转你』。你知道他大概率会忘。",
+    "tags": ["daily", "social"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "买就买不计较",
+      "icon": "🤝",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "money", "value": -22 }]
+    },
+    "choiceB": {
+      "text": "说店关门了",
+      "icon": "🤥",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "common-021-fitness-app",
+    "text": "健身APP弹通知：你已经连续7天没运动。建议运动30分钟。",
+    "tags": ["daily", "health"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "下班去健身房",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "卸载APP",
+      "icon": "🗑️",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-022-overtime-meal",
+    "text": "加班到9点，公司发了20元工作餐券。但只能在合作的那家难吃便利店用。",
+    "tags": ["daily", "lunch", "overtime"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "用券吃便利店",
+      "icon": "🥪",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "自费点外卖",
+      "icon": "🍱",
+      "effects": [{ "target": "energy", "value": 12 }, { "target": "money", "value": -30 }]
+    }
+  },
+  {
+    "id": "common-023-stair-vs-elevator",
+    "text": "电梯排队8个人。你在25楼。爬楼梯要15分钟。",
+    "tags": ["daily", "commute"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "爬楼梯",
+      "icon": "🪜",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "排队等电梯",
+      "icon": "⏳",
+      "effects": [{ "target": "energy", "value": -3 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-024-overtime-summon",
+    "text": "晚上8点你正要下班，老板钉钉响：『还在吗？过来下。』",
+    "tags": ["daily", "boss", "overtime"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "硬着头皮过去",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -15 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "假装已经离开公司",
+      "icon": "📵",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-025-coworker-emo",
+    "text": "同事突然在工位哭了起来。你不知道发生了什么。",
+    "tags": ["daily", "social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "递纸巾安慰",
+      "icon": "🤗",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "戴上耳机继续干活",
+      "icon": "🎧",
+      "effects": [{ "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "common-026-forgot-laptop",
+    "text": "你早上发现笔记本忘在家里了。打车回去拿要50块，而且会迟到。",
+    "tags": ["daily", "commute"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "打车回去拿",
+      "icon": "🚖",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "用公司备用机凑合",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-027-aircon-war",
+    "text": "办公室空调温度。男同事说太热，女同事说冻死。HR一脸愁容。",
+    "tags": ["daily", "social"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "默默拿件外套",
+      "icon": "🧥",
+      "effects": [{ "target": "energy", "value": -3 }]
+    },
+    "choiceB": {
+      "text": "在群里发表意见",
+      "icon": "💬",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-028-stairwell-call",
+    "text": "你想躲到楼梯间打个电话。门一推开发现HR也在打电话，正好对上眼神。",
+    "tags": ["daily", "hr"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "礼貌点头退出",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "硬着头皮在旁边打",
+      "icon": "📞",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "energy", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-029-resignation-rumor",
+    "text": "传言你们组隔壁的核心员工要离职。一时间所有人都在私下打听他下家。",
+    "tags": ["daily", "gossip"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "也悄悄打听一下",
+      "icon": "👂",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "专心搬砖",
+      "icon": "🔨",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "money", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-030-late-night-bug",
+    "text": "凌晨1点你已经准备睡了，群里突然炸了：『线上挂了！紧急处理！』",
+    "tags": ["daily", "overtime"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "起床打开电脑",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 20 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "装作睡着了",
+      "icon": "😴",
+      "effects": [{ "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "common-031-coworker-quitting",
+    "text": "你的好同事下周离职。她请你单独吃个饭。她想跟你聊点事。",
+    "tags": ["daily", "social"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "去送行听她吐槽",
+      "icon": "🍻",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "money", "value": -50 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "找借口推掉",
+      "icon": "🙅",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+
+  {
+    "id": "common-031-printer-jam",
+    "text": "你在打印一份 50 页的报告。打印机第 23 页卡纸，闪红灯。",
+    "tags": ["office", "tech"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "蹲下来手动拆机器",
+      "icon": "🔧",
+      "effects": [{ "target": "energy", "value": -12 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "走人，找同事的打印机",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-032-broken-ac",
+    "text": "公司空调坏了。室温 32℃。前台说『师傅明天才有空』。",
+    "tags": ["office", "discomfort"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "买冰咖啡发同事一起喝",
+      "icon": "🧊",
+      "effects": [{ "target": "money", "value": -40 }, { "target": "mood", "value": 22 }, { "target": "energy", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "硬扛 + 群里抱怨",
+      "icon": "🥵",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "common-033-wifi-down",
+    "text": "全公司 WiFi 突然挂了。运维群里疯狂报错。",
+    "tags": ["tech", "crisis"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "开手机热点继续干",
+      "icon": "📱",
+      "effects": [{ "target": "money", "value": -5 }, { "target": "energy", "value": -5 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "顺势摸鱼 1 小时",
+      "icon": "🐟",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "mood", "value": 18 }, { "target": "money", "value": -10 }]
+    }
+  },
+  {
+    "id": "common-034-elevator-stuck",
+    "text": "电梯卡在 14 楼和 15 楼之间。9 个人挤一起。",
+    "tags": ["accident", "social"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "保持冷静按报警键",
+      "icon": "🆘",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "和陌生人闲聊缓解紧张",
+      "icon": "💬",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 12 }]
+    }
+  },
+  {
+    "id": "common-035-laptop-slow",
+    "text": "你的电脑开机 4 分钟还没进系统。鼠标转圈。",
+    "tags": ["tech", "daily"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "申请换新电脑",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": -5 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "mood", "value": 25 }, { "target": "energy", "value": 15 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -15 }] }
+      }
+    },
+    "choiceB": {
+      "text": "硬等 + 拿手机刷视频",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": 8 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-036-back-pain",
+    "text": "坐了一上午，腰疼到直不起来。",
+    "tags": ["health", "body"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "下楼走 10 分钟",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": 12 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "贴 2 张膏药继续坐",
+      "icon": "🩹",
+      "effects": [{ "target": "money", "value": -15 }, { "target": "energy", "value": -5 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "common-037-cold-incoming",
+    "text": "鼻子开始痒。同事昨天刚请病假。你担心是被传染了。",
+    "tags": ["health"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "立刻去买感冒药 + 维生素",
+      "icon": "💊",
+      "effects": [{ "target": "money", "value": -35 }, { "target": "energy", "value": 8 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "硬扛 + 多喝热水",
+      "icon": "💧",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }],
+      "risk": {
+        "chance": 0.6,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "common-038-missed-subway",
+    "text": "眼看着地铁门关上。下一班要 8 分钟。",
+    "tags": ["commute"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "等下一班 + 听播客",
+      "icon": "🎧",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "打车保平安",
+      "icon": "🚖",
+      "effects": [{ "target": "money", "value": -25 }, { "target": "mood", "value": -3 }]
+    }
+  },
+  {
+    "id": "common-039-traffic-jam",
+    "text": "上班路上堵到怀疑人生。导航预计还要 40 分钟。",
+    "tags": ["commute"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "听有声书学习",
+      "icon": "📚",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "刷短视频骂导航",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "common-040-rainy-no-umbrella",
+    "text": "下班发现外面下大雨。没带伞。",
+    "tags": ["weather", "commute"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "买把 30 元的应急伞",
+      "icon": "☂️",
+      "effects": [{ "target": "money", "value": -30 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "冲过去淋个落汤鸡",
+      "icon": "🌧️",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "mood", "value": 18 }] },
+        "fail": { "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "common-041-parents-call-marriage",
+    "text": "妈妈又打电话：『你表哥都生二胎了，你那边怎么样？』",
+    "tags": ["family", "stress"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "假装信号不好挂了",
+      "icon": "📵",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "认真聊 + 答应国庆回家",
+      "icon": "🏡",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": -50 }, { "target": "mood", "value": 18 }]
+    }
+  },
+  {
+    "id": "common-042-scam-call",
+    "text": "陌生电话：『您 6 个月前在某商场办的信用卡有 8000 元待审批，请核对身份证。』",
+    "tags": ["modern", "money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "假装配合套话再举报",
+      "icon": "🎭",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "直接挂掉 + 拉黑",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-043-online-shopping-regret",
+    "text": "凌晨 1 点下单的 199 元『智能颈椎按摩仪』今天到了。试了一下，像震动球。",
+    "tags": ["modern", "money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "申请退货 + 拍丑照举证",
+      "icon": "📸",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "money", "value": 100 }]
+    },
+    "choiceB": {
+      "text": "认栽放抽屉吃灰",
+      "icon": "🗑️",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "common-044-delivery-wrong-floor",
+    "text": "外卖小哥打电话：『您是 12 楼吗？我送到 21 楼了。』",
+    "tags": ["delivery", "daily"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "下去自取",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "等他重新送 + 给好评",
+      "icon": "⏳",
+      "effects": [{ "target": "energy", "value": 3 }, { "target": "money", "value": -3 }]
+    }
+  },
+  {
+    "id": "common-045-old-classmate-add",
+    "text": "微信通过：高中同学。第一句：『还记得我吗？最近做点小生意，能投资一下吗？』",
+    "tags": ["social", "scam"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "礼貌拒绝 + 装穷",
+      "icon": "💸",
+      "effects": [{ "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "怒删拉黑",
+      "icon": "✂️",
+      "effects": [{ "target": "mood", "value": 12 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "common-046-30-birthday",
+    "text": "今天 30 岁生日。微信收到 4 条祝福，其中 3 条是公众号自动推送。",
+    "tags": ["mood", "milestone"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "犒劳自己吃顿好的",
+      "icon": "🍣",
+      "effects": [{ "target": "money", "value": -120 }, { "target": "mood", "value": 30 }, { "target": "energy", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "默默给自己买个蛋糕",
+      "icon": "🎂",
+      "effects": [{ "target": "money", "value": -35 }, { "target": "mood", "value": 12 }]
+    }
+  },
+  {
+    "id": "common-047-gym-membership-expiry",
+    "text": "健身房短信：『年卡明天到期，续费打 7 折。』你今年去了 4 次。",
+    "tags": ["health", "money"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "续 + 发誓明年常去",
+      "icon": "💪",
+      "effects": [{ "target": "money", "value": -800 }, { "target": "mood", "value": 22 }]
+    },
+    "choiceB": {
+      "text": "彻底放弃 + 买双跑鞋",
+      "icon": "👟",
+      "effects": [{ "target": "money", "value": -200 }, { "target": "mood", "value": 8 }, { "target": "energy", "value": 10 }]
+    }
+  },
+  {
+    "id": "common-048-lottery-rumor",
+    "text": "群里有人发：『朋友买彩票中了 50 万！』后面跟 8 个红包。",
+    "tags": ["modern", "money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "买 20 块试试手气",
+      "icon": "🎟️",
+      "effects": [{ "target": "money", "value": -20 }],
+      "risk": {
+        "chance": 0.05,
+        "success": { "effects": [{ "target": "money", "value": 300 }, { "target": "mood", "value": 35 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -5 }] }
+      }
+    },
+    "choiceB": {
+      "text": "嗤之以鼻继续工作",
+      "icon": "🙄",
+      "effects": [{ "target": "mood", "value": 3 }]
+    }
+  },
+  {
+    "id": "common-049-eye-strain",
+    "text": "盯屏幕一整天，眼睛干涩。视线开始重影。",
+    "tags": ["health"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "去屈臣氏买眼药水",
+      "icon": "💧",
+      "effects": [{ "target": "money", "value": -25 }, { "target": "energy", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "闭眼休息 5 分钟",
+      "icon": "😌",
+      "effects": [{ "target": "energy", "value": 8 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-050-coworker-gossip",
+    "text": "同事神神秘秘拉你去茶水间：『有件事千万别说出去……』",
+    "tags": ["social", "gossip"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "听完 + 装作不知道",
+      "icon": "🤫",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "推说『我赶着开会』",
+      "icon": "🏃",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "common-051-air-pollution",
+    "text": "今天空气质量重度污染。窗外灰蒙蒙的。",
+    "tags": ["weather", "health"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "戴 N95 + 减少出门",
+      "icon": "😷",
+      "effects": [{ "target": "money", "value": -15 }, { "target": "energy", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "无所谓继续呼吸",
+      "icon": "💨",
+      "effects": [{ "target": "energy", "value": -12 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "common-052-package-stolen",
+    "text": "快递柜显示已签收。但你家门口什么都没有。",
+    "tags": ["modern", "crisis"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "找物业调监控",
+      "icon": "📹",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -15 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 80 }, { "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "money", "value": -80 }, { "target": "mood", "value": -20 }] }
+      }
+    },
+    "choiceB": {
+      "text": "认栽 + 平台申诉",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "money", "value": -40 }]
+    }
+  },
+  {
+    "id": "common-053-cat-stuck-tree",
+    "text": "小区里听见小孩哭：『叔叔，我家猫上树下不来了。』",
+    "tags": ["social", "moral"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "想办法帮忙",
+      "icon": "🐱",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 30 }]
+    },
+    "choiceB": {
+      "text": "建议他们找消防",
+      "icon": "🚒",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "common-054-fire-drill",
+    "text": "公司消防演习。要求全员到 1 楼集合。你正在做关键节点。",
+    "tags": ["office", "interrupt"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "下楼配合演习",
+      "icon": "🏃",
+      "effects": [{ "target": "energy", "value": -12 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "继续做 + 赌没人查",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -5 }],
+      "risk": {
+        "chance": 0.6,
+        "success": { "effects": [{ "target": "money", "value": 25 }, { "target": "mood", "value": 15 }] },
+        "fail": { "effects": [{ "target": "money", "value": -30 }, { "target": "mood", "value": -20 }] }
+      }
+    }
+  },
+  {
+    "id": "common-055-toilet-paper-out",
+    "text": "进了厕所。坑里没纸。隔壁也没。你已经坐下了。",
+    "tags": ["toilet", "crisis"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "厚脸皮喊隔壁哥们救命",
+      "icon": "🤝",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "蹲企鹅般挪去拿包里的湿巾",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "common-056-perf-talk",
+    "text": "HR 突然约谈：『最近表现公司有些关注，想听听你的想法。』听起来不像好事。",
+    "tags": ["hr", "career"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "诚恳谈 + 主动给改进方案",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "硬刚 + 反问公司给的支持",
+      "icon": "⚔️",
+      "effects": [{ "target": "energy", "value": -10 }],
+      "risk": {
+        "chance": 0.45,
+        "success": { "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "common-057-35-crisis",
+    "text": "刷到一篇文章：『35 岁后职场红利消失』。你算了下自己还有几年。",
+    "tags": ["mood", "career"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "立刻报个进修班",
+      "icon": "📚",
+      "effects": [{ "target": "money", "value": -150 }, { "target": "mood", "value": 25 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "关 APP 假装没看见",
+      "icon": "📵",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "common-058-layoff-rumor",
+    "text": "饮水机旁听到八卦：『公司可能要裁 15%，你那个组首当其冲。』",
+    "tags": ["career", "stress"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "悄悄更新简历 + 投递",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "佛系等通知",
+      "icon": "🧘",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -10 }]
+    }
+  },
+
+  {
+    "id": "review-001-weekly-summary",
+    "text": "周五下午5点。主管发来消息：『发我这周的总结，要点亮眼成绩。』下班时间在敲打你的键盘。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "硬核包装：3页PPT + 数据图",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }],
+      "careerScoreDelta": 30
+    },
+    "choiceB": {
+      "text": "随手写两段交差",
+      "icon": "✏️",
+      "effects": [{ "target": "mood", "value": 5 }],
+      "careerScoreDelta": -10
+    }
+  },
+  {
+    "id": "review-002-overtime-pressure",
+    "text": "周五傍晚，全组没人下班，老板坐在工位上。空气凝固。你的活儿已经做完了。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "陪坐到 8 点假装很忙",
+      "icon": "💤",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -15 }, { "target": "money", "value": 10 }],
+      "careerScoreDelta": 25
+    },
+    "choiceB": {
+      "text": "光明正大走出公司",
+      "icon": "🚪",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "energy", "value": 5 }],
+      "careerScoreDelta": -15
+    }
+  },
+  {
+    "id": "review-003-volunteer-task",
+    "text": "周会末尾，老板问：『有谁想接这个新项目？』所有人盯着桌子。沉默 30 秒。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "硬着头皮举手",
+      "icon": "✋",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -20 }, { "target": "money", "value": 20 }],
+      "careerScoreDelta": 40
+    },
+    "choiceB": {
+      "text": "继续装看不见",
+      "icon": "👀",
+      "effects": [{ "target": "mood", "value": -5 }],
+      "careerScoreDelta": 0
+    }
+  },
+
+  {
+    "id": "review-004-peer-evaluation",
+    "text": "周五下班前，HR 群发『请提交本周互评』。下面是同事老王的名字。你想起他上周 backstab 你的事。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "公事公办给个 8 分",
+      "icon": "📊",
+      "effects": [{ "target": "mood", "value": 5 }],
+      "careerScoreDelta": 15
+    },
+    "choiceB": {
+      "text": "诚实给 3 分加锐评",
+      "icon": "🗡️",
+      "effects": [{ "target": "mood", "value": 18 }, { "target": "energy", "value": -5 }],
+      "careerScoreDelta": -20
+    }
+  },
+  {
+    "id": "review-005-sudden-1on1",
+    "text": "周五下午 4 点，主管私聊：『下班前到我办公室聊聊。』什么事都没说。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "提前准备本周亮点 + 一杯咖啡",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": -10 }],
+      "careerScoreDelta": 35
+    },
+    "choiceB": {
+      "text": "硬着头皮直接去",
+      "icon": "🚪",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -5 }],
+      "careerScoreDelta": 5
+    }
+  },
+  {
+    "id": "review-006-friday-presentation",
+    "text": "周五月度复盘会。CEO 在线。主管让你做 5 分钟分享，10 分钟前才通知。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "硬上 + 临场发挥",
+      "icon": "🎤",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -20 }],
+      "careerScoreDelta": 45
+    },
+    "choiceB": {
+      "text": "推说『还需要点时间准备』",
+      "icon": "🤔",
+      "effects": [{ "target": "mood", "value": -5 }],
+      "careerScoreDelta": -10
+    }
+  },
+  {
+    "id": "review-007-team-dinner",
+    "text": "周五晚部门聚餐，老板掏钱。但下周二的 deadline 还差一半。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "去吃饭 + 周末加班补上",
+      "icon": "🍻",
+      "effects": [{ "target": "mood", "value": 25 }, { "target": "energy", "value": -10 }],
+      "careerScoreDelta": 20
+    },
+    "choiceB": {
+      "text": "推说『家里有事』留下加班",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -8 }],
+      "careerScoreDelta": 25
+    }
+  },
+  {
+    "id": "review-008-promotion-rumor",
+    "text": "周五午饭时听说：你这一级有 2 个晋升名额，候选人 5 个。下周宣布。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "晚上加班整理近三月成绩单",
+      "icon": "📈",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }],
+      "careerScoreDelta": 50
+    },
+    "choiceB": {
+      "text": "佛系等通知该是你的就是你的",
+      "icon": "🧘",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": 12 }],
+      "careerScoreDelta": -5
+    }
+  },
+
+  {
+    "id": "review-009-cross-dept-collab",
+    "text": "周五，隔壁部门请求支援一个紧急项目。承诺『下次还你人情』。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "答应 + 晚上加班帮忙",
+      "icon": "🤝",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": 5 }],
+      "careerScoreDelta": 30
+    },
+    "choiceB": {
+      "text": "推说自己也忙",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": 8 }],
+      "careerScoreDelta": -10
+    }
+  },
+  {
+    "id": "review-010-kpi-confession",
+    "text": "周五月底。本月 KPI 缺口 30%。下周一就要交月报。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "周末加班补数据 + 美化报告",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -35 }, { "target": "mood", "value": -20 }, { "target": "money", "value": 15 }],
+      "careerScoreDelta": 35
+    },
+    "choiceB": {
+      "text": "如实承认 + 申请下月翻盘",
+      "icon": "📝",
+      "effects": [{ "target": "mood", "value": -10 }],
+      "careerScoreDelta": 10
+    }
+  },
+  {
+    "id": "review-011-public-praise",
+    "text": "周会末尾，CEO 当众表扬了一个项目，没提你（你是核心贡献者）。",
+    "tags": ["weekend-review"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "会后单独找 CEO 提一下",
+      "icon": "🎯",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -8 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 30 }, { "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }] }
+      },
+      "careerScoreDelta": 25
+    },
+    "choiceB": {
+      "text": "默默接受 + 心里失望",
+      "icon": "😔",
+      "effects": [{ "target": "mood", "value": -20 }, { "target": "energy", "value": -5 }],
+      "careerScoreDelta": -5
+    }
+  },
+  {
+    "id": "crisis-001-broke-warning",
+    "text": "信用卡到账日提醒：余额 -200，再不还就要进黑名单了。",
+    "tags": ["crisis", "money"],
+    "weight": 2.0,
+    "conditions": [{ "type": "maxMoney", "value": 0 }],
+    "choiceA": {
+      "text": "咬牙借呗续命（拆东墙补西墙）",
+      "icon": "💳",
+      "effects": [{ "target": "money", "value": 200 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "卖二手设备凑钱",
+      "icon": "📦",
+      "effects": [{ "target": "money", "value": 100 }, { "target": "energy", "value": -10 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "crisis-002-health-warning",
+    "text": "今早起来眼前发黑了 3 秒。体检报告也下来了：『建议立即就医』。",
+    "tags": ["crisis", "health"],
+    "weight": 2.5,
+    "conditions": [{ "type": "maxHealth", "value": 40 }],
+    "choiceA": {
+      "text": "请假去医院 + 调休一周",
+      "icon": "🏥",
+      "effects": [{ "target": "health", "value": 25 }, { "target": "money", "value": -100 }, { "target": "energy", "value": 20 }]
+    },
+    "choiceB": {
+      "text": "扛过去再说，下个项目结束就休",
+      "icon": "💀",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "health", "value": -5 }]
+    }
+  },
+  {
+    "id": "milestone-001-midlife-crisis",
+    "text": "凌晨三点惊醒，盯着天花板。一个声音在问：『你真的想这样过完这辈子吗？』",
+    "tags": ["milestone", "introspective"],
+    "weight": 1.5,
+    "conditions": [{ "type": "minWeek", "value": 3 }],
+    "choiceA": {
+      "text": "写下离职计划 + 给未来 6 个月时间",
+      "icon": "📝",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "继续躺平打工，钱比理想实在",
+      "icon": "💤",
+      "effects": [{ "target": "mood", "value": -10 }, { "target": "money", "value": 30 }]
+    }
+  },
+  {
+    "id": "milestone-002-old-friend",
+    "text": "大学同学群里有人晒朋友圈：辞职创业半年，融到 500 万了。配文：『年轻人就该闯一下』。",
+    "tags": ["milestone", "compare"],
+    "weight": 1.0,
+    "conditions": [{ "type": "minWeek", "value": 2 }],
+    "choiceA": {
+      "text": "私信问他要不要合伙",
+      "icon": "🤝",
+      "effects": [{ "target": "mood", "value": 10 }, { "target": "energy", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "默默退群（眼不见心不烦）",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "milestone-003-promotion-recognition",
+    "text": "刚升职的你，老板拍肩说：『晚上一起吃饭，请你认识两个人。』",
+    "tags": ["milestone", "career"],
+    "weight": 1.5,
+    "conditions": [{ "type": "minCareerLevel", "value": 2 }],
+    "choiceA": {
+      "text": "去！多认识人多机会",
+      "icon": "🥂",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 10 }, { "target": "money", "value": 50 }]
+    },
+    "choiceB": {
+      "text": "推说有事，回家自己吃",
+      "icon": "🏠",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "milestone-004-senior-mentor",
+    "text": "一个 Lv3 的老前辈下班路上拦住你：『我看你最近状态不对，要不要喝一杯聊聊？』",
+    "tags": ["milestone", "mentor"],
+    "weight": 1.5,
+    "conditions": [{ "type": "minCareerLevel", "value": 3 }],
+    "choiceA": {
+      "text": "去！前辈经验金贵",
+      "icon": "🍺",
+      "effects": [{ "target": "mood", "value": 20 }, { "target": "energy", "value": -10 }, { "target": "money", "value": -30 }]
+    },
+    "choiceB": {
+      "text": "婉拒，自己想清楚就好",
+      "icon": "🚶",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "crisis-003-debt-frail",
+    "text": "钱包空 + 身体差。同事建议：『去医院前先把信用卡还了，不然刷不出来。』",
+    "tags": ["crisis", "compound"],
+    "weight": 3.0,
+    "conditions": [
+      { "type": "maxMoney", "value": 50 },
+      { "type": "maxHealth", "value": 50 }
+    ],
+    "choiceA": {
+      "text": "硬撑：先工作多挣点",
+      "icon": "💼",
+      "effects": [{ "target": "money", "value": 80 }, { "target": "energy", "value": -20 }, { "target": "health", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "找家人借钱 + 立刻去医院",
+      "icon": "📞",
+      "effects": [{ "target": "money", "value": 300 }, { "target": "health", "value": 20 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "milestone-005-final-week",
+    "text": "career 倒数最后一周。HR 找你聊：『有续约意向吗？还是想换个组？』",
+    "tags": ["milestone", "career-end"],
+    "weight": 2.0,
+    "conditions": [{ "type": "minWeek", "value": 4 }],
+    "choiceA": {
+      "text": "想换组，挑战新岗位",
+      "icon": "🔄",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "energy", "value": -10 }],
+      "careerScoreDelta": 15
+    },
+    "choiceB": {
+      "text": "续约，稳定第一",
+      "icon": "📋",
+      "effects": [{ "target": "money", "value": 60 }, { "target": "mood", "value": 5 }],
+      "careerScoreDelta": 5
+    }
+  }
+]

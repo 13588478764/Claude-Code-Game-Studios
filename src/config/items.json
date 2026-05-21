@@ -1,0 +1,587 @@
+[
+  {
+    "id": "redbull",
+    "name": "红牛",
+    "icon": "🥤",
+    "description": "提神醒脑，体力 +25。",
+    "category": "consumable",
+    "cost": 18,
+    "effects": [{ "target": "energy", "value": 25 }]
+  },
+  {
+    "id": "coffee-latte",
+    "name": "拿铁咖啡",
+    "icon": "☕",
+    "description": "小确幸一杯。体力 +12，心情 +5。",
+    "category": "consumable",
+    "cost": 15,
+    "effects": [
+      { "target": "energy", "value": 12 },
+      { "target": "mood", "value": 5 }
+    ]
+  },
+  {
+    "id": "chicken-soup",
+    "name": "心灵鸡汤",
+    "icon": "🍵",
+    "description": "读完想哭但有用。心情 +20。",
+    "category": "consumable",
+    "cost": 12,
+    "effects": [{ "target": "mood", "value": 20 }]
+  },
+  {
+    "id": "takeout-meal",
+    "name": "深夜外卖",
+    "icon": "🍱",
+    "description": "热腾腾的饭。体力 +18，心情 +8。",
+    "category": "consumable",
+    "cost": 25,
+    "effects": [
+      { "target": "energy", "value": 18 },
+      { "target": "mood", "value": 8 }
+    ]
+  },
+  {
+    "id": "fake-sick-note",
+    "name": "假病假条",
+    "icon": "🤒",
+    "description": "今天就不去了。心情 +30，体力 +10。",
+    "category": "consumable",
+    "cost": 50,
+    "effects": [
+      { "target": "mood", "value": 30 },
+      { "target": "energy", "value": 10 }
+    ]
+  },
+  {
+    "id": "vacation-day",
+    "name": "强制休假一天",
+    "icon": "🏝️",
+    "description": "管他呢，今天就请假。体力 +40，心情 +25。",
+    "category": "consumable",
+    "cost": 100,
+    "effects": [
+      { "target": "energy", "value": 40 },
+      { "target": "mood", "value": 25 }
+    ]
+  },
+
+  {
+    "id": "mech-keyboard",
+    "name": "客制化机械键盘",
+    "icon": "⌨️",
+    "description": "听响就治愈。心情 +15。",
+    "category": "consumable",
+    "cost": 35,
+    "jobId": "programmer",
+    "effects": [{ "target": "mood", "value": 15 }]
+  },
+  {
+    "id": "stack-overflow-premium",
+    "name": "Stack Overflow 会员",
+    "icon": "📚",
+    "description": "终于不用看广告。体力 +20，心情 +10。",
+    "category": "consumable",
+    "cost": 40,
+    "jobId": "programmer",
+    "effects": [
+      { "target": "energy", "value": 20 },
+      { "target": "mood", "value": 10 }
+    ]
+  },
+  {
+    "id": "ergonomic-chair-rental",
+    "name": "工学椅一日租",
+    "icon": "💺",
+    "description": "腰再痛今天也能撑。体力 +30。",
+    "category": "consumable",
+    "cost": 30,
+    "jobId": "programmer",
+    "effects": [{ "target": "energy", "value": 30 }]
+  },
+
+  {
+    "id": "polite-smile",
+    "name": "微笑面具",
+    "icon": "😊",
+    "description": "对谁都得笑。心情 -5 但今天没人挑刺，体力 +20。",
+    "category": "consumable",
+    "cost": 10,
+    "jobId": "intern",
+    "effects": [
+      { "target": "energy", "value": 20 },
+      { "target": "mood", "value": -5 }
+    ]
+  },
+  {
+    "id": "lunch-with-boss",
+    "name": "蹭老板的饭",
+    "icon": "🥢",
+    "description": "免费午餐 + 老板好感。体力 +15。",
+    "category": "consumable",
+    "cost": 0,
+    "jobId": "intern",
+    "effects": [{ "target": "energy", "value": 15 }]
+  },
+
+  {
+    "id": "sales-pitch-script",
+    "name": "金牌话术手册",
+    "icon": "📝",
+    "description": "客户都被你绕进去了。心情 +12，体力 +8。",
+    "category": "consumable",
+    "cost": 22,
+    "jobId": "sales",
+    "effects": [
+      { "target": "mood", "value": 12 },
+      { "target": "energy", "value": 8 }
+    ]
+  },
+  {
+    "id": "client-dinner-expense",
+    "name": "客户应酬报销",
+    "icon": "🍻",
+    "description": "酒局是工作。心情 +5，体力 -10，但白嫖一顿。",
+    "category": "consumable",
+    "cost": 0,
+    "jobId": "sales",
+    "effects": [
+      { "target": "mood", "value": 5 },
+      { "target": "energy", "value": -10 }
+    ]
+  },
+
+  {
+    "id": "wacom-pen-refill",
+    "name": "Wacom 笔芯",
+    "icon": "✏️",
+    "description": "换上新笔尖手感回来了。心情 +18。",
+    "category": "consumable",
+    "cost": 20,
+    "jobId": "designer",
+    "effects": [{ "target": "mood", "value": 18 }]
+  },
+  {
+    "id": "dribbble-inspiration",
+    "name": "Dribbble 灵感包",
+    "icon": "🎨",
+    "description": "刷了 30 张神级作品。心情 +20，体力 -5。",
+    "category": "consumable",
+    "cost": 15,
+    "jobId": "designer",
+    "effects": [
+      { "target": "mood", "value": 20 },
+      { "target": "energy", "value": -5 }
+    ]
+  },
+  {
+    "id": "tablet-charge-cable",
+    "name": "iPad 快充线",
+    "icon": "🔌",
+    "description": "终于不用边画边充。体力 +15，心情 +10。",
+    "category": "consumable",
+    "cost": 35,
+    "jobId": "designer",
+    "effects": [
+      { "target": "energy", "value": 15 },
+      { "target": "mood", "value": 10 }
+    ]
+  },
+  {
+    "id": "ai-color-picker",
+    "name": "AI 配色生成器",
+    "icon": "🌈",
+    "description": "省下两小时调色时间。体力 +25。",
+    "category": "consumable",
+    "cost": 28,
+    "jobId": "designer",
+    "effects": [{ "target": "energy", "value": 25 }]
+  },
+
+  {
+    "id": "riding-rain-cape",
+    "name": "防雨披风",
+    "icon": "🧥",
+    "description": "雨天送单不再湿身。心情 +20，体力 +5。",
+    "category": "consumable",
+    "cost": 25,
+    "jobId": "runner",
+    "effects": [
+      { "target": "mood", "value": 20 },
+      { "target": "energy", "value": 5 }
+    ]
+  },
+  {
+    "id": "helmet-pad",
+    "name": "头盔内衬",
+    "icon": "🪖",
+    "description": "再不会勒头了。心情 +15。",
+    "category": "consumable",
+    "cost": 15,
+    "jobId": "runner",
+    "effects": [{ "target": "mood", "value": 15 }]
+  },
+  {
+    "id": "fast-charger-card",
+    "name": "充电桩月卡",
+    "icon": "🔋",
+    "description": "随时充电不发愁。体力 +20，心情 +8。",
+    "category": "consumable",
+    "cost": 32,
+    "jobId": "runner",
+    "effects": [
+      { "target": "energy", "value": 20 },
+      { "target": "mood", "value": 8 }
+    ]
+  },
+  {
+    "id": "energy-bar-pack",
+    "name": "能量棒五条装",
+    "icon": "🍫",
+    "description": "送单路上随时啃。体力 +30。",
+    "category": "consumable",
+    "cost": 22,
+    "jobId": "runner",
+    "effects": [{ "target": "energy", "value": 30 }]
+  },
+
+  {
+    "id": "ergonomic-chair",
+    "name": "人体工学椅",
+    "icon": "💺",
+    "description": "腰再也不疼了。装备后体力损失 ×0.85。",
+    "category": "equipment",
+    "cost": 380,
+    "slot": "tool",
+    "modifiers": { "energyMul": 0.85 }
+  },
+  {
+    "id": "noise-cancel-headphones",
+    "name": "降噪耳机",
+    "icon": "🎧",
+    "description": "屏蔽职场杂音。装备后心情损失 ×0.85。",
+    "category": "equipment",
+    "cost": 320,
+    "slot": "wearable",
+    "modifiers": { "moodMul": 0.85 }
+  },
+  {
+    "id": "shared-apartment",
+    "name": "合租房",
+    "icon": "🏠",
+    "description": "便宜但有室友。心情损失 ×1.1。每天扣 5 元租金。",
+    "category": "housing",
+    "cost": 0,
+    "slot": "housing",
+    "dailyUpkeep": 5,
+    "modifiers": { "moodMul": 1.1 }
+  },
+  {
+    "id": "city-studio",
+    "name": "市中心 Studio",
+    "icon": "🏙️",
+    "description": "通勤近 + 心情好。体力 + 心情损失各 ×0.85。每天扣 30 元。",
+    "category": "housing",
+    "cost": 5000,
+    "slot": "housing",
+    "dailyUpkeep": 30,
+    "modifiers": { "energyMul": 0.85, "moodMul": 0.85 }
+  },
+
+  {
+    "id": "redbull-jumbo",
+    "name": "红牛超大罐",
+    "icon": "🧃",
+    "description": "实验室同款。体力 +35，心情 -5（齁甜）。",
+    "category": "consumable",
+    "cost": 28,
+    "jobId": "researcher",
+    "effects": [
+      { "target": "energy", "value": 35 },
+      { "target": "mood", "value": -5 }
+    ]
+  },
+  {
+    "id": "thesis-template",
+    "name": "学位论文模板",
+    "icon": "📑",
+    "description": "学长亲传，省 2 周排版时间。心情 +25。",
+    "category": "consumable",
+    "cost": 40,
+    "jobId": "researcher",
+    "effects": [{ "target": "mood", "value": 25 }]
+  },
+  {
+    "id": "scholarship-letter",
+    "name": "奖学金推荐信",
+    "icon": "🏆",
+    "description": "实验室同学帮你写推荐。心情 +18，体力 +10。",
+    "category": "consumable",
+    "cost": 15,
+    "jobId": "researcher",
+    "effects": [
+      { "target": "mood", "value": 18 },
+      { "target": "energy", "value": 10 }
+    ]
+  },
+
+  {
+    "id": "second-screen-novel",
+    "name": "副屏小说订阅",
+    "icon": "📖",
+    "description": "上班时间专属解压。心情 +25。",
+    "category": "consumable",
+    "cost": 10,
+    "jobId": "slacker",
+    "effects": [{ "target": "mood", "value": 25 }]
+  },
+  {
+    "id": "fake-busy-screen",
+    "name": "假装很忙的代码屏保",
+    "icon": "💻",
+    "description": "领导看了直点头。心情 +15，体力 +10。",
+    "category": "consumable",
+    "cost": 18,
+    "jobId": "slacker",
+    "effects": [
+      { "target": "mood", "value": 15 },
+      { "target": "energy", "value": 10 }
+    ]
+  },
+  {
+    "id": "toilet-cushion",
+    "name": "马桶坐垫",
+    "icon": "🚽",
+    "description": "厕所摸鱼如沙发。体力 +20，心情 +18。",
+    "category": "consumable",
+    "cost": 25,
+    "jobId": "slacker",
+    "effects": [
+      { "target": "energy", "value": 20 },
+      { "target": "mood", "value": 18 }
+    ]
+  },
+
+  {
+    "id": "incense-pack",
+    "name": "线香一盒",
+    "icon": "🪔",
+    "description": "氛围感拉满。心情 +15，体力 +5。",
+    "category": "consumable",
+    "cost": 12,
+    "jobId": "fortune",
+    "effects": [
+      { "target": "mood", "value": 15 },
+      { "target": "energy", "value": 5 }
+    ]
+  },
+  {
+    "id": "tarot-deck-premium",
+    "name": "高级塔罗牌",
+    "icon": "🎴",
+    "description": "新牌涨价利器。心情 +20。",
+    "category": "consumable",
+    "cost": 35,
+    "jobId": "fortune",
+    "effects": [{ "target": "mood", "value": 20 }]
+  },
+  {
+    "id": "ring-light",
+    "name": "直播补光灯",
+    "icon": "💡",
+    "description": "颜值在线观众多。心情 +12，体力 +15。",
+    "category": "consumable",
+    "cost": 30,
+    "jobId": "fortune",
+    "effects": [
+      { "target": "mood", "value": 12 },
+      { "target": "energy", "value": 15 }
+    ]
+  },
+
+  {
+    "id": "intern-bus-card",
+    "name": "公司班车次卡",
+    "icon": "🚌",
+    "description": "通勤不再挤地铁。体力 +18。",
+    "category": "consumable",
+    "cost": 20,
+    "jobId": "intern",
+    "effects": [{ "target": "energy", "value": 18 }]
+  },
+  {
+    "id": "intern-mentor-gift",
+    "name": "送导师的水果礼盒",
+    "icon": "🍎",
+    "description": "心机但有效。心情 +25。",
+    "category": "consumable",
+    "cost": 35,
+    "jobId": "intern",
+    "effects": [{ "target": "mood", "value": 25 }]
+  },
+  {
+    "id": "intern-formal-shirt",
+    "name": "正式衬衫",
+    "icon": "👔",
+    "description": "穿上就像老员工。心情 +20，体力 +5。",
+    "category": "consumable",
+    "cost": 28,
+    "jobId": "intern",
+    "effects": [
+      { "target": "mood", "value": 20 },
+      { "target": "energy", "value": 5 }
+    ]
+  },
+
+  {
+    "id": "programmer-yoga-mat",
+    "name": "工位瑜伽垫",
+    "icon": "🧘",
+    "description": "中午躺一会续命。体力 +28。",
+    "category": "consumable",
+    "cost": 25,
+    "jobId": "programmer",
+    "effects": [{ "target": "energy", "value": 28 }]
+  },
+  {
+    "id": "programmer-blue-blocker",
+    "name": "防蓝光眼镜",
+    "icon": "👓",
+    "description": "看屏幕不再炸眼。心情 +15。",
+    "category": "consumable",
+    "cost": 30,
+    "jobId": "programmer",
+    "effects": [{ "target": "mood", "value": 15 }]
+  },
+
+  {
+    "id": "sales-business-card-holder",
+    "name": "皮制名片夹",
+    "icon": "💼",
+    "description": "客户递名片你也递。心情 +18。",
+    "category": "consumable",
+    "cost": 20,
+    "jobId": "sales",
+    "effects": [{ "target": "mood", "value": 18 }]
+  },
+  {
+    "id": "sales-mints",
+    "name": "口气清新糖",
+    "icon": "🍬",
+    "description": "见客户前必备。心情 +12，体力 +10。",
+    "category": "consumable",
+    "cost": 8,
+    "jobId": "sales",
+    "effects": [
+      { "target": "mood", "value": 12 },
+      { "target": "energy", "value": 10 }
+    ]
+  },
+  {
+    "id": "sales-luxury-pen",
+    "name": "万宝龙签字笔",
+    "icon": "🖊️",
+    "description": "签合同的仪式感。心情 +25。",
+    "category": "consumable",
+    "cost": 45,
+    "jobId": "sales",
+    "effects": [{ "target": "mood", "value": 25 }]
+  },
+
+  {
+    "id": "designer-cintiq-stand",
+    "name": "Cintiq 显示器支架",
+    "icon": "🖼️",
+    "description": "脖子终于直了。体力 +25。",
+    "category": "consumable",
+    "cost": 32,
+    "jobId": "designer",
+    "effects": [{ "target": "energy", "value": 25 }]
+  },
+
+  {
+    "id": "runner-power-bank",
+    "name": "10000mAh 充电宝",
+    "icon": "🔋",
+    "description": "手机不再半路没电。心情 +15，体力 +8。",
+    "category": "consumable",
+    "cost": 22,
+    "jobId": "runner",
+    "effects": [
+      { "target": "mood", "value": 15 },
+      { "target": "energy", "value": 8 }
+    ]
+  },
+
+  {
+    "id": "researcher-coffee-jar",
+    "name": "实验室咖啡罐",
+    "icon": "☕",
+    "description": "够喝一周。体力 +30，心情 +5。",
+    "category": "consumable",
+    "cost": 28,
+    "jobId": "researcher",
+    "effects": [
+      { "target": "energy", "value": 30 },
+      { "target": "mood", "value": 5 }
+    ]
+  },
+  {
+    "id": "researcher-citation-tool",
+    "name": "EndNote 学生订阅",
+    "icon": "🔖",
+    "description": "再也不用手动调引用。心情 +22。",
+    "category": "consumable",
+    "cost": 20,
+    "jobId": "researcher",
+    "effects": [{ "target": "mood", "value": 22 }]
+  },
+
+  {
+    "id": "slacker-thermos",
+    "name": "枸杞养生壶",
+    "icon": "🍵",
+    "description": "保温 8 小时摸鱼必备。体力 +18，心情 +12。",
+    "category": "consumable",
+    "cost": 20,
+    "jobId": "slacker",
+    "effects": [
+      { "target": "energy", "value": 18 },
+      { "target": "mood", "value": 12 }
+    ]
+  },
+  {
+    "id": "slacker-stand-up-trick",
+    "name": "自动定时站立程序",
+    "icon": "🤖",
+    "description": "屏幕自动滚动假装在工作。心情 +28。",
+    "category": "consumable",
+    "cost": 15,
+    "jobId": "slacker",
+    "effects": [{ "target": "mood", "value": 28 }]
+  },
+
+  {
+    "id": "fortune-crystal-ball",
+    "name": "水晶球（带 LED）",
+    "icon": "🔮",
+    "description": "氛围 + 灯效双倍。心情 +20，体力 +10。",
+    "category": "consumable",
+    "cost": 38,
+    "jobId": "fortune",
+    "effects": [
+      { "target": "mood", "value": 20 },
+      { "target": "energy", "value": 10 }
+    ]
+  },
+  {
+    "id": "fortune-zodiac-cheatsheet",
+    "name": "十二星座小抄",
+    "icon": "♎",
+    "description": "客户问星座不再卡壳。心情 +25。",
+    "category": "consumable",
+    "cost": 10,
+    "jobId": "fortune",
+    "effects": [{ "target": "mood", "value": 25 }]
+  }
+]

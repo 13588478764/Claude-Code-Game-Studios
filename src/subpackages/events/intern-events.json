@@ -1,0 +1,656 @@
+[
+  {
+    "id": "intern-001-coffee-run",
+    "text": "导师让你帮全组买咖啡。10个人，每个人要的不一样，有的还要去河对面那家。",
+    "tags": ["chore"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "认真跑腿",
+      "icon": "🏃",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 5 }, { "target": "money", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "在群里说『建议大家自取』",
+      "icon": "💢",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-002-no-task",
+    "text": "你已经坐在工位3小时没事做。导师在开会。你不知道该不该去打扰。",
+    "tags": ["awkward"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "主动找事做",
+      "icon": "📚",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "默默刷手机",
+      "icon": "📱",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-003-unpaid-overtime",
+    "text": "导师：『今天晚上加个班，没有加班费但下周可以早走。』他笑得很开心。",
+    "tags": ["overtime"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "答应",
+      "icon": "🥺",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "委婉说有约",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "intern-004-defense-roast",
+    "text": "实习答辩演练。leader：『你的项目对业务的实际产出是什么？』你做的是后台优化。",
+    "tags": ["defense"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认真讲技术细节",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "硬编一个『提升用户体验』",
+      "icon": "🎭",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-005-offer-frozen",
+    "text": "HR通知：『公司今年应届岗位HC紧张，转正需要等下批审核。』你已经实习6个月了。",
+    "tags": ["career"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "硬等",
+      "icon": "⏳",
+      "effects": [{ "target": "mood", "value": -20 }]
+    },
+    "choiceB": {
+      "text": "另投秋招",
+      "icon": "📨",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-006-grunt-work",
+    "text": "导师让你整理一份300页的『历史Excel数据』，要求按部门拆分。今天必须完成。",
+    "tags": ["chore"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "硬干完",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "用脚本偷懒",
+      "icon": "🤖",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 10 }]
+    }
+  },
+  {
+    "id": "intern-007-blamed",
+    "text": "组里出了一个bug。导师在群里：『XX（你名字），你今天提交的代码呢？』其实那段是别人写的。",
+    "tags": ["unfair"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "辩解清楚",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "默默扛锅",
+      "icon": "💀",
+      "effects": [{ "target": "mood", "value": -25 }]
+    }
+  },
+  {
+    "id": "intern-008-mentor-vacation",
+    "text": "你的导师休假了一周。你卡在一个问题上。问其他人没人理你。",
+    "tags": ["awkward"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "硬研究",
+      "icon": "🔬",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "电话骚扰他",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-009-low-pay",
+    "text": "你看到正式员工的工资条。比你高7倍。你做的活和他差不多。",
+    "tags": ["money"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "化悲愤为动力",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "默默心碎",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -20 }]
+    }
+  },
+  {
+    "id": "intern-010-cant-leave",
+    "text": "你的实习证明卡在HR那。HR说『等这个项目稳定再开』。但项目永远没稳定。",
+    "tags": ["career"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "继续等",
+      "icon": "⏳",
+      "effects": [{ "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "找学校老师施压",
+      "icon": "📞",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-011-meeting-invite",
+    "text": "导师拉你进了一个所有总监都在的会。你完全听不懂。但有人记笔记。",
+    "tags": ["meeting"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "假装认真听",
+      "icon": "📝",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "全程刷题准备秋招",
+      "icon": "📚",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "intern-012-deliverable-confusion",
+    "text": "导师交代任务时只说了：『搞个东西出来。』你不敢问具体要什么。",
+    "tags": ["awkward"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "硬着头皮做",
+      "icon": "🎲",
+      "effects": [],
+      "risk": {
+        "chance": 0.4,
+        "success": { "text": "猜中了导师想要的", "effects": [{ "target": "mood", "value": 20 }, { "target": "money", "value": 15 }] },
+        "fail": { "text": "完全不是导师要的，重做", "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -20 }] }
+      }
+    },
+    "choiceB": {
+      "text": "鼓起勇气问清楚",
+      "icon": "🙋",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "intern-013-name-forgotten",
+    "text": "导师介绍你给客户：『这是我们的实习生，叫……叫小李对吧？』你姓张。",
+    "tags": ["awkward"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "笑笑不纠正",
+      "icon": "😅",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "礼貌纠正",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -3 }]
+    }
+  },
+  {
+    "id": "intern-014-borrow-passcard",
+    "text": "导师忘带工卡，让你刷自己卡帮他进会议室。HR严禁这个。",
+    "tags": ["risk"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "帮他刷卡",
+      "icon": "🪪",
+      "effects": [],
+      "risk": {
+        "chance": 0.7,
+        "success": { "text": "没人发现", "effects": [{ "target": "mood", "value": 10 }] },
+        "fail": { "text": "被HR抓住通报批评", "effects": [{ "target": "mood", "value": -30 }, { "target": "money", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "婉拒说我也忘带了",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "intern-015-team-photo",
+    "text": "组织部要拍合影。你刚来还在试用期，他们犹豫要不要带你。",
+    "tags": ["awkward"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "主动凑上去",
+      "icon": "📸",
+      "effects": [{ "target": "mood", "value": 8 }, { "target": "energy", "value": -3 }]
+    },
+    "choiceB": {
+      "text": "默默躲开",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-016-fake-intern-task",
+    "text": "导师让你『帮忙跑个代码』。你跑了一晚上发现是他想要的项目核心模块。",
+    "tags": ["unfair"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "硬着头皮认了",
+      "icon": "🥲",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "在周报里写明",
+      "icon": "📝",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-017-canteen-line",
+    "text": "实习生工卡食堂折扣比正式员工少。同样一份饭你比同事多花6块。",
+    "tags": ["money"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "默默买",
+      "icon": "🍱",
+      "effects": [{ "target": "money", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "去外面吃",
+      "icon": "🚪",
+      "effects": [{ "target": "money", "value": -22 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "intern-018-fake-promise",
+    "text": "导师说：『你做完这个项目，转正肯定没问题。』他每个实习生都这么说。",
+    "tags": ["career"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "选择相信",
+      "icon": "🤞",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "默默骑驴找马",
+      "icon": "📨",
+      "effects": [{ "target": "energy", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-019-other-intern",
+    "text": "新来了一个跟你同岗的实习生。他比你晚一周，但导师对他特别热情。",
+    "tags": ["awkward"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "无所谓",
+      "icon": "😌",
+      "effects": [{ "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "暗自较劲",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 5 }]
+    }
+  },
+  {
+    "id": "intern-020-secret-leak",
+    "text": "你不小心听到主管在打电话：『今年实习生留用比例只有10%。』他还没看到你。",
+    "tags": ["career"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "假装没听见溜走",
+      "icon": "🙈",
+      "effects": [{ "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "立即开始投秋招",
+      "icon": "📨",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "intern-021-old-laptop",
+    "text": "公司给实习生发的笔记本是5年前的i3，跑你的IDE卡到怀疑人生。",
+    "tags": ["chore"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "用自己的电脑",
+      "icon": "💻",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "energy", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "硬撑",
+      "icon": "🐢",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-022-no-id-card",
+    "text": "前台拦你：『实习生不能进会议中心。』你要送的文件就在里面。",
+    "tags": ["awkward"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "找导师来接",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "硬闯进去",
+      "icon": "💢",
+      "effects": [],
+      "risk": {
+        "chance": 0.5,
+        "success": { "text": "门口没人成功送达", "effects": [{ "target": "mood", "value": 15 }] },
+        "fail": { "text": "被保安请出去通报", "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "intern-023-intern-fund",
+    "text": "实习生群里组织『团建AA』，每人150。你已经实习两个月没拿到钱。",
+    "tags": ["money", "social"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "找借口推掉",
+      "icon": "🙇",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "去借钱凑",
+      "icon": "💸",
+      "effects": [{ "target": "money", "value": -150 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "intern-024-no-card",
+    "text": "你的工卡被改成『visitor』，每次进出门需要保安按一下。同事开始觉得奇怪。",
+    "tags": ["awkward"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "硬着头皮过",
+      "icon": "🥲",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "找HR换张正常的",
+      "icon": "📞",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "intern-025-final-defense",
+    "text": "实习答辩那天，5个评委。前一个候选人讲完，评委只问了2个问题。轮到你，他们准备了10个。",
+    "tags": ["defense"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "认真挨个回答",
+      "icon": "🎤",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": 15 }, { "target": "money", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "回答几个就放弃",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": -10 }]
+    }
+  },
+
+  {
+    "id": "intern-026-team-coffee-run",
+    "text": "全组下午茶。组长瞥你一眼：『新来的去楼下买一下吧。』",
+    "tags": ["chore", "team"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "默默拿钱包下楼",
+      "icon": "☕",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": -50 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "推说『正赶 deadline』",
+      "icon": "💻",
+      "effects": [{ "target": "mood", "value": 8 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }] }
+      }
+    }
+  },
+  {
+    "id": "intern-027-document-formatting",
+    "text": "导师扔来 30 页 Word：『帮我调一下格式，下午开会用。』要求没说。",
+    "tags": ["chore", "mentor"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "猜风格 + 全部统一",
+      "icon": "📄",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "问清楚再改",
+      "icon": "❓",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 8 }]
+    }
+  },
+  {
+    "id": "intern-028-photocopier-jam",
+    "text": "你被派去复印 100 份合同。复印机第 23 份开始卡纸。",
+    "tags": ["chore", "tech"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "硬蹲半小时拆机",
+      "icon": "🔧",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "跑去外面打印店",
+      "icon": "🏃",
+      "effects": [{ "target": "money", "value": -30 }, { "target": "energy", "value": -10 }, { "target": "mood", "value": 8 }]
+    }
+  },
+  {
+    "id": "intern-029-lunch-exclusion",
+    "text": "正式员工讨论午饭去哪。你在旁边假装看不见。",
+    "tags": ["social", "awkward"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "厚脸皮凑上去问",
+      "icon": "🍱",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 18 }, { "target": "money", "value": -25 }]
+    },
+    "choiceB": {
+      "text": "自己点 12 元盖饭",
+      "icon": "🥢",
+      "effects": [{ "target": "money", "value": -12 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "intern-030-evaluation-eve",
+    "text": "明天就是 3 个月转正答辩。同组实习生已经准备了 30 页 PPT。",
+    "tags": ["evaluation", "stress"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "通宵肝出 40 页",
+      "icon": "🌙",
+      "effects": [{ "target": "energy", "value": -35 }, { "target": "mood", "value": -10 }],
+      "risk": {
+        "chance": 0.55,
+        "success": { "effects": [{ "target": "money", "value": 60 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }] }
+      }
+    },
+    "choiceB": {
+      "text": "明早裸答辩",
+      "icon": "🎓",
+      "effects": [{ "target": "energy", "value": 12 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [{ "target": "money", "value": 35 }, { "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -30 }] }
+      }
+    }
+  },
+  {
+    "id": "intern-031-mentor-no-time",
+    "text": "导师 3 天没看你的方案。你心慌。",
+    "tags": ["mentor", "anxiety"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "厚脸皮去办公室追",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 12 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "继续等 + 内耗",
+      "icon": "😰",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "intern-032-wechat-stalking",
+    "text": "正式员工发了朋友圈：去日本团建。没你。",
+    "tags": ["social", "mood"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "默默点赞表示成熟",
+      "icon": "👍",
+      "effects": [{ "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "屏蔽他朋友圈",
+      "icon": "🚫",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "intern-033-employee-card-fail",
+    "text": "公司发了员工卡。但你只有实习卡，不能用员工通道。",
+    "tags": ["system", "intern-life"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "去 HR 申请破例",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -8 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [{ "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -10 }] }
+      }
+    },
+    "choiceB": {
+      "text": "认了 + 每天走员工通道外的小门",
+      "icon": "🚪",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "intern-034-mentor-praise",
+    "text": "导师在群里夸你：『新来的小 X 这次方案做得不错。』第一次被点名表扬。",
+    "tags": ["mentor", "win"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "诚恳道谢 + 继续努力",
+      "icon": "🙇",
+      "effects": [{ "target": "energy", "value": 12 }, { "target": "mood", "value": 30 }, { "target": "money", "value": 10 }]
+    },
+    "choiceB": {
+      "text": "晚上请同组喝奶茶",
+      "icon": "🧋",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": 35 }]
+    }
+  },
+  {
+    "id": "intern-035-pay-day-shock",
+    "text": "实习工资到账：1860 元。除掉房租 1500 还剩 360。",
+    "tags": ["money", "milestone"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "买个 88 元蛋糕庆祝",
+      "icon": "🎂",
+      "effects": [{ "target": "money", "value": -88 }, { "target": "mood", "value": 22 }, { "target": "energy", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "全存起来 + 吃一周泡面",
+      "icon": "💰",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }, { "target": "money", "value": 30 }]
+    }
+  },
+  {
+    "id": "intern-cond-001-conversion-pressure",
+    "text": "career 最后一周。HR 神秘兮兮：『你的转正答辩 PPT 改了 17 版，HR 总监说还差点意思。』",
+    "tags": ["crisis", "conversion"],
+    "weight": 3.0,
+    "conditions": [{ "type": "minWeek", "value": 4 }],
+    "choiceA": {
+      "text": "通宵再改一版 + 找前辈 review",
+      "icon": "📊",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -10 }],
+      "careerScoreDelta": 30
+    },
+    "choiceB": {
+      "text": "豁出去：『不要也罢，老子另谋高就』",
+      "icon": "🚪",
+      "effects": [{ "target": "mood", "value": 25 }, { "target": "money", "value": -100 }],
+      "careerScoreDelta": -20
+    }
+  },
+  {
+    "id": "intern-cond-002-broke-instant-noodle",
+    "text": "卡上只剩 30 块。室友递过来一包泡面：『请你的，下个月还我。』",
+    "tags": ["crisis", "money"],
+    "weight": 2.5,
+    "conditions": [{ "type": "maxMoney", "value": 30 }],
+    "choiceA": {
+      "text": "接受 + 心存感激",
+      "icon": "🍜",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": 8 }, { "target": "money", "value": -3 }]
+    },
+    "choiceB": {
+      "text": "硬撑：『我减肥不吃』",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "intern-cond-003-mentor-takes-credit",
+    "text": "你做的项目，导师在汇报里只字不提你。同组实习生小李说：『他对所有人都这样。』",
+    "tags": ["mentor", "frustration"],
+    "weight": 2.0,
+    "conditions": [{ "type": "minWeek", "value": 2 }],
+    "choiceA": {
+      "text": "私聊导师婉转提一下",
+      "icon": "💬",
+      "effects": [],
+      "risk": {
+        "chance": 0.5,
+        "success": { "text": "导师下次主动 cue 你，关系变好", "effects": [{ "target": "mood", "value": 20 }] },
+        "fail": { "text": "导师冷战 + 给你穿小鞋", "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -50 }] }
+      }
+    },
+    "choiceB": {
+      "text": "默默记账，等下次有机会跳过他",
+      "icon": "📝",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  }
+]

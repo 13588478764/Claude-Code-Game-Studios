@@ -1,0 +1,904 @@
+<!-- PROTOTYPE - NOT FOR PRODUCTION -->
+<!-- Question: 加入后果链/Buff/风险/消费后，核心循环是否更有深度？ -->
+<!-- Date: 2026-05-18 -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>打工轮回 - Core Loop Prototype v2</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: radial-gradient(ellipse at top, #2d1b4e 0%, #1a0f2e 50%, #0a0518 100%);
+  color: #eee;
+  min-height: 100vh;
+  display: flex; justify-content: center; align-items: center;
+  overflow: hidden;
+}
+#app {
+  width: 390px; height: 760px;
+  background: linear-gradient(160deg, #1e1b3a 0%, #0f0a26 100%);
+  border-radius: 28px; overflow: hidden;
+  position: relative;
+  display: flex; flex-direction: column;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 1px rgba(255,255,255,0.1) inset;
+}
+#error-box {
+  position: fixed; top: 10px; left: 10px; right: 10px;
+  background: #ff0000; color: #fff; padding: 16px;
+  border-radius: 8px; font-size: 14px; z-index: 9999; display: none;
+}
+
+/* ========== TITLE ========== */
+.title-screen {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 50;
+  background: radial-gradient(ellipse at center, rgba(180,100,255,0.2) 0%, transparent 70%), linear-gradient(180deg, #1e1b3a 0%, #0a0518 100%);
+}
+.title-logo {
+  font-size: 56px; font-weight: 900; letter-spacing: 4px;
+  background: linear-gradient(180deg, #fff 0%, #ffd86f 50%, #ff8a3d 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  margin-bottom: 8px; animation: titleBob 3s ease-in-out infinite;
+}
+.title-sub { font-size: 14px; color: #b8a4d4; letter-spacing: 8px; margin-bottom: 6px; }
+.title-tag { font-size: 12px; color: #7d6a99; margin-bottom: 50px; }
+.title-character { font-size: 100px; margin-bottom: 30px; animation: charBob 2.5s ease-in-out infinite; }
+.title-start {
+  padding: 16px 56px;
+  background: linear-gradient(180deg, #ffb84d 0%, #ff7a1a 100%);
+  color: #fff; border: none; border-radius: 999px;
+  font-size: 18px; font-weight: 700; letter-spacing: 4px; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(255,138,61,0.4), 0 0 0 4px rgba(255,184,77,0.2);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.title-start:active { transform: scale(0.95); }
+.title-hint { margin-top: 30px; font-size: 11px; color: #6d5d8a; text-align: center; line-height: 1.8; }
+.title-features {
+  display: flex; gap: 14px; margin-top: 20px;
+  font-size: 11px; color: #b8a4d4;
+}
+.title-features span {
+  padding: 4px 10px; background: rgba(180,140,255,0.1);
+  border-radius: 999px; border: 1px solid rgba(180,140,255,0.2);
+}
+
+/* ========== TOP ========== */
+.top-bar { padding: 14px 16px 8px; }
+.top-bar-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.day-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 12px 5px 6px;
+  background: linear-gradient(135deg, #4a3675 0%, #2a1f4a 100%);
+  border-radius: 999px;
+  border: 1px solid rgba(180,140,255,0.3);
+}
+.day-icon {
+  width: 22px; height: 22px;
+  background: linear-gradient(135deg, #ffb84d, #ff7a1a);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 900; color: #fff;
+}
+.day-text { font-size: 12px; font-weight: 600; color: #e8dcff; letter-spacing: 1px; }
+.progress-dots { display: flex; gap: 5px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.12); transition: all 0.4s; }
+.dot-done { background: #4CD964; box-shadow: 0 0 8px rgba(76,217,100,0.6); }
+.dot-current { background: #FFCC00; box-shadow: 0 0 12px rgba(255,204,0,0.8); animation: pulse 1s infinite; width: 9px; height: 9px; }
+
+/* ========== CHAR + RESOURCES ========== */
+.char-section { display: flex; align-items: center; gap: 12px; padding: 0 4px; }
+.char-avatar {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, #6a4ea3 0%, #3a2659 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  border: 2px solid rgba(180,140,255,0.4);
+  box-shadow: 0 4px 16px rgba(120,80,200,0.4);
+  flex-shrink: 0; position: relative; transition: all 0.4s;
+}
+.char-avatar.crisis { border-color: #FF3B30; box-shadow: 0 0 24px rgba(255,59,48,0.6); animation: shake 0.4s infinite; }
+.char-avatar.warning { border-color: #FFCC00; }
+.char-status-tag {
+  position: absolute; bottom: -4px; right: -4px;
+  font-size: 14px; background: #1e1b3a;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid rgba(180,140,255,0.4);
+}
+.resource-stack { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.resource-row { display: flex; align-items: center; gap: 8px; }
+.resource-icon-box {
+  width: 24px; height: 24px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0;
+}
+.icon-energy { background: rgba(76,217,100,0.15); }
+.icon-mood { background: rgba(255,149,0,0.15); }
+.icon-money { background: rgba(255,204,0,0.15); }
+.resource-bar-wrap {
+  flex: 1; height: 12px;
+  background: rgba(0,0,0,0.4); border-radius: 999px;
+  overflow: hidden; position: relative;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.resource-fill {
+  height: 100%; border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1), background 0.3s;
+  position: relative; box-shadow: 0 0 10px currentColor;
+}
+.resource-fill::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.4), transparent);
+  border-radius: 999px 999px 0 0;
+}
+.resource-num { font-size: 11px; font-weight: 800; min-width: 26px; text-align: right; font-variant-numeric: tabular-nums; }
+.money-display {
+  flex: 1; font-size: 13px; font-weight: 800; color: #FFCC00;
+  text-shadow: 0 0 12px rgba(255,204,0,0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ========== STATUS BAR ========== */
+.status-bar {
+  display: flex; gap: 6px; padding: 6px 16px 0;
+  min-height: 26px; flex-wrap: wrap;
+}
+.status-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px; font-weight: 600;
+  border: 1px solid;
+  animation: chipIn 0.3s ease-out;
+}
+.chip-buff {
+  background: rgba(76,217,100,0.15);
+  color: #aef0c0; border-color: rgba(76,217,100,0.4);
+}
+.chip-debuff {
+  background: rgba(255,107,107,0.15);
+  color: #ffc0c0; border-color: rgba(255,107,107,0.4);
+}
+.chip-days { opacity: 0.7; font-size: 10px; }
+
+/* ========== RESOLVE ========== */
+.resolve-display {
+  height: 28px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; margin: 4px 0;
+}
+.resolve-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 3px 12px; border-radius: 999px;
+  background: rgba(0,0,0,0.5);
+  animation: resolvePop 0.4s ease-out;
+}
+.delta-positive { color: #4CD964; }
+.delta-negative { color: #FF6B6B; }
+.delta-neutral { color: #FFCC00; }
+
+/* ========== CARD ========== */
+.card-area {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 6px 16px;
+}
+.event-card {
+  width: 100%;
+  background: linear-gradient(160deg, #fdf6e8 0%, #f5e8c8 100%);
+  color: #2a2230; border-radius: 16px;
+  padding: 18px 18px 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 1px 2px rgba(255,255,255,0.6) inset;
+  font-size: 14px; line-height: 1.65;
+  position: relative; border: 1px solid rgba(160,110,60,0.3);
+}
+.event-card.followup-card {
+  background: linear-gradient(160deg, #f0e4ff 0%, #d6c8ff 100%);
+  border-color: rgba(120,80,200,0.4);
+}
+.event-card.enter { animation: cardFlip 0.5s cubic-bezier(0.4,0,0.2,1); }
+.card-corner-top { position: absolute; top: 7px; left: 12px; font-size: 10px; font-weight: 700; color: #8b6e3a; letter-spacing: 2px; }
+.followup-card .card-corner-top { color: #6a4eb0; }
+.card-corner-tr { position: absolute; top: 6px; right: 12px; font-size: 14px; }
+.card-text { margin-top: 14px; font-weight: 500; }
+.card-divider { height: 1px; background: linear-gradient(90deg, transparent, rgba(139,110,58,0.4), transparent); margin: 10px 0 0; }
+.card-counter { text-align: center; font-size: 10px; color: #b8a4d4; letter-spacing: 4px; padding: 2px 0 0; }
+
+/* ========== SHOP ========== */
+.shop-strip {
+  display: flex; gap: 6px; padding: 8px 16px 0;
+  justify-content: space-between;
+}
+.shop-item {
+  flex: 1; padding: 6px 4px;
+  background: rgba(255,184,77,0.08);
+  border: 1px solid rgba(255,184,77,0.25);
+  border-radius: 10px;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 1px;
+  font-size: 10px; color: #ffd86f;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.shop-item:active:not(:disabled) { transform: scale(0.95); }
+.shop-item:disabled { opacity: 0.3; cursor: not-allowed; }
+.shop-icon { font-size: 18px; }
+.shop-name { font-weight: 700; font-size: 11px; color: #fff; }
+.shop-cost { color: #ffb84d; font-weight: 700; }
+
+/* ========== CHOICES ========== */
+.choices { padding: 10px 16px 18px; display: flex; gap: 8px; }
+.choice-btn {
+  flex: 1; padding: 10px 6px;
+  border: none; border-radius: 12px;
+  font-size: 12px; line-height: 1.3; font-weight: 600;
+  cursor: pointer; position: relative;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 3px;
+  transition: transform 0.1s; min-height: 60px;
+}
+.choice-btn:active:not(:disabled) { transform: scale(0.96) translateY(2px); }
+.btn-a { background: linear-gradient(180deg, #5cc8ff 0%, #2789cf 100%); color: #fff; box-shadow: 0 5px 0 #1c5f99, 0 6px 12px rgba(39,137,207,0.4); }
+.btn-b { background: linear-gradient(180deg, #ffb84d 0%, #ff7a1a 100%); color: #fff; box-shadow: 0 5px 0 #c75510, 0 6px 12px rgba(255,122,26,0.4); }
+.btn-mark { font-size: 18px; }
+.btn-text { font-size: 12px; padding: 0 4px; }
+.choice-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.risk-tag {
+  position: absolute; top: 2px; right: 4px;
+  font-size: 9px; font-weight: 800;
+  padding: 1px 5px; background: rgba(0,0,0,0.4);
+  border-radius: 6px; letter-spacing: 0.5px;
+}
+
+/* ========== OVERLAYS ========== */
+.overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 32px; text-align: center; z-index: 30;
+  animation: fadeIn 0.5s;
+}
+.overlay-emoji { font-size: 90px; margin-bottom: 12px; animation: charBob 2s ease-in-out infinite; }
+.death-bg { background: radial-gradient(ellipse at center, rgba(60,20,30,0.95) 0%, rgba(0,0,0,0.95) 80%); }
+.win-bg { background: radial-gradient(ellipse at center, rgba(20,60,40,0.95) 0%, rgba(0,30,15,0.95) 80%); }
+.overlay h2 {
+  font-size: 28px; margin-bottom: 8px;
+  background: linear-gradient(180deg, #fff, #ffd86f);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.overlay p { font-size: 13px; color: #c8b8d8; margin: 4px 0; max-width: 280px; }
+.overlay .stats { margin: 16px 0; padding: 10px 18px; background: rgba(255,255,255,0.05); border-radius: 12px; font-size: 12px; color: #d8c8e8; }
+.retry-btn { margin-top: 8px; padding: 12px 40px; border: none; border-radius: 999px; font-size: 15px; font-weight: 700; letter-spacing: 4px; cursor: pointer; }
+.retry-death { background: linear-gradient(180deg, #ff6b6b 0%, #c92a2a 100%); color: #fff; box-shadow: 0 6px 0 #8b1a1a; }
+.retry-win { background: linear-gradient(180deg, #51cf66 0%, #2f9e44 100%); color: #fff; box-shadow: 0 6px 0 #1a7a2e; }
+.retry-btn:active { transform: translateY(3px); }
+
+/* ========== TRANSITION ========== */
+.day-transition {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(80,40,140,0.95) 0%, rgba(20,10,40,0.98) 70%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 40;
+  animation: fadeIn 0.3s;
+}
+.transition-day {
+  font-size: 60px; font-weight: 900;
+  background: linear-gradient(180deg, #fff 0%, #ffd86f 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  letter-spacing: 6px;
+  animation: dayZoom 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.transition-sub { margin-top: 10px; font-size: 14px; color: #b8a4d4; letter-spacing: 8px; animation: fadeIn 0.6s 0.3s both; }
+
+/* ========== RISK ROLL ========== */
+.risk-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 35; animation: fadeIn 0.2s;
+}
+.dice {
+  font-size: 100px; animation: diceRoll 1s ease-out;
+}
+.risk-result-text {
+  margin-top: 20px;
+  font-size: 22px; font-weight: 800;
+  letter-spacing: 2px;
+  animation: resolvePop 0.4s 0.8s both;
+}
+.risk-success { color: #4CD964; text-shadow: 0 0 20px rgba(76,217,100,0.6); }
+.risk-fail { color: #FF6B6B; text-shadow: 0 0 20px rgba(255,107,107,0.6); }
+.risk-detail {
+  margin-top: 8px; font-size: 13px; color: #ddd; max-width: 280px;
+  text-align: center; animation: fadeIn 0.4s 1s both;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+@keyframes titleBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes charBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+@keyframes cardFlip { 0% { opacity: 0; transform: rotateX(-30deg) translateY(20px); } 100% { opacity: 1; transform: rotateX(0) translateY(0); } }
+@keyframes dayZoom { 0% { transform: scale(0.5); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes resolvePop { 0% { transform: scale(0.5) translateY(10px); opacity: 0; } 60% { transform: scale(1.15); } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+@keyframes warningPulse { 0%,100% { background: linear-gradient(160deg, #1e1b3a 0%, #0f0a26 100%); } 50% { background: linear-gradient(160deg, #3a1b2e 0%, #260a1e 100%); } }
+@keyframes chipIn { 0% { opacity: 0; transform: scale(0.5) translateY(-4px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+@keyframes diceRoll {
+  0% { transform: rotate(0) scale(0.5); opacity: 0; }
+  50% { transform: rotate(360deg) scale(1.3); opacity: 1; }
+  100% { transform: rotate(720deg) scale(1); opacity: 1; }
+}
+.crisis-mode { animation: warningPulse 1.2s infinite; }
+</style>
+</head>
+<body>
+
+<div id="error-box"></div>
+<div id="app"></div>
+
+<script>
+window.onerror = function(msg, url, line) {
+  var box = document.getElementById('error-box');
+  if (box) { box.style.display = 'block'; box.textContent = 'Err: ' + msg + ' L' + line; }
+};
+
+(function() {
+
+// ========== EVENTS ==========
+// fx: list of effects, each {t, v}
+// risk: {chance, success: {fx, text}, fail: {fx, text}}
+// buff: {name, icon, days, energyMul?, moodMul?, type: 'buff'|'debuff'}
+// followUp: a card object queued to be next event
+var EVENTS = [
+  // === Simple events ===
+  { text: "下午3点，你发现昨晚上线的代码有个bug。用户已经在群里@你了。你的咖啡刚好喝完了。",
+    a: { text: "先修bug再说", icon: "🔧", fx: [{t:'energy',v:-20},{t:'money',v:5}] },
+    b: { text: "先去接杯咖啡", icon: "☕", fx: [{t:'energy',v:5},{t:'mood',v:-15}] } },
+  { text: "团建通知：周五下班后聚餐+KTV，「自愿参加」。括号里写着（不参加的请说明理由）。",
+    a: { text: "去吧混个脸熟", icon: "🍻", fx: [{t:'mood',v:-15},{t:'energy',v:-10},{t:'money',v:-30}] },
+    b: { text: "假装没看到", icon: "🙈", fx: [{t:'mood',v:10},{t:'energy',v:5}] } },
+  { text: "午饭时间到了。公司楼下只有三个选择：35块的轻食沙拉、15块的黄焖鸡、或者泡面。",
+    a: { text: "黄焖鸡平衡之选", icon: "🍚", fx: [{t:'energy',v:15},{t:'money',v:-15}] },
+    b: { text: "泡面省钱就是赚钱", icon: "🍜", fx: [{t:'energy',v:5},{t:'mood',v:-10},{t:'money',v:-3}] } },
+  { text: "代码review，同事在你的PR下留了23条comment。其中20条是「建议改个变量名」。",
+    a: { text: "一条条认真改", icon: "✏️", fx: [{t:'energy',v:-20},{t:'mood',v:-5}] },
+    b: { text: "回复下个版本优化", icon: "😏", fx: [{t:'mood',v:-10},{t:'energy',v:-5}] } },
+  { text: "厕所坑位全满。你已经憋了40分钟了。隔壁组的人进去20分钟了还在刷手机。",
+    a: { text: "去楼下碰运气", icon: "🚶", fx: [{t:'energy',v:-10},{t:'mood',v:5}] },
+    b: { text: "继续等打开手机摸鱼", icon: "📱", fx: [{t:'energy',v:-5},{t:'mood',v:-5}] } },
+  { text: "你发现隔壁同事薪资比你高30%，干的活还没你多。内心波涛汹涌。",
+    a: { text: "悄悄投简历", icon: "📨", fx: [{t:'mood',v:-5},{t:'energy',v:-10}] },
+    b: { text: "比上不足比下有余", icon: "😮‍💨", fx: [{t:'mood',v:-15}] } },
+
+  // === Buff/Debuff events ===
+  { text: "茶水间的咖啡机刚换了豆子。隔壁小姐姐说：这个冲出来超提神。",
+    a: { text: "来杯黑咖啡", icon: "☕", fx: [{t:'energy',v:8},{t:'money',v:-5}],
+         buff: { name: "亢奋", icon: "⚡", days: 2, type: 'buff', energyMul: 0.5 } },
+    b: { text: "白开水就行", icon: "💧", fx: [{t:'energy',v:3}] } },
+  { text: "大领导突然出现在工位旁，看了一眼你的屏幕，啧了一声就走了。整个组安静了。",
+    a: { text: "假装没听见", icon: "🙃", fx: [{t:'mood',v:-15}],
+         buff: { name: "emo", icon: "💔", days: 2, type: 'debuff', moodMul: 1.5 } },
+    b: { text: "鼓起勇气追问", icon: "💪", fx: [{t:'mood',v:-25},{t:'energy',v:-10}] } },
+  { text: "中午食堂排队半小时。回到工位你只剩20分钟午休。",
+    a: { text: "睡20分钟", icon: "😴", fx: [{t:'energy',v:10}],
+         buff: { name: "回血中", icon: "💤", days: 1, type: 'buff', energyMul: 0.7 } },
+    b: { text: "刷会儿短视频", icon: "📱", fx: [{t:'mood',v:5},{t:'energy',v:-3}] } },
+  { text: "你发现隔壁工位的同事偷偷看你写的代码。你不知道他在记笔记还是在挑毛病。",
+    a: { text: "没事啦不在意", icon: "😎", fx: [{t:'mood',v:5}] },
+    b: { text: "越想越气", icon: "😡", fx: [{t:'mood',v:-10}],
+         buff: { name: "焦虑", icon: "😰", days: 2, type: 'debuff', moodMul: 1.3, energyMul: 1.2 } } },
+
+  // === Risk events ===
+  { text: "你今早想偷懒迟到。打车app显示堵车要40分钟，地铁挤但准时。",
+    a: { text: "赌打车不堵", icon: "🎲", risk: { chance: 0.5,
+          success: { text: "运气爆棚一路绿灯", fx: [{t:'energy',v:10},{t:'money',v:-15}] },
+          fail: { text: "堵了一个半小时迟到", fx: [{t:'mood',v:-25},{t:'money',v:-30}] } } },
+    b: { text: "老老实实地铁", icon: "🚇", fx: [{t:'energy',v:-10},{t:'money',v:-3}] } },
+  { text: "公司年会抽奖。还剩三个奖：iPhone、500元卡、洗发水。你的号还没被抽。",
+    a: { text: "祈祷大奖", icon: "🎰", risk: { chance: 0.25,
+          success: { text: "中了iPhone 飞起来", fx: [{t:'mood',v:40},{t:'money',v:80}] },
+          fail: { text: "啥也没中只剩寂寞", fx: [{t:'mood',v:-15}] } } },
+    b: { text: "中途溜了", icon: "🚪", fx: [{t:'energy',v:5}] } },
+  { text: "今天是周三 你超想请假。但月底绩效表上每个请假都会被记录。",
+    a: { text: "装病请病假", icon: "🤒", risk: { chance: 0.7,
+          success: { text: "成功在家躺平一天", fx: [{t:'energy',v:35},{t:'mood',v:25}] },
+          fail: { text: "HR查岗你穿着睡衣开了视频", fx: [{t:'mood',v:-30},{t:'money',v:-20}] } } },
+    b: { text: "硬撑去上班", icon: "😪", fx: [{t:'energy',v:-25},{t:'mood',v:-10}] } },
+
+  // === FollowUp chain events ===
+  { text: "周一早上电梯里遇到老板，他笑眯眯地说：年轻人最近怎么样？你的脑子飞速运转。",
+    a: { text: "拍马屁说很好", icon: "😊", fx: [{t:'mood',v:-3}],
+         followUp: { text: "[后续] 三天后老板转给你一个紧急项目：「你最近状态好我才给你的。」",
+                     a: { text: "硬着头皮接", icon: "💀", fx: [{t:'energy',v:-30},{t:'money',v:30}] },
+                     b: { text: "委婉拒绝", icon: "🙇", fx: [{t:'mood',v:-20}] } } },
+    b: { text: "如实说压力大", icon: "😩", fx: [{t:'mood',v:-5}],
+         followUp: { text: "[后续] 第二天HR约你聊：听说你压力大？她的笑容意味深长。",
+                     a: { text: "硬着头皮聊", icon: "🥲", fx: [{t:'mood',v:-15}] },
+                     b: { text: "改口说没事啦", icon: "😬", fx: [{t:'mood',v:-25},{t:'energy',v:-5}] } } } },
+  { text: "晚上8点 老板让你紧急加个班 周末调休。你看了看手机里的电影票 周六的。",
+    a: { text: "答应加班", icon: "💪", fx: [{t:'energy',v:-25},{t:'money',v:25}],
+         followUp: { text: "[后续] 第二天老板请全组喝奶茶感谢你 还有人偷偷加你微信。",
+                     a: { text: "受宠若惊", icon: "🥺", fx: [{t:'mood',v:20}] },
+                     b: { text: "保持距离", icon: "😶", fx: [{t:'mood',v:5}] } } },
+    b: { text: "拒绝看电影", icon: "🎬", fx: [{t:'mood',v:15}],
+         followUp: { text: "[后续] 周一例会老板当众点名表扬同事小李的奉献精神。",
+                     a: { text: "无所谓", icon: "🙄", fx: [{t:'mood',v:-5}] },
+                     b: { text: "默默emo", icon: "😞", fx: [{t:'mood',v:-15}] } } } },
+  { text: "产品改了第8版需求 还说就是个微调。你已经准备开口怼了。",
+    a: { text: "深呼吸再做", icon: "🧘", fx: [{t:'energy',v:-20},{t:'mood',v:-10}] },
+    b: { text: "当场摆烂", icon: "🔥", fx: [{t:'mood',v:15},{t:'energy',v:-5}],
+         followUp: { text: "[后续] 产品在群里@所有人：「某些人的态度我已经向上反馈了。」",
+                     a: { text: "硬刚到底", icon: "⚔️", fx: [{t:'mood',v:10},{t:'energy',v:-15}] },
+                     b: { text: "私聊道歉", icon: "🙏", fx: [{t:'mood',v:-20}] } } } }
+];
+
+var EVENTS_PER_DAY = [2, 3, 3, 4, 4];
+var DAY_SALARY = [10, 10, 10, 15, 25];
+var DAY_NAMES = ['周一', '周二', '周三', '周四', '周五'];
+var DAY_SUBS = ['新的一周', '已经周二', '过半了', '快周末', '冲鸭'];
+
+var SHOP = [
+  { id: 'coffee', name: '咖啡', icon: '☕', cost: 10, fx: [{t:'energy',v:12}] },
+  { id: 'milk', name: '奶茶', icon: '🧋', cost: 15, fx: [{t:'mood',v:18},{t:'energy',v:3}] },
+  { id: 'massage', name: '按摩', icon: '💆', cost: 25, fx: [{t:'energy',v:18},{t:'mood',v:12}] }
+];
+
+var G = {
+  energy: 80, mood: 60, money: 0,
+  day: 1, done: 0, total: 2,
+  card: null, dead: false, win: false,
+  resolving: false, choices: 0,
+  startTime: 0, used: {},
+  started: false, deathTitle: '', deathReason: '',
+  statuses: [],
+  queuedCard: null
+};
+
+function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+function energyColor(v) { return v <= 30 ? '#FF6B6B' : v <= 50 ? '#FFCC00' : '#4CD964'; }
+function moodColor(v) { return v <= 20 ? '#9b6bff' : v <= 30 ? '#8E8E93' : '#FF9500'; }
+function charFace() {
+  if (G.energy <= 20 || G.mood <= 20) return '😵';
+  if (G.energy <= 40 && G.mood <= 40) return '😩';
+  if (G.energy <= 40) return '😪';
+  if (G.mood <= 30) return '😠';
+  if (G.energy >= 70 && G.mood >= 70) return '😎';
+  if (G.mood >= 70) return '😄';
+  return '🙂';
+}
+function charClass() {
+  if (G.energy <= 20 || G.mood <= 20) return 'crisis';
+  if (G.energy <= 30 || G.mood <= 30) return 'warning';
+  return '';
+}
+function statusTag() {
+  if (G.mood <= 20) return '💢';
+  if (G.energy <= 20) return '⚡';
+  if (G.mood >= 80) return '✨';
+  return '💼';
+}
+function rating() {
+  var s = (G.money / 100) * 0.5 + (G.energy / 100) * 0.25 + (G.mood / 100) * 0.25;
+  if (s >= 0.9) return 'S级 · 卷王之王';
+  if (s >= 0.7) return 'A级 · 打工达人';
+  if (s >= 0.5) return 'B级 · 勉强混过';
+  if (s >= 0.3) return 'C级 · 摸鱼被抓';
+  return 'D级 · 差点寄了';
+}
+function playTime() { return Math.round((Date.now() - G.startTime) / 1000); }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// Apply status modifiers to a delta value
+function modifyDelta(target, baseValue) {
+  var mul = 1.0;
+  for (var i = 0; i < G.statuses.length; i++) {
+    var s = G.statuses[i];
+    var key = target + 'Mul';
+    if (s[key] != null) {
+      // For negative deltas: buff reduces magnitude (mul<1), debuff increases (mul>1)
+      // For positive deltas: buff increases (mul>1)?  → keep simple: status mul applies to magnitude
+      if (s.type === 'buff' && baseValue < 0) {
+        mul *= s[key];  // reduce damage
+      } else if (s.type === 'debuff' && baseValue < 0) {
+        mul *= s[key];  // amplify damage
+      } else if (s.type === 'buff' && baseValue > 0 && s[key] < 1) {
+        // For "回血" type buff that boosts recovery, invert
+        mul *= (2 - s[key]);  // 0.7 → 1.3 boost
+      }
+    }
+  }
+  return Math.round(baseValue * mul);
+}
+
+function tickStatuses() {
+  var next = [];
+  for (var i = 0; i < G.statuses.length; i++) {
+    var s = G.statuses[i];
+    s.days--;
+    if (s.days > 0) next.push(s);
+  }
+  G.statuses = next;
+}
+
+function addStatus(buff) {
+  // Replace existing same-name status, or add new
+  for (var i = 0; i < G.statuses.length; i++) {
+    if (G.statuses[i].name === buff.name) {
+      G.statuses[i] = Object.assign({}, buff);
+      return;
+    }
+  }
+  G.statuses.push(Object.assign({}, buff));
+}
+
+function drawEvent() {
+  if (G.queuedCard) {
+    var c = G.queuedCard;
+    G.queuedCard = null;
+    return c;
+  }
+  var avail = [];
+  for (var i = 0; i < EVENTS.length; i++) if (!G.used[i]) avail.push(i);
+  if (avail.length === 0) { G.used = {}; return drawEvent(); }
+  var pick = avail[Math.floor(Math.random() * avail.length)];
+  G.used[pick] = true;
+  return EVENTS[pick];
+}
+
+// ========== RENDER ==========
+function renderTitle() {
+  document.getElementById('app').innerHTML =
+    '<div class="title-screen">' +
+      '<div class="title-character">💼</div>' +
+      '<div class="title-logo">打工轮回</div>' +
+      '<div class="title-sub">WORK LIFE</div>' +
+      '<div class="title-tag">— 一周即一生 —</div>' +
+      '<button class="title-start" onclick="doStart()">开 工</button>' +
+      '<div class="title-features">' +
+        '<span>🔗 后果链</span>' +
+        '<span>⚡ 状态系统</span>' +
+        '<span>🎲 风险博弈</span>' +
+        '<span>🛒 小卖部</span>' +
+      '</div>' +
+      '<div class="title-hint">五天工作日 · 选择决定一切<br/>撑过去就能活着发工资</div>' +
+    '</div>';
+}
+
+function render() {
+  var app = document.getElementById('app');
+  var crisisClass = (!G.dead && !G.win && G.mood <= 20 && G.mood > 0) ? ' crisis-mode' : '';
+
+  // Day dots
+  var dotsHtml = '';
+  for (var d = 1; d <= 5; d++) {
+    var dc = 'dot';
+    if (d < G.day) dc += ' dot-done';
+    if (d === G.day) dc += ' dot-current';
+    dotsHtml += '<span class="' + dc + '"></span>';
+  }
+
+  // Status chips
+  var statusHtml = '';
+  for (var si = 0; si < G.statuses.length; si++) {
+    var st = G.statuses[si];
+    statusHtml += '<span class="status-chip chip-' + st.type + '">' +
+      st.icon + ' ' + st.name +
+      ' <span class="chip-days">' + st.days + 'D</span></span>';
+  }
+
+  var topHtml =
+    '<div class="top-bar">' +
+      '<div class="top-bar-row">' +
+        '<div class="day-badge">' +
+          '<div class="day-icon">' + G.day + '</div>' +
+          '<div class="day-text">' + DAY_NAMES[G.day - 1] + ' · ' + DAY_SUBS[G.day - 1] + '</div>' +
+        '</div>' +
+        '<div class="progress-dots">' + dotsHtml + '</div>' +
+      '</div>' +
+      '<div class="char-section">' +
+        '<div class="char-avatar ' + charClass() + '">' +
+          charFace() +
+          '<div class="char-status-tag">' + statusTag() + '</div>' +
+        '</div>' +
+        '<div class="resource-stack">' +
+          '<div class="resource-row">' +
+            '<div class="resource-icon-box icon-energy">⚡</div>' +
+            '<div class="resource-bar-wrap"><div class="resource-fill" style="width:' + G.energy + '%;background:' + energyColor(G.energy) + ';color:' + energyColor(G.energy) + '"></div></div>' +
+            '<div class="resource-num">' + G.energy + '</div>' +
+          '</div>' +
+          '<div class="resource-row">' +
+            '<div class="resource-icon-box icon-mood">😊</div>' +
+            '<div class="resource-bar-wrap"><div class="resource-fill" style="width:' + G.mood + '%;background:' + moodColor(G.mood) + ';color:' + moodColor(G.mood) + '"></div></div>' +
+            '<div class="resource-num">' + G.mood + '</div>' +
+          '</div>' +
+          '<div class="resource-row">' +
+            '<div class="resource-icon-box icon-money">💰</div>' +
+            '<div class="money-display" style="color:' + (G.money < 0 ? '#FF6B6B' : '#FFCC00') + '">' + G.money + ' 元</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="status-bar">' + statusHtml + '</div>';
+
+  var resolveHtml = '<div class="resolve-display" id="resolve"></div>';
+
+  var cardHtml = '', counterHtml = '', shopHtml = '', choicesHtml = '';
+  if (G.card && !G.dead && !G.win) {
+    var followClass = G.card._isFollowUp ? ' followup-card' : '';
+    var cornerLabel = G.card._isFollowUp ? '后续' : 'EVENT';
+    var cornerEmoji = G.card._isFollowUp ? '🔗' : '📋';
+    cardHtml =
+      '<div class="card-area">' +
+        '<div class="event-card enter' + followClass + '">' +
+          '<div class="card-corner-top">' + cornerLabel + '</div>' +
+          '<div class="card-corner-tr">' + cornerEmoji + '</div>' +
+          '<div class="card-text">' + escHtml(G.card.text) + '</div>' +
+          '<div class="card-divider"></div>' +
+        '</div>' +
+      '</div>';
+    counterHtml = '<div class="card-counter">— ' + (G.done + 1) + ' / ' + G.total + ' —</div>';
+
+    // Shop
+    if (!G.resolving) {
+      shopHtml = '<div class="shop-strip">';
+      for (var i = 0; i < SHOP.length; i++) {
+        var item = SHOP[i];
+        var dis = G.money < item.cost ? 'disabled' : '';
+        shopHtml += '<button class="shop-item" ' + dis + ' onclick="doBuy(\'' + item.id + '\')">' +
+          '<div class="shop-icon">' + item.icon + '</div>' +
+          '<div class="shop-name">' + item.name + '</div>' +
+          '<div class="shop-cost">' + item.cost + '元</div>' +
+        '</button>';
+      }
+      shopHtml += '</div>';
+    }
+
+    // Choices
+    if (G.resolving) {
+      choicesHtml =
+        '<div class="choices">' +
+          '<button class="choice-btn btn-a" disabled><span class="btn-mark">A</span><span class="btn-text">...</span></button>' +
+          '<button class="choice-btn btn-b" disabled><span class="btn-mark">B</span><span class="btn-text">...</span></button>' +
+        '</div>';
+    } else {
+      var aRisk = G.card.a.risk ? '<span class="risk-tag">🎲 ' + Math.round(G.card.a.risk.chance * 100) + '%</span>' : '';
+      var bRisk = G.card.b.risk ? '<span class="risk-tag">🎲 ' + Math.round(G.card.b.risk.chance * 100) + '%</span>' : '';
+      choicesHtml =
+        '<div class="choices">' +
+          '<button class="choice-btn btn-a" onclick="doChoice(\'a\')">' + aRisk +
+            '<span class="btn-mark">' + (G.card.a.icon || 'A') + '</span>' +
+            '<span class="btn-text">' + escHtml(G.card.a.text) + '</span>' +
+          '</button>' +
+          '<button class="choice-btn btn-b" onclick="doChoice(\'b\')">' + bRisk +
+            '<span class="btn-mark">' + (G.card.b.icon || 'B') + '</span>' +
+            '<span class="btn-text">' + escHtml(G.card.b.text) + '</span>' +
+          '</button>' +
+        '</div>';
+    }
+  }
+
+  // Overlays
+  var overlayHtml = '';
+  if (G.dead) {
+    overlayHtml =
+      '<div class="overlay death-bg">' +
+        '<div class="overlay-emoji">' + (G.deathTitle.indexOf('燃尽') > -1 ? '🔥' : '💢') + '</div>' +
+        '<h2>' + G.deathTitle + '</h2>' +
+        '<p>' + escHtml(G.deathReason) + '</p>' +
+        '<div class="stats">' +
+          '<p>存活 ' + G.day + ' 天 · 赚了 ' + G.money + ' 元</p>' +
+          '<p>选择 ' + G.choices + ' 次 · 用时 ' + playTime() + ' 秒</p>' +
+        '</div>' +
+        '<button class="retry-btn retry-death" onclick="doRestart()">再 来 一 局</button>' +
+      '</div>';
+  }
+  if (G.win) {
+    overlayHtml =
+      '<div class="overlay win-bg">' +
+        '<div class="overlay-emoji">🎉</div>' +
+        '<h2>撑过了一周！</h2>' +
+        '<p>恭喜打工人 你活着发了工资</p>' +
+        '<div class="stats">' +
+          '<p>总收入 ' + G.money + ' 元 · 选择 ' + G.choices + ' 次</p>' +
+          '<p>用时 ' + playTime() + ' 秒</p>' +
+          '<p style="color:#ffd86f;font-weight:700;margin-top:6px">' + rating() + '</p>' +
+        '</div>' +
+        '<button class="retry-btn retry-win" onclick="doRestart()">换 份 工 再 来</button>' +
+      '</div>';
+  }
+
+  app.innerHTML =
+    '<div class="game-container' + crisisClass + '" style="display:flex;flex-direction:column;height:100%;">' +
+      topHtml + resolveHtml + cardHtml + counterHtml + shopHtml + choicesHtml +
+    '</div>' +
+    overlayHtml;
+}
+
+function showResolve(text, type) {
+  var el = document.getElementById('resolve');
+  if (el) el.innerHTML = '<span class="resolve-tag delta-' + type + '">' + text + '</span>';
+}
+
+function showTransition(cb) {
+  var div = document.createElement('div');
+  div.className = 'day-transition';
+  div.innerHTML =
+    '<div class="transition-day">' + DAY_NAMES[G.day - 1] + '</div>' +
+    '<div class="transition-sub">开 工</div>';
+  document.getElementById('app').appendChild(div);
+  setTimeout(function() {
+    if (div.parentNode) div.parentNode.removeChild(div);
+    cb();
+  }, 1100);
+}
+
+function showRiskRoll(success, resultText, cb) {
+  var div = document.createElement('div');
+  div.className = 'risk-overlay';
+  div.innerHTML =
+    '<div class="dice">🎲</div>' +
+    '<div class="risk-result-text ' + (success ? 'risk-success' : 'risk-fail') + '">' +
+      (success ? '✨ 成功' : '💀 翻车') + '</div>' +
+    '<div class="risk-detail">' + escHtml(resultText) + '</div>';
+  document.getElementById('app').appendChild(div);
+  setTimeout(function() {
+    if (div.parentNode) div.parentNode.removeChild(div);
+    cb();
+  }, 2000);
+}
+
+function startDay() {
+  G.total = EVENTS_PER_DAY[G.day - 1];
+  G.done = 0;
+  render();
+  showTransition(function() {
+    G.card = drawEvent();
+    render();
+  });
+}
+
+function applyEffects(fx, prefix) {
+  var deltas = [];
+  for (var i = 0; i < fx.length; i++) {
+    var f = fx[i];
+    var raw = f.v;
+    var modded = (f.t === 'energy' || f.t === 'mood') ? modifyDelta(f.t, raw) : raw;
+    var before, after;
+    if (f.t === 'energy') { before = G.energy; G.energy = clamp(G.energy + modded, 0, 100); after = G.energy; }
+    else if (f.t === 'mood') { before = G.mood; G.mood = clamp(G.mood + modded, 0, 100); after = G.mood; }
+    else { before = G.money; G.money += modded; after = G.money; }
+    var d = after - before;
+    if (d !== 0) {
+      var icon = f.t === 'energy' ? '⚡' : f.t === 'mood' ? '😊' : '💰';
+      var marker = (modded !== raw) ? '*' : '';
+      deltas.push(icon + ' ' + (d > 0 ? '+' : '') + d + marker);
+    }
+  }
+  return deltas;
+}
+
+window.doStart = function() {
+  G.started = true;
+  G.startTime = Date.now();
+  startDay();
+};
+
+window.doBuy = function(itemId) {
+  if (G.resolving) return;
+  var item = null;
+  for (var i = 0; i < SHOP.length; i++) if (SHOP[i].id === itemId) { item = SHOP[i]; break; }
+  if (!item || G.money < item.cost) return;
+  G.money -= item.cost;
+  var deltas = applyEffects(item.fx);
+  deltas.unshift('💰 -' + item.cost);
+  showResolve(item.icon + ' ' + item.name + '   ' + deltas.join('  '), 'positive');
+  render();
+  setTimeout(function() {
+    var el = document.getElementById('resolve');
+    if (el) el.innerHTML = '';
+  }, 1200);
+};
+
+function processChoiceOutcome(choiceObj, cb) {
+  // Apply fx
+  var deltas = applyEffects(choiceObj.fx || []);
+  var resolveType = 'neutral';
+  for (var j = 0; j < deltas.length; j++) {
+    if (deltas[j].indexOf('-') > -1) { resolveType = 'negative'; break; }
+    if (deltas[j].indexOf('+') > -1) resolveType = 'positive';
+  }
+
+  // Apply buff
+  if (choiceObj.buff) {
+    addStatus(choiceObj.buff);
+  }
+
+  render();
+  if (deltas.length) showResolve(deltas.join('   '), resolveType);
+
+  // Queue followUp
+  if (choiceObj.followUp) {
+    G.queuedCard = Object.assign({}, choiceObj.followUp, { _isFollowUp: true });
+  }
+
+  setTimeout(cb, 1100);
+}
+
+window.doChoice = function(which) {
+  if (G.resolving || G.dead || G.win || !G.card) return;
+  G.resolving = true;
+  G.choices++;
+
+  var sel = which === 'a' ? G.card.a : G.card.b;
+
+  // Risk path
+  if (sel.risk) {
+    render();
+    var roll = Math.random();
+    var success = roll < sel.risk.chance;
+    var outcome = success ? sel.risk.success : sel.risk.fail;
+
+    showRiskRoll(success, outcome.text, function() {
+      processChoiceOutcome(outcome, finishCard);
+    });
+    return;
+  }
+
+  render();
+  processChoiceOutcome(sel, finishCard);
+};
+
+function finishCard() {
+  if (G.energy <= 0) {
+    G.dead = true;
+    G.deathTitle = '燃尽了';
+    G.deathReason = '你的身体终于扛不住了…老板说会在群里默哀三秒';
+    render(); return;
+  }
+  if (G.mood <= 0) {
+    G.dead = true;
+    G.deathTitle = '暴走离职';
+    G.deathReason = '你把辞职信摔在桌上 头也不回地走了 解放了';
+    render(); return;
+  }
+
+  G.resolving = false;
+  G.done++;
+
+  if (G.done >= G.total) {
+    var salary = DAY_SALARY[G.day - 1];
+    G.money += salary;
+    tickStatuses();
+    render();
+    showResolve('💰 +' + salary + ' 日薪到账', 'positive');
+
+    setTimeout(function() {
+      if (G.day >= 5) { G.win = true; render(); }
+      else { G.day++; startDay(); }
+    }, 1200);
+  } else {
+    G.card = drawEvent();
+    render();
+  }
+}
+
+window.doRestart = function() {
+  G.energy = 80; G.mood = 60; G.money = 0;
+  G.day = 1; G.done = 0; G.dead = false; G.win = false;
+  G.resolving = false; G.choices = 0; G.used = {};
+  G.statuses = []; G.queuedCard = null;
+  G.startTime = Date.now();
+  startDay();
+};
+
+renderTitle();
+
+})();
+</script>
+</body>
+</html>

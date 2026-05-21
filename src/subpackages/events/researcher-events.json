@@ -1,0 +1,411 @@
+[
+  {
+    "id": "researcher-001-paper-reject",
+    "text": "投了 8 个月的论文，reviewer 给了 6 页意见。第一句：『建议重做实验。』",
+    "tags": ["paper", "academic"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "通宵改论文 + 喝咖啡",
+      "icon": "📝",
+      "effects": [{ "target": "energy", "value": -35 }, { "target": "mood", "value": -15 }, { "target": "money", "value": 10 }],
+      "buff": {
+        "id": "paper-grind",
+        "name": "论文 grind",
+        "icon": "📄",
+        "type": "debuff",
+        "days": 2,
+        "moodMul": 1.15
+      }
+    },
+    "choiceB": {
+      "text": "转投影响因子更低的期刊",
+      "icon": "📉",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": 5 }]
+    }
+  },
+  {
+    "id": "researcher-002-experiment-fail",
+    "text": "做了 3 个月的实验，发现温度参数搞错了。所有数据作废。",
+    "tags": ["lab", "fail"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "重做一遍打死不告诉导师",
+      "icon": "🔬",
+      "effects": [{ "target": "energy", "value": -40 }, { "target": "mood", "value": -20 }, { "target": "money", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "硬着头皮汇报",
+      "icon": "😰",
+      "effects": [{ "target": "mood", "value": -25 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "mood", "value": 15 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": -10 }] }
+      }
+    }
+  },
+  {
+    "id": "researcher-003-mentor-push",
+    "text": "晚上 11 点，导师微信：『今晚把那个章节写完，明早开会用。』",
+    "tags": ["mentor", "overtime"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "立刻打开电脑",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -35 }, { "target": "money", "value": 5 }, { "target": "mood", "value": -20 }]
+    },
+    "choiceB": {
+      "text": "回『好的』然后睡了",
+      "icon": "😴",
+      "effects": [{ "target": "energy", "value": 18 }, { "target": "mood", "value": 10 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "mood", "value": -30 }, { "target": "money", "value": -20 }] }
+      }
+    }
+  },
+  {
+    "id": "researcher-004-lab-stipend",
+    "text": "导师宣布：『下个月发课题奖金，每人 500。但要先做一个 demo。』",
+    "tags": ["money", "lab"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "卷起来做最佳 demo",
+      "icon": "🏆",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 40 }]
+    },
+    "choiceB": {
+      "text": "做个 60 分的应付",
+      "icon": "🤷",
+      "effects": [{ "target": "money", "value": 15 }, { "target": "energy", "value": -8 }]
+    }
+  },
+  {
+    "id": "researcher-005-conference-cfp",
+    "text": "顶会 CFP 截止 deadline 还有 3 天。手头数据还差 30%。",
+    "tags": ["paper", "deadline"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "硬数据 + 通宵冲",
+      "icon": "🌙",
+      "effects": [{ "target": "energy", "value": -40 }, { "target": "mood", "value": -15 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 35 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "等下一年的 deadline",
+      "icon": "📅",
+      "effects": [{ "target": "energy", "value": 12 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "researcher-006-lab-machine-broken",
+    "text": "唯一一台能跑实验的机器宕了。维修要排 2 周。",
+    "tags": ["lab", "crisis"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "去隔壁实验室借",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "趁机休息读读论文",
+      "icon": "📖",
+      "effects": [{ "target": "energy", "value": 15 }, { "target": "mood", "value": 12 }, { "target": "money", "value": -10 }]
+    }
+  },
+  {
+    "id": "researcher-007-instant-noodles",
+    "text": "凌晨 1 点，食堂关了，实验室只剩泡面。",
+    "tags": ["daily", "lab"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "煮一桶含全套调料的红烧牛肉",
+      "icon": "🍜",
+      "effects": [{ "target": "energy", "value": 18 }, { "target": "mood", "value": 12 }, { "target": "money", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "省钱不吃硬挺",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "researcher-008-friend-quit",
+    "text": "好朋友硕士毕业去大厂年薪 60 万。你看了眼自己的奖学金通知：每月 2000。",
+    "tags": ["mood", "social"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "默默关掉朋友圈",
+      "icon": "🚫",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "energy", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "约他出来聊聊（顺便蹭饭）",
+      "icon": "🍽️",
+      "effects": [{ "target": "mood", "value": 18 }, { "target": "energy", "value": -5 }, { "target": "money", "value": -10 }]
+    }
+  },
+  {
+    "id": "researcher-009-conference-trip",
+    "text": "导师让你陪他去开会做汇报。机票自费报销周期 3 个月。",
+    "tags": ["mentor", "travel"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "去！见见大佬",
+      "icon": "✈️",
+      "effects": [{ "target": "money", "value": -150 }, { "target": "energy", "value": -20 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "找借口推掉",
+      "icon": "🙅",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "researcher-010-paper-accepted",
+    "text": "邮件：『Your paper has been ACCEPTED.』你看了 3 遍确认不是钓鱼邮件。",
+    "tags": ["paper", "win"],
+    "weight": 0.5,
+    "choiceA": {
+      "text": "实验室开香槟（自掏）",
+      "icon": "🍾",
+      "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": 50 }, { "target": "energy", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "默默截图发朋友圈",
+      "icon": "📱",
+      "effects": [{ "target": "mood", "value": 30 }, { "target": "energy", "value": 10 }]
+    }
+  },
+  {
+    "id": "researcher-011-prelim-exam",
+    "text": "博士资格考试在下周。教材厚得像砖头。",
+    "tags": ["exam", "stress"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "通宵刷题",
+      "icon": "📚",
+      "effects": [{ "target": "energy", "value": -40 }, { "target": "mood", "value": -20 }],
+      "risk": {
+        "chance": 0.6,
+        "success": { "effects": [{ "target": "mood", "value": 35 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -30 }] }
+      }
+    },
+    "choiceB": {
+      "text": "佛系裸考",
+      "icon": "🧘",
+      "effects": [{ "target": "energy", "value": 10 }],
+      "risk": {
+        "chance": 0.3,
+        "success": { "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "researcher-012-thesis-defense",
+    "text": "学姐毕业答辩。你听了她描述被压了 2 年的事，腿在抖。",
+    "tags": ["academic", "mood"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "去现场加油 + 学经验",
+      "icon": "👀",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "不去，恐惧蔓延",
+      "icon": "😰",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "researcher-013-funding-cut",
+    "text": "学院通知：今年课题经费砍 30%。试剂能省则省。",
+    "tags": ["funding", "lab"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "自掏腰包买关键试剂",
+      "icon": "💵",
+      "effects": [{ "target": "money", "value": -80 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "用劣质代替先凑活",
+      "icon": "🧪",
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 15 }] },
+        "fail": { "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -20 }] }
+      },
+      "effects": []
+    }
+  },
+  {
+    "id": "researcher-014-mentor-quote",
+    "text": "导师在会上说：『搞科研要耐得住寂寞。』然后给了你一个新的小目标。",
+    "tags": ["mentor", "kpi"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "做笔记 + 点头如捣蒜",
+      "icon": "📝",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "心里翻白眼",
+      "icon": "🙄",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "researcher-015-thesis-finally",
+    "text": "毕业论文初稿写了 5 万字。今晚要给导师过目。",
+    "tags": ["paper", "milestone"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "发过去 + 等待裁决",
+      "icon": "📨",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 20 }],
+      "risk": {
+        "chance": 0.5,
+        "success": { "effects": [{ "target": "money", "value": 40 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -35 }] }
+      }
+    },
+    "choiceB": {
+      "text": "再改 3 遍才敢发",
+      "icon": "🔄",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }, { "target": "money", "value": 20 }]
+    }
+  },
+  {
+    "id": "researcher-016-undergraduate-help",
+    "text": "本科生跑来求救：『师兄帮我看下代码，跑不通。』他眼里有泪。",
+    "tags": ["social", "mentor"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "认真帮他 debug 1 小时",
+      "icon": "🐛",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "mood", "value": 18 }]
+    },
+    "choiceB": {
+      "text": "发个 ChatGPT 链接给他",
+      "icon": "🤖",
+      "effects": [{ "target": "energy", "value": -3 }, { "target": "mood", "value": -5 }]
+    }
+  },
+  {
+    "id": "researcher-017-girl-friend-leave",
+    "text": "对象提出分手，理由：『你比我的论文还忙。』",
+    "tags": ["personal", "crisis"],
+    "weight": 0.6,
+    "choiceA": {
+      "text": "放下论文挽回",
+      "icon": "💔",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -50 }, { "target": "energy", "value": -15 }]
+    },
+    "choiceB": {
+      "text": "把伤感转化为科研动力",
+      "icon": "🔬",
+      "effects": [{ "target": "mood", "value": -15 }, { "target": "money", "value": 30 }, { "target": "energy", "value": -20 }]
+    }
+  },
+  {
+    "id": "researcher-018-citation-self",
+    "text": "审稿人指出：『你这篇引用了自己 7 篇文章。』",
+    "tags": ["academic", "ethics"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "认错删 5 个",
+      "icon": "✂️",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "辩驳『都是必要引用』",
+      "icon": "📢",
+      "effects": [{ "target": "energy", "value": -5 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }, { "target": "money", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "researcher-019-poster-print",
+    "text": "明天 poster session，今晚才发现打印的版本字小到看不清。",
+    "tags": ["conference", "crisis"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "通宵重打 + 蹲打印店",
+      "icon": "🖨️",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "money", "value": -60 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "现场口头补充",
+      "icon": "🗣️",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": -15 }],
+      "risk": {
+        "chance": 0.45,
+        "success": { "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "researcher-020-old-friend-married",
+    "text": "本科同学群里发婚礼请帖。他在体制内月入 3 万。你还在读博。",
+    "tags": ["social", "mood"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "随礼 600 表心意",
+      "icon": "🧧",
+      "effects": [{ "target": "money", "value": -60 }, { "target": "mood", "value": 12 }]
+    },
+    "choiceB": {
+      "text": "假装手机坏了没看见",
+      "icon": "🤐",
+      "effects": [{ "target": "mood", "value": -15 }]
+    }
+  },
+  {
+    "id": "researcher-cond-001-conference-invite",
+    "text": "顶会发邮件：录用通知！要去现场报告。机票自费，组里说『跟导师商量』。",
+    "tags": ["milestone", "conference"],
+    "weight": 2.0,
+    "conditions": [{ "type": "minWeek", "value": 3 }],
+    "choiceA": {
+      "text": "自费 + 借钱也要去 (履历刚需)",
+      "icon": "✈️",
+      "effects": [{ "target": "money", "value": -200 }, { "target": "mood", "value": 30 }, { "target": "energy", "value": -10 }],
+      "careerScoreDelta": 30
+    },
+    "choiceB": {
+      "text": "改成在线参会 + 视频报告",
+      "icon": "💻",
+      "effects": [{ "target": "mood", "value": -5 }, { "target": "money", "value": -20 }],
+      "careerScoreDelta": 10
+    }
+  },
+  {
+    "id": "researcher-cond-002-stipend-cut",
+    "text": "学校今年补贴砍 30%。导师说『你们组省点过吧』。这个月饭都吃不起了。",
+    "tags": ["crisis", "money"],
+    "weight": 2.5,
+    "conditions": [{ "type": "maxMoney", "value": 30 }],
+    "choiceA": {
+      "text": "兼职改代码挣外快",
+      "icon": "💻",
+      "effects": [{ "target": "money", "value": 150 }, { "target": "energy", "value": -25 }, { "target": "mood", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "啃馒头 + 集中精力发论文",
+      "icon": "🥖",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "health", "value": -10 }, { "target": "mood", "value": 5 }]
+    }
+  }
+]

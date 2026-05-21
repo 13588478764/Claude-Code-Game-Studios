@@ -13,6 +13,7 @@ Desktop.ini
 .claude/settings.local.json
 CLAUDE.local.md
 production/session-logs/
+production/session-state/active.md
 
 # === Internal Planning (not for public) ===
 
@@ -29,6 +30,14 @@ bin/
 obj/
 out/
 dist/
+unpackage/
+
+# === uni-app / Vue ===
+*.local
+.vite/
+coverage/
+
+# === Build Output (continued) ===
 *.exe
 *.dll
 *.so

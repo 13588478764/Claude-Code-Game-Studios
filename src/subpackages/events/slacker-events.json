@@ -1,0 +1,424 @@
+[
+  {
+    "id": "slacker-001-toilet-throne",
+    "text": "厕所大坑空着。手机电量 95%。今天的小说更新了 3 章。",
+    "tags": ["toilet", "fish"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "坐稳了，今天就在这了",
+      "icon": "🚽",
+      "effects": [{ "target": "mood", "value": 22 }, { "target": "money", "value": 10 }],
+      "buff": {
+        "id": "toilet-zen",
+        "name": "厕所禅意",
+        "icon": "🧘",
+        "type": "buff",
+        "days": 1,
+        "moodMul": 0.8
+      }
+    },
+    "choiceB": {
+      "text": "正常拉完赶紧回工位",
+      "icon": "🚶",
+      "effects": [{ "target": "mood", "value": 5 }, { "target": "money", "value": 5 }]
+    }
+  },
+  {
+    "id": "slacker-002-leader-walks-by",
+    "text": "领导突然走进来。你的屏幕开着抖音。",
+    "tags": ["leader", "crisis"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "Alt+Tab 秒切 Word",
+      "icon": "⌨️",
+      "effects": [{ "target": "energy", "value": -8 }, { "target": "mood", "value": -5 }],
+      "risk": {
+        "chance": 0.75,
+        "success": { "effects": [{ "target": "mood", "value": 15 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -20 }] }
+      }
+    },
+    "choiceB": {
+      "text": "假装在『研究用户行为』",
+      "icon": "🎭",
+      "effects": [{ "target": "mood", "value": 12 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "mood", "value": 18 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }] }
+      }
+    }
+  },
+  {
+    "id": "slacker-003-meeting-doze",
+    "text": "周三下午的部门务虚会，第 87 分钟。台上还在讲『要拥抱变化』。",
+    "tags": ["meeting", "fish"],
+    "weight": 1.3,
+    "choiceA": {
+      "text": "用键帽撑下巴假装专注",
+      "icon": "👁️",
+      "effects": [{ "target": "energy", "value": 10 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "下载小说塞耳机听",
+      "icon": "🎧",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": 18 }],
+      "risk": {
+        "chance": 0.85,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    }
+  },
+  {
+    "id": "slacker-004-rush-fake-busy",
+    "text": "领导半小时后要查进度。你这周一笔活儿没干。",
+    "tags": ["fake-busy", "deadline"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "复制粘贴上周报告改日期",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "money", "value": 15 }],
+      "risk": {
+        "chance": 0.65,
+        "success": { "effects": [{ "target": "mood", "value": 25 }] },
+        "fail": { "effects": [{ "target": "money", "value": -30 }, { "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "硬着头皮说『下午就交』",
+      "icon": "💪",
+      "effects": [{ "target": "energy", "value": -25 }, { "target": "money", "value": 18 }]
+    }
+  },
+  {
+    "id": "slacker-005-coffee-run",
+    "text": "同事约你出去『讨论方案』。她要的其实是星巴克。",
+    "tags": ["social", "coffee"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "去！外面比工位舒服",
+      "icon": "☕",
+      "effects": [{ "target": "money", "value": -25 }, { "target": "energy", "value": 12 }, { "target": "mood", "value": 22 }]
+    },
+    "choiceB": {
+      "text": "推说『有 deadline』",
+      "icon": "🙅",
+      "effects": [{ "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "slacker-006-expense-creative",
+    "text": "月底报销。同事打印了 50 张『打车票』。",
+    "tags": ["expense", "ethics"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "学一手 + 自己也整",
+      "icon": "🧾",
+      "risk": {
+        "chance": 0.7,
+        "success": { "effects": [{ "target": "money", "value": 80 }, { "target": "mood", "value": 20 }] },
+        "fail": { "effects": [{ "target": "money", "value": -150 }, { "target": "mood", "value": -30 }] }
+      },
+      "effects": []
+    },
+    "choiceB": {
+      "text": "诚实报销 100 元",
+      "icon": "✅",
+      "effects": [{ "target": "money", "value": 18 }, { "target": "mood", "value": 8 }]
+    }
+  },
+  {
+    "id": "slacker-007-old-employee-wisdom",
+    "text": "老张在饮水机旁分享：『当年我躲了 3 个项目，年底还评了先进。』",
+    "tags": ["social", "wisdom"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "虚心请教躲项目技巧",
+      "icon": "🙏",
+      "effects": [{ "target": "energy", "value": 8 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "敷衍两句回工位",
+      "icon": "🚶",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": -3 }]
+    }
+  },
+  {
+    "id": "slacker-008-promotion-trap",
+    "text": "领导单独叫你去办公室：『下周开始你来牵头那个新项目。』",
+    "tags": ["leader", "trap"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "热泪盈眶答应",
+      "icon": "😭",
+      "effects": [{ "target": "energy", "value": -30 }, { "target": "mood", "value": -25 }, { "target": "money", "value": 30 }]
+    },
+    "choiceB": {
+      "text": "找借口推（说想多学习）",
+      "icon": "🎓",
+      "effects": [{ "target": "mood", "value": 25 }],
+      "risk": {
+        "chance": 0.6,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "money", "value": -20 }, { "target": "mood", "value": -15 }] }
+      }
+    }
+  },
+  {
+    "id": "slacker-009-stack-emails",
+    "text": "邮箱 87 封未读，其中 80 封带 @你。",
+    "tags": ["email", "daily"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "全选已读不回",
+      "icon": "📭",
+      "effects": [{ "target": "energy", "value": 5 }, { "target": "mood", "value": 18 }],
+      "risk": {
+        "chance": 0.7,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "mood", "value": -20 }, { "target": "money", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "认真回 + 占工位一下午",
+      "icon": "✉️",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "money", "value": 15 }]
+    }
+  },
+  {
+    "id": "slacker-010-canteen-deal",
+    "text": "食堂今天 8 块钱套餐。但你已经点了外卖。",
+    "tags": ["food", "daily"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "两顿都吃了",
+      "icon": "🍱",
+      "effects": [{ "target": "energy", "value": 22 }, { "target": "money", "value": -30 }, { "target": "mood", "value": 15 }]
+    },
+    "choiceB": {
+      "text": "退外卖（扣 50%）",
+      "icon": "↩️",
+      "effects": [{ "target": "money", "value": -8 }, { "target": "mood", "value": -8 }]
+    }
+  },
+  {
+    "id": "slacker-011-team-building",
+    "text": "周末团建通知。地点：50 公里外的农家乐。",
+    "tags": ["team", "weekend"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "去 + 闷头吃饭不发言",
+      "icon": "🍻",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 10 }, { "target": "mood", "value": -5 }]
+    },
+    "choiceB": {
+      "text": "请病假",
+      "icon": "🤒",
+      "effects": [{ "target": "energy", "value": 25 }, { "target": "mood", "value": 30 }],
+      "risk": {
+        "chance": 0.7,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "money", "value": -50 }, { "target": "mood", "value": -10 }] }
+      }
+    }
+  },
+  {
+    "id": "slacker-012-second-screen",
+    "text": "你的工位有两台显示器。一台亮着 Word，另一台亮着 B 站。",
+    "tags": ["fish", "daily"],
+    "weight": 1.2,
+    "choiceA": {
+      "text": "继续看 + Word 时不时滚一下",
+      "icon": "👀",
+      "effects": [{ "target": "mood", "value": 20 }, { "target": "money", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "关 B 站认真干活",
+      "icon": "💼",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 25 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "slacker-013-vacation-stack",
+    "text": "HR 提醒：你今年还有 12 天年假没休，到期作废。",
+    "tags": ["vacation", "system"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "立刻请连休 5 天",
+      "icon": "🏝️",
+      "effects": [{ "target": "energy", "value": 35 }, { "target": "mood", "value": 40 }, { "target": "money", "value": -100 }]
+    },
+    "choiceB": {
+      "text": "继续摸鱼比休假爽",
+      "icon": "🐟",
+      "effects": [{ "target": "mood", "value": 12 }, { "target": "money", "value": 25 }]
+    }
+  },
+  {
+    "id": "slacker-014-new-intern",
+    "text": "新来的实习生问：『前辈，你们平时是怎么工作的？』",
+    "tags": ["social", "mentor"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "传授摸鱼心法",
+      "icon": "🎓",
+      "effects": [{ "target": "energy", "value": -5 }, { "target": "mood", "value": 25 }]
+    },
+    "choiceB": {
+      "text": "正经讲业务流程",
+      "icon": "📋",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 10 }]
+    }
+  },
+  {
+    "id": "slacker-015-elevator-ceo",
+    "text": "电梯里只有你和 CEO。8 楼到 27 楼。",
+    "tags": ["ceo", "social"],
+    "weight": 0.7,
+    "choiceA": {
+      "text": "主动汇报本周成果",
+      "icon": "🎤",
+      "effects": [{ "target": "energy", "value": -15 }],
+      "risk": {
+        "chance": 0.4,
+        "success": { "effects": [{ "target": "money", "value": 60 }, { "target": "mood", "value": 30 }] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }] }
+      }
+    },
+    "choiceB": {
+      "text": "盯着楼层数字假装看不见",
+      "icon": "🔢",
+      "effects": [{ "target": "mood", "value": 5 }]
+    }
+  },
+  {
+    "id": "slacker-016-vendor-gift",
+    "text": "供应商寄来一盒月饼，落款『感谢 X 经理对接』。X 是你的领导。",
+    "tags": ["gift", "ethics"],
+    "weight": 0.8,
+    "choiceA": {
+      "text": "转交领导",
+      "icon": "🤝",
+      "effects": [{ "target": "mood", "value": 15 }, { "target": "money", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "悄悄吃掉",
+      "icon": "🥮",
+      "effects": [{ "target": "energy", "value": 12 }, { "target": "mood", "value": 12 }],
+      "risk": {
+        "chance": 0.85,
+        "success": { "effects": [] },
+        "fail": { "effects": [{ "target": "mood", "value": -25 }, { "target": "money", "value": -30 }] }
+      }
+    }
+  },
+  {
+    "id": "slacker-017-self-improvement-class",
+    "text": "公司组织『下班后 Python 学习班』。强制不报名要写检讨。",
+    "tags": ["training", "trap"],
+    "weight": 1.0,
+    "choiceA": {
+      "text": "报名 + 上课摸鱼",
+      "icon": "💻",
+      "effects": [{ "target": "energy", "value": -10 }, { "target": "mood", "value": 5 }]
+    },
+    "choiceB": {
+      "text": "写检讨 + 装病躲过去",
+      "icon": "📝",
+      "effects": [{ "target": "energy", "value": 8 }, { "target": "mood", "value": 10 }, { "target": "money", "value": -10 }]
+    }
+  },
+  {
+    "id": "slacker-018-pension-talk",
+    "text": "老李算了下：『干完这辈子退休金一个月能拿 8000。』你才 28 岁。",
+    "tags": ["future", "mood"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "盘算还有 32 年要熬",
+      "icon": "📅",
+      "effects": [{ "target": "mood", "value": -25 }, { "target": "energy", "value": -10 }]
+    },
+    "choiceB": {
+      "text": "看开了，开始享受当下",
+      "icon": "🧘",
+      "effects": [{ "target": "mood", "value": 25 }, { "target": "energy", "value": 10 }]
+    }
+  },
+  {
+    "id": "slacker-019-overtime-pay-trick",
+    "text": "听说加班到 9 点能领 50 元餐补。今天 6 点活儿就干完了。",
+    "tags": ["overtime", "money"],
+    "weight": 1.1,
+    "choiceA": {
+      "text": "继续坐到 9 点拿补贴",
+      "icon": "🪑",
+      "effects": [{ "target": "energy", "value": -15 }, { "target": "money", "value": 50 }, { "target": "mood", "value": -8 }]
+    },
+    "choiceB": {
+      "text": "果断下班",
+      "icon": "🚪",
+      "effects": [{ "target": "energy", "value": 12 }, { "target": "mood", "value": 15 }, { "target": "money", "value": -50 }]
+    }
+  },
+  {
+    "id": "slacker-020-system-down",
+    "text": "公司 OA 系统宕机。今天彻底没法干活。",
+    "tags": ["system", "fish"],
+    "weight": 0.9,
+    "choiceA": {
+      "text": "组队同事去逛商场",
+      "icon": "🛍️",
+      "effects": [{ "target": "money", "value": -45 }, { "target": "mood", "value": 30 }, { "target": "energy", "value": 8 }]
+    },
+    "choiceB": {
+      "text": "在工位上睡一下午",
+      "icon": "😴",
+      "effects": [{ "target": "energy", "value": 30 }, { "target": "mood", "value": 18 }]
+    }
+  },
+  {
+    "id": "slacker-cond-001-caught-mid-career",
+    "text": "career 倒数最后一周。HR 突然抽查电脑：你最近上的网站 87% 是 B 站。",
+    "tags": ["crisis", "caught"],
+    "weight": 2.5,
+    "conditions": [{ "type": "minWeek", "value": 4 }],
+    "choiceA": {
+      "text": "辩解：『我在研究内容生态』",
+      "icon": "🎤",
+      "effects": [],
+      "risk": {
+        "chance": 0.3,
+        "success": { "text": "HR 居然信了 + 还推荐你转岗", "effects": [{ "target": "mood", "value": 40 }, { "target": "money", "value": 100 }] },
+        "fail": { "text": "全部门通报批评 + 扣末位 KPI", "effects": [{ "target": "mood", "value": -30 }, { "target": "money", "value": -200 }] }
+      }
+    },
+    "choiceB": {
+      "text": "认怂 + 表态最后一周猛干",
+      "icon": "🙇",
+      "effects": [{ "target": "energy", "value": -20 }, { "target": "mood", "value": -10 }]
+    }
+  },
+  {
+    "id": "slacker-cond-002-zen-master",
+    "text": "career 末 + 摸鱼至高境界。你成了部门传说，新人偷偷拜你为师。",
+    "tags": ["milestone", "legend"],
+    "weight": 1.5,
+    "conditions": [
+      { "type": "minWeek", "value": 4 },
+      { "type": "minCareerLevel", "value": 2 }
+    ],
+    "choiceA": {
+      "text": "传授『不被发现』五字真经",
+      "icon": "📿",
+      "effects": [{ "target": "mood", "value": 30 }, { "target": "energy", "value": 5 }],
+      "careerScoreDelta": 15
+    },
+    "choiceB": {
+      "text": "保持神秘，不收徒",
+      "icon": "🥷",
+      "effects": [{ "target": "mood", "value": 15 }],
+      "careerScoreDelta": 5
+    }
+  }
+]

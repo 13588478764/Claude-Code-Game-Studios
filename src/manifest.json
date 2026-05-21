@@ -1,0 +1,38 @@
+{
+    "name": "打工轮回",
+    "appid": "__UNI__WLB001",
+    "description": "Roguelike 打工模拟器小程序",
+    "versionName": "0.1.0",
+    "versionCode": "1",
+    "transformPx": false,
+    "app-plus": {
+        "usingComponents": true,
+        "nvueStyleCompiler": "uni-app",
+        "compilerVersion": 3
+    },
+    "mp-weixin": {
+        "appid": "",
+        "setting": {
+            "urlCheck": false,
+            "es6": true,
+            "minified": true,
+            "postcss": true
+        },
+        "usingComponents": true
+    },
+    "mp-toutiao": {
+        "appid": "",
+        "setting": {
+            "urlCheck": false,
+            "es6": true,
+            "minified": true
+        },
+        "usingComponents": true
+    },
+    "mp-alipay": {
+        "appid": "",
+        "usingComponents": true,
+        "styleIsolation": "shared"
+    },
+    "vueVersion": "3"
+}
