@@ -1,0 +1,225 @@
+{
+  "last_node_id": 12,
+  "last_link_id": 15,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [50, 100],
+      "size": [320, 90],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "MODEL", "type": "MODEL", "links": [1], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "UNETLoader"},
+      "widgets_values": ["flux1-dev.safetensors", "default"]
+    },
+    {
+      "id": 2,
+      "type": "DualCLIPLoader",
+      "pos": [50, 230],
+      "size": [320, 130],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "CLIP", "type": "CLIP", "links": [2, 3], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "DualCLIPLoader"},
+      "widgets_values": [
+        "t5xxl_fp16.safetensors",
+        "clip_l.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [50, 400],
+      "size": [320, 60],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "VAE", "type": "VAE", "links": [4], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "VAELoader"},
+      "widgets_values": ["ae.safetensors"]
+    },
+    {
+      "id": 4,
+      "type": "CLIPTextEncode",
+      "pos": [420, 80],
+      "size": [600, 340],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {"name": "clip", "type": "CLIP", "link": 2}
+      ],
+      "outputs": [
+        {"name": "CONDITIONING", "type": "CONDITIONING", "links": [5], "slot_index": 0}
+      ],
+      "title": "正面提示词 (FLUX 自然语言)",
+      "properties": {"Node name for S&R": "CLIPTextEncode"},
+      "widgets_values": [
+        "A traditional Chinese Song dynasty landscape painting in ink wash style, fullscreen wide composition. Distant view: misty immortal mountain peaks emerging through clouds. Middle ground: an ancient wooden pavilion floating on clouds with curved roof eaves. Foreground: a twisted ancient pine tree extending its branches into the lower right empty space. Color palette: pale jade green, off-white rice paper, light ink. Atmosphere: ethereal, immortal qi flowing, misty. Large empty space on the left side reserved for logo and menu buttons. Painted in the style of Fan Kuan and Ma Yuan, with bold yet refined brushstrokes. Wuxia and xianxia aesthetic. Concept art for a cultivation RPG main menu background. Highly detailed, masterpiece, 4K, cinematic"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [420, 440],
+      "size": [600, 100],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {"name": "clip", "type": "CLIP", "link": 3}
+      ],
+      "outputs": [
+        {"name": "CONDITIONING", "type": "CONDITIONING", "links": [6], "slot_index": 0}
+      ],
+      "title": "负面提示词 (FLUX 较少使用)",
+      "properties": {"Node name for S&R": "CLIPTextEncode"},
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 6,
+      "type": "EmptyLatentImage",
+      "pos": [420, 580],
+      "size": [320, 110],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "LATENT", "type": "LATENT", "links": [7], "slot_index": 0}
+      ],
+      "title": "1920x1080 全屏背景",
+      "properties": {"Node name for S&R": "EmptyLatentImage"},
+      "widgets_values": [1920, 1088, 1]
+    },
+    {
+      "id": 7,
+      "type": "KSampler",
+      "pos": [1080, 200],
+      "size": [320, 480],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 1},
+        {"name": "positive", "type": "CONDITIONING", "link": 5},
+        {"name": "negative", "type": "CONDITIONING", "link": 6},
+        {"name": "latent_image", "type": "LATENT", "link": 7}
+      ],
+      "outputs": [
+        {"name": "LATENT", "type": "LATENT", "links": [8], "slot_index": 0}
+      ],
+      "title": "FLUX 采样 (20-25 步)",
+      "properties": {"Node name for S&R": "KSampler"},
+      "widgets_values": [
+        88888888, "randomize", 25, 1.0, "euler", "simple", 1.0
+      ]
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [1440, 200],
+      "size": [220, 60],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {"name": "samples", "type": "LATENT", "link": 8},
+        {"name": "vae", "type": "VAE", "link": 4}
+      ],
+      "outputs": [
+        {"name": "IMAGE", "type": "IMAGE", "links": [9], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "VAEDecode"}
+    },
+    {
+      "id": 9,
+      "type": "SaveImage",
+      "pos": [1700, 200],
+      "size": [400, 460],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 9}
+      ],
+      "outputs": [],
+      "title": "保存背景",
+      "properties": {},
+      "widgets_values": ["wuxia_bg/bg_main_menu"]
+    },
+    {
+      "id": 12,
+      "type": "Note",
+      "pos": [50, 500],
+      "size": [320, 420],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "title": "FLUX 背景工作流说明",
+      "properties": {},
+      "widgets_values": [
+        "■ 工作流: FLUX dev 全屏背景生成\n   用于 08-backgrounds.md 中的场景背景\n\n■ FLUX 优势:\n   - 提示词遵循度极高,支持长自然语言\n   - 中文理解优于 SDXL\n   - 出图质量更接近概念艺术\n\n■ Apple M4 Pro 单张预期:\n   1920x1088 / 25 步 -> 约 4-7 分钟\n   (FLUX 在 Apple Silicon 较慢但稳定)\n\n■ 提速选项:\n   - 改用 flux1-schnell.safetensors\n   - 步数降至 4\n   - 单张约 1 分钟\n   - 质量略降但适合批量\n\n■ 背景批次提示词模板替换:\n   bg_loading: misty mountains, small pavilion, falling bamboo leaves...\n   bg_sect_hall: grand cultivation sect main hall, eight trigrams floor pattern...\n   bg_battle_plains: open plains with distant mountains, scattered trees...\n   bg_boss_xuesha: blood-red demonic cavern, floating skeletons, magic circles...\n\n■ 配套清单: assets/specs/ui/08-backgrounds.md\n   每条提示词已写好,只需翻译关键部分"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 7, 0, "MODEL"],
+    [2, 2, 0, 4, 0, "CLIP"],
+    [3, 2, 0, 5, 0, "CLIP"],
+    [4, 3, 0, 8, 1, "VAE"],
+    [5, 4, 0, 7, 1, "CONDITIONING"],
+    [6, 5, 0, 7, 2, "CONDITIONING"],
+    [7, 6, 0, 7, 3, "LATENT"],
+    [8, 7, 0, 8, 0, "LATENT"],
+    [9, 8, 0, 9, 0, "IMAGE"]
+  ],
+  "groups": [
+    {
+      "title": "FLUX 模型三件套",
+      "bounding": [40, 50, 350, 430],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "提示词 + Latent",
+      "bounding": [410, 50, 620, 660],
+      "color": "#a1309b",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "采样 + 输出",
+      "bounding": [1070, 130, 1050, 600],
+      "color": "#88a040",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

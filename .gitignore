@@ -14,6 +14,9 @@ Desktop.ini
 CLAUDE.local.md
 production/session-logs/
 
+# === Development Artifacts (local-only) ===
+screenshot/
+
 # === Internal Planning (not for public) ===
 
 expansions/
