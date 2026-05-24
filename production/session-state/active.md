@@ -1,55 +1,54 @@
 # Session State - Active Story
 
-## Current Session — Sprint 6 全部完成
+## Current Session — Polish→Release 门检修复
 
-**Date**: 2026-05-14
-**Story**: Sprint 6 — 11/11 stories done
+**Date**: 2026-05-15
+**Story**: Gate Check 阻塞项修复
 **Status**: Complete
 **Mode**: 用户授权自主执行
 
 <!-- STATUS -->
-Epic: 端到端可玩体验
-Feature: Sprint 6 完成
+Epic: Polish阶段
+Feature: Release门检
 Task: 无
 <!-- /STATUS -->
 
-### 已完成 (11/11)
+### 已完成的门检修复
 
 | # | 任务 | 状态 | 说明 |
 |---|------|------|------|
-| s6-01 | 设置面板功能接通 | 已完成 | ConfigFile持久化 + 4总线音量控制 + 分辨率切换 |
-| s6-02 | 新游戏开场流程 | 已完成 | 系统重置 + intro_yunzhonghe对话 + 进入探索 |
-| s6-03 | 加载游戏流程 | 已完成 | SaveSystem.has_save() + load_from_slot + 错误处理 |
-| s6-04 | NPC对话触发接入 | 已完成 | 6个NPC按钮 + DialogueManager.start_dialogue_with_npc |
-| s6-05 | 音频总线控制 | 已完成 | AudioServer 5总线 + 静音/取消静音 + 实时生效 |
-| s6-06 | 支线任务触发验证 | 已完成 | register_all_npc_questlines() 自动调用 |
-| s6-07 | 暂停菜单功能完善 | 已完成 | _return_to_main_menu() + GameLoopManager.return_to_menu() |
-| s6-08 | 主菜单制作人员/帮助入口 | 已完成 | CreditsPanel滚动字幕 + 场景创建 |
-| s6-09 | 装备面板孔洞数据接通 | 已完成 | 从_equipped_items读取socket_count/sockets |
-| s6-10 | HotbarSlot tooltip | 已完成 | tooltip_text + _update_tooltip从物品系统获取 |
-| s6-11 | 集成测试补充 | 已完成 | 7个测试文件覆盖设置/游戏流程/对话/任务/音频/E2E |
+| 68 | 修复资源路径引用问题 | 已完成 | 3个脚本重复extends + 3个缺失场景 + 2个测试路径 |
+| 69 | 创建里程碑计划 | 已完成 | production/milestones/milestone-alpha.md |
+| 70 | 更新GDD修订状态 | 已完成 | 6个GDD: Needs Revision → Approved + systems-index同步 |
+| 71 | 创建发布清单 | 已完成 | production/release-checklist.md |
+| 72 | 生成Changelog | 已完成 | CHANGELOG.md (Alpha 0.1.0-0.6.0) |
+| 73 | 平衡数据审查 | 已完成 | production/qa/balance-check-2026-05-15.md |
+| 74 | 修正平衡审查报告 | 已完成 | items.json使用value_gold字段，64/69有价格 |
 
-### 关键文件变更
+### 重要发现
 
-- `src/default_bus_layout.tres` — 新建音频总线布局(5总线)
-- `src/scripts/ui/settings_panel.gd` — 重写：ConfigFile持久化 + 全总线控制
-- `src/scripts/audio/audio_system.gd` — 新增 apply_volume_settings / _apply_bus
-- `src/scripts/ui/main_menu.gd` — 重写：新游戏流程 + 加载流程 + 制作人员入口
-- `src/scripts/ui/exploration_panel.gd` — 新增NPC交谈按钮区域
-- `src/scripts/quest/quest_trigger_manager.gd` — _ready()自动注册支线
-- `src/scripts/ui/pause_menu.gd` — 新增_return_to_main_menu()
-- `src/scripts/ui/credits_panel.gd` — 新建制作人员面板
-- `src/scenes/ui/credits_panel.tscn` — 新建制作人员场景
-- `src/scripts/ui/equipment_panel.gd` — 孔洞数据接通
-- `src/scenes/ui/hud/HotbarSlot.gd` — tooltip功能
-- 7个新测试文件 in tests/
+- **平衡审查误判更正**: 原报告认为69个物品价格全为0(CRITICAL)，实际items.json使用`value_gold`字段，64/69个物品有合理价格
+- **GDD状态全部同步**: 6个"Needs Revision" + 5个关系系统"Designed" + 2个设置系统"In Design" → 全部更新为Approved
+- **代码修复**: 3个脚本的重复extends声明已清理，3个缺失tscn场景已创建
+
+### 门检剩余阻塞项
+
+1. 无性能分析数据（需运行perf-profile）
+2. 仅2次正式Playtest会话（门检建议≥3次）
+3. 本地化字符串未外部化（硬编码中文在src/中）
+4. print语句清理（调试输出）
+5. 导出模板/Steam SDK未集成
+
+### Commit
+
+`9f886c8` — chore: 补齐Polish→Release门检产出物 + 修复代码问题
 
 ---
 
-## Previous Session — Sprint 5 全部完成
+## Previous Session — Sprint 6 全部完成
 
 **Date**: 2026-05-14
 **Status**: Complete
-**Sprint 5**: 10/10 完成
+**Sprint 6**: 11/11 完成
 
 ---
