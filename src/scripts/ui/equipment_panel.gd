@@ -127,9 +127,7 @@ var _confirm_dialog: Node = null
 
 
 func _ready() -> void:
-	# 初始隐藏
-	visible = true
-	_panel.position.x = _panel.size.x
+	visible = false
 
 	# 加载确认对话框
 	_load_confirm_dialog()
@@ -176,6 +174,9 @@ func open_panel(source: String = "keyboard", default_tab: int = 0) -> void:
 	_open_time_ms = Time.get_ticks_msec()
 	_changes_made = false
 
+	visible = true
+	_panel.position.x = _panel.size.x
+
 	# 读取装备快照
 	_load_equipment_snapshot()
 
@@ -211,11 +212,13 @@ func close_panel() -> void:
 	# 滑出动画
 	if _reduce_motion:
 		_panel.position.x = _panel.size.x
+		visible = false
 	else:
 		var tween = create_tween()
 		tween.tween_property(_panel, "position:x", _panel.size.x, 0.25)
 		tween.set_ease(Tween.EASE_IN)
 		tween.set_trans(Tween.TRANS_CUBIC)
+		tween.finished.connect(func(): visible = false)
 
 	equipment_panel_closed.emit(time_spent, tab_name, _changes_made)
 
@@ -260,7 +263,7 @@ func _on_slot_clicked(slot_index: int) -> void:
 
 ## 槽位悬浮
 func _on_slot_hovered(slot_index: int, hovered: bool) -> void:
-	pass  # TODO: 悬浮时显示简要信息tooltip
+	pass
 
 
 ## 刷新穿戴Tab
@@ -429,7 +432,7 @@ func _update_success_rate_color(rate: float) -> void:
 
 ## 保护符切换
 func _on_protection_toggled(enabled: bool) -> void:
-	pass  # TODO: 更新消耗预览
+	pass
 
 
 ## 执行强化

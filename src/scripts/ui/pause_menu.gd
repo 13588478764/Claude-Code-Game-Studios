@@ -51,6 +51,8 @@ var _has_save: bool = false
 var _subpanel_open: bool = false
 ## 设置面板实例
 var _settings_panel: Node = null
+## 确认对话框实例
+var _confirm_dialog: Node = null
 ## 存档槽位面板实例
 var _save_slot_panel: Node = null
 
@@ -324,17 +326,29 @@ func _show_save_success_notification() -> void:
 func _show_confirm_dialog(
 	title: String,
 	description: String,
-	button_labels: PackedStringArray,
+	_button_labels: PackedStringArray,
 	callback: Callable
 ) -> void:
-	# TODO: 使用全局对话框系统显示确认对话框
-	# 遵循 interaction-patterns.md 确认对话框模式
-	# Z-index=400（奇遇内对话框）
-	# 默认焦点在第一个按钮（确认按钮）
-	print("[PauseMenu] Confirm dialog: %s" % title)
-	print("[PauseMenu] Buttons: %s" % button_labels)
-	# 模拟回调（默认选择第一个按钮，即确认）
-	callback.call(0)
+	if _confirm_dialog == null:
+		var scene: PackedScene = load("res://src/scenes/ui/confirm_dialog.tscn")
+		if scene != null:
+			_confirm_dialog = scene.instantiate()
+			add_child(_confirm_dialog)
+		else:
+			push_warning("[PauseMenu] 无法加载确认对话框场景")
+			callback.call(0)
+			return
+
+	_subpanel_open = true
+	_confirm_dialog.confirmed.connect(func() -> void:
+		_subpanel_open = false
+		callback.call(0)
+	, CONNECT_ONE_SHOT)
+	_confirm_dialog.cancelled.connect(func() -> void:
+		_subpanel_open = false
+		callback.call(1)
+	, CONNECT_ONE_SHOT)
+	_confirm_dialog.show_confirm(title, description)
 
 
 ## 加载设置面板实例

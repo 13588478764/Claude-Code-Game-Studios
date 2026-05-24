@@ -130,7 +130,6 @@ func _use_item_in_slot(slot_index: int) -> void:
 ## AC-8: 支持在快捷栏内拖拽物品交换位置
 func _on_slot_drag_started(slot_index: int) -> void:
 	_dragging_from_slot = slot_index
-	# TODO: 实现拖拽预览
 
 func _on_slot_pressed(slot_index: int) -> void:
 	# 如果正在拖拽，交换物品
@@ -214,11 +213,19 @@ func _on_item_used(item_id: String, quantity: int) -> void:
 			_update_slot_display(i)
 
 func _is_consumable_item(item_id: String) -> bool:
-	# TODO: 与物品系统集成，检查物品类型
+	var inv: Node = get_node_or_null("/root/InventorySystem")
+	if inv and inv.has_method("get_item_data"):
+		var data: Dictionary = inv.get_item_data(item_id)
+		if not data.is_empty():
+			return data.get("type", "") in ["consumable", "potion", "food"]
 	return true
 
 func _get_item_cooldown(item_id: String) -> float:
-	# TODO: 与物品系统集成，获取物品冷却时间
+	var inv: Node = get_node_or_null("/root/InventorySystem")
+	if inv and inv.has_method("get_item_data"):
+		var data: Dictionary = inv.get_item_data(item_id)
+		if not data.is_empty():
+			return data.get("cooldown", 5.0)
 	return 5.0
 
 ## AC-13: 数字键1-8在其他UI打开时不触发快捷栏

@@ -12,9 +12,8 @@ config_version=5
 
 config/name="武侠奇遇录"
 config/description="一款深度武侠RPG游戏"
-run/main_scene="uid://c51pplliwyjuc"
+run/main_scene="res://src/scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.6")
-config/main_scene="res://scenes/main_game_ui.tscn"
 
 [autoload]
 
@@ -43,6 +42,10 @@ InventorySystem="*res://src/scripts/item_system_bridge.gd"
 SaveSystem="*res://src/scripts/save/save_system.gd"
 MartialArtsSystem="*res://src/scripts/combat/martial_arts_system.gd"
 EncounterDataLoader="*res://src/scripts/encounter/encounter_data_loader.gd"
+
+[gui]
+
+theme/custom="res://assets/themes/main_theme.tres"
 
 [editor_plugins]
 

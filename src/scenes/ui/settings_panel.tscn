@@ -1,29 +1,28 @@
-[gd_scene load_steps=2 format=3 uid="uid://settings_panel_scene"]
+[gd_scene format=3 uid="uid://devm3xllq1u3l"]
 
-[ext_resource type="Script" path="res://src/scripts/ui/settings_panel.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cq70jilg86vov" path="res://src/scripts/ui/settings_panel.gd" id="1_script"]
 
-[node name="SettingsPanel" type="Control"]
-script = ExtResource("1_script")
+[node name="SettingsPanel" type="Control" unique_id=896790196]
+visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-visible = false
+script = ExtResource("1_script")
 
-
-[node name="Background" type="ColorRect" parent="."]
-
+[node name="Background" type="ColorRect" parent="." unique_id=1190959628]
 layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.7)
 mouse_filter = 2
+color = Color(0, 0, 0, 0.7)
 
-
-[node name="MainPanel" type="PanelContainer" parent="."]
-
+[node name="MainPanel" type="PanelContainer" parent="." unique_id=1617807780]
 layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -35,270 +34,180 @@ offset_bottom = 220.0
 grow_horizontal = 2
 grow_vertical = 2
 
-
-[node name="VBox" type="VBoxContainer" parent="MainPanel"]
-
+[node name="VBox" type="VBoxContainer" parent="MainPanel" unique_id=1621177276]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-
-[node name="HeaderHBox" type="HBoxContainer" parent="MainPanel/VBox"]
-
+[node name="HeaderHBox" type="HBoxContainer" parent="MainPanel/VBox" unique_id=2142353824]
 layout_mode = 2
 
-
-[node name="TitleLabel" type="Label" parent="MainPanel/VBox/HeaderHBox"]
-
+[node name="TitleLabel" type="Label" parent="MainPanel/VBox/HeaderHBox" unique_id=1292362862]
 layout_mode = 2
+theme_type_variation = &"HeaderLarge"
 text = "修炼设置"
-theme_type_variation = "HeaderLarge"
 
-
-[node name="CloseButton" type="Button" parent="MainPanel/VBox/HeaderHBox"]
-
+[node name="CloseButton" type="Button" parent="MainPanel/VBox/HeaderHBox" unique_id=1097131525]
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 text = "✕"
-custom_minimum_size = Vector2(40, 40)
 
-
-[node name="TabBar" type="TabBar" parent="MainPanel/VBox"]
-
+[node name="TabBar" type="TabBar" parent="MainPanel/VBox" unique_id=902779840]
 layout_mode = 2
-tabs = [
-	{"title": "画面"},
-	{"title": "音效"},
-	{"title": "控制"},
-	{"title": "无障碍"}
-]
 
-
-[node name="TabContent" type="Panel" parent="MainPanel/VBox"]
-
+[node name="TabContent" type="Panel" parent="MainPanel/VBox" unique_id=2056985261]
 layout_mode = 2
 size_flags_vertical = 3
 
-
-[node name="GraphicsTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent"]
-anchors_preset = 15
+[node name="GraphicsTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent" unique_id=813661543]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-
-[node name="GraphicsVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/GraphicsTab"]
-
+[node name="GraphicsVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/GraphicsTab" unique_id=1321639310]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-
-[node name="ResolutionLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
-
+[node name="ResolutionLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox" unique_id=1138723108]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "分辨率"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="ResolutionOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
-
+[node name="ResolutionOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox" unique_id=2091141015]
 layout_mode = 2
 
-
-[node name="QualityLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
-
+[node name="QualityLabel" type="Label" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox" unique_id=895111155]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "画质"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="QualityOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
-
+[node name="QualityOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox" unique_id=530907980]
 layout_mode = 2
 
-
-[node name="FullscreenCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
-
+[node name="FullscreenCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox" unique_id=314912185]
 layout_mode = 2
 text = "全屏模式"
 
-
-[node name="ReduceMotionCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
-
+[node name="ReduceMotionCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox" unique_id=832535355]
 layout_mode = 2
 text = "减少运动"
 
-
-[node name="PreviewButton" type="Button" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox"]
-
+[node name="PreviewButton" type="Button" parent="MainPanel/VBox/TabContent/GraphicsTab/GraphicsVBox" unique_id=1496775893]
 layout_mode = 2
 text = "预览更改"
 
-
-[node name="SoundTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent"]
-anchors_preset = 15
+[node name="SoundTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent" unique_id=1248343716]
+visible = false
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-visible = false
 
-
-[node name="SoundVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/SoundTab"]
-
+[node name="SoundVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/SoundTab" unique_id=476852968]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-
-[node name="MasterVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="MasterVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=1185787483]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "主音量"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="MasterVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="MasterVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=1657500057]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
 value = 80.0
 
-
-[node name="MusicVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="MusicVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=1509713028]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "音乐音量"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="MusicVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="MusicVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=1342987356]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
 value = 70.0
 
-
-[node name="SFXVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="SFXVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=532298444]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "音效音量"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="SFXVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="SFXVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=1852143651]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
 value = 80.0
 
-
-[node name="VoiceVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="VoiceVolumeLabel" type="Label" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=1568518022]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "语音音量"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="VoiceVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox"]
-
+[node name="VoiceVolumeSlider" type="HSlider" parent="MainPanel/VBox/TabContent/SoundTab/SoundVBox" unique_id=148685514]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
 value = 90.0
 
-
-[node name="ControlTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent"]
-anchors_preset = 15
+[node name="ControlTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent" unique_id=1112520296]
+visible = false
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-visible = false
 
-
-[node name="ControlVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/ControlTab"]
-
+[node name="ControlVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/ControlTab" unique_id=1771505030]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-
-[node name="KeyboardLabel" type="Label" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox"]
-
+[node name="KeyboardLabel" type="Label" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox" unique_id=590030539]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "键盘映射"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="KeyboardGrid" type="GridContainer" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox"]
-
+[node name="KeyboardGrid" type="GridContainer" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox" unique_id=184652748]
 layout_mode = 2
 columns = 2
 
-
-[node name="ResetDefaultsButton" type="Button" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox"]
-
+[node name="ResetDefaultsButton" type="Button" parent="MainPanel/VBox/TabContent/ControlTab/ControlVBox" unique_id=1831957397]
 layout_mode = 2
 text = "恢复默认键位"
 
-
-[node name="AccessibilityTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent"]
-anchors_preset = 15
+[node name="AccessibilityTab" type="ScrollContainer" parent="MainPanel/VBox/TabContent" unique_id=375752833]
+visible = false
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-visible = false
 
-
-[node name="AccessibilityVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/AccessibilityTab"]
-
+[node name="AccessibilityVBox" type="VBoxContainer" parent="MainPanel/VBox/TabContent/AccessibilityTab" unique_id=2088328376]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-
-[node name="UIScaleLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
-
+[node name="UIScaleLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox" unique_id=1740304929]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "UI缩放: 100%"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="UIScaleSlider" type="HSlider" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
-
+[node name="UIScaleSlider" type="HSlider" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox" unique_id=1504721348]
 layout_mode = 2
 min_value = 1.0
 max_value = 1.75
-value = 1.0
 step = 0.25
+value = 1.0
 
-
-[node name="ColorblindLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
-
+[node name="ColorblindLabel" type="Label" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox" unique_id=1626421872]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "色盲模式"
-theme_type_variation = "HeaderMedium"
 
-
-[node name="ColorblindOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
-
+[node name="ColorblindOptionButton" type="OptionButton" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox" unique_id=2011577559]
 layout_mode = 2
 
-
-[node name="ScreenReaderCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox"]
-
+[node name="ScreenReaderCheck" type="CheckBox" parent="MainPanel/VBox/TabContent/AccessibilityTab/AccessibilityVBox" unique_id=1282501865]
 layout_mode = 2
 text = "启用屏幕阅读器"
 
-
-[node name="FooterHBox" type="HBoxContainer" parent="MainPanel/VBox"]
-
+[node name="FooterHBox" type="HBoxContainer" parent="MainPanel/VBox" unique_id=324782892]
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 2
 
-
-[node name="ResetAllButton" type="Button" parent="MainPanel/VBox/FooterHBox"]
-
+[node name="ResetAllButton" type="Button" parent="MainPanel/VBox/FooterHBox" unique_id=430733357]
 layout_mode = 2
 text = "恢复默认设置"
 
-
-[node name="ApplyButton" type="Button" parent="MainPanel/VBox/FooterHBox"]
-
+[node name="ApplyButton" type="Button" parent="MainPanel/VBox/FooterHBox" unique_id=1041339345]
 layout_mode = 2
+theme_type_variation = &"PrimaryButton"
 text = "应用设置"
-theme_type_variation = "PrimaryButton"

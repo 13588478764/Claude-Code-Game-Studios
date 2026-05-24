@@ -72,7 +72,19 @@ func _ready() -> void:
 
 func open_settings() -> void:
 	visible = true
-	_tab_bar.current_tab = 0
+	print("[Settings] tab_bar is null: ", _tab_bar == null)
+	if _tab_bar != null:
+		print("[Settings] tab_count: %d, size: %s, visible: %s" % [_tab_bar.tab_count, str(_tab_bar.size), str(_tab_bar.visible)])
+		if _tab_bar.tab_count == 0:
+			_tab_bar.add_tab("画面")
+			_tab_bar.add_tab("音效")
+			_tab_bar.add_tab("控制")
+			_tab_bar.add_tab("无障碍")
+			print("[Settings] 动态添加了4个tab")
+		_tab_bar.custom_minimum_size.y = 32
+		_tab_bar.add_theme_color_override("font_selected_color", Color.WHITE)
+		_tab_bar.add_theme_color_override("font_unselected_color", Color(0.75, 0.75, 0.75, 1.0))
+		_tab_bar.current_tab = 0
 	_close_btn.grab_focus()
 	settings_opened.emit()
 

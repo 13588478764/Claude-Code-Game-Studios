@@ -71,8 +71,11 @@ func close_pause_menu() -> void:
 
 ## 检查是否有存档
 func _check_has_save() -> bool:
-	# TODO: 检查存档文件是否存在
-	# return FileAccess.file_exists("user://save_1.json")
+	var save_sys: Node = get_node_or_null("/root/SaveSystem")
+	if save_sys and save_sys.has_method("has_save"):
+		for slot in range(1, save_sys.MAX_SLOTS + 1):
+			if save_sys.has_save(slot):
+				return true
 	return false
 
 
@@ -95,7 +98,6 @@ func _on_pause_menu_quit_confirmed(_saved: bool) -> void:
 
 ## 信号回调：返回主菜单
 func _on_pause_menu_return_to_main(_saved: bool) -> void:
-	# TODO: 加载主菜单场景
 	var main_menu_path = "res://src/scenes/main_menu.tscn"
 	if ResourceLoader.exists(main_menu_path):
 		get_tree().change_scene_to_file(main_menu_path)

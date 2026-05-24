@@ -1,41 +1,7 @@
-## StatusTooltip
-## StatusTooltip Control节点
-## 显示状态效果的详细信息提示框
-## AC4: UI适配不同分辨率
-## 遵循ADR-001: 使用Control节点实现UI
-##
-## 主要功能：
-## - 待补充
-
-extends Node
+## 状态效果提示框 — 显示状态效果的详细信息
+extends PanelContainer
 
 class_name StatusTooltip
-
-# ============================================================================
-# 常量定义
-# ============================================================================
-
-# ============================================================================
-# 信号定义
-# ============================================================================
-
-# ============================================================================
-# 成员变量
-# ============================================================================
-
-# ============================================================================
-# 生命周期方法
-# ============================================================================
-
-# ============================================================================
-# 公共方法
-# ============================================================================
-
-# ============================================================================
-# 私有方法
-# ============================================================================
-
-extends PanelContainer
 
 ## UI节点引用
 @onready var name_label: Label = $VBoxContainer/NameLabel
@@ -47,47 +13,52 @@ extends PanelContainer
 ## AC4: 最小字号保证(所有分辨率下)
 const MIN_FONT_SIZE: int = 12
 
-## 状态类型名称映射
-const TYPE_NAMES: Dictionary = {
-	StatusEffect.EffectType.BURN: "持续伤害",
-	StatusEffect.EffectType.POISON: "持续伤害",
-	StatusEffect.EffectType.BLEED: "持续伤害",
-	StatusEffect.EffectType.REGEN: "持续恢复",
-	StatusEffect.EffectType.STRENGTH_UP: "增益",
-	StatusEffect.EffectType.FOCUS: "增益",
-	StatusEffect.EffectType.SHIELD: "增益",
-	StatusEffect.EffectType.WEAKEN: "减益",
-	StatusEffect.EffectType.VULNERABLE: "减益",
-	StatusEffect.EffectType.BLIND: "减益",
-	StatusEffect.EffectType.STUN: "控制",
-	StatusEffect.EffectType.ROOT: "控制",
-	StatusEffect.EffectType.SILENCE: "控制",
-	StatusEffect.EffectType.FREEZE: "控制",
-	StatusEffect.EffectType.BREAK: "特殊",
-	StatusEffect.EffectType.MARK: "特殊",
-}
+## 状态类型名称映射（运行时初始化）
+var TYPE_NAMES: Dictionary = {}
 
 ## 状态效果描述映射
-const EFFECT_DESCRIPTIONS: Dictionary = {
-	StatusEffect.EffectType.BURN: "每回合造成{value}点火属性伤害",
-	StatusEffect.EffectType.POISON: "每回合造成{value}点毒素伤害",
-	StatusEffect.EffectType.BLEED: "受击时额外造成{value}点真实伤害",
-	StatusEffect.EffectType.REGEN: "每回合恢复{value}点生命值",
-	StatusEffect.EffectType.STRENGTH_UP: "攻击力提升{value}%",
-	StatusEffect.EffectType.FOCUS: "命中率+{value}%,暴击率+5%",
-	StatusEffect.EffectType.SHIELD: "吸收{value}点伤害",
-	StatusEffect.EffectType.WEAKEN: "攻击力降低{value}%",
-	StatusEffect.EffectType.VULNERABLE: "受到伤害增加{value}%",
-	StatusEffect.EffectType.BLIND: "命中率降低{value}%",
-	StatusEffect.EffectType.STUN: "无法行动",
-	StatusEffect.EffectType.ROOT: "无法移动",
-	StatusEffect.EffectType.SILENCE: "无法使用技能",
-	StatusEffect.EffectType.FREEZE: "无法行动,受击必暴击",
-	StatusEffect.EffectType.BREAK: "架势值归零,易伤",
-	StatusEffect.EffectType.MARK: "特定来源伤害增加{value}%",
-}
+var EFFECT_DESCRIPTIONS: Dictionary = {}
+
+func _init_mappings() -> void:
+	TYPE_NAMES = {
+		StatusEffect.EffectType.BURN: "持续伤害",
+		StatusEffect.EffectType.POISON: "持续伤害",
+		StatusEffect.EffectType.BLEED: "持续伤害",
+		StatusEffect.EffectType.REGEN: "持续恢复",
+		StatusEffect.EffectType.STRENGTH_UP: "增益",
+		StatusEffect.EffectType.FOCUS: "增益",
+		StatusEffect.EffectType.SHIELD: "增益",
+		StatusEffect.EffectType.WEAKEN: "减益",
+		StatusEffect.EffectType.VULNERABLE: "减益",
+		StatusEffect.EffectType.BLIND: "减益",
+		StatusEffect.EffectType.STUN: "控制",
+		StatusEffect.EffectType.ROOT: "控制",
+		StatusEffect.EffectType.SILENCE: "控制",
+		StatusEffect.EffectType.FREEZE: "控制",
+		StatusEffect.EffectType.BREAK: "特殊",
+		StatusEffect.EffectType.MARK: "特殊",
+	}
+	EFFECT_DESCRIPTIONS = {
+		StatusEffect.EffectType.BURN: "每回合造成{value}点火属性伤害",
+		StatusEffect.EffectType.POISON: "每回合造成{value}点毒素伤害",
+		StatusEffect.EffectType.BLEED: "受击时额外造成{value}点真实伤害",
+		StatusEffect.EffectType.REGEN: "每回合恢复{value}点生命值",
+		StatusEffect.EffectType.STRENGTH_UP: "攻击力提升{value}%",
+		StatusEffect.EffectType.FOCUS: "命中率+{value}%,暴击率+5%",
+		StatusEffect.EffectType.SHIELD: "吸收{value}点伤害",
+		StatusEffect.EffectType.WEAKEN: "攻击力降低{value}%",
+		StatusEffect.EffectType.VULNERABLE: "受到伤害增加{value}%",
+		StatusEffect.EffectType.BLIND: "命中率降低{value}%",
+		StatusEffect.EffectType.STUN: "无法行动",
+		StatusEffect.EffectType.ROOT: "无法移动",
+		StatusEffect.EffectType.SILENCE: "无法使用技能",
+		StatusEffect.EffectType.FREEZE: "无法行动,受击必暴击",
+		StatusEffect.EffectType.BREAK: "架势值归零,易伤",
+		StatusEffect.EffectType.MARK: "特定来源伤害增加{value}%",
+	}
 
 func _ready() -> void:
+	_init_mappings()
 	# 初始化为隐藏
 	visible = false
 	

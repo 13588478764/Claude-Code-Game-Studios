@@ -15,27 +15,31 @@ var current_stacks: int = 1
 @onready var stack_label: Label = $VBoxContainer/IconTexture/StackLabel
 @onready var tooltip: StatusTooltip = $StatusTooltip
 
-## 图标纹理路径映射
-const ICON_TEXTURES: Dictionary = {
-	StatusEffect.EffectType.BURN: "res://assets/icons/status/burn.png",
-	StatusEffect.EffectType.POISON: "res://assets/icons/status/poison.png",
-	StatusEffect.EffectType.BLEED: "res://assets/icons/status/bleed.png",
-	StatusEffect.EffectType.REGEN: "res://assets/icons/status/regen.png",
-	StatusEffect.EffectType.STRENGTH_UP: "res://assets/icons/status/strength_up.png",
-	StatusEffect.EffectType.FOCUS: "res://assets/icons/status/focus.png",
-	StatusEffect.EffectType.SHIELD: "res://assets/icons/status/shield.png",
-	StatusEffect.EffectType.WEAKEN: "res://assets/icons/status/weaken.png",
-	StatusEffect.EffectType.VULNERABLE: "res://assets/icons/status/vulnerable.png",
-	StatusEffect.EffectType.BLIND: "res://assets/icons/status/blind.png",
-	StatusEffect.EffectType.STUN: "res://assets/icons/status/stun.png",
-	StatusEffect.EffectType.ROOT: "res://assets/icons/status/root.png",
-	StatusEffect.EffectType.SILENCE: "res://assets/icons/status/silence.png",
-	StatusEffect.EffectType.FREEZE: "res://assets/icons/status/freeze.png",
-	StatusEffect.EffectType.BREAK: "res://assets/icons/status/break.png",
-	StatusEffect.EffectType.MARK: "res://assets/icons/status/mark.png",
-}
+## 图标纹理路径映射（运行时初始化）
+var ICON_TEXTURES: Dictionary = {}
+
+func _init_textures() -> void:
+	ICON_TEXTURES = {
+		StatusEffect.EffectType.BURN: "res://assets/icons/status/burn.png",
+		StatusEffect.EffectType.POISON: "res://assets/icons/status/poison.png",
+		StatusEffect.EffectType.BLEED: "res://assets/icons/status/bleed.png",
+		StatusEffect.EffectType.REGEN: "res://assets/icons/status/regen.png",
+		StatusEffect.EffectType.STRENGTH_UP: "res://assets/icons/status/strength_up.png",
+		StatusEffect.EffectType.FOCUS: "res://assets/icons/status/focus.png",
+		StatusEffect.EffectType.SHIELD: "res://assets/icons/status/shield.png",
+		StatusEffect.EffectType.WEAKEN: "res://assets/icons/status/weaken.png",
+		StatusEffect.EffectType.VULNERABLE: "res://assets/icons/status/vulnerable.png",
+		StatusEffect.EffectType.BLIND: "res://assets/icons/status/blind.png",
+		StatusEffect.EffectType.STUN: "res://assets/icons/status/stun.png",
+		StatusEffect.EffectType.ROOT: "res://assets/icons/status/root.png",
+		StatusEffect.EffectType.SILENCE: "res://assets/icons/status/silence.png",
+		StatusEffect.EffectType.FREEZE: "res://assets/icons/status/freeze.png",
+		StatusEffect.EffectType.BREAK: "res://assets/icons/status/break.png",
+		StatusEffect.EffectType.MARK: "res://assets/icons/status/mark.png",
+	}
 
 func _ready() -> void:
+	_init_textures()
 	# 连接鼠标事件
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)

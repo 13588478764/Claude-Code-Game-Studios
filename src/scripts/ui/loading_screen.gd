@@ -224,13 +224,11 @@ func _on_retry_pressed() -> void:
 		_tip_panel.visible = true
 		_start_tip_rotation()
 
-	# TODO: 重新开始加载流程
 	start_loading(_load_type, _save_slot_id, _can_cancel)
 
 
 ## 返回主菜单
 func _on_return_pressed() -> void:
-	# TODO: 加载主菜单场景
 	var main_menu_path = "res://src/scenes/main_menu.tscn"
 	if ResourceLoader.exists(main_menu_path):
 		get_tree().change_scene_to_file(main_menu_path)

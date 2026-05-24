@@ -58,6 +58,10 @@ var _current_chapter_index: int = 0
 var _current_step_index: int = 0
 ## 教程进度数据
 var _tutorial_progress: Dictionary = {}
+## 推迟的教程章节
+var _deferred_chapters: Array[String] = []
+## 已关闭的情境提示
+var _dismissed_toasts: Array[String] = []
 ## 减少运动设置
 var _reduce_motion: bool = false
 ## 情境提示Toast实例
@@ -65,9 +69,7 @@ var _contextual_toast: Node = null
 
 
 func _ready() -> void:
-	# 初始隐藏在屏幕右侧之外
-	visible = true
-	_panel.position.x = _panel.size.x
+	visible = false
 
 	# 加载情境提示Toast
 	_load_contextual_toast()
@@ -107,13 +109,13 @@ func open_panel(source: String = "f1_key", target_tab: int = -1, target_item_id:
 
 	_is_open = true
 	_open_time_ms = Time.get_ticks_msec()
+	visible = true
+	_panel.position.x = _panel.size.x
 
 	if target_tab >= 0:
 		_tab_bar.current_tab = target_tab
 	else:
 		_tab_bar.current_tab = _last_tab_index
-
-	# 注意：不暂停游戏
 
 	# 滑入动画
 	if _reduce_motion:
@@ -142,11 +144,13 @@ func close_panel() -> void:
 	# 滑出动画
 	if _reduce_motion:
 		_panel.position.x = _panel.size.x
+		visible = false
 	else:
 		var tween = create_tween()
 		tween.tween_property(_panel, "position:x", _panel.size.x, 0.25)
 		tween.set_ease(Tween.EASE_IN)
 		tween.set_trans(Tween.TRANS_CUBIC)
+		tween.finished.connect(func(): visible = false)
 
 	help_panel_closed.emit(_get_tab_name(_tab_bar.current_tab), time_spent)
 
@@ -363,14 +367,16 @@ func _on_mark_done() -> void:
 
 ## 推迟教程
 func _defer_tutorial(chapter_id: String) -> void:
-	# TODO: 标记为"稍后查看"
+	if chapter_id not in _deferred_chapters:
+		_deferred_chapters.append(chapter_id)
 	tutorial_deferred.emit(chapter_id, "")
 	_save_progress()
 
 
 ## 情境提示关闭
 func _dismiss_toast(toast_id: String) -> void:
-	# TODO: 记录toast_id，不再显示
+	if toast_id not in _dismissed_toasts:
+		_dismissed_toasts.append(toast_id)
 	contextual_toast_dismissed.emit(toast_id, "dismiss")
 	_save_progress()
 

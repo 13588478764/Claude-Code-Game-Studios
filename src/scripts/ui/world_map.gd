@@ -237,8 +237,7 @@ func _on_reset_zoom() -> void:
 
 
 func _on_legend() -> void:
-	# TODO: 打开图例面板
-	pass
+	push_warning("[WorldMap] 图例面板尚未实现")
 
 
 ## 应用缩放

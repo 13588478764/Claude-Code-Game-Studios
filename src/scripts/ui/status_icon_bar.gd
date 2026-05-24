@@ -136,7 +136,7 @@ func _create_status_icon(effect_type: StatusEffect.EffectType, stacks: int) -> v
 		return
 	
 	# 实例化图标场景
-	var icon = STATUS_ICON_SCENE.instantiate()
+	var icon = load(STATUS_ICON_SCENE_PATH).instantiate()
 	add_child(icon)
 	
 	# 设置图标数据

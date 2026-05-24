@@ -116,9 +116,7 @@ func _validate_scene_structure() -> void:
 ## 显示降级UI (AC-10)
 ## 当场景加载失败或节点缺失时,显示简化的错误提示
 func _show_fallback_ui(missing_nodes: Array) -> void:
-	# TODO: 实现降级UI显示逻辑
-	# 当前阶段:仅记录日志,后续stories实现具体降级UI
-	print("[HUDManager] Fallback UI activated. Missing: %s" % str(missing_nodes))
+	push_warning("[HUDManager] 降级UI已激活，缺失节点: %s" % str(missing_nodes))
 
 
 ## 连接GameEvents信号 (AC-8)

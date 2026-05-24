@@ -73,8 +73,7 @@ var _confirm_dialog: Node = null
 
 
 func _ready() -> void:
-	visible = true
-	_panel.position.x = _panel.size.x
+	visible = false
 
 	_load_confirm_dialog()
 
@@ -119,6 +118,8 @@ func open_panel(source: String = "keyboard", context_items: Array = []) -> void:
 		return
 
 	_is_open = true
+	visible = true
+	_panel.position.x = _panel.size.x
 
 	if _reduce_motion:
 		_panel.position.x = 0
@@ -146,11 +147,13 @@ func close_panel() -> void:
 
 	if _reduce_motion:
 		_panel.position.x = _panel.size.x
+		visible = false
 	else:
 		var tween = create_tween()
 		tween.tween_property(_panel, "position:x", _panel.size.x, 0.25)
 		tween.set_ease(Tween.EASE_IN)
 		tween.set_trans(Tween.TRANS_CUBIC)
+		tween.finished.connect(func(): visible = false)
 
 	inventory_panel_closed.emit()
 

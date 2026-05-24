@@ -22,11 +22,8 @@ const MAX_ACTIVE_EFFECTS: int = 8
 const LOG_PREFIX: String = "[StatusEffectManager]"
 
 # AC5: 互斥状态规则 - 定义哪些状态互斥以及优先级
-# 键是低优先级状态，值是高优先级状态
-const MUTEX_RULES: Dictionary = {
-	StatusEffect.EffectType.FREEZE: StatusEffect.EffectType.BURN,
-	StatusEffect.EffectType.ROOT: StatusEffect.EffectType.STUN
-}
+# 键是低优先级状态，值是高优先级状态（运行时初始化）
+var MUTEX_RULES: Dictionary = {}
 
 # ============================================================================
 # 信号定义
@@ -67,6 +64,12 @@ var defense: float = 50.0
 
 var item_system: Node = null
 var debug_enabled: bool = true
+
+func _ready() -> void:
+	MUTEX_RULES = {
+		StatusEffect.EffectType.FREEZE: StatusEffect.EffectType.BURN,
+		StatusEffect.EffectType.ROOT: StatusEffect.EffectType.STUN
+	}
 
 ## 设置角色属性
 ## @param p_max_hp: 最大生命值
