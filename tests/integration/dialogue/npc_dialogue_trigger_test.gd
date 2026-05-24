@@ -26,7 +26,6 @@ func test_has_dialogue_returns_false_for_missing() -> void:
 
 ## 注册对话树后 has_dialogue 返回 true
 func test_has_dialogue_returns_true_after_register() -> void:
-	var DialogueData := load("res://src/scripts/dialogue/dialogue_data.gd")
 	var tree := DialogueData.DialogueTree.new("test_npc_talk", "测试对话")
 	tree.start_node = "start"
 	tree.metadata = {"npc_id": "test_npc"}
@@ -39,7 +38,6 @@ func test_has_dialogue_returns_true_after_register() -> void:
 
 ## start_dialogue_with_npc 通过 metadata.npc_id 匹配
 func test_start_dialogue_with_npc_matches_metadata() -> void:
-	var DialogueData := load("res://src/scripts/dialogue/dialogue_data.gd")
 	var tree := DialogueData.DialogueTree.new("yunzhonghe_daily", "云中鹤日常")
 	tree.start_node = "start"
 	tree.metadata = {"npc_id": "yunzhonghe"}
@@ -59,7 +57,6 @@ func test_dialogue_started_signal_emitted() -> void:
 	var callback := func(_id: String): signal_fired[0] = true
 	_dialogue_mgr.dialogue_started.connect(callback)
 
-	var DialogueData := load("res://src/scripts/dialogue/dialogue_data.gd")
 	var tree := DialogueData.DialogueTree.new("signal_test", "信号测试")
 	tree.start_node = "start"
 	tree.metadata = {"npc_id": "test_signal_npc"}
@@ -73,7 +70,6 @@ func test_dialogue_started_signal_emitted() -> void:
 
 ## 对话中不能开始新对话
 func test_cannot_start_dialogue_while_in_dialogue() -> void:
-	var DialogueData := load("res://src/scripts/dialogue/dialogue_data.gd")
 	var tree := DialogueData.DialogueTree.new("block_test", "阻塞测试")
 	tree.start_node = "start"
 	tree.metadata = {"npc_id": "blocking_npc"}
@@ -91,7 +87,6 @@ func test_cannot_start_dialogue_while_in_dialogue() -> void:
 
 ## 对话结束后可再次触发
 func test_can_restart_after_end() -> void:
-	var DialogueData := load("res://src/scripts/dialogue/dialogue_data.gd")
 	var tree := DialogueData.DialogueTree.new("restart_test", "重启测试")
 	tree.start_node = "start"
 	tree.metadata = {"npc_id": "restart_npc"}
