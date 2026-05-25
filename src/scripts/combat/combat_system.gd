@@ -33,8 +33,8 @@ const QI_RECOVERY_PERCENTAGE: float = 0.05
 ## 内力自然恢复百分比上限（最高 10%）
 const QI_RECOVERY_PERCENTAGE_MAX: float = 0.10
 
-## 连击伤害加成单位（每次连击增加 1%）
-const COMBO_DAMAGE_INCREMENT: float = 0.01
+## 连击伤害加成单位（每次连击增加 5%，对齐 design/gdd/combat-system.md：6 击封顶 30%）
+const COMBO_DAMAGE_INCREMENT: float = 0.05
 
 ## 连击伤害加成上限（最高 30%）
 const MAX_COMBO_DAMAGE_BONUS: float = 0.30

@@ -464,7 +464,8 @@ func get_combat_stats():
 		"max_health": final_attrs.constitution * 10,
 		"defense": final_attrs.constitution + final_attrs.willpower,
 		"evasion": final_attrs.agility / 10.0,
-		"critical_rate": final_attrs.intelligence / 20.0,
+		# 暴击率 = 身法 × 0.3% + 福缘 × 0.2% (对齐 design/gdd/character-progression-system.md L59)
+		"critical_rate": final_attrs.agility * 0.003 + final_attrs.luck * 0.002,
 		"hit_rate": final_attrs.willpower / 15.0,
 		"internal_energy_max": final_attrs.constitution * 5 + final_attrs.intelligence * 3,
 		"internal_energy_regen": 0.05,  # 基础5%内力回复率

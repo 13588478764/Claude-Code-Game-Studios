@@ -22,7 +22,7 @@ const FRAGMENT_NEEDED_FOR_SYNTHESIS: int = 3  # 合成所需残页数
 const EMPTY_MANUAL_ITEM_ID: String = "empty_manual"  # 空槽位ID
 
 const MAX_EQUIPPED_MARTIAL_ARTS: int = 4  # 最大装备武学数
-const MAX_PROFICIENCY_LEVEL: int = 10  # 最大熟练度等级
+const MAX_PROFICIENCY_LEVEL: int = 15  # 最大熟练度等级 (对齐 design/gdd/martial-arts-system.md 与本文件 :297-298 实际上限)
 
 # ============================================================================
 # 信号定义
