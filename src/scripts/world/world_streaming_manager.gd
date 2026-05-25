@@ -1,17 +1,22 @@
-## WorldStreamingManager
+## WorldStreamingManager (区域加载版 - 新版)
 ## 世界流式加载管理器
-## 
+##
 ## 负责管理无缝世界流式加载和区域的动态加载/卸载。
-## 
+##
 ## 主要功能：
 ## - 根据玩家位置动态加载/卸载区域
 ## - 管理区域场景实例
 ## - 追踪玩家所在区域
 ## - 优化内存使用和性能
+##
+## ⚠️ 冲突说明 (polish-fixlist-2026-05-25 #5):
+## src/scripts/world_streaming_manager.gd (像素区块版, 708 行) 与本文件功能重叠但 API 完全不同。
+## 旧版被 player_position_tracker / memory_outpimizer 通过节点路径调用; 本新版被 tests/integration 通过 load() 调用。
+## 待 lead-programmer 决策合并/废弃 (本文件已去掉 class_name 以消除 Godot 全局符号冲突)。
 
 extends Node
 
-class_name WorldStreamingManager
+# class_name WorldStreamingManager  # 暂禁用 - 避免与旧版冲突, tests 用 load(path) 不依赖此符号
 
 # ============================================================================
 # 常量定义

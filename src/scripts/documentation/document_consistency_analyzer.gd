@@ -1,14 +1,21 @@
-## DocumentConsistencyAnalyzer
-## DocumentConsistencyAnalyzer
-## document consistency analyzer
-## 文档管理模块
+## DocumentConsistencyAnalyzer (⚠️ DEPRECATED — 待 lead-programmer 决策)
 ##
-## 主要功能：
-## - 待补充
+## GDD 一致性离线分析工具。原意是程序化扫描 design/gdd/ 检测数值/命名冲突。
+##
+## ⚠️ 当前状态 (polish-fixlist-2026-05-25 #22):
+## - 0 处代码/场景/Autoload 引用
+## - 未在 project.godot autoload 注册
+## - 文档管理工作目前由 subagent (lead-programmer + producer) 完成, 本 .gd 工具未启用
+## - class_name 已禁用以避免污染全局符号空间
+##
+## 处理选项 (待 lead-programmer 拍板):
+## - 选项 A: 删除 (代码量 298 行, 但 0 引用)
+## - 选项 B: 迁移到 tools/documentation/ (出 src/, 不再被 Godot 加载)
+## - 选项 C: 重新激活 + 补全实现 (需要 GDD)
 
 extends Node
 
-class_name DocumentConsistencyAnalyzer
+# class_name DocumentConsistencyAnalyzer  # 暂禁用 - 见上方 DEPRECATED 说明
 
 # ============================================================================
 # 常量定义

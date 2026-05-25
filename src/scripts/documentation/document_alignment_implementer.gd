@@ -1,14 +1,18 @@
-## DocumentAlignmentImplementer
-## DocumentAlignmentImplementer
-## document alignment implementer
-## 文档管理模块
+## DocumentAlignmentImplementer (⚠️ DEPRECATED — 待 lead-programmer 决策)
 ##
-## 主要功能：
-## - 待补充
+## GDD 对齐执行工具。原意是接收 ConflictResolutionPlanner 的方案, 自动化执行 GDD 修复。
+##
+## ⚠️ 当前状态 (polish-fixlist-2026-05-25 #22):
+## - 0 处代码/场景/Autoload 引用
+## - 未在 project.godot autoload 注册
+## - 与 DocumentConsistencyAnalyzer / ConflictResolutionPlanner 同批离线工具, 均未启用
+## - class_name 已禁用以避免污染全局符号空间
+##
+## 处理选项 (待 lead-programmer 拍板): 见 document_consistency_analyzer.gd 顶部注释
 
 extends Node
 
-class_name DocumentAlignmentImplementer
+# class_name DocumentAlignmentImplementer  # 暂禁用 - 见上方 DEPRECATED 说明
 
 # ============================================================================
 # 常量定义

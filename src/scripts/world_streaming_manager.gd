@@ -1,4 +1,4 @@
-# WorldStreamingManager - 世界流式加载管理器
+# WorldStreamingManager - 世界流式加载管理器 (像素区块版 - 旧版, 仍生效)
 #
 # 负责处理大型开放世界的动态加载和卸载
 # 符合 ADR-001 架构决策：使用 Godot 4.6 Scene-Node 架构，组件化设计
@@ -7,6 +7,11 @@
 #   - block_loaded(block_position)
 #   - block_unloaded(block_position)
 #   - loading_progress(current, total)
+#
+# ⚠️ 冲突说明 (polish-fixlist-2026-05-25 #5):
+# 与 src/scripts/world/world_streaming_manager.gd (区域加载版, 407 行) class_name 冲突。
+# 本版本保留 class_name 因为 player_position_tracker / memory_optimizer 通过 $WorldStreamingManager 节点引用且依赖 BLOCK_SIZE/BlockState 等 API。
+# 新版已暂禁 class_name 以消除 Godot 全局符号冲突, 待 lead-programmer 决策合并/废弃。
 
 extends Node
 
