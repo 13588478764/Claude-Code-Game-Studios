@@ -1,5 +1,9 @@
 # Sprint 6 -- 2026-05-15 to 2026-05-29
 
+> **日期注**: 名义周期 14 天 (与 Sprint 1-5 一致), 但 Alpha milestone 在周期 day 0 (2026-05-15) 即达成。
+> 实际是 Sprint 3-6 并行多线推进 (见 milestone-alpha-review.md velocity 分析), 不是 sprint 14 天延迟达成。
+> 提前 14 天达成的真实含义: 6 sprint 名义截止 05-29, 11 个 stories 在 05-15 全部 DONE。
+
 ## Sprint Goal
 接通设置面板实际功能、补全新游戏/加载流程、接入NPC对话触发、实现音频总线控制，使游戏具备完整的"启动→设置→开始→探索→NPC对话→战斗→存档"端到端体验
 

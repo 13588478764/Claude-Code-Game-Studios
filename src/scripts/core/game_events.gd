@@ -15,6 +15,36 @@ extends Node
 ## - HUD更新 < 1ms/帧 (战斗中)
 ## - HUD更新 < 0.5ms/帧 (探索中)
 ## - 60FPS 稳定
+##
+## ============================================================================
+## 信号接通状态 (Polish 2026-05-25 审查)
+## ============================================================================
+## 本文件目前定义 50+ 个信号, 接通状态实测:
+## - ✅ 已接通: player_realm_changed (s7-10 已修)
+## - ⚠️ 半哑火 (UI connect 了但 emit=0): 10 个 P0 信号 — sprint-007 s7-18 必修
+## - 🟡 全哑火 (0 emit + 0 connect): 28 个 vBeta 预留
+##
+## 详细清单见 docs/architecture/signal-audit.md (polish-fixlist-2026-05-25 #21)。
+##
+## P0 半哑火待接通 (polish-fixlist #1, sprint-007 s7-18):
+## - player_hp_changed / player_qi_changed / player_poise_changed
+## - player_level_up / player_exp_changed
+## - enemy_selected / enemy_hp_changed / enemy_weakness_revealed
+## - enemy_status_changed / combat_action_queue_updated
+##
+## 全哑火预留分组 (Polish 阶段不接通, 待 Beta 系统启用时再接):
+## - buff_* / debuff_* (6 个) — buff/debuff 系统未启用
+## - quest_* (3 个) — 任务 UI 反馈未接
+## - nav_* (4 个) — 导航/POI/奇遇 UI 反馈未接
+## - item_* (3 个) — 物品/装备 UI 反馈未接
+## - skill_* (5 个) — 技能系统 cooldown 未串
+## - enemy_deselected / enemy_down_state_changed / enemy_break_state_changed (3 个) — Beta 评估去重
+## - player_attribute_points_changed / combat_mode_changed — 单 P3 信号
+## - system_save_failed / system_achievement_unlocked (2 个)
+##
+## ⚠️ 后续开发指引:
+## - 不要在本文件加新信号, 除非该信号在 30 天内会被 emit + connect
+## - 接通信号时, 同步更新 docs/architecture/signal-audit.md 的状态列
 
 # ============================================================================
 # PLAYER SIGNALS (P0级 - 核心生存信息)
