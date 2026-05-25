@@ -131,7 +131,8 @@ func _initialize_ui() -> void:
 	exp_bar.value = 0
 	exp_label.text = "0 / 100"
 	
-	realm_label.text = "炼气期(早期)"
+	realm_label.text = "炼气"
+	_load_realm_icon("炼气")
 
 # ============================================================================
 # 更新逻辑 - 脏标记检查
@@ -316,39 +317,49 @@ func _format_number(value: int) -> String:
 		return "%.1fK" % k_value
 
 ## 加载境界图标
+## 兼容多种境界名格式: "炼气" (character_system) / "炼气期" / "真仙境" (level_up_manager)
+## / "炼气期(早期)" (历史遗留) — 统一去后缀和括号后查表
 func _load_realm_icon(realm_name: String) -> void:
-	# 境界名称到文件名的映射
-	var realm_to_file := {
-		"炼气期(早期)": "qi_refining_early",
-		"炼气期(后期)": "qi_refining_late",
-		"筑基期(早期)": "foundation_early",
-		"筑基期(后期)": "foundation_late",
-		"金丹期(早期)": "golden_core_early",
-		"金丹期(后期)": "golden_core_late",
-		"元婴期(早期)": "nascent_soul_early",
-		"元婴期(后期)": "nascent_soul_late",
-		"化神期": "spirit_transformation"
+	# 境界裸名 → 文件名 (与 src/scripts/character/character_system.gd REALMS 对齐)
+	const REALM_NAME_TO_FILE := {
+		"炼气": "qi_refining",
+		"筑基": "foundation",
+		"金丹": "golden_core",
+		"元婴": "nascent_soul",
+		"化神": "spirit_transformation",
+		"返虚": "void_reverting",
+		"合道": "dao_unity",
+		"大乘": "great_vehicle",
+		"渡劫": "heavenly_tribulation",
+		"真仙": "true_immortal"
 	}
-	
-	if realm_name in realm_to_file:
-		var file_name: String = realm_to_file[realm_name]
-		var icon_path := "res://assets/ui/realm_icons/%s.png" % file_name
-		
-		# 尝试加载图标
-		if ResourceLoader.exists(icon_path):
-			var texture := load(icon_path) as Texture2D
-			if texture:
-				realm_icon.texture = texture
-			else:
-				push_warning("PlayerStatusPanel: Failed to load realm icon: %s" % icon_path)
-				_use_placeholder_icon()
-		else:
-			# 图标不存在,使用占位符
-			push_warning("PlayerStatusPanel: Realm icon not found: %s" % icon_path)
-			_use_placeholder_icon()
-	else:
-		push_warning("PlayerStatusPanel: Unknown realm name: %s" % realm_name)
+
+	# 规范化: 去掉 "(早期)" / "(后期)" 等括号注解, 再去掉 "期"/"境" 后缀
+	var key := realm_name
+	var paren_pos := key.find("(")
+	if paren_pos != -1:
+		key = key.substr(0, paren_pos)
+	if key.ends_with("期") or key.ends_with("境"):
+		key = key.substr(0, key.length() - 1)
+
+	if not REALM_NAME_TO_FILE.has(key):
+		push_warning("PlayerStatusPanel: Unknown realm name: %s (normalized: %s)" % [realm_name, key])
 		_use_placeholder_icon()
+		return
+
+	var icon_path := "res://assets/ui/realm_icons/%s.png" % REALM_NAME_TO_FILE[key]
+	if not ResourceLoader.exists(icon_path):
+		push_warning("PlayerStatusPanel: Realm icon not found: %s" % icon_path)
+		_use_placeholder_icon()
+		return
+
+	var texture := load(icon_path) as Texture2D
+	if texture == null:
+		push_warning("PlayerStatusPanel: Failed to load realm icon: %s" % icon_path)
+		_use_placeholder_icon()
+		return
+
+	realm_icon.texture = texture
 
 ## 使用占位符图标(简单的ColorRect)
 func _use_placeholder_icon() -> void:

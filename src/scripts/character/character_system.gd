@@ -241,16 +241,23 @@ func breakthrough_realm():
 	"""境界突破"""
 	if realm_index >= 9:  # 已经是最高境界
 		return
-	
+
+	# 突破前先记录原境界名,用于 GameEvents 全局信号
+	var old_realm_name: String = get_current_realm()["name"]
+
 	realm_index += 1
 	realm_bonus = 1.0 + (realm_index * 0.1)  # 每次突破增加10%全属性加成
 	free_reset_count += 1  # 获得一次免费重置机会
-	
+
 	var current_realm = get_current_realm()
-	
+
 	# 发射境界突破信号
 	realm_breakthrough.emit(current_realm["name"], realm_bonus, realm_index)
-	
+
+	# 全局事件广播 — 让 HUD 等监听 GameEvents 的系统刷新境界图标
+	if GameEvents:
+		GameEvents.player_realm_changed.emit(current_realm["name"], old_realm_name)
+
 	print("突破到 %s 期，全属性加成 %.1f%%" % [current_realm["name"], (realm_bonus - 1.0) * 100])
 
 func get_current_realm():
