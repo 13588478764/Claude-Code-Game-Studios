@@ -1,0 +1,4279 @@
+{
+  "last_node_id": 106,
+  "last_link_id": 121,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        50,
+        50
+      ],
+      "size": [
+        350,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "flux1-dev.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "DualCLIPLoader",
+      "pos": [
+        50,
+        170
+      ],
+      "size": [
+        350,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "t5xxl_fp16.safetensors",
+        "clip_l.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        50,
+        330
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [
+        50,
+        420
+      ],
+      "size": [
+        350,
+        110
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1024x1024 (共享 Latent)",
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [
+        50,
+        560
+      ],
+      "size": [
+        350,
+        100
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "共享负面提示词 (FLUX 留空)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 6,
+      "type": "BRIA_RMBG_ModelLoader_Zho",
+      "pos": [
+        50,
+        700
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "BRMODEL",
+          "links": [
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "BRIA 抠图模型 (共享)",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_ModelLoader_Zho"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [
+        50,
+        800
+      ],
+      "size": [
+        350,
+        1000
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "title": "任务/地图批量出图说明 - 拆分批 b (共10张)",
+      "properties": {},
+      "widgets_values": [
+        "■ 工作流: 任务标识 + 地图图例批量生成 (FLUX) - 拆分批 b\n   一次 Queue Prompt 出全部 10 张\n   预计耗时 55-65 分钟 (M4 Pro)\n\n■ 序列组成:\n   1-4 任务标识 (菱形 QUEST_DIAMOND)\n        main/side/encounter/complete\n   5-10 地图标记 (圆形 MAP_CIRCLE)\n         current/town/sect/dungeon/enemy/merchant\n\n■ 风格一致性:\n   - 共享 seed 88888888 (fixed)\n   - 共享 EmptyLatent 1024x1024\n   - 菱形/圆形两种外框, 与 11a 扁平方形盲识区分\n\n■ 输出 (每张 2 份, 与 11a 同目录):\n   output/wuxia_system_1024/quest_*|map_*.png  (1024 母版)\n   output/wuxia_system_96/quest_*|map_*.png    (96 游戏图标)\n\n■ 命名规范 (前缀区分子类):\n   quest_icon_*.png  → 任务标识\n   map_icon_*.png    → 地图标记\n   均由 import_ai_assets.sh 自动回流到\n   assets/ui/system_icons/\n\n■ 单张重抽: 同前\n\n■ 注意:\n   - 菱形/圆形外框是 FLUX 的弱项, 生成后逐张目检\n   - 若整批菱形崩坏, 把 PROMPT_TEMPLATE_QUEST_DIAMOND 中\n     rhombus 改为 octagon 或 square 重抽"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 10,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        50
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            62
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. quest_icon_main - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI quest marker icon for a cultivation wuxia RPG, centered composition. Subject: a single golden exclamation mark stylized as a daoist rune symbol in the center, with a pulsing golden halo around it. The subject occupies about 65 percent of the canvas in the center, framed inside a single closed rhombus diamond shape standing on its point, the diamond drawn as a uniform thin gold line, perfectly symmetric along both the vertical and horizontal axes, no decoration on the diamond frame itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. brilliant gold and warm radiant gold halo color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the diamond. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        50
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 62
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 42
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 32
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            63
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. quest_icon_main - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        50
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 63
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            64
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 13,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        50
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 52
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 64
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            65,
+            66
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "1. quest_icon_main - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 14,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 65
+        }
+      ],
+      "outputs": [],
+      "title": "1. quest_icon_main - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/quest_icon_main"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        50
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 66
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            67
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. quest_icon_main - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 67
+        }
+      ],
+      "outputs": [],
+      "title": "1. quest_icon_main - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/quest_icon_main"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        540
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            68
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. quest_icon_side - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI quest marker icon for a cultivation wuxia RPG, centered composition. Subject: a single silver white question mark stylized as a daoist rune symbol in the center, with a soft pale cyan halo around it. The subject occupies about 65 percent of the canvas in the center, framed inside a single closed rhombus diamond shape standing on its point, the diamond drawn as a uniform thin gold line, perfectly symmetric along both the vertical and horizontal axes, no decoration on the diamond frame itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. silver white and soft pale cyan halo color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the diamond. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 21,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        540
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 68
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 43
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 33
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            69
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. quest_icon_side - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 22,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        540
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 69
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            70
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 23,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        540
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 53
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 70
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            71,
+            72
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "2. quest_icon_side - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 24,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 71
+        }
+      ],
+      "outputs": [],
+      "title": "2. quest_icon_side - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/quest_icon_side"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        540
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 72
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            73
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. quest_icon_side - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 73
+        }
+      ],
+      "outputs": [],
+      "title": "2. quest_icon_side - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/quest_icon_side"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1030
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            74
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. quest_icon_encounter - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI quest marker icon for a cultivation wuxia RPG, centered composition. Subject: a single blooming violet purple cloud pattern flower in the center with bright golden light glowing at the stamens. The subject occupies about 65 percent of the canvas in the center, framed inside a single closed rhombus diamond shape standing on its point, the diamond drawn as a uniform thin gold line, perfectly symmetric along both the vertical and horizontal axes, no decoration on the diamond frame itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. deep violet purple and bright gold stamen color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the diamond. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 31,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1030
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 74
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 44
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            75
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. quest_icon_encounter - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 32,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1030
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 75
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            76
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 33,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1030
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 54
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 76
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            77,
+            78
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "3. quest_icon_encounter - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 34,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 77
+        }
+      ],
+      "outputs": [],
+      "title": "3. quest_icon_encounter - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/quest_icon_encounter"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1030
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 78
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            79
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. quest_icon_encounter - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 79
+        }
+      ],
+      "outputs": [],
+      "title": "3. quest_icon_encounter - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/quest_icon_encounter"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1520
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            80
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. quest_icon_complete - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI quest marker icon for a cultivation wuxia RPG, centered composition. Subject: a single golden checkmark tick stylized as a daoist rune symbol in the center, with golden radiant rays bursting outward behind it. The subject occupies about 65 percent of the canvas in the center, framed inside a single closed rhombus diamond shape standing on its point, the diamond drawn as a uniform thin gold line, perfectly symmetric along both the vertical and horizontal axes, no decoration on the diamond frame itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. brilliant gold and pale gold radiance color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the diamond. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 41,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1520
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 80
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 45
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 35
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            81
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. quest_icon_complete - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 42,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1520
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 81
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            82
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 43,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1520
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 55
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 82
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            83,
+            84
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "4. quest_icon_complete - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 44,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 83
+        }
+      ],
+      "outputs": [],
+      "title": "4. quest_icon_complete - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/quest_icon_complete"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1520
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 84
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            85
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. quest_icon_complete - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 85
+        }
+      ],
+      "outputs": [],
+      "title": "4. quest_icon_complete - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/quest_icon_complete"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2010
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            86
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. map_icon_current - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI map marker icon for a cultivation wuxia RPG, centered composition. Subject: a single bright red location pin teardrop shape in the center fused with a small daoist seal rune pattern on its face, the pin tip pointing downward. The subject occupies about 70 percent of the canvas in the center, framed inside a single closed circular border drawn as a full 360 degree circle, uniform thin line weight, completely symmetric, no decoration on the circle itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. cinnabar red and warm gold edge color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the circle. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 51,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2010
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 86
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 46
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            87
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. map_icon_current - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 52,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2010
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 87
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            88
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 53,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2010
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 56
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 88
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            89,
+            90
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "5. map_icon_current - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 54,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 89
+        }
+      ],
+      "outputs": [],
+      "title": "5. map_icon_current - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/map_icon_current"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2010
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 90
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            91
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. map_icon_current - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 56,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 91
+        }
+      ],
+      "outputs": [],
+      "title": "5. map_icon_current - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/map_icon_current"
+      ]
+    },
+    {
+      "id": 60,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2500
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            92
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. map_icon_town - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI map marker icon for a cultivation wuxia RPG, centered composition. Subject: a single simplified ancient style chinese city tower silhouette outline in the center with a tiered pagoda roof. The subject occupies about 70 percent of the canvas in the center, framed inside a single closed circular border drawn as a full 360 degree circle, uniform thin line weight, completely symmetric, no decoration on the circle itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. ink black and cream white color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the circle. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 61,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2500
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 6
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 92
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 47
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            93
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. map_icon_town - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 62,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2500
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 93
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            94
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 63,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2500
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 57
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 94
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            95,
+            96
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "6. map_icon_town - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 64,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2500
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 95
+        }
+      ],
+      "outputs": [],
+      "title": "6. map_icon_town - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/map_icon_town"
+      ]
+    },
+    {
+      "id": 65,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2500
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 96
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            97
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. map_icon_town - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 66,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2500
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 97
+        }
+      ],
+      "outputs": [],
+      "title": "6. map_icon_town - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/map_icon_town"
+      ]
+    },
+    {
+      "id": 70,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2990
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            98
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. map_icon_sect - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI map marker icon for a cultivation wuxia RPG, centered composition. Subject: a single ancient sect gate paifang archway silhouette in the center with simple decorative crossbeam. The subject occupies about 70 percent of the canvas in the center, framed inside a single closed circular border drawn as a full 360 degree circle, uniform thin line weight, completely symmetric, no decoration on the circle itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. ink black and pale gold color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the circle. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 71,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2990
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 7
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 98
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 48
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 38
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            99
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. map_icon_sect - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 72,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2990
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 99
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            100
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 73,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2990
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 58
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 100
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            101,
+            102
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "7. map_icon_sect - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 74,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2990
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 53,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 101
+        }
+      ],
+      "outputs": [],
+      "title": "7. map_icon_sect - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/map_icon_sect"
+      ]
+    },
+    {
+      "id": 75,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2990
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 102
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            103
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. map_icon_sect - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 76,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2990
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 103
+        }
+      ],
+      "outputs": [],
+      "title": "7. map_icon_sect - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/map_icon_sect"
+      ]
+    },
+    {
+      "id": 80,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        3480
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 56,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            104
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. map_icon_dungeon - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI map marker icon for a cultivation wuxia RPG, centered composition. Subject: a single dark mountain cave entrance silhouette in the center shrouded in swirling violet mist and cloud wisps drifting from the opening. The subject occupies about 70 percent of the canvas in the center, framed inside a single closed circular border drawn as a full 360 degree circle, uniform thin line weight, completely symmetric, no decoration on the circle itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. ink black and pale violet cyan color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the circle. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 81,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        3480
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 57,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 8
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 104
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 49
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 39
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            105
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. map_icon_dungeon - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 82,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        3480
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 58,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 105
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 29
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            106
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 83,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        3480
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 59,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 59
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 106
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            107,
+            108
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "8. map_icon_dungeon - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 84,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        3480
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 60,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 107
+        }
+      ],
+      "outputs": [],
+      "title": "8. map_icon_dungeon - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/map_icon_dungeon"
+      ]
+    },
+    {
+      "id": 85,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        3480
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 61,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 108
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            109
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. map_icon_dungeon - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 86,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        3480
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 62,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 109
+        }
+      ],
+      "outputs": [],
+      "title": "8. map_icon_dungeon - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/map_icon_dungeon"
+      ]
+    },
+    {
+      "id": 90,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        3970
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 63,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            110
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. map_icon_enemy - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI map marker icon for a cultivation wuxia RPG, centered composition. Subject: two stylized crossed crimson red longswords forming an X in the center with the hilts downward and blades upward. The subject occupies about 70 percent of the canvas in the center, framed inside a single closed circular border drawn as a full 360 degree circle, uniform thin line weight, completely symmetric, no decoration on the circle itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. ink black and bright crimson red color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the circle. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 91,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        3970
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 64,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 110
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 50
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 40
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            111
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. map_icon_enemy - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 92,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        3970
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 111
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            112
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 93,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        3970
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 60
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 112
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            113,
+            114
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "9. map_icon_enemy - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 94,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        3970
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 113
+        }
+      ],
+      "outputs": [],
+      "title": "9. map_icon_enemy - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/map_icon_enemy"
+      ]
+    },
+    {
+      "id": 95,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        3970
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 114
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            115
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. map_icon_enemy - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 96,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        3970
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 69,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 115
+        }
+      ],
+      "outputs": [],
+      "title": "9. map_icon_enemy - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/map_icon_enemy"
+      ]
+    },
+    {
+      "id": 100,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        4460
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 70,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            116
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. map_icon_merchant - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI map marker icon for a cultivation wuxia RPG, centered composition. Subject: a single rich gold chinese round coin with a square hole in the middle in the center, its surface flat and clean. The subject occupies about 70 percent of the canvas in the center, framed inside a single closed circular border drawn as a full 360 degree circle, uniform thin line weight, completely symmetric, no decoration on the circle itself. Pure clean solid white background, no other elements. Flat vector illustration style, simplified for icon use. rich gold and dim ink black color palette only. No realistic human portraits, no facial features, no complex patterns, no maze patterns, no text, no chinese characters, no multiple subjects, no debris, no asymmetric elements outside the circle. Single focal point on the central subject. Designed to be readable when scaled down to 48x48 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 101,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        4460
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 71,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 10
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 116
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 51
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 41
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            117
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. map_icon_merchant - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 102,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        4460
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 72,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 117
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 31
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            118
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 103,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        4460
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 73,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 61
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 118
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            119,
+            120
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "10. map_icon_merchant - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 104,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        4460
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 74,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 119
+        }
+      ],
+      "outputs": [],
+      "title": "10. map_icon_merchant - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_1024/map_icon_merchant"
+      ]
+    },
+    {
+      "id": 105,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        4460
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 75,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 120
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            121
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. map_icon_merchant - 缩放 96",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        96,
+        96,
+        "disabled"
+      ]
+    },
+    {
+      "id": 106,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        4460
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 76,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 121
+        }
+      ],
+      "outputs": [],
+      "title": "10. map_icon_merchant - 96 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_system_96/map_icon_merchant"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      1,
+      0,
+      21,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      1,
+      0,
+      31,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      1,
+      0,
+      41,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      1,
+      0,
+      51,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      1,
+      0,
+      61,
+      0,
+      "MODEL"
+    ],
+    [
+      7,
+      1,
+      0,
+      71,
+      0,
+      "MODEL"
+    ],
+    [
+      8,
+      1,
+      0,
+      81,
+      0,
+      "MODEL"
+    ],
+    [
+      9,
+      1,
+      0,
+      91,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      1,
+      0,
+      101,
+      0,
+      "MODEL"
+    ],
+    [
+      11,
+      2,
+      0,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      12,
+      2,
+      0,
+      20,
+      0,
+      "CLIP"
+    ],
+    [
+      13,
+      2,
+      0,
+      30,
+      0,
+      "CLIP"
+    ],
+    [
+      14,
+      2,
+      0,
+      40,
+      0,
+      "CLIP"
+    ],
+    [
+      15,
+      2,
+      0,
+      50,
+      0,
+      "CLIP"
+    ],
+    [
+      16,
+      2,
+      0,
+      60,
+      0,
+      "CLIP"
+    ],
+    [
+      17,
+      2,
+      0,
+      70,
+      0,
+      "CLIP"
+    ],
+    [
+      18,
+      2,
+      0,
+      80,
+      0,
+      "CLIP"
+    ],
+    [
+      19,
+      2,
+      0,
+      90,
+      0,
+      "CLIP"
+    ],
+    [
+      20,
+      2,
+      0,
+      100,
+      0,
+      "CLIP"
+    ],
+    [
+      21,
+      2,
+      0,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      22,
+      3,
+      0,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      23,
+      3,
+      0,
+      22,
+      1,
+      "VAE"
+    ],
+    [
+      24,
+      3,
+      0,
+      32,
+      1,
+      "VAE"
+    ],
+    [
+      25,
+      3,
+      0,
+      42,
+      1,
+      "VAE"
+    ],
+    [
+      26,
+      3,
+      0,
+      52,
+      1,
+      "VAE"
+    ],
+    [
+      27,
+      3,
+      0,
+      62,
+      1,
+      "VAE"
+    ],
+    [
+      28,
+      3,
+      0,
+      72,
+      1,
+      "VAE"
+    ],
+    [
+      29,
+      3,
+      0,
+      82,
+      1,
+      "VAE"
+    ],
+    [
+      30,
+      3,
+      0,
+      92,
+      1,
+      "VAE"
+    ],
+    [
+      31,
+      3,
+      0,
+      102,
+      1,
+      "VAE"
+    ],
+    [
+      32,
+      4,
+      0,
+      11,
+      3,
+      "LATENT"
+    ],
+    [
+      33,
+      4,
+      0,
+      21,
+      3,
+      "LATENT"
+    ],
+    [
+      34,
+      4,
+      0,
+      31,
+      3,
+      "LATENT"
+    ],
+    [
+      35,
+      4,
+      0,
+      41,
+      3,
+      "LATENT"
+    ],
+    [
+      36,
+      4,
+      0,
+      51,
+      3,
+      "LATENT"
+    ],
+    [
+      37,
+      4,
+      0,
+      61,
+      3,
+      "LATENT"
+    ],
+    [
+      38,
+      4,
+      0,
+      71,
+      3,
+      "LATENT"
+    ],
+    [
+      39,
+      4,
+      0,
+      81,
+      3,
+      "LATENT"
+    ],
+    [
+      40,
+      4,
+      0,
+      91,
+      3,
+      "LATENT"
+    ],
+    [
+      41,
+      4,
+      0,
+      101,
+      3,
+      "LATENT"
+    ],
+    [
+      42,
+      5,
+      0,
+      11,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      43,
+      5,
+      0,
+      21,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      44,
+      5,
+      0,
+      31,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      45,
+      5,
+      0,
+      41,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      46,
+      5,
+      0,
+      51,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      47,
+      5,
+      0,
+      61,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      48,
+      5,
+      0,
+      71,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      49,
+      5,
+      0,
+      81,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      50,
+      5,
+      0,
+      91,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      51,
+      5,
+      0,
+      101,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      52,
+      6,
+      0,
+      13,
+      0,
+      "BRMODEL"
+    ],
+    [
+      53,
+      6,
+      0,
+      23,
+      0,
+      "BRMODEL"
+    ],
+    [
+      54,
+      6,
+      0,
+      33,
+      0,
+      "BRMODEL"
+    ],
+    [
+      55,
+      6,
+      0,
+      43,
+      0,
+      "BRMODEL"
+    ],
+    [
+      56,
+      6,
+      0,
+      53,
+      0,
+      "BRMODEL"
+    ],
+    [
+      57,
+      6,
+      0,
+      63,
+      0,
+      "BRMODEL"
+    ],
+    [
+      58,
+      6,
+      0,
+      73,
+      0,
+      "BRMODEL"
+    ],
+    [
+      59,
+      6,
+      0,
+      83,
+      0,
+      "BRMODEL"
+    ],
+    [
+      60,
+      6,
+      0,
+      93,
+      0,
+      "BRMODEL"
+    ],
+    [
+      61,
+      6,
+      0,
+      103,
+      0,
+      "BRMODEL"
+    ],
+    [
+      62,
+      10,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      63,
+      11,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      64,
+      12,
+      0,
+      13,
+      1,
+      "IMAGE"
+    ],
+    [
+      65,
+      13,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      66,
+      13,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      67,
+      15,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      68,
+      20,
+      0,
+      21,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      69,
+      21,
+      0,
+      22,
+      0,
+      "LATENT"
+    ],
+    [
+      70,
+      22,
+      0,
+      23,
+      1,
+      "IMAGE"
+    ],
+    [
+      71,
+      23,
+      0,
+      24,
+      0,
+      "IMAGE"
+    ],
+    [
+      72,
+      23,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      73,
+      25,
+      0,
+      26,
+      0,
+      "IMAGE"
+    ],
+    [
+      74,
+      30,
+      0,
+      31,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      75,
+      31,
+      0,
+      32,
+      0,
+      "LATENT"
+    ],
+    [
+      76,
+      32,
+      0,
+      33,
+      1,
+      "IMAGE"
+    ],
+    [
+      77,
+      33,
+      0,
+      34,
+      0,
+      "IMAGE"
+    ],
+    [
+      78,
+      33,
+      0,
+      35,
+      0,
+      "IMAGE"
+    ],
+    [
+      79,
+      35,
+      0,
+      36,
+      0,
+      "IMAGE"
+    ],
+    [
+      80,
+      40,
+      0,
+      41,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      81,
+      41,
+      0,
+      42,
+      0,
+      "LATENT"
+    ],
+    [
+      82,
+      42,
+      0,
+      43,
+      1,
+      "IMAGE"
+    ],
+    [
+      83,
+      43,
+      0,
+      44,
+      0,
+      "IMAGE"
+    ],
+    [
+      84,
+      43,
+      0,
+      45,
+      0,
+      "IMAGE"
+    ],
+    [
+      85,
+      45,
+      0,
+      46,
+      0,
+      "IMAGE"
+    ],
+    [
+      86,
+      50,
+      0,
+      51,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      87,
+      51,
+      0,
+      52,
+      0,
+      "LATENT"
+    ],
+    [
+      88,
+      52,
+      0,
+      53,
+      1,
+      "IMAGE"
+    ],
+    [
+      89,
+      53,
+      0,
+      54,
+      0,
+      "IMAGE"
+    ],
+    [
+      90,
+      53,
+      0,
+      55,
+      0,
+      "IMAGE"
+    ],
+    [
+      91,
+      55,
+      0,
+      56,
+      0,
+      "IMAGE"
+    ],
+    [
+      92,
+      60,
+      0,
+      61,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      93,
+      61,
+      0,
+      62,
+      0,
+      "LATENT"
+    ],
+    [
+      94,
+      62,
+      0,
+      63,
+      1,
+      "IMAGE"
+    ],
+    [
+      95,
+      63,
+      0,
+      64,
+      0,
+      "IMAGE"
+    ],
+    [
+      96,
+      63,
+      0,
+      65,
+      0,
+      "IMAGE"
+    ],
+    [
+      97,
+      65,
+      0,
+      66,
+      0,
+      "IMAGE"
+    ],
+    [
+      98,
+      70,
+      0,
+      71,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      99,
+      71,
+      0,
+      72,
+      0,
+      "LATENT"
+    ],
+    [
+      100,
+      72,
+      0,
+      73,
+      1,
+      "IMAGE"
+    ],
+    [
+      101,
+      73,
+      0,
+      74,
+      0,
+      "IMAGE"
+    ],
+    [
+      102,
+      73,
+      0,
+      75,
+      0,
+      "IMAGE"
+    ],
+    [
+      103,
+      75,
+      0,
+      76,
+      0,
+      "IMAGE"
+    ],
+    [
+      104,
+      80,
+      0,
+      81,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      105,
+      81,
+      0,
+      82,
+      0,
+      "LATENT"
+    ],
+    [
+      106,
+      82,
+      0,
+      83,
+      1,
+      "IMAGE"
+    ],
+    [
+      107,
+      83,
+      0,
+      84,
+      0,
+      "IMAGE"
+    ],
+    [
+      108,
+      83,
+      0,
+      85,
+      0,
+      "IMAGE"
+    ],
+    [
+      109,
+      85,
+      0,
+      86,
+      0,
+      "IMAGE"
+    ],
+    [
+      110,
+      90,
+      0,
+      91,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      111,
+      91,
+      0,
+      92,
+      0,
+      "LATENT"
+    ],
+    [
+      112,
+      92,
+      0,
+      93,
+      1,
+      "IMAGE"
+    ],
+    [
+      113,
+      93,
+      0,
+      94,
+      0,
+      "IMAGE"
+    ],
+    [
+      114,
+      93,
+      0,
+      95,
+      0,
+      "IMAGE"
+    ],
+    [
+      115,
+      95,
+      0,
+      96,
+      0,
+      "IMAGE"
+    ],
+    [
+      116,
+      100,
+      0,
+      101,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      117,
+      101,
+      0,
+      102,
+      0,
+      "LATENT"
+    ],
+    [
+      118,
+      102,
+      0,
+      103,
+      1,
+      "IMAGE"
+    ],
+    [
+      119,
+      103,
+      0,
+      104,
+      0,
+      "IMAGE"
+    ],
+    [
+      120,
+      103,
+      0,
+      105,
+      0,
+      "IMAGE"
+    ],
+    [
+      121,
+      105,
+      0,
+      106,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "共享模型 + Latent + 负面 + BRIA",
+      "bounding": [
+        40,
+        30,
+        380,
+        760
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "说明 Note",
+      "bounding": [
+        40,
+        790,
+        380,
+        1020
+      ],
+      "color": "#a04060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "1. quest_icon_main 链",
+      "bounding": [
+        440,
+        30,
+        2750,
+        490
+      ],
+      "color": "#d0a040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "2. quest_icon_side 链",
+      "bounding": [
+        440,
+        520,
+        2750,
+        490
+      ],
+      "color": "#a0a0c0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "3. quest_icon_encounter 链",
+      "bounding": [
+        440,
+        1010,
+        2750,
+        490
+      ],
+      "color": "#a060c0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "4. quest_icon_complete 链",
+      "bounding": [
+        440,
+        1500,
+        2750,
+        490
+      ],
+      "color": "#d0a040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "5. map_icon_current 链",
+      "bounding": [
+        440,
+        1990,
+        2750,
+        490
+      ],
+      "color": "#c04040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "6. map_icon_town 链",
+      "bounding": [
+        440,
+        2480,
+        2750,
+        490
+      ],
+      "color": "#606060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "7. map_icon_sect 链",
+      "bounding": [
+        440,
+        2970,
+        2750,
+        490
+      ],
+      "color": "#a08040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "8. map_icon_dungeon 链",
+      "bounding": [
+        440,
+        3460,
+        2750,
+        490
+      ],
+      "color": "#604080",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "9. map_icon_enemy 链",
+      "bounding": [
+        440,
+        3950,
+        2750,
+        490
+      ],
+      "color": "#a02020",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "10. map_icon_merchant 链",
+      "bounding": [
+        440,
+        4440,
+        2750,
+        490
+      ],
+      "color": "#c0a040",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

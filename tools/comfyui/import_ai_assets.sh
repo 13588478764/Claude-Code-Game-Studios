@@ -121,11 +121,18 @@ fi
 
 # 图标类（128x128）
 process_category "wuxia_icon_flux_128"   "element_icons"   "五行元素图标 (128×128)"
-process_category "wuxia_realm_128"       "realm_icons"     "九大境界图标 (128×128)"
-process_category "wuxia_buff_128"        "status_icons"    "Buff/Debuff 图标 (128×128)"
-process_category "wuxia_skill_128"       "skill_icons"     "武学/天赋图标 (128×128)"
-process_category "wuxia_system_128"      "system_icons"    "系统/任务图标 (128×128)"
+process_category "wuxia_realm_128"       "realm_icons"     "十大境界图标 (128×128)"
+process_category "wuxia_combat_128"      "status_icons"    "战斗状态图标 Down/Break/Link/Execute/Parry (128×128)"
+process_category "wuxia_skill_128"       "skill_icons"     "武学技能图标 (128×128)"
+process_category "wuxia_talent_128"      "talent_icons"    "天赋节点图标 (128×128)"
 process_category "wuxia_item_128"        "item_icons"      "物品图标 (128×128)"
+
+# Buff/Debuff 图标（64x64,HUD 32x32 显示）
+process_category "wuxia_buff_64"         "buff_icons"      "Buff 增益图标 (64×64)"
+process_category "wuxia_debuff_64"       "buff_icons"      "Debuff 减益图标 (64×64,与 Buff 同目录)"
+
+# 系统/任务/地图图标（96x96,HUD 48x48 显示,三类同目录前缀区分）
+process_category "wuxia_system_96"       "system_icons"    "系统/任务/地图综合图标 (96×96)"
 
 # 立绘类（512x512）
 process_category "wuxia_portrait_512"    "portraits"        "主角/队友立绘 (512×512)"
@@ -136,7 +143,14 @@ process_category "wuxia_bg_1920"         "backgrounds"     "场景背景 (1920×
 process_category "wuxia_frame_256"       "frames"          "边框装饰 (256×256)"
 
 # 备份高清母版（开发期参考用，不入游戏包）
-process_category "wuxia_icon_flux_1024"  "_masters/icons_1024"  "🗄 1024 高清母版备份"
+process_category "wuxia_icon_flux_1024"  "_masters/icons_1024"   "🗄 1024 元素图标母版备份"
+process_category "wuxia_realm_1024"      "_masters/realms_1024"  "🗄 1024 境界图标母版备份"
+process_category "wuxia_combat_1024"     "_masters/combat_1024"  "🗄 1024 战斗状态图标母版备份"
+process_category "wuxia_buff_1024"       "_masters/buff_1024"    "🗄 1024 Buff 增益图标母版备份"
+process_category "wuxia_debuff_1024"     "_masters/debuff_1024"  "🗄 1024 Debuff 减益图标母版备份"
+process_category "wuxia_talent_1024"     "_masters/talent_1024"  "🗄 1024 天赋图标母版备份"
+process_category "wuxia_skill_1024"      "_masters/skill_1024"   "🗄 1024 武学图标母版备份"
+process_category "wuxia_system_1024"     "_masters/system_1024"  "🗄 1024 系统综合图标母版备份"
 
 # ===== 收尾 =====
 echo ""

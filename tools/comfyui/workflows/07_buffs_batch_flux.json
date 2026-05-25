@@ -1,0 +1,7487 @@
+{
+  "last_node_id": 186,
+  "last_link_id": 217,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        50,
+        50
+      ],
+      "size": [
+        350,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "flux1-dev.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "DualCLIPLoader",
+      "pos": [
+        50,
+        170
+      ],
+      "size": [
+        350,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "t5xxl_fp16.safetensors",
+        "clip_l.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        50,
+        330
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [
+        50,
+        420
+      ],
+      "size": [
+        350,
+        110
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1024x1024 (共享 Latent)",
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [
+        50,
+        560
+      ],
+      "size": [
+        350,
+        100
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            74,
+            75,
+            76,
+            77,
+            78,
+            79,
+            80,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            91
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "共享负面提示词 (FLUX 留空)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 6,
+      "type": "BRIA_RMBG_ModelLoader_Zho",
+      "pos": [
+        50,
+        700
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "BRMODEL",
+          "links": [
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "BRIA 抠图模型 (共享)",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_ModelLoader_Zho"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [
+        50,
+        800
+      ],
+      "size": [
+        350,
+        1000
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "title": "Buff 增益批量出图说明 (共18张)",
+      "properties": {},
+      "widgets_values": [
+        "■ 工作流: Buff 增益图标批量生成 (FLUX)\n   一次 Queue Prompt 出全部 18 张\n   预计耗时 95-110 分钟 (M4 Pro)\n\n■ Buff 序列 (圆形玉佩外框):\n   攻击系  1-4 atk_up/crit_up/atk_speed_up/lethal\n   防御系  5-8 def_up/qi_shield/res_up/invincible\n   增益系 9-12 hp_regen/qi_regen/meditation/luck_up\n   感知系 13-15 move_speed_up/perception_up/stealth\n   修真系 16-18 inner_flow/elements_balance/epiphany\n\n■ 风格一致性:\n   - 共享 seed 88888888 (fixed)\n   - 共享 EmptyLatent 1024x1024\n   - 圆形玉佩外框统一\n\n■ 输出 (每张 2 份):\n   output/wuxia_buff_1024/[name].png   (1024 母版)\n   output/wuxia_buff_64/[name].png      (64 游戏图标)\n\n■ 命名规范 (与 status-effects-system 对齐):\n   buff_icon_[name].png\n   由 import_ai_assets.sh 自动回流到\n   assets/ui/buff_icons/\n\n■ 单张重抽:\n   1. 找到该图标的 KSampler 节点\n   2. seed 改成别的数 (如 88888889)\n   3. control_after_generate 暂改 randomize\n   4. 单独 Queue Prompt 重抽\n   5. 满意后改回 fixed\n\n■ 注意:\n   生成 1024 是为了保留高清母版便于未来重缩放\n   实际入游戏的是缩放后的 64x64 PNG"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 10,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        50
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            110
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. buff_icon_atk_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single stylized golden short sword pointing upward at a slight angle with a faint warm flame glow surrounding the blade, suggesting boosted attack power. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. warm crimson red and bright gold flame color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        50
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 110
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 74
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 56
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            111
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. buff_icon_atk_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        50
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 111
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 38
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            112
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 13,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        50
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 92
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 112
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            113,
+            114
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "1. buff_icon_atk_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 14,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 113
+        }
+      ],
+      "outputs": [],
+      "title": "1. buff_icon_atk_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_atk_up"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        50
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 114
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            115
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. buff_icon_atk_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 115
+        }
+      ],
+      "outputs": [],
+      "title": "1. buff_icon_atk_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_atk_up"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        540
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            116
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. buff_icon_crit_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single bright crimson red gemstone in the center with a four pointed star burst exploding outward from inside the gem, suggesting critical strike chance. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. deep crimson red and pale gold sparkle color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 21,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        540
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 116
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 75
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 57
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            117
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. buff_icon_crit_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 22,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        540
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 117
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 39
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            118
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 23,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        540
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 93
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 118
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            119,
+            120
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "2. buff_icon_crit_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 24,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 119
+        }
+      ],
+      "outputs": [],
+      "title": "2. buff_icon_crit_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_crit_up"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        540
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 120
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            121
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. buff_icon_crit_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 121
+        }
+      ],
+      "outputs": [],
+      "title": "2. buff_icon_crit_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_crit_up"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1030
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            122
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. buff_icon_atk_speed_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: three diagonal streaking light trails forming the after image silhouettes of a sword swing, the trails flowing from upper left to lower right with sharp pointed tips suggesting increased attack speed. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. gold and pale white light streak color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 31,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1030
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 122
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 76
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 58
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            123
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. buff_icon_atk_speed_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 32,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1030
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 123
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 40
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            124
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 33,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1030
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 94
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 124
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            125,
+            126
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "3. buff_icon_atk_speed_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 34,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 125
+        }
+      ],
+      "outputs": [],
+      "title": "3. buff_icon_atk_speed_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_atk_speed_up"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1030
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 126
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            127
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. buff_icon_atk_speed_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 127
+        }
+      ],
+      "outputs": [],
+      "title": "3. buff_icon_atk_speed_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_atk_speed_up"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1520
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            128
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. buff_icon_lethal - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single stylized longsword standing upright vertically in the center, the blade engulfed in golden red flames licking upward, with a soft golden radiance halo behind, suggesting a guaranteed lethal blow. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. molten gold red and bright golden halo color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 41,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1520
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 128
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 77
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 59
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            129
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. buff_icon_lethal - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 42,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1520
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 129
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 41
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            130
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 43,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1520
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 95
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 130
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            131,
+            132
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "4. buff_icon_lethal - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 44,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 131
+        }
+      ],
+      "outputs": [],
+      "title": "4. buff_icon_lethal - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_lethal"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1520
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 132
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            133
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. buff_icon_lethal - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 133
+        }
+      ],
+      "outputs": [],
+      "title": "4. buff_icon_lethal - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_lethal"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2010
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            134
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. buff_icon_def_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single stylized pale blue spiritual energy shield in the center with a simplified eight trigram bagua pattern carved on its surface, the shield facing the viewer suggesting boosted defense. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. soft cyan blue and pale silver color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 51,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2010
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 134
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 78
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 60
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            135
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. buff_icon_def_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 52,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2010
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 135
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 42
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            136
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 53,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2010
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 96
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 136
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            137,
+            138
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "5. buff_icon_def_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 54,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 137
+        }
+      ],
+      "outputs": [],
+      "title": "5. buff_icon_def_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_def_up"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2010
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 138
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            139
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. buff_icon_def_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 56,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 139
+        }
+      ],
+      "outputs": [],
+      "title": "5. buff_icon_def_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_def_up"
+      ]
+    },
+    {
+      "id": 60,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2500
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            140
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. buff_icon_qi_shield - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single semi transparent pale cyan spiritual energy sphere barrier in the center with faint flowing rune symbols drifting across its surface, suggesting a qi protective shield. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. translucent cyan green and pale white inner glow color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 61,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2500
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 6
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 140
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 79
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 61
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            141
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. buff_icon_qi_shield - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 62,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2500
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 141
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 43
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            142
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 63,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2500
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 97
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 142
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            143,
+            144
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "6. buff_icon_qi_shield - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 64,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2500
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 143
+        }
+      ],
+      "outputs": [],
+      "title": "6. buff_icon_qi_shield - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_qi_shield"
+      ]
+    },
+    {
+      "id": 65,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2500
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 144
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            145
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. buff_icon_qi_shield - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 66,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2500
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 145
+        }
+      ],
+      "outputs": [],
+      "title": "6. buff_icon_qi_shield - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_qi_shield"
+      ]
+    },
+    {
+      "id": 70,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2990
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            146
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. buff_icon_res_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single sturdy ancient Chinese bronze cauldron tripod standing solidly in the center, its body carved with simplified daoist trigram symbols, suggesting elemental resistance. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. antique bronze and yellow gold dao pattern color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 71,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2990
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 7
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 146
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 80
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 62
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            147
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. buff_icon_res_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 72,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2990
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 147
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 44
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            148
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 73,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2990
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 98
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 148
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            149,
+            150
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "7. buff_icon_res_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 74,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2990
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 53,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 149
+        }
+      ],
+      "outputs": [],
+      "title": "7. buff_icon_res_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_res_up"
+      ]
+    },
+    {
+      "id": 75,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2990
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 150
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            151
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. buff_icon_res_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 76,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2990
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 151
+        }
+      ],
+      "outputs": [],
+      "title": "7. buff_icon_res_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_res_up"
+      ]
+    },
+    {
+      "id": 80,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        3480
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 56,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            152
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. buff_icon_invincible - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single golden five pointed star shaped invincible shield in the center, with star rays radiating outward in symmetrical pattern, suggesting invulnerability. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. brilliant gold and pale white radiance color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 81,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        3480
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 57,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 8
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 152
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 81
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 63
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            153
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. buff_icon_invincible - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 82,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        3480
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 58,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 153
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 45
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            154
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 83,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        3480
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 59,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 99
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 154
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            155,
+            156
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "8. buff_icon_invincible - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 84,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        3480
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 60,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 155
+        }
+      ],
+      "outputs": [],
+      "title": "8. buff_icon_invincible - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_invincible"
+      ]
+    },
+    {
+      "id": 85,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        3480
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 61,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 156
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            157
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. buff_icon_invincible - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 86,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        3480
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 62,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 157
+        }
+      ],
+      "outputs": [],
+      "title": "8. buff_icon_invincible - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_invincible"
+      ]
+    },
+    {
+      "id": 90,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        3970
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 63,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            158
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. buff_icon_hp_regen - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single emerald green heart shaped spiritual herb leaf in the center, with a small clear droplet of life essence dripping from the leaf tip, with a soft pale green glow behind, suggesting health regeneration. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. vivid emerald green and pale jade glow color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 91,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        3970
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 64,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 158
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 82
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 64
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            159
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. buff_icon_hp_regen - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 92,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        3970
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 159
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 46
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            160
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 93,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        3970
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 100
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 160
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            161,
+            162
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "9. buff_icon_hp_regen - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 94,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        3970
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 161
+        }
+      ],
+      "outputs": [],
+      "title": "9. buff_icon_hp_regen - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_hp_regen"
+      ]
+    },
+    {
+      "id": 95,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        3970
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 162
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            163
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. buff_icon_hp_regen - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 96,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        3970
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 69,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 163
+        }
+      ],
+      "outputs": [],
+      "title": "9. buff_icon_hp_regen - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_hp_regen"
+      ]
+    },
+    {
+      "id": 100,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        4460
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 70,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            164
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. buff_icon_qi_regen - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single floating pale cyan spiritual energy bead suspended in the center, with a daoist swirl pattern spiraling upward beneath it suggesting qi recovery flowing into the body. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. soft cyan green and pale white spiral color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 101,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        4460
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 71,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 10
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 164
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 83
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 65
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            165
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. buff_icon_qi_regen - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 102,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        4460
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 72,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 165
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 47
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            166
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 103,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        4460
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 73,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 101
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 166
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            167,
+            168
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "10. buff_icon_qi_regen - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 104,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        4460
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 74,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 167
+        }
+      ],
+      "outputs": [],
+      "title": "10. buff_icon_qi_regen - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_qi_regen"
+      ]
+    },
+    {
+      "id": 105,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        4460
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 75,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 168
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            169
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. buff_icon_qi_regen - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 106,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        4460
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 76,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 169
+        }
+      ],
+      "outputs": [],
+      "title": "10. buff_icon_qi_regen - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_qi_regen"
+      ]
+    },
+    {
+      "id": 110,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        4950
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 77,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 29
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            170
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "11. buff_icon_meditation - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single small humanoid silhouette sitting cross legged in lotus meditation posture in the center, with a single thin wisp of cyan smoke rising from the crown of the head and curling into a small daoist symbol above, suggesting accelerated meditation. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. soft slate blue and pale cyan wisp color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 111,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        4950
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 78,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 11
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 170
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 84
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 66
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            171
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "11. buff_icon_meditation - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 112,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        4950
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 79,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 171
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 48
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            172
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 113,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        4950
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 80,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 102
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 172
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            173,
+            174
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "11. buff_icon_meditation - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 114,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        4950
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 81,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 173
+        }
+      ],
+      "outputs": [],
+      "title": "11. buff_icon_meditation - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_meditation"
+      ]
+    },
+    {
+      "id": 115,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        4950
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 82,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 174
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            175
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "11. buff_icon_meditation - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 116,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        4950
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 83,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 175
+        }
+      ],
+      "outputs": [],
+      "title": "11. buff_icon_meditation - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_meditation"
+      ]
+    },
+    {
+      "id": 120,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        5440
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 84,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            176
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "12. buff_icon_luck_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single ancient Chinese golden round coin tied with a red silk ribbon knot through the central square hole, the ribbon forming a simple decorative knot, suggesting good fortune. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. rich gold and bright crimson red ribbon color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 121,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        5440
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 85,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 12
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 176
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 85
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 67
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            177
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "12. buff_icon_luck_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 122,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        5440
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 86,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 177
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 49
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            178
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 123,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        5440
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 87,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 103
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 178
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            179,
+            180
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "12. buff_icon_luck_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 124,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        5440
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 88,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 179
+        }
+      ],
+      "outputs": [],
+      "title": "12. buff_icon_luck_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_luck_up"
+      ]
+    },
+    {
+      "id": 125,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        5440
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 89,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 180
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            181
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "12. buff_icon_luck_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 126,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        5440
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 90,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 181
+        }
+      ],
+      "outputs": [],
+      "title": "12. buff_icon_luck_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_luck_up"
+      ]
+    },
+    {
+      "id": 130,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        5930
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 91,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 31
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            182
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "13. buff_icon_move_speed_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single stylized pale violet feathered wing in the center with the feather tips trailing soft streaking light residue suggesting swift movement. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. lavender violet and pale silver streak color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 131,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        5930
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 92,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 13
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 182
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 86
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 68
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            183
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "13. buff_icon_move_speed_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 132,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        5930
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 93,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 183
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 50
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            184
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 133,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        5930
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 94,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 104
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 184
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            185,
+            186
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "13. buff_icon_move_speed_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 134,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        5930
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 95,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 185
+        }
+      ],
+      "outputs": [],
+      "title": "13. buff_icon_move_speed_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_move_speed_up"
+      ]
+    },
+    {
+      "id": 135,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        5930
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 96,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 186
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            187
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "13. buff_icon_move_speed_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 136,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        5930
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 97,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 187
+        }
+      ],
+      "outputs": [],
+      "title": "13. buff_icon_move_speed_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_move_speed_up"
+      ]
+    },
+    {
+      "id": 140,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        6420
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 98,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 32
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            188
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "14. buff_icon_perception_up - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single open third eye in the center with a violet iris, surrounded by a thin ring of small golden daoist rune symbols circling the eye, suggesting heightened spiritual perception. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. deep violet purple and bright gold rune color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 141,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        6420
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 99,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 14
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 188
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 87
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 69
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            189
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "14. buff_icon_perception_up - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 142,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        6420
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 100,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 189
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 51
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            190
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 143,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        6420
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 101,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 105
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 190
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            191,
+            192
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "14. buff_icon_perception_up - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 144,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        6420
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 102,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 191
+        }
+      ],
+      "outputs": [],
+      "title": "14. buff_icon_perception_up - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_perception_up"
+      ]
+    },
+    {
+      "id": 145,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        6420
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 103,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 192
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            193
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "14. buff_icon_perception_up - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 146,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        6420
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 104,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 193
+        }
+      ],
+      "outputs": [],
+      "title": "14. buff_icon_perception_up - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_perception_up"
+      ]
+    },
+    {
+      "id": 150,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        6910
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 105,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 33
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            194
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "15. buff_icon_stealth - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single semi transparent humanoid silhouette in the center already fading away into thin air, the lower half nearly invisible and the upper half a faint outline, suggesting stealth invisibility. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. pale dusty gray violet and translucent white color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 151,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        6910
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 106,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 15
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 194
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 88
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 70
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            195
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "15. buff_icon_stealth - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 152,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        6910
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 107,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 195
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 52
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            196
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 153,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        6910
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 108,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 106
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 196
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            197,
+            198
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "15. buff_icon_stealth - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 154,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        6910
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 109,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 197
+        }
+      ],
+      "outputs": [],
+      "title": "15. buff_icon_stealth - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_stealth"
+      ]
+    },
+    {
+      "id": 155,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        6910
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 110,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 198
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            199
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "15. buff_icon_stealth - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 156,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        6910
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 111,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 199
+        }
+      ],
+      "outputs": [],
+      "title": "15. buff_icon_stealth - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_stealth"
+      ]
+    },
+    {
+      "id": 160,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        7400
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 112,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            200
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "16. buff_icon_inner_flow - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single swirling taiji yin yang pattern in the center with bright golden red qi and translucent cyan green qi flowing in a circulating loop along the spiral, suggesting inner energy circulation. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. warm golden red and soft cyan green color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 161,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        7400
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 113,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 16
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 200
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 89
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 71
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            201
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "16. buff_icon_inner_flow - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 162,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        7400
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 114,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 201
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 53
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            202
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 163,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        7400
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 115,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 107
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 202
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            203,
+            204
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "16. buff_icon_inner_flow - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 164,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        7400
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 116,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 203
+        }
+      ],
+      "outputs": [],
+      "title": "16. buff_icon_inner_flow - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_inner_flow"
+      ]
+    },
+    {
+      "id": 165,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        7400
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 117,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 204
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            205
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "16. buff_icon_inner_flow - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 166,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        7400
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 118,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 205
+        }
+      ],
+      "outputs": [],
+      "title": "16. buff_icon_inner_flow - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_inner_flow"
+      ]
+    },
+    {
+      "id": 170,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        7890
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 119,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 35
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            206
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "17. buff_icon_elements_balance - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: five tiny stylized symbols of metal wood water fire and earth arranged in a perfect circle around a small central taiji symbol, all icons floating in symmetric balance suggesting five element harmony. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. balanced multi color metal silver wood green water blue fire red earth yellow color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 171,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        7890
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 120,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 17
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 206
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 90
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 72
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            207
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "17. buff_icon_elements_balance - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 172,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        7890
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 121,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 207
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 54
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            208
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 173,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        7890
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 122,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 108
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 208
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            209,
+            210
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "17. buff_icon_elements_balance - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 174,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        7890
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 123,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 209
+        }
+      ],
+      "outputs": [],
+      "title": "17. buff_icon_elements_balance - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_elements_balance"
+      ]
+    },
+    {
+      "id": 175,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        7890
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 124,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 210
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            211
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "17. buff_icon_elements_balance - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 176,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        7890
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 125,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 211
+        }
+      ],
+      "outputs": [],
+      "title": "17. buff_icon_elements_balance - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_elements_balance"
+      ]
+    },
+    {
+      "id": 180,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        8380
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 126,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            212
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "18. buff_icon_epiphany - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A minimalist game UI icon for a cultivation wuxia RPG, centered composition. Subject: a single lotus bud blooming at the top of its stem in the center, releasing a single bright golden light burst from its open petals, with a small wisdom pearl floating inside the light, suggesting a moment of enlightenment. The subject occupies about 70 percent of the canvas in the center, with generous empty space around. Behind the subject is a complete unbroken single closed circular jade pendant border drawn as a full 360 degree circle, uniform thin line weight all the way around in soft cream-jade tone, completely symmetric, no decoration on the ring itself. Pure clean solid white background, no other elements. Flat vector illustration style, painted with traditional Chinese ink wash brushstrokes but extremely simplified for icon use. pale lotus white and bright golden enlightenment glow color palette only. No realistic human portraits, only stylized silhouettes if any, no facial features, no complex patterns, no maze patterns, no ornate frames, no text, no multiple subjects, no snowflakes, no frost decoration, no leaves on border, no debris on border, no asymmetric elements, no broken ring. Single focal point on the central subject. Designed to be readable when scaled down to 32x32 pixels. Symmetric and balanced composition. Highest quality concept art for game UI."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 181,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        8380
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 127,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 18
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 212
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 91
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 73
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            213
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "18. buff_icon_epiphany - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 182,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        8380
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 128,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 213
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 55
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            214
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 183,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        8380
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 129,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 109
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 214
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            215,
+            216
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "18. buff_icon_epiphany - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 184,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        8380
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 130,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 215
+        }
+      ],
+      "outputs": [],
+      "title": "18. buff_icon_epiphany - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_1024/buff_icon_epiphany"
+      ]
+    },
+    {
+      "id": 185,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        8380
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 131,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 216
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            217
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "18. buff_icon_epiphany - 缩放 64",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        64,
+        64,
+        "disabled"
+      ]
+    },
+    {
+      "id": 186,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        8380
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 132,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 217
+        }
+      ],
+      "outputs": [],
+      "title": "18. buff_icon_epiphany - 64 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "wuxia_buff_64/buff_icon_epiphany"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      1,
+      0,
+      21,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      1,
+      0,
+      31,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      1,
+      0,
+      41,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      1,
+      0,
+      51,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      1,
+      0,
+      61,
+      0,
+      "MODEL"
+    ],
+    [
+      7,
+      1,
+      0,
+      71,
+      0,
+      "MODEL"
+    ],
+    [
+      8,
+      1,
+      0,
+      81,
+      0,
+      "MODEL"
+    ],
+    [
+      9,
+      1,
+      0,
+      91,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      1,
+      0,
+      101,
+      0,
+      "MODEL"
+    ],
+    [
+      11,
+      1,
+      0,
+      111,
+      0,
+      "MODEL"
+    ],
+    [
+      12,
+      1,
+      0,
+      121,
+      0,
+      "MODEL"
+    ],
+    [
+      13,
+      1,
+      0,
+      131,
+      0,
+      "MODEL"
+    ],
+    [
+      14,
+      1,
+      0,
+      141,
+      0,
+      "MODEL"
+    ],
+    [
+      15,
+      1,
+      0,
+      151,
+      0,
+      "MODEL"
+    ],
+    [
+      16,
+      1,
+      0,
+      161,
+      0,
+      "MODEL"
+    ],
+    [
+      17,
+      1,
+      0,
+      171,
+      0,
+      "MODEL"
+    ],
+    [
+      18,
+      1,
+      0,
+      181,
+      0,
+      "MODEL"
+    ],
+    [
+      19,
+      2,
+      0,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      20,
+      2,
+      0,
+      20,
+      0,
+      "CLIP"
+    ],
+    [
+      21,
+      2,
+      0,
+      30,
+      0,
+      "CLIP"
+    ],
+    [
+      22,
+      2,
+      0,
+      40,
+      0,
+      "CLIP"
+    ],
+    [
+      23,
+      2,
+      0,
+      50,
+      0,
+      "CLIP"
+    ],
+    [
+      24,
+      2,
+      0,
+      60,
+      0,
+      "CLIP"
+    ],
+    [
+      25,
+      2,
+      0,
+      70,
+      0,
+      "CLIP"
+    ],
+    [
+      26,
+      2,
+      0,
+      80,
+      0,
+      "CLIP"
+    ],
+    [
+      27,
+      2,
+      0,
+      90,
+      0,
+      "CLIP"
+    ],
+    [
+      28,
+      2,
+      0,
+      100,
+      0,
+      "CLIP"
+    ],
+    [
+      29,
+      2,
+      0,
+      110,
+      0,
+      "CLIP"
+    ],
+    [
+      30,
+      2,
+      0,
+      120,
+      0,
+      "CLIP"
+    ],
+    [
+      31,
+      2,
+      0,
+      130,
+      0,
+      "CLIP"
+    ],
+    [
+      32,
+      2,
+      0,
+      140,
+      0,
+      "CLIP"
+    ],
+    [
+      33,
+      2,
+      0,
+      150,
+      0,
+      "CLIP"
+    ],
+    [
+      34,
+      2,
+      0,
+      160,
+      0,
+      "CLIP"
+    ],
+    [
+      35,
+      2,
+      0,
+      170,
+      0,
+      "CLIP"
+    ],
+    [
+      36,
+      2,
+      0,
+      180,
+      0,
+      "CLIP"
+    ],
+    [
+      37,
+      2,
+      0,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      38,
+      3,
+      0,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      39,
+      3,
+      0,
+      22,
+      1,
+      "VAE"
+    ],
+    [
+      40,
+      3,
+      0,
+      32,
+      1,
+      "VAE"
+    ],
+    [
+      41,
+      3,
+      0,
+      42,
+      1,
+      "VAE"
+    ],
+    [
+      42,
+      3,
+      0,
+      52,
+      1,
+      "VAE"
+    ],
+    [
+      43,
+      3,
+      0,
+      62,
+      1,
+      "VAE"
+    ],
+    [
+      44,
+      3,
+      0,
+      72,
+      1,
+      "VAE"
+    ],
+    [
+      45,
+      3,
+      0,
+      82,
+      1,
+      "VAE"
+    ],
+    [
+      46,
+      3,
+      0,
+      92,
+      1,
+      "VAE"
+    ],
+    [
+      47,
+      3,
+      0,
+      102,
+      1,
+      "VAE"
+    ],
+    [
+      48,
+      3,
+      0,
+      112,
+      1,
+      "VAE"
+    ],
+    [
+      49,
+      3,
+      0,
+      122,
+      1,
+      "VAE"
+    ],
+    [
+      50,
+      3,
+      0,
+      132,
+      1,
+      "VAE"
+    ],
+    [
+      51,
+      3,
+      0,
+      142,
+      1,
+      "VAE"
+    ],
+    [
+      52,
+      3,
+      0,
+      152,
+      1,
+      "VAE"
+    ],
+    [
+      53,
+      3,
+      0,
+      162,
+      1,
+      "VAE"
+    ],
+    [
+      54,
+      3,
+      0,
+      172,
+      1,
+      "VAE"
+    ],
+    [
+      55,
+      3,
+      0,
+      182,
+      1,
+      "VAE"
+    ],
+    [
+      56,
+      4,
+      0,
+      11,
+      3,
+      "LATENT"
+    ],
+    [
+      57,
+      4,
+      0,
+      21,
+      3,
+      "LATENT"
+    ],
+    [
+      58,
+      4,
+      0,
+      31,
+      3,
+      "LATENT"
+    ],
+    [
+      59,
+      4,
+      0,
+      41,
+      3,
+      "LATENT"
+    ],
+    [
+      60,
+      4,
+      0,
+      51,
+      3,
+      "LATENT"
+    ],
+    [
+      61,
+      4,
+      0,
+      61,
+      3,
+      "LATENT"
+    ],
+    [
+      62,
+      4,
+      0,
+      71,
+      3,
+      "LATENT"
+    ],
+    [
+      63,
+      4,
+      0,
+      81,
+      3,
+      "LATENT"
+    ],
+    [
+      64,
+      4,
+      0,
+      91,
+      3,
+      "LATENT"
+    ],
+    [
+      65,
+      4,
+      0,
+      101,
+      3,
+      "LATENT"
+    ],
+    [
+      66,
+      4,
+      0,
+      111,
+      3,
+      "LATENT"
+    ],
+    [
+      67,
+      4,
+      0,
+      121,
+      3,
+      "LATENT"
+    ],
+    [
+      68,
+      4,
+      0,
+      131,
+      3,
+      "LATENT"
+    ],
+    [
+      69,
+      4,
+      0,
+      141,
+      3,
+      "LATENT"
+    ],
+    [
+      70,
+      4,
+      0,
+      151,
+      3,
+      "LATENT"
+    ],
+    [
+      71,
+      4,
+      0,
+      161,
+      3,
+      "LATENT"
+    ],
+    [
+      72,
+      4,
+      0,
+      171,
+      3,
+      "LATENT"
+    ],
+    [
+      73,
+      4,
+      0,
+      181,
+      3,
+      "LATENT"
+    ],
+    [
+      74,
+      5,
+      0,
+      11,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      75,
+      5,
+      0,
+      21,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      76,
+      5,
+      0,
+      31,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      77,
+      5,
+      0,
+      41,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      78,
+      5,
+      0,
+      51,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      79,
+      5,
+      0,
+      61,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      80,
+      5,
+      0,
+      71,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      81,
+      5,
+      0,
+      81,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      82,
+      5,
+      0,
+      91,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      83,
+      5,
+      0,
+      101,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      84,
+      5,
+      0,
+      111,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      85,
+      5,
+      0,
+      121,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      86,
+      5,
+      0,
+      131,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      87,
+      5,
+      0,
+      141,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      88,
+      5,
+      0,
+      151,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      89,
+      5,
+      0,
+      161,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      90,
+      5,
+      0,
+      171,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      91,
+      5,
+      0,
+      181,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      92,
+      6,
+      0,
+      13,
+      0,
+      "BRMODEL"
+    ],
+    [
+      93,
+      6,
+      0,
+      23,
+      0,
+      "BRMODEL"
+    ],
+    [
+      94,
+      6,
+      0,
+      33,
+      0,
+      "BRMODEL"
+    ],
+    [
+      95,
+      6,
+      0,
+      43,
+      0,
+      "BRMODEL"
+    ],
+    [
+      96,
+      6,
+      0,
+      53,
+      0,
+      "BRMODEL"
+    ],
+    [
+      97,
+      6,
+      0,
+      63,
+      0,
+      "BRMODEL"
+    ],
+    [
+      98,
+      6,
+      0,
+      73,
+      0,
+      "BRMODEL"
+    ],
+    [
+      99,
+      6,
+      0,
+      83,
+      0,
+      "BRMODEL"
+    ],
+    [
+      100,
+      6,
+      0,
+      93,
+      0,
+      "BRMODEL"
+    ],
+    [
+      101,
+      6,
+      0,
+      103,
+      0,
+      "BRMODEL"
+    ],
+    [
+      102,
+      6,
+      0,
+      113,
+      0,
+      "BRMODEL"
+    ],
+    [
+      103,
+      6,
+      0,
+      123,
+      0,
+      "BRMODEL"
+    ],
+    [
+      104,
+      6,
+      0,
+      133,
+      0,
+      "BRMODEL"
+    ],
+    [
+      105,
+      6,
+      0,
+      143,
+      0,
+      "BRMODEL"
+    ],
+    [
+      106,
+      6,
+      0,
+      153,
+      0,
+      "BRMODEL"
+    ],
+    [
+      107,
+      6,
+      0,
+      163,
+      0,
+      "BRMODEL"
+    ],
+    [
+      108,
+      6,
+      0,
+      173,
+      0,
+      "BRMODEL"
+    ],
+    [
+      109,
+      6,
+      0,
+      183,
+      0,
+      "BRMODEL"
+    ],
+    [
+      110,
+      10,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      111,
+      11,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      112,
+      12,
+      0,
+      13,
+      1,
+      "IMAGE"
+    ],
+    [
+      113,
+      13,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      114,
+      13,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      115,
+      15,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      116,
+      20,
+      0,
+      21,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      117,
+      21,
+      0,
+      22,
+      0,
+      "LATENT"
+    ],
+    [
+      118,
+      22,
+      0,
+      23,
+      1,
+      "IMAGE"
+    ],
+    [
+      119,
+      23,
+      0,
+      24,
+      0,
+      "IMAGE"
+    ],
+    [
+      120,
+      23,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      121,
+      25,
+      0,
+      26,
+      0,
+      "IMAGE"
+    ],
+    [
+      122,
+      30,
+      0,
+      31,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      123,
+      31,
+      0,
+      32,
+      0,
+      "LATENT"
+    ],
+    [
+      124,
+      32,
+      0,
+      33,
+      1,
+      "IMAGE"
+    ],
+    [
+      125,
+      33,
+      0,
+      34,
+      0,
+      "IMAGE"
+    ],
+    [
+      126,
+      33,
+      0,
+      35,
+      0,
+      "IMAGE"
+    ],
+    [
+      127,
+      35,
+      0,
+      36,
+      0,
+      "IMAGE"
+    ],
+    [
+      128,
+      40,
+      0,
+      41,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      129,
+      41,
+      0,
+      42,
+      0,
+      "LATENT"
+    ],
+    [
+      130,
+      42,
+      0,
+      43,
+      1,
+      "IMAGE"
+    ],
+    [
+      131,
+      43,
+      0,
+      44,
+      0,
+      "IMAGE"
+    ],
+    [
+      132,
+      43,
+      0,
+      45,
+      0,
+      "IMAGE"
+    ],
+    [
+      133,
+      45,
+      0,
+      46,
+      0,
+      "IMAGE"
+    ],
+    [
+      134,
+      50,
+      0,
+      51,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      135,
+      51,
+      0,
+      52,
+      0,
+      "LATENT"
+    ],
+    [
+      136,
+      52,
+      0,
+      53,
+      1,
+      "IMAGE"
+    ],
+    [
+      137,
+      53,
+      0,
+      54,
+      0,
+      "IMAGE"
+    ],
+    [
+      138,
+      53,
+      0,
+      55,
+      0,
+      "IMAGE"
+    ],
+    [
+      139,
+      55,
+      0,
+      56,
+      0,
+      "IMAGE"
+    ],
+    [
+      140,
+      60,
+      0,
+      61,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      141,
+      61,
+      0,
+      62,
+      0,
+      "LATENT"
+    ],
+    [
+      142,
+      62,
+      0,
+      63,
+      1,
+      "IMAGE"
+    ],
+    [
+      143,
+      63,
+      0,
+      64,
+      0,
+      "IMAGE"
+    ],
+    [
+      144,
+      63,
+      0,
+      65,
+      0,
+      "IMAGE"
+    ],
+    [
+      145,
+      65,
+      0,
+      66,
+      0,
+      "IMAGE"
+    ],
+    [
+      146,
+      70,
+      0,
+      71,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      147,
+      71,
+      0,
+      72,
+      0,
+      "LATENT"
+    ],
+    [
+      148,
+      72,
+      0,
+      73,
+      1,
+      "IMAGE"
+    ],
+    [
+      149,
+      73,
+      0,
+      74,
+      0,
+      "IMAGE"
+    ],
+    [
+      150,
+      73,
+      0,
+      75,
+      0,
+      "IMAGE"
+    ],
+    [
+      151,
+      75,
+      0,
+      76,
+      0,
+      "IMAGE"
+    ],
+    [
+      152,
+      80,
+      0,
+      81,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      153,
+      81,
+      0,
+      82,
+      0,
+      "LATENT"
+    ],
+    [
+      154,
+      82,
+      0,
+      83,
+      1,
+      "IMAGE"
+    ],
+    [
+      155,
+      83,
+      0,
+      84,
+      0,
+      "IMAGE"
+    ],
+    [
+      156,
+      83,
+      0,
+      85,
+      0,
+      "IMAGE"
+    ],
+    [
+      157,
+      85,
+      0,
+      86,
+      0,
+      "IMAGE"
+    ],
+    [
+      158,
+      90,
+      0,
+      91,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      159,
+      91,
+      0,
+      92,
+      0,
+      "LATENT"
+    ],
+    [
+      160,
+      92,
+      0,
+      93,
+      1,
+      "IMAGE"
+    ],
+    [
+      161,
+      93,
+      0,
+      94,
+      0,
+      "IMAGE"
+    ],
+    [
+      162,
+      93,
+      0,
+      95,
+      0,
+      "IMAGE"
+    ],
+    [
+      163,
+      95,
+      0,
+      96,
+      0,
+      "IMAGE"
+    ],
+    [
+      164,
+      100,
+      0,
+      101,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      165,
+      101,
+      0,
+      102,
+      0,
+      "LATENT"
+    ],
+    [
+      166,
+      102,
+      0,
+      103,
+      1,
+      "IMAGE"
+    ],
+    [
+      167,
+      103,
+      0,
+      104,
+      0,
+      "IMAGE"
+    ],
+    [
+      168,
+      103,
+      0,
+      105,
+      0,
+      "IMAGE"
+    ],
+    [
+      169,
+      105,
+      0,
+      106,
+      0,
+      "IMAGE"
+    ],
+    [
+      170,
+      110,
+      0,
+      111,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      171,
+      111,
+      0,
+      112,
+      0,
+      "LATENT"
+    ],
+    [
+      172,
+      112,
+      0,
+      113,
+      1,
+      "IMAGE"
+    ],
+    [
+      173,
+      113,
+      0,
+      114,
+      0,
+      "IMAGE"
+    ],
+    [
+      174,
+      113,
+      0,
+      115,
+      0,
+      "IMAGE"
+    ],
+    [
+      175,
+      115,
+      0,
+      116,
+      0,
+      "IMAGE"
+    ],
+    [
+      176,
+      120,
+      0,
+      121,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      177,
+      121,
+      0,
+      122,
+      0,
+      "LATENT"
+    ],
+    [
+      178,
+      122,
+      0,
+      123,
+      1,
+      "IMAGE"
+    ],
+    [
+      179,
+      123,
+      0,
+      124,
+      0,
+      "IMAGE"
+    ],
+    [
+      180,
+      123,
+      0,
+      125,
+      0,
+      "IMAGE"
+    ],
+    [
+      181,
+      125,
+      0,
+      126,
+      0,
+      "IMAGE"
+    ],
+    [
+      182,
+      130,
+      0,
+      131,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      183,
+      131,
+      0,
+      132,
+      0,
+      "LATENT"
+    ],
+    [
+      184,
+      132,
+      0,
+      133,
+      1,
+      "IMAGE"
+    ],
+    [
+      185,
+      133,
+      0,
+      134,
+      0,
+      "IMAGE"
+    ],
+    [
+      186,
+      133,
+      0,
+      135,
+      0,
+      "IMAGE"
+    ],
+    [
+      187,
+      135,
+      0,
+      136,
+      0,
+      "IMAGE"
+    ],
+    [
+      188,
+      140,
+      0,
+      141,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      189,
+      141,
+      0,
+      142,
+      0,
+      "LATENT"
+    ],
+    [
+      190,
+      142,
+      0,
+      143,
+      1,
+      "IMAGE"
+    ],
+    [
+      191,
+      143,
+      0,
+      144,
+      0,
+      "IMAGE"
+    ],
+    [
+      192,
+      143,
+      0,
+      145,
+      0,
+      "IMAGE"
+    ],
+    [
+      193,
+      145,
+      0,
+      146,
+      0,
+      "IMAGE"
+    ],
+    [
+      194,
+      150,
+      0,
+      151,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      195,
+      151,
+      0,
+      152,
+      0,
+      "LATENT"
+    ],
+    [
+      196,
+      152,
+      0,
+      153,
+      1,
+      "IMAGE"
+    ],
+    [
+      197,
+      153,
+      0,
+      154,
+      0,
+      "IMAGE"
+    ],
+    [
+      198,
+      153,
+      0,
+      155,
+      0,
+      "IMAGE"
+    ],
+    [
+      199,
+      155,
+      0,
+      156,
+      0,
+      "IMAGE"
+    ],
+    [
+      200,
+      160,
+      0,
+      161,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      201,
+      161,
+      0,
+      162,
+      0,
+      "LATENT"
+    ],
+    [
+      202,
+      162,
+      0,
+      163,
+      1,
+      "IMAGE"
+    ],
+    [
+      203,
+      163,
+      0,
+      164,
+      0,
+      "IMAGE"
+    ],
+    [
+      204,
+      163,
+      0,
+      165,
+      0,
+      "IMAGE"
+    ],
+    [
+      205,
+      165,
+      0,
+      166,
+      0,
+      "IMAGE"
+    ],
+    [
+      206,
+      170,
+      0,
+      171,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      207,
+      171,
+      0,
+      172,
+      0,
+      "LATENT"
+    ],
+    [
+      208,
+      172,
+      0,
+      173,
+      1,
+      "IMAGE"
+    ],
+    [
+      209,
+      173,
+      0,
+      174,
+      0,
+      "IMAGE"
+    ],
+    [
+      210,
+      173,
+      0,
+      175,
+      0,
+      "IMAGE"
+    ],
+    [
+      211,
+      175,
+      0,
+      176,
+      0,
+      "IMAGE"
+    ],
+    [
+      212,
+      180,
+      0,
+      181,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      213,
+      181,
+      0,
+      182,
+      0,
+      "LATENT"
+    ],
+    [
+      214,
+      182,
+      0,
+      183,
+      1,
+      "IMAGE"
+    ],
+    [
+      215,
+      183,
+      0,
+      184,
+      0,
+      "IMAGE"
+    ],
+    [
+      216,
+      183,
+      0,
+      185,
+      0,
+      "IMAGE"
+    ],
+    [
+      217,
+      185,
+      0,
+      186,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "共享模型 + Latent + 负面 + BRIA",
+      "bounding": [
+        40,
+        30,
+        380,
+        760
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "说明 Note",
+      "bounding": [
+        40,
+        790,
+        380,
+        1020
+      ],
+      "color": "#a04060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "1. buff_icon_atk_up 链",
+      "bounding": [
+        440,
+        30,
+        2750,
+        490
+      ],
+      "color": "#a04040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "2. buff_icon_crit_up 链",
+      "bounding": [
+        440,
+        520,
+        2750,
+        490
+      ],
+      "color": "#c04040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "3. buff_icon_atk_speed_up 链",
+      "bounding": [
+        440,
+        1010,
+        2750,
+        490
+      ],
+      "color": "#c0a040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "4. buff_icon_lethal 链",
+      "bounding": [
+        440,
+        1500,
+        2750,
+        490
+      ],
+      "color": "#c06020",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "5. buff_icon_def_up 链",
+      "bounding": [
+        440,
+        1990,
+        2750,
+        490
+      ],
+      "color": "#6080c0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "6. buff_icon_qi_shield 链",
+      "bounding": [
+        440,
+        2480,
+        2750,
+        490
+      ],
+      "color": "#40a0c0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "7. buff_icon_res_up 链",
+      "bounding": [
+        440,
+        2970,
+        2750,
+        490
+      ],
+      "color": "#a08060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "8. buff_icon_invincible 链",
+      "bounding": [
+        440,
+        3460,
+        2750,
+        490
+      ],
+      "color": "#d0c060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "9. buff_icon_hp_regen 链",
+      "bounding": [
+        440,
+        3950,
+        2750,
+        490
+      ],
+      "color": "#40a060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "10. buff_icon_qi_regen 链",
+      "bounding": [
+        440,
+        4440,
+        2750,
+        490
+      ],
+      "color": "#40a0a0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "11. buff_icon_meditation 链",
+      "bounding": [
+        440,
+        4930,
+        2750,
+        490
+      ],
+      "color": "#6090a0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "12. buff_icon_luck_up 链",
+      "bounding": [
+        440,
+        5420,
+        2750,
+        490
+      ],
+      "color": "#c0a040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "13. buff_icon_move_speed_up 链",
+      "bounding": [
+        440,
+        5910,
+        2750,
+        490
+      ],
+      "color": "#9080c0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "14. buff_icon_perception_up 链",
+      "bounding": [
+        440,
+        6400,
+        2750,
+        490
+      ],
+      "color": "#a060a0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "15. buff_icon_stealth 链",
+      "bounding": [
+        440,
+        6890,
+        2750,
+        490
+      ],
+      "color": "#a0a0b0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "16. buff_icon_inner_flow 链",
+      "bounding": [
+        440,
+        7380,
+        2750,
+        490
+      ],
+      "color": "#a06040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "17. buff_icon_elements_balance 链",
+      "bounding": [
+        440,
+        7870,
+        2750,
+        490
+      ],
+      "color": "#80a040",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "18. buff_icon_epiphany 链",
+      "bounding": [
+        440,
+        8360,
+        2750,
+        490
+      ],
+      "color": "#c0a080",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
