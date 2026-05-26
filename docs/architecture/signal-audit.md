@@ -3,6 +3,7 @@
 **Scope**: 全项目 `signal` 声明审查, 区分 "已接通 / 半哑火 / 全哑火 / 预留"。
 **关联**: polish-fixlist-2026-05-25.md #21, milestone-alpha-review.md lessons #2 (HUD 信号链未做端到端验证)
 **审查方法**: `find src/ -name "*.gd" | xargs grep "^\s*signal "` + `grep "<signal>.emit\|emit_signal(\"<signal>\""` + `grep "<signal>.connect\|connect(\"<signal>\""`
+**最近更新**: 2026-05-26 — sprint-007 s7-18 接通 8 个 P0 HUD 信号 (player_hp/qi/poise/level_up/exp + enemy_hp/selected + combat_action_queue), 余 2 个 (enemy_weakness_revealed / enemy_status_changed) 留 A2 PR 处理
 
 ---
 
@@ -10,33 +11,43 @@
 
 | 状态 | 定义 | 数量 |
 |------|------|------|
-| ✅ 已接通 | emit ≥ 1 && connect ≥ 1 | 未在本审查中逐项核对, 仅作为 baseline |
-| ⚠️ 半哑火 (P0) | connect ≥ 1 && emit = 0 | **10** (HUD 订阅了但源头不发) |
+| ✅ 已接通 | emit ≥ 1 && connect ≥ 1 | 9 已核对 (s7-18 新接 8 个 + 既有 player_realm_changed) |
+| ⚠️ 半哑火 (P0) | connect ≥ 1 && emit = 0 | **2** (enemy_weakness_revealed / enemy_status_changed — 留 A2 PR) |
 | 🟡 全哑火 (vBeta 预留) | emit = 0 && connect = 0 | **50** (28 in GameEvents + 22 in module-internal) |
 
-> ⚠️ 数据快照时间 2026-05-25, 接通状态会随接入工作推进而变化, 修改信号布线时务必同步本表。
+> ⚠️ 数据快照时间 2026-05-26, 接通状态会随接入工作推进而变化, 修改信号布线时务必同步本表。
 
 ---
 
-## ⚠️ 半哑火 — P0 必修 (HUD 哑火 10 个)
+## ✅ 已接通 — s7-18 P0 完成 (8 个 / 10)
 
-> 已在 polish-fixlist #1 / sprint-007 s7-18 排期。UI 已 connect, 但源头未 emit, 玩家看不到反馈。
+> 2026-05-26 sprint-007 s7-18 接通; 实现策略统一为 "桥接现有局部信号到 GameEvents", 不增加新 emit 点。
+> 测试出口: tests/integration/hud/hud_signal_bridge_test.gd (10/10 pass)
 
-| # | 信号 | UI 订阅方 | 应在何处 emit | 状态 |
-|---|------|---------|------------|------|
-| 1 | `player_hp_changed(current, max)` | ui/hud/player_status_panel.gd:104 | character_system.gd 受伤/治疗时 | s7-18 待修 |
-| 2 | `player_qi_changed(current, max)` | ui/hud/player_status_panel.gd:105 | character_system / combat 使用 Qi 时 | s7-18 待修 |
-| 3 | `player_poise_changed(current, max)` | ui/hud/player_status_panel.gd:106 | combat 受击/格挡时 | s7-18 待修 |
-| 4 | `player_level_up(new_level, old_level)` | ui/hud/player_status_panel.gd:107 | character_system.gd:level_up() | s7-18 待修 |
-| 5 | `player_exp_changed(current, to_next)` | ui/hud/player_status_panel.gd:108 | character_system.gd:gain_exp() | s7-18 待修 |
-| 6 | `enemy_selected(enemy)` | ui/hud/enemy_info_panel.gd:65 | combat 目标选择时 | s7-18 待修 |
-| 7 | `enemy_hp_changed(enemy_id, current, max)` | ui/hud/enemy_info_panel.gd:67 | enemy_combat_unit.gd 受伤时 | s7-18 待修 |
-| 8 | `enemy_weakness_revealed(enemy_id, element)` | ui/hud/enemy_info_panel.gd:69 | combat 弱点触发时 | s7-18 待修 |
-| 9 | `enemy_status_changed(enemy_id, status)` | ui/hud/enemy_info_panel.gd:72 | combat down/break 切换时 | s7-18 待修 |
-| 10 | `combat_action_queue_updated(queue)` | ui/hud/action_queue_display.gd:81 | combat turn_manager 队列变更时 | s7-18 待修 |
+| # | 信号 | 桥接位置 | 实现策略 |
+|---|------|---------|--------|
+| 1 | `player_hp_changed(current, max)` | combat_manager.gd:_on_unit_hp_changed_global | 桥接 unit_hp_changed (玩家路径) |
+| 2 | `player_qi_changed(current, max)` | combat_manager.gd:_on_unit_resource_changed_global | 桥接 unit_resource_changed("internal_energy") |
+| 3 | `player_poise_changed(current, max)` | 同上 | 桥接 unit_resource_changed("stance") |
+| 4 | `player_level_up(new_level, old_level)` | character_system.gd:level_up() | 与既有 player_realm_changed 同模式 |
+| 5 | `player_exp_changed(current, to_next)` | character_system.gd:add_experience() + level_up() | 升级时一并广播确保 HUD 经验条同步 |
+| 6 | `enemy_selected(enemy)` | combat_manager.gd:execute_attack | 仅玩家锁定敌人时 emit, 含 enemy_info_panel 期待的 snapshot dict |
+| 7 | `enemy_hp_changed(enemy_id, current, max)` | combat_manager.gd:_on_unit_hp_changed_global | 桥接 unit_hp_changed (敌人路径) |
+| 8 | `combat_action_queue_updated(queue)` | combat_manager.gd:_emit_action_queue_updated | generate_action_queue + turn_started 时刷新 |
+
+**玩家/敌人判定**: 沿用 `battle_units.find(unit) < ceil(size/2)` 位置约定 (`_is_player_unit`); BattleUnit 未加 is_player 字段, 未来加上后可简化。
+
+## ⚠️ 半哑火 — A2 PR 待处理 (2 个)
+
+> 接通需更深入的架构改动, 拆到独立 PR。
+
+| # | 信号 | UI 订阅方 | 阻塞点 | A2 处理方向 |
+|---|------|---------|------|----------|
+| 1 | `enemy_weakness_revealed(enemy_id, element)` | ui/hud/enemy_info_panel.gd:69 | WeaknessSystem.weakness_hit 信号签名不含 element (传 attacker/target/result), result 也只含 is_weakness_hit/multiplier/triggered_down | 扩 weakness_hit 加 element 参数 + 加 Node→enemy_id 转换约定 |
+| 2 | `enemy_status_changed(enemy_id, status)` | ui/hud/enemy_info_panel.gd:72 | combat_manager BattleUnit 无 down/break 显式状态字段; WeaknessSystem 的 down_triggered/down_cleared 传 Node 不传 enemy_id String | 在 combat_manager 加 BattleUnit.status_str 字段或桥接 WeaknessSystem 下行信号 |
 
 **修复出口标准** (来自 alpha-review lessons #2):
-- 接通后需补 integration test 验证 "状态变化 → GameEvents.emit → HUD 收到"
+- 接通后需补 integration test 验证 "状态变化 → GameEvents.emit → HUD 收到" (已为 8 个 P0 信号建立, A2 沿用 hud_signal_bridge_test.gd 模式)
 - 一并更新本文件状态列为 "✅ 已接通"
 
 ---

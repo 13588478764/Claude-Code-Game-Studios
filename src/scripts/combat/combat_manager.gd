@@ -302,20 +302,114 @@ func _load_combat_config() -> void:
 	
 	print("CombatManager: 战斗配置已从 %s 加载" % config_path)
 
-## 连接局部信号到全局 GameEvents（P0-3 修复）
+## 连接局部信号到全局 GameEvents（P0-3 修复 + sprint-007 s7-18 HUD 接通）
+## 幂等: 重复调用不会重复连接 (测试桥重连场景需要)
 func _connect_global_signals() -> void:
 	if _game_events == null:
 		return
-	
+
 	# 局部信号转发到 GameEvents
-	battle_started.connect(func(): _game_events.combat_started.emit())
-	battle_ended.connect(func(result): _game_events.combat_ended.emit(result.get("victory", false), result))
-	turn_started.connect(_on_turn_started_global)
+	if not battle_started.is_connected(_on_battle_started_global):
+		battle_started.connect(_on_battle_started_global)
+	if not battle_ended.is_connected(_on_battle_ended_global):
+		battle_ended.connect(_on_battle_ended_global)
+	if not turn_started.is_connected(_on_turn_started_global):
+		turn_started.connect(_on_turn_started_global)
+
+	# HUD 半哑火接通: unit_hp_changed → player_hp_changed / enemy_hp_changed
+	if not unit_hp_changed.is_connected(_on_unit_hp_changed_global):
+		unit_hp_changed.connect(_on_unit_hp_changed_global)
+	# HUD 半哑火接通: unit_resource_changed → player_qi_changed / player_poise_changed
+	if not unit_resource_changed.is_connected(_on_unit_resource_changed_global):
+		unit_resource_changed.connect(_on_unit_resource_changed_global)
+
+func _on_battle_started_global() -> void:
+	_game_events.combat_started.emit()
+
+func _on_battle_ended_global(result: Dictionary) -> void:
+	_game_events.combat_ended.emit(result.get("victory", false), result)
 
 ## 回合开始全局信号转发
 func _on_turn_started_global(_unit: BattleUnit) -> void:
 	_turn_counter += 1
 	_game_events.combat_turn_changed.emit(_turn_counter)
+	# 行动队列变更广播 (HUD ActionQueueDisplay 订阅)
+	_emit_action_queue_updated()
+
+## HP 变更全局广播 — 玩家/敌人按 battle_units 位置区分
+func _on_unit_hp_changed_global(unit: BattleUnit, _old_hp: int, new_hp: int) -> void:
+	if _is_player_unit(unit):
+		_game_events.player_hp_changed.emit(new_hp, unit.max_hp)
+	else:
+		_game_events.enemy_hp_changed.emit(_unit_id(unit), new_hp, unit.max_hp)
+
+## 资源变更全局广播 — 仅玩家的 Qi / Poise 上报到 HUD
+## 敌人 Qi/Poise 暂无 UI 订阅, 不广播以减少开销
+func _on_unit_resource_changed_global(unit: BattleUnit, resource_type: String, _old: int, new_value: int) -> void:
+	if not _is_player_unit(unit):
+		return
+	match resource_type:
+		"internal_energy":
+			_game_events.player_qi_changed.emit(new_value, unit.max_internal_energy)
+		"stance":
+			# 架势 = Poise (GDD 术语对齐)
+			_game_events.player_poise_changed.emit(new_value, max_stance)
+
+## 行动队列变更广播 — 把 BattleUnit 数组转成 HUD 期待的字典格式
+func _emit_action_queue_updated() -> void:
+	if _game_events == null:
+		return
+	var queue_data: Array = []
+	# 当前行动单位 + 剩余队列共同构成"完整行动顺序"
+	if current_turn_unit != null:
+		queue_data.append(_unit_to_queue_entry(current_turn_unit))
+	for unit in action_queue:
+		queue_data.append(_unit_to_queue_entry(unit))
+	_game_events.combat_action_queue_updated.emit(queue_data)
+
+## 把 BattleUnit 转成 HUD ActionQueueDisplay 期待的字典
+## 约定字段: {unit_id, unit_name, is_player, icon_path}
+func _unit_to_queue_entry(unit: BattleUnit) -> Dictionary:
+	return {
+		"unit_id": _unit_id(unit),
+		"unit_name": _unit_name(unit),
+		"is_player": _is_player_unit(unit),
+		"icon_path": "",
+	}
+
+## 判定是否玩家单位 — 沿用 is_battle_over() 的位置约定 (前半为玩家)
+## 临时方案: BattleUnit 未来加 is_player 字段后此函数可简化为 unit.is_player
+func _is_player_unit(unit: BattleUnit) -> bool:
+	var idx: int = battle_units.find(unit)
+	if idx < 0:
+		return false
+	return idx < ceil(float(battle_units.size()) / 2.0)
+
+## 从 unit_node 提取稳定 ID — 字典走 "id" / "name", 节点走 name
+func _unit_id(unit: BattleUnit) -> String:
+	if unit.unit_node is Dictionary:
+		return str(unit.unit_node.get("id", unit.unit_node.get("name", "")))
+	if unit.unit_node is Node:
+		return unit.unit_node.name
+	return str(unit.unit_node)
+
+## 构造敌人选中快照 — HUD EnemyInfoPanel 字段对齐 (id/name/level/hp/weaknesses/status/is_boss)
+## 未来 BattleUnit 加 metadata 字段后可直接 unit.unit_node.duplicate()
+func _build_enemy_snapshot(unit: BattleUnit) -> Dictionary:
+	var node_data: Dictionary = {}
+	if unit.unit_node is Dictionary:
+		node_data = unit.unit_node
+	return {
+		"id": _unit_id(unit),
+		"name": _unit_name(unit),
+		"level": node_data.get("level", 1),
+		"current_hp": unit.current_hp,
+		"max_hp": unit.max_hp,
+		"weaknesses": node_data.get("weaknesses", []),
+		"discovered_weaknesses": node_data.get("discovered_weaknesses", []),
+		"status": node_data.get("status", ""),
+		"is_boss": node_data.get("is_boss", false),
+	}
 
 # ============================================================================
 # 战斗流程管理
@@ -372,6 +466,8 @@ func generate_action_queue() -> void:
 	action_queue = battle_units.duplicate()
 	# 按先攻值降序排序
 	action_queue.sort_custom(func(a: BattleUnit, b: BattleUnit) -> bool: return a.initiative > b.initiative)
+	# 队列重排后通知 HUD ActionQueueDisplay 刷新
+	_emit_action_queue_updated()
 
 ## 开始下一回合
 func start_next_turn() -> void:
@@ -485,13 +581,18 @@ func _process_action(action_data: Dictionary) -> Dictionary:
 func execute_attack(attack_data: Dictionary) -> Dictionary:
 	var attacker: BattleUnit = current_turn_unit
 	var target_idx: int = attack_data.get("target_index", -1)
-	
+
 	# 验证目标索引
 	if target_idx < 0 or target_idx >= battle_units.size():
 		push_error("CombatManager: 无效的目标索引: %d" % target_idx)
 		return {"success": false, "message": "Invalid target index"}
-	
+
 	var target: BattleUnit = battle_units[target_idx]
+
+	# 玩家锁定敌人时广播 enemy_selected — HUD EnemyInfoPanel 据此切换显示
+	# 仅当 attacker 是玩家且 target 是敌人时触发, 避免敌人 AI 攻击玩家时误广播
+	if _game_events != null and _is_player_unit(attacker) and not _is_player_unit(target):
+		_game_events.enemy_selected.emit(_build_enemy_snapshot(target))
 	
 	# 计算伤害
 	var damage: int = calculate_damage(attacker, target, attack_data)

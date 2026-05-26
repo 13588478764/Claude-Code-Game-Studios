@@ -17,22 +17,26 @@ extends Node
 ## - 60FPS 稳定
 ##
 ## ============================================================================
-## 信号接通状态 (Polish 2026-05-25 审查)
+## 信号接通状态 (sprint-007 s7-18 更新 2026-05-26)
 ## ============================================================================
 ## 本文件目前定义 50+ 个信号, 接通状态实测:
-## - ✅ 已接通: player_realm_changed (s7-10 已修)
-## - ⚠️ 半哑火 (UI connect 了但 emit=0): 10 个 P0 信号 — sprint-007 s7-18 必修
+## - ✅ 已接通: 9 个 (player_realm_changed + s7-18 新接 8 个 P0 HUD 桥接)
+## - ⚠️ 半哑火 (UI connect 了但 emit=0): 2 个 P0 — A2 PR 待修
 ## - 🟡 全哑火 (0 emit + 0 connect): 28 个 vBeta 预留
 ##
 ## 详细清单见 docs/architecture/signal-audit.md (polish-fixlist-2026-05-25 #21)。
 ##
-## P0 半哑火待接通 (polish-fixlist #1, sprint-007 s7-18):
-## - player_hp_changed / player_qi_changed / player_poise_changed
-## - player_level_up / player_exp_changed
-## - enemy_selected / enemy_hp_changed / enemy_weakness_revealed
-## - enemy_status_changed / combat_action_queue_updated
+## s7-18 已接通 (玩家 HUD 状态信号 8/10):
+## - player_hp/qi/poise_changed     → combat_manager.gd 桥接 unit_hp_changed / unit_resource_changed
+## - player_level_up + exp_changed  → character_system.gd 升级/经验时 emit
+## - enemy_selected + enemy_hp_changed → combat_manager.gd (execute_attack + 桥接)
+## - combat_action_queue_updated     → combat_manager.gd (generate_action_queue + turn_started)
 ##
-## 全哑火预留分组 (Polish 阶段不接通, 待 Beta 系统启用时再接):
+## A2 PR 待接通 (需架构改动, 2/10):
+## - enemy_weakness_revealed    — WeaknessSystem.weakness_hit 信号需加 element 参数
+## - enemy_status_changed       — BattleUnit 需加 status 字段或桥 WeaknessSystem.down_*
+##
+## 全哑火预留分组 (vBeta 系统启用时再接):
 ## - buff_* / debuff_* (6 个) — buff/debuff 系统未启用
 ## - quest_* (3 个) — 任务 UI 反馈未接
 ## - nav_* (4 个) — 导航/POI/奇遇 UI 反馈未接

@@ -195,11 +195,17 @@ func initialize_talent_grid():
 func add_experience(exp_amount):
 	"""添加经验值并处理升级"""
 	experience += exp_amount
-	
+
 	# 发射经验值获得信号
 	var required_exp = get_exp_required_for_level(level + 1)
 	experience_gained.emit(exp_amount, experience, required_exp)
-	
+
+	# 全局事件广播 — 让 HUD player_status_panel 刷新经验条
+	# to_next 语义: 距离下一级所需的剩余经验值
+	if GameEvents:
+		var to_next: int = max(0, required_exp - experience)
+		GameEvents.player_exp_changed.emit(experience, to_next)
+
 	check_level_up()
 
 func check_level_up():
@@ -211,21 +217,32 @@ func level_up():
 	"""角色升级"""
 	if level >= 99:
 		return
-	
+
+	# 升级前先记录原等级,用于 GameEvents 全局信号
+	var old_level: int = level
+
 	# 消耗升级所需经验
 	experience -= get_exp_required_for_level(level + 1)
 	level += 1
-	
+
 	# 获得属性点和天赋点
 	total_attribute_points += 5
 	total_talent_points += 1
-	
+
 	# 发射升级信号
 	level_up_event.emit(level, total_attribute_points, total_talent_points)
-	
+
+	# 全局事件广播 — 让 HUD player_status_panel 刷新等级显示
+	if GameEvents:
+		GameEvents.player_level_up.emit(level, old_level)
+		# 升级后经验条会重置 (experience 已扣除升级消耗), 同步广播
+		var required_exp: int = get_exp_required_for_level(level + 1)
+		var to_next: int = max(0, required_exp - experience)
+		GameEvents.player_exp_changed.emit(experience, to_next)
+
 	# 检查境界突破
 	check_realm_breakthrough()
-	
+
 	print("角色升级到 %d 级" % level)
 
 func check_realm_breakthrough():
