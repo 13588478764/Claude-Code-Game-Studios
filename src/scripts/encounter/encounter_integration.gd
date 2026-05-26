@@ -101,25 +101,27 @@ func initialize(char_system, enc_system, itm_manager) -> void:
 	triggered_encounters = []
 
 ## 计算奇遇触发概率
-## 
-## 公式：encounter_probability = base_probability * (1 + luck_stat / 100)
+##
+## 公式：encounter_probability = base_probability * (1 + 福缘加成系数)
+## 福缘加成系数采用软上限 (CharacterSystem.get_luck_bonus_coefficient), 100 点后边际递减,
+## 对齐 design/gdd/character-progression-system.md L146-L152。
 ## 上限：10% (0.1)
-## 
+##
 ## 参数：
 ##   base_probability: 基础触发概率
-## 
+##
 ## 返回：
 ##   float: 最终触发概率（已应用福缘加成和上限）
 func calculate_encounter_probability(base_probability: float) -> float:
 	# 如果角色系统未初始化，返回基础概率
 	if character_system == null:
 		return base_probability
-	
+
 	# 获取角色福缘属性
 	var luck_stat = character_system.attributes.luck
-	
-	# 计算概率：base_probability * (1 + luck / 100)
-	var probability = base_probability * (1.0 + luck_stat / 100.0)
+
+	# 计算概率: base_probability * (1 + 福缘加成系数) — 软上限单一真值
+	var probability = base_probability * (1.0 + CharacterSystem.get_luck_bonus_coefficient(luck_stat))
 	
 	# 应用上限 10%（仅当基础概率在正常范围内时）
 	# 如果基础概率 > 0.1，说明是测试场景，不应用上限

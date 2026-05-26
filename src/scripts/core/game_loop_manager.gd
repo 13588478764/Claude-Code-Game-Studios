@@ -222,13 +222,14 @@ func return_to_exploration() -> void:
 # 非战斗奇遇
 # ============================================================================
 
-## 检查非战斗奇遇触发（概率公式：基础概率 * (1 + 福缘/100)，上限20%）
+## 检查非战斗奇遇触发（概率公式：基础概率 * (1 + 福缘加成系数), 100 点后软上限递减, 总上限20%）
+## 福缘加成系数真值: CharacterSystem.get_luck_bonus_coefficient (对齐 character-progression-system.md L146-L152)
 func _check_non_combat_encounter() -> Dictionary:
 	var luck_stat := 0.0
 	if _character_system and _character_system.attributes:
 		luck_stat = _character_system.attributes.luck
 
-	var prob := ENCOUNTER_BASE_PROB * (1.0 + luck_stat / 100.0)
+	var prob := ENCOUNTER_BASE_PROB * (1.0 + CharacterSystem.get_luck_bonus_coefficient(luck_stat))
 	prob = minf(prob, ENCOUNTER_PROB_CAP)
 
 	var roll := randf()

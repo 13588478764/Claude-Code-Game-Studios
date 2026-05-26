@@ -42,10 +42,12 @@ func test_luck_hundred_probability():
 	assert_true(abs(prob - 0.10) < 0.001, "福缘为100时概率应为10%")
 
 ## 测试高福缘概率上限为20%
+## 注: 2026-05-26 polish-fixlist #12 落地后, 福缘 100 点后改用软上限公式
+## 福缘 200 → 软上限系数 1.0 + (200-100)/300 = 1.333
+## 0.05 * (1 + 1.333) ≈ 0.1167, 仍未触及 20% 上限
 func test_probability_cap_at_twenty_percent():
 	var prob = encounter_manager.calculate_trigger_probability(0.05, 200.0)
-	# 0.05 * (1 + 200/100) = 0.05 * 3 = 0.15, 上限为0.20所以不触发
-	assert_true(abs(prob - 0.15) < 0.001, "福缘为200时概率应为15%（未超过20%上限）")
+	assert_true(abs(prob - 0.1167) < 0.001, "福缘为200时概率应为11.67%（软上限段, 未超过20%）")
 
 ## 测试福缘为0时权重基本不变
 func test_weight_no_change_at_zero_luck():

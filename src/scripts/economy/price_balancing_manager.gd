@@ -71,7 +71,9 @@ func calculate_upgrade_cost(level: int, base_cost: int = UPGRADE_BASE_COST_DEFAU
 # 计算掉落修正
 func calculate_drop_amount(base_amount: int, luck_stat: int) -> int:
 	"""
-	使用GDD中的公式：最终掉落 = 基础掉落 × (1 + 福缘/100)
+	使用GDD中的公式：最终掉落 = 基础掉落 × (1 + 福缘加成系数)
+	福缘加成系数采用软上限 (CharacterSystem.get_luck_bonus_coefficient), 100 点后边际递减,
+	对齐 design/gdd/character-progression-system.md L146-L152。
 	变量:
 	- base_amount: 基础掉落 (int) - 不同敌人类型的基础掉落数量
 	- luck_stat: 福缘 (int) - 玩家的福缘属性值
@@ -79,11 +81,11 @@ func calculate_drop_amount(base_amount: int, luck_stat: int) -> int:
 	"""
 	if base_amount <= 0:
 		return 0
-	
+
 	if luck_stat < 0:
 		luck_stat = 0  # 福缘不能为负数
-	
-	var multiplier = 1.0 + (float(luck_stat) / 100.0)
+
+	var multiplier = 1.0 + CharacterSystem.get_luck_bonus_coefficient(float(luck_stat))
 	var calculated_amount = float(base_amount) * multiplier
 	return int(calculated_amount)
 

@@ -140,8 +140,10 @@ func set_currency_amount(currency_type: CurrencyType, amount: int) -> bool:
 
 # 根据福缘计算掉落修正
 func calculate_drop_with_luck(base_amount: int, luck_stat: int) -> int:
-	# 使用GDD中的公式：最终掉落 = 基础掉落 × (1 + 福缘/100)
-	var multiplier = 1.0 + (float(luck_stat) / 100.0)
+	# 公式: 最终掉落 = 基础掉落 × (1 + 福缘加成系数)
+	# 福缘加成系数采用软上限 (CharacterSystem.get_luck_bonus_coefficient), 100 点后边际递减,
+	# 对齐 design/gdd/character-progression-system.md L146-L152
+	var multiplier = 1.0 + CharacterSystem.get_luck_bonus_coefficient(float(luck_stat))
 	var calculated_amount = int(float(base_amount) * multiplier)
 	
 	# 检查是否超过银两上限

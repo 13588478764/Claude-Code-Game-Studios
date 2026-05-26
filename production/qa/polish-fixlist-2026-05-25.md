@@ -46,19 +46,17 @@
 
 ---
 
-### 3. 境界数量 9 vs 10 跨系统不统一
+### 3. 境界数量 9 vs 10 跨系统不统一 ✅ 2026-05-26
 
-**现状**:
-- `design/gdd/character-progression-system.md`: 9 境界 (炼气→筑基→金丹→元婴→化神→返虚→合道→大乘→渡劫)
-- `src/scripts/character/character_system.gd:82-93`: 10 境界 (多出"真仙")
-- `src/scripts/equipment/equipment_slot_manager.gd:81`: 10 境界 (与 character_system 一致)
-- 5-25 入库的 10 张境界图标也按 10 个出 (含"真仙")
+**原现状**:
+- `design/gdd/character-progression-system.md`: 9 境界 (含早期/后期分段格式, 终点化神期)
+- `src/scripts/character/character_system.gd:82-93`: 10 境界 (扁平, 多出"真仙")
+- 5-25 入库的 10 张境界图标按 10 个出 (含"真仙")
 
-**决策需求**: GDD 加"真仙" → 9 改 10; 还是代码改回 9 + 图标删一张?
+**实际审查后修正**: 不止数量分歧 — GDD 用 9 个"早期/后期"切分子境界 (Lv 1-99), 代码用 10 个扁平大境界。结构性差异。
 
-**推荐**: GDD 加"真仙", 因为代码+美术都 10 个, 改 GDD 成本最低。
-
-**工作量**: 30 min (GDD + cross-check)
+**决策**: GDD 改齐代码 10 扁平 (代码 + 美术零改动)。
+**已落地**: `design/gdd/character-progression-system.md` L18 + L44-53 改为 10 大境界 (炼气→筑基→...→真仙)。寿命系统 L80 narrative-only 段保留原 5 阶, 不属于本次结构对齐范围。
 
 ---
 
@@ -96,21 +94,30 @@
 
 需要 systems-designer 决策: 删多出的 6 槽 (LEGS / INNER_ART × 3 / LIGHT_ART) 还是 GDD 补齐到 15? 强化/镶嵌/洗练/幻化 4 子系统是否进 Beta?
 
-### 9. EXP 后期指数 GDD 1.8 vs 代码 2.5
+### 9. EXP 后期指数 GDD 分段 1.0/1.5/1.8 vs 代码扁平 1.5 ✅ 2026-05-26
 
-代码后期升级远比设计陡。改 1 行即可, 但需要 game-designer 确认是不是已经调过参。
+**原描述过时修正**: polish-fixlist 写"GDD 1.8 vs 代码 2.5", 实际 commit 7a96c95 已把代码从 2.5 改到 1.5。
+真实分歧: GDD `experience-system.md` L170-172 规定**分段函数** (Lv1-33=1.0 / Lv34-66=1.5 / Lv67-99=1.8); 代码用扁平 1.5。
 
-### 10. 武器类型不匹配
+**已落地**: `character_system.gd` 加 `_get_exp_exponent(target_level: int) -> float` 私有方法, `get_exp_required_for_level` 改调它。
+**回归测试**: `tests/unit/character/exp_exponent_piecewise_test.gd` (5 用例, 含边界 + 接入验证)。
 
-代码出现 "Palm"(掌法) GDD 无; GDD 的 "Blade"(刀) / "Bow"(弓) 数据库无对应武学。需要 systems-designer + 数据库补齐。
+### 10. 武器类型不匹配 ✅ 2026-05-26 (GDD 一半)
 
-### 11. 奇遇触发概率 GDD 自身矛盾
+**已落地**: `design/gdd/martial-arts-system.md` L63 补 "Palm 掌法" (对应丐帮"降龙十八掌"); Blade/Exotic/Bow 留待 Beta 由 systems-designer + 数据填武学条目, 已加注释说明。
 
-`character-progression-system.md:160` 说 15% / `encounter-system.md:51` 说 20% / 代码 20%。 需要 game-designer 统一 GDD, 代码已经对了 20%。
+### 11. 奇遇触发概率 GDD 自身矛盾 ✅ 2026-05-26
 
-### 12. 福缘软上限未实现
+**已落地**: `character-progression-system.md` L160 + L162 统一改成 20% (与 `encounter-system.md` L51/L113/L167 一致); 代码已对齐 20%, 零代码改动。
 
-GDD 说 100 点后边际递减, 代码用简单 `1 + luck/100` 无拐点。高福缘角色奇遇收益远超设计。
+### 12. 福缘软上限未实现 ✅ 2026-05-26
+
+**已落地**:
+- `character_system.gd` 新增 `static func get_luck_bonus_coefficient(luck_stat: float) -> float`, 实现 GDD L146-152 软上限公式 (100 点拐点, 后段斜率 1/300)
+- 迁移 5 个 call site 全部改用单一真值: `encounter_integration.gd:122` / `encounter_trigger_manager.gd:98` / `game_loop_manager.gd:231` / `price_balancing_manager.gd:86` / `currency_manager.gd:144`
+- 回归测试: `tests/unit/character/luck_bonus_coefficient_test.gd` (6 用例, 含边界/拐点/递减段/斜率验证)
+- 更新 `test_encounter_trigger.gd::test_probability_cap_at_twenty_percent` snapshot (luck=200 旧 0.15 → 新 0.1167, 反映软上限正确生效)
+- 198/198 character + encounter + economy + combat 回归测试通过
 
 ---
 

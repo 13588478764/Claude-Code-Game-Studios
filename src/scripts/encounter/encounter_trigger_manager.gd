@@ -94,8 +94,10 @@ func trigger_encounter_check(trigger_type: String, luck_stat: float = 0.0) -> bo
 
 # 计算触发概率
 func calculate_trigger_probability(base_chance: float, luck_stat: float) -> float:
-	# 使用公式：最终触发概率 = 基础概率 × (1 + 福缘/100)
-	var final_chance = base_chance * (1.0 + luck_stat / 100.0)
+	# 公式: 最终触发概率 = 基础概率 × (1 + 福缘加成系数)
+	# 福缘加成系数采用软上限 (CharacterSystem.get_luck_bonus_coefficient), 100 点后边际递减,
+	# 对齐 design/gdd/character-progression-system.md L146-L152
+	var final_chance = base_chance * (1.0 + CharacterSystem.get_luck_bonus_coefficient(luck_stat))
 	
 	# 设置概率上限为20%
 	if final_chance > 0.20:

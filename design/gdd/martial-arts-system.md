@@ -60,7 +60,7 @@
 
 3. **组合系统细节**：
    - **武器适配**：
-     - 武器类型：剑(Sword)、刀(Blade)、拳(Fist)、奇门(Exotic)、弓(Bow)
+     - 武器类型：剑(Sword)、刀(Blade)、拳(Fist)、掌(Palm)、奇门(Exotic)、弓(Bow) — 其中 Palm 对应丐帮"降龙十八掌"等掌法武学; Blade/Exotic/Bow 数据待 Beta 阶段由 systems-designer 补齐对应武学条目
      - 完美适配：伤害+20%（1.2倍），连击标签生效
      - 勉强适配：伤害-30%（0.7倍），连击标签失效
      - 完全不适配：无法使用该武学

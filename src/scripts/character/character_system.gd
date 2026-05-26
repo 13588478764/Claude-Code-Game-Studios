@@ -112,6 +112,11 @@ var talent_grid: Array = []  # 4x4天赋网格 [[{unlocked: bool, effect: {...}}
 var talent_definitions: Dictionary = {}  # 天赋定义 {talent_id: {name: str, effect: {...}, description: str}}
 
 # 经验值配置
+## exponent 字段仅作 fallback / 配置兜底; 实际曲线由 _get_exp_exponent() 按等级分段返回。
+## 分段配置对齐 design/gdd/experience-system.md L170-L172:
+##   Lv 1-33  → 1.0 (线性, 引导期)
+##   Lv 34-66 → 1.5 (温和指数, 中期)
+##   Lv 67-99 → 1.8 (陡峭指数, 后期, 受 50000 EXP 上限约束)
 var exp_curve: Dictionary = {
 	"base": 100,
 	"exponent": 1.5,
@@ -299,8 +304,25 @@ func get_exp_required_for_level(target_level: int) -> int:
 	var realm_info: Dictionary = get_realm_by_level(target_level - 1)
 	var realm_multiplier: float = exp_curve["realm_multiplier"][realm_info["index"]]
 
-	var exp_required: float = exp_curve["base"] * pow(target_level, exp_curve["exponent"]) * realm_multiplier
+	# 分段 exponent 对齐 design/gdd/experience-system.md L170-L172
+	var exponent: float = _get_exp_exponent(target_level)
+	var exp_required: float = exp_curve["base"] * pow(target_level, exponent) * realm_multiplier
 	return int(exp_required)
+
+func _get_exp_exponent(target_level: int) -> float:
+	"""根据目标等级返回 EXP 公式的分段指数 (GDD experience-system.md L170-L172)。
+
+	参数:
+		target_level: 目标升级等级 (1-99)
+	返回:
+		1.0 (Lv 1-33) / 1.5 (Lv 34-66) / 1.8 (Lv 67-99)
+	"""
+	if target_level <= 33:
+		return 1.0
+	elif target_level <= 66:
+		return 1.5
+	else:
+		return 1.8
 
 func allocate_attribute_points(attribute_name: String, points: int) -> bool:
 	"""分配属性点"""
@@ -509,8 +531,33 @@ func get_combat_stats() -> Dictionary:
 		combat_stats["internal_energy_regen"] += talent_effects["internal_energy_regen"]
 	if talent_effects.has("drop_rate_bonus"):
 		combat_stats["drop_rate_bonus"] += talent_effects["drop_rate_bonus"]
-	
+
 	return combat_stats
+
+static func get_luck_bonus_coefficient(luck_stat: float) -> float:
+	"""福缘加成系数 (软上限) — 单一真值, 对齐 design/gdd/character-progression-system.md L146-L152。
+
+	所有使用 (1 + luck/100) 线性公式的系统都应迁移到本函数, 实现 100 点后边际递减,
+	防止极端福缘 Build 让奇遇/掉落/合成收益脱离设计预期。
+
+	采用 static 设计 — 调用方既可通过 Autoload 路径 `CharacterSystem.get_luck_bonus_coefficient(luck)`
+	使用, 也可在单元测试里不挂载 Autoload 直接调用脚本的 static 方法, 保持公式可测试性。
+
+	参数:
+		luck_stat: 玩家福缘属性值 (允许 float 兼容含天赋加成后的非整数值)
+	返回:
+		加成系数 0.0-2.32:
+		- luck = 0   → 0.0
+		- luck = 50  → 0.5  (线性段, 每点 +1%)
+		- luck = 100 → 1.0  (拐点)
+		- luck = 200 → 1.33 (递减段, 每点 +0.33%)
+		- luck = 495 → 2.32 (上限示例)
+	"""
+	if luck_stat <= 0.0:
+		return 0.0
+	if luck_stat <= 100.0:
+		return luck_stat / 100.0
+	return 1.0 + (luck_stat - 100.0) / 300.0
 
 # 寿命系统相关方法
 func get_npc_lifespan_info(npc_id: String) -> Dictionary:
