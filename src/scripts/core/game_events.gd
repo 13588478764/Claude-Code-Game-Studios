@@ -17,24 +17,25 @@ extends Node
 ## - 60FPS 稳定
 ##
 ## ============================================================================
-## 信号接通状态 (sprint-007 s7-18 更新 2026-05-26)
+## 信号接通状态 (sprint-007 s7-18 + A2 PR 更新 2026-05-26)
 ## ============================================================================
 ## 本文件目前定义 50+ 个信号, 接通状态实测:
-## - ✅ 已接通: 9 个 (player_realm_changed + s7-18 新接 8 个 P0 HUD 桥接)
-## - ⚠️ 半哑火 (UI connect 了但 emit=0): 2 个 P0 — A2 PR 待修
+## - ✅ 已接通: 11 个 (player_realm_changed + s7-18 主 PR 8 个 + A2 PR 2 个)
 ## - 🟡 全哑火 (0 emit + 0 connect): 28 个 vBeta 预留
 ##
 ## 详细清单见 docs/architecture/signal-audit.md (polish-fixlist-2026-05-25 #21)。
 ##
-## s7-18 已接通 (玩家 HUD 状态信号 8/10):
+## s7-18 已接通 (P0 HUD 状态信号 10/10 ✅ 完整接通):
 ## - player_hp/qi/poise_changed     → combat_manager.gd 桥接 unit_hp_changed / unit_resource_changed
 ## - player_level_up + exp_changed  → character_system.gd 升级/经验时 emit
 ## - enemy_selected + enemy_hp_changed → combat_manager.gd (execute_attack + 桥接)
 ## - combat_action_queue_updated     → combat_manager.gd (generate_action_queue + turn_started)
+## - enemy_weakness_revealed (A2)   → combat_manager.set_weakness_system 桥 WeaknessSystem.weakness_hit
+## - enemy_status_changed (A2)      → combat_manager.set_weakness_system 桥 WeaknessSystem.down_triggered/cleared
 ##
-## A2 PR 待接通 (需架构改动, 2/10):
-## - enemy_weakness_revealed    — WeaknessSystem.weakness_hit 信号需加 element 参数
-## - enemy_status_changed       — BattleUnit 需加 status 字段或桥 WeaknessSystem.down_*
+## A2 接通注意: WeaknessSystem 当前 src/ 内无实例化点, 需要由外部调
+## combat_manager.set_weakness_system(ws) 注入实例后桥接才会生效。
+## (集成测试见 tests/integration/hud/hud_signal_bridge_test.gd 5 个 A2 用例)
 ##
 ## 全哑火预留分组 (vBeta 系统启用时再接):
 ## - buff_* / debuff_* (6 个) — buff/debuff 系统未启用

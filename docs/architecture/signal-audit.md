@@ -3,7 +3,7 @@
 **Scope**: 全项目 `signal` 声明审查, 区分 "已接通 / 半哑火 / 全哑火 / 预留"。
 **关联**: polish-fixlist-2026-05-25.md #21, milestone-alpha-review.md lessons #2 (HUD 信号链未做端到端验证)
 **审查方法**: `find src/ -name "*.gd" | xargs grep "^\s*signal "` + `grep "<signal>.emit\|emit_signal(\"<signal>\""` + `grep "<signal>.connect\|connect(\"<signal>\""`
-**最近更新**: 2026-05-26 — sprint-007 s7-18 接通 8 个 P0 HUD 信号 (player_hp/qi/poise/level_up/exp + enemy_hp/selected + combat_action_queue), 余 2 个 (enemy_weakness_revealed / enemy_status_changed) 留 A2 PR 处理
+**最近更新**: 2026-05-26 — A2 PR 完成, P0 HUD 信号 10/10 全部接通。s7-18 主 PR 接通 8 个 (player_hp/qi/poise/level_up/exp + enemy_hp/selected + combat_action_queue); A2 PR 增接 enemy_weakness_revealed + enemy_status_changed (经 combat_manager.set_weakness_system 注入路径桥接 WeaknessSystem)。
 
 ---
 
@@ -11,18 +11,18 @@
 
 | 状态 | 定义 | 数量 |
 |------|------|------|
-| ✅ 已接通 | emit ≥ 1 && connect ≥ 1 | 9 已核对 (s7-18 新接 8 个 + 既有 player_realm_changed) |
-| ⚠️ 半哑火 (P0) | connect ≥ 1 && emit = 0 | **2** (enemy_weakness_revealed / enemy_status_changed — 留 A2 PR) |
+| ✅ 已接通 | emit ≥ 1 && connect ≥ 1 | 11 已核对 (s7-18 主 PR 8 + A2 PR 2 + 既有 player_realm_changed) |
+| ⚠️ 半哑火 (P0) | connect ≥ 1 && emit = 0 | **0** (P0 队列已清空 ✅) |
 | 🟡 全哑火 (vBeta 预留) | emit = 0 && connect = 0 | **50** (28 in GameEvents + 22 in module-internal) |
 
 > ⚠️ 数据快照时间 2026-05-26, 接通状态会随接入工作推进而变化, 修改信号布线时务必同步本表。
 
 ---
 
-## ✅ 已接通 — s7-18 P0 完成 (8 个 / 10)
+## ✅ 已接通 — s7-18 P0 完成 (10 个 / 10) ✅
 
-> 2026-05-26 sprint-007 s7-18 接通; 实现策略统一为 "桥接现有局部信号到 GameEvents", 不增加新 emit 点。
-> 测试出口: tests/integration/hud/hud_signal_bridge_test.gd (10/10 pass)
+> 2026-05-26 sprint-007 s7-18 + A2 PR 完成; 实现策略统一为 "桥接现有局部信号到 GameEvents", 不增加新 emit 点。
+> 测试出口: tests/integration/hud/hud_signal_bridge_test.gd (15/15 pass — 主 PR 10 + A2 5)
 
 | # | 信号 | 桥接位置 | 实现策略 |
 |---|------|---------|--------|
@@ -34,21 +34,16 @@
 | 6 | `enemy_selected(enemy)` | combat_manager.gd:execute_attack | 仅玩家锁定敌人时 emit, 含 enemy_info_panel 期待的 snapshot dict |
 | 7 | `enemy_hp_changed(enemy_id, current, max)` | combat_manager.gd:_on_unit_hp_changed_global | 桥接 unit_hp_changed (敌人路径) |
 | 8 | `combat_action_queue_updated(queue)` | combat_manager.gd:_emit_action_queue_updated | generate_action_queue + turn_started 时刷新 |
+| 9 (A2) | `enemy_weakness_revealed(enemy_id, element)` | combat_manager.gd:_on_weakness_hit_global | 注入式: combat_manager.set_weakness_system(ws) 后桥 WeaknessSystem.weakness_hit; 仅 is_weakness_hit=true 时上报 |
+| 10 (A2) | `enemy_status_changed(enemy_id, status)` | combat_manager.gd:_on_down_triggered/cleared_global | 注入式桥 WeaknessSystem.down_triggered → "down" / down_cleared → "" |
 
 **玩家/敌人判定**: 沿用 `battle_units.find(unit) < ceil(size/2)` 位置约定 (`_is_player_unit`); BattleUnit 未加 is_player 字段, 未来加上后可简化。
 
-## ⚠️ 半哑火 — A2 PR 待处理 (2 个)
-
-> 接通需更深入的架构改动, 拆到独立 PR。
-
-| # | 信号 | UI 订阅方 | 阻塞点 | A2 处理方向 |
-|---|------|---------|------|----------|
-| 1 | `enemy_weakness_revealed(enemy_id, element)` | ui/hud/enemy_info_panel.gd:69 | WeaknessSystem.weakness_hit 信号签名不含 element (传 attacker/target/result), result 也只含 is_weakness_hit/multiplier/triggered_down | 扩 weakness_hit 加 element 参数 + 加 Node→enemy_id 转换约定 |
-| 2 | `enemy_status_changed(enemy_id, status)` | ui/hud/enemy_info_panel.gd:72 | combat_manager BattleUnit 无 down/break 显式状态字段; WeaknessSystem 的 down_triggered/down_cleared 传 Node 不传 enemy_id String | 在 combat_manager 加 BattleUnit.status_str 字段或桥接 WeaknessSystem 下行信号 |
-
-**修复出口标准** (来自 alpha-review lessons #2):
-- 接通后需补 integration test 验证 "状态变化 → GameEvents.emit → HUD 收到" (已为 8 个 P0 信号建立, A2 沿用 hud_signal_bridge_test.gd 模式)
-- 一并更新本文件状态列为 "✅ 已接通"
+**A2 PR 架构补丁**:
+- `WeaknessHitResult` 新增 `element: int` 字段, `calculate_weakness_hit()` 在 emit 前赋值
+- 新增 `static func WeaknessSystem.element_name(int) -> String` 把 Element 枚举映射到 HUD 期待的小写五行名 ("metal"/"wood"/"water"/"fire"/"earth")
+- `combat_manager._node_to_enemy_id(participant)` 反查策略: 先在 battle_units 找 unit_node 匹配, 退回 Node.name, 终极 fallback str()
+- A2 选用**注入式桥接** (combat_manager 不强行实例化 WeaknessSystem), 生产零影响直到外部代码调 set_weakness_system()
 
 ---
 
@@ -173,10 +168,10 @@
 
 ## 处理策略 (建议给 lead-programmer)
 
-### 立即处理 (P0)
+### 立即处理 (P0) ✅ 已完成
 
-1. **接通 10 个半哑火 P0 信号** — sprint-007 s7-18 已排期, 必修
-2. **补 integration test** — alpha-review action #1, "状态变化 → emit → HUD 收到" 端到端验证
+1. ✅ **接通 10 个半哑火 P0 信号** — sprint-007 s7-18 + A2 PR 完成 (10/10)
+2. ✅ **补 integration test** — hud_signal_bridge_test.gd 15/15 pass, alpha-review action #1 关闭
 
 ### vBeta 处理 (按系统启用顺序)
 

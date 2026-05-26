@@ -237,6 +237,12 @@ var _used_martial_arts: Array[String] = []
 ## 武学连招系统
 var _combo_system: MartialArtsComboSystem = null
 
+## 弱点系统 (依赖注入, 默认 null — 等外部 set_weakness_system() 注入后才桥接到 HUD)
+## 设计动机: 当前 src/ 内无 WeaknessSystem 实例化点 (autoload/.tscn/.new() 均无),
+## A2 PR (sprint-007 s7-18) 只负责把桥接通路打通, 不强行实例化以避免影响其他系统行为。
+## 实际接入: 战斗启动方调 combat_manager.set_weakness_system(ws) 即生效。
+var _weakness_system: WeaknessSystem = null
+
 # ============================================================================
 # 生命周期方法
 # ============================================================================
@@ -355,6 +361,58 @@ func _on_unit_resource_changed_global(unit: BattleUnit, resource_type: String, _
 			# 架势 = Poise (GDD 术语对齐)
 			_game_events.player_poise_changed.emit(new_value, max_stance)
 
+
+## 注入 WeaknessSystem 并建立桥接 (sprint-007 s7-18 A2)
+## 接通 enemy_weakness_revealed + enemy_status_changed 两个 P0 半哑火 HUD 信号。
+## 幂等: 重复注入同一实例不会重复连接; 注入不同实例会先解绑旧实例。
+## @param ws: WeaknessSystem 实例; 传 null 等同解绑当前实例。
+func set_weakness_system(ws: WeaknessSystem) -> void:
+	# 解绑旧实例 (避免重复广播 / 悬挂引用)
+	if _weakness_system != null and _weakness_system != ws:
+		if _weakness_system.weakness_hit.is_connected(_on_weakness_hit_global):
+			_weakness_system.weakness_hit.disconnect(_on_weakness_hit_global)
+		if _weakness_system.down_triggered.is_connected(_on_down_triggered_global):
+			_weakness_system.down_triggered.disconnect(_on_down_triggered_global)
+		if _weakness_system.down_cleared.is_connected(_on_down_cleared_global):
+			_weakness_system.down_cleared.disconnect(_on_down_cleared_global)
+
+	_weakness_system = ws
+	if _weakness_system == null or _game_events == null:
+		return
+
+	# 幂等连接 (与 _connect_global_signals 同模式)
+	if not _weakness_system.weakness_hit.is_connected(_on_weakness_hit_global):
+		_weakness_system.weakness_hit.connect(_on_weakness_hit_global)
+	if not _weakness_system.down_triggered.is_connected(_on_down_triggered_global):
+		_weakness_system.down_triggered.connect(_on_down_triggered_global)
+	if not _weakness_system.down_cleared.is_connected(_on_down_cleared_global):
+		_weakness_system.down_cleared.connect(_on_down_cleared_global)
+
+
+## 弱点命中全局广播 — 仅在 result.is_weakness_hit == true 时上报
+## 语义: enemy_weakness_revealed 表示"敌人某项弱点首次被验证", 普通攻击不上报。
+## HUD enemy_info_panel._on_enemy_weakness_revealed 会去重写入 discovered_weaknesses。
+func _on_weakness_hit_global(_attacker, target, result) -> void:
+	if not result.is_weakness_hit:
+		return
+	var element_str: String = WeaknessSystem.element_name(result.element)
+	if element_str.is_empty():
+		return
+	_game_events.enemy_weakness_revealed.emit(_node_to_enemy_id(target), element_str)
+
+
+## 击倒状态全局广播 — 进入 down 状态
+## 字符串约定与 enemy_info_panel._update_status_display() 对齐: "down" → down_indicator.visible = true
+func _on_down_triggered_global(participant) -> void:
+	_game_events.enemy_status_changed.emit(_node_to_enemy_id(participant), "down")
+
+
+## 击倒状态全局广播 — 离开 down 状态
+## 用空字符串 "" 表示"无特殊状态" (UI down_indicator/break_indicator 均关闭)。
+## TODO(beta): break 状态接入后, 改为 "break" / "" 二态切换。
+func _on_down_cleared_global(participant) -> void:
+	_game_events.enemy_status_changed.emit(_node_to_enemy_id(participant), "")
+
 ## 行动队列变更广播 — 把 BattleUnit 数组转成 HUD 期待的字典格式
 func _emit_action_queue_updated() -> void:
 	if _game_events == null:
@@ -392,6 +450,18 @@ func _unit_id(unit: BattleUnit) -> String:
 	if unit.unit_node is Node:
 		return unit.unit_node.name
 	return str(unit.unit_node)
+
+## 把 WeaknessSystem 的 participant (Node/Object) 反查回 enemy_id 字符串
+## 策略: 1) 先在 battle_units 找 unit_node 匹配项 (生产路径)
+##       2) 退回 Node.name (单元测试常用)
+##       3) 最终 fallback str() 防崩
+func _node_to_enemy_id(participant) -> String:
+	for unit in battle_units:
+		if unit.unit_node == participant:
+			return _unit_id(unit)
+	if participant is Node:
+		return participant.name
+	return str(participant)
 
 ## 构造敌人选中快照 — HUD EnemyInfoPanel 字段对齐 (id/name/level/hp/weaknesses/status/is_boss)
 ## 未来 BattleUnit 加 metadata 字段后可直接 unit.unit_node.duplicate()

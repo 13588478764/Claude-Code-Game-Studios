@@ -69,11 +69,15 @@ class WeaknessHitResult:
 	var is_weakness_hit: bool = false
 	var damage_multiplier: float = 1.0
 	var triggered_down: bool = false
-	
-	func _init(is_hit: bool = false, multiplier: float = 1.0, down: bool = false):
+	## 触发本次结果的攻击属性 (Element 枚举值, -1 表示未设置)
+	## 用于 HUD 桥接 enemy_weakness_revealed 信号 (sprint-007 s7-18 A2)
+	var element: int = -1
+
+	func _init(is_hit: bool = false, multiplier: float = 1.0, down: bool = false, elem: int = -1):
 		is_weakness_hit = is_hit
 		damage_multiplier = multiplier
 		triggered_down = down
+		element = elem
 
 # ============================================================================
 # 信号定义
@@ -189,16 +193,19 @@ func calculate_weakness_hit(attacker, target, attacker_element: int) -> Weakness
 	if check_elemental_weakness(attacker_element, target_weakness.element):
 		result.is_weakness_hit = true
 		result.damage_multiplier = WEAKNESS_DAMAGE_MULTIPLIER
-		
+
 		# 触发击倒
 		result.triggered_down = true
 		trigger_down(target)
 	else:
 		result.damage_multiplier = NORMAL_DAMAGE_MULTIPLIER
-	
+
+	# 记录攻击属性, 供 HUD 桥接消费 (sprint-007 s7-18 A2)
+	result.element = attacker_element
+
 	# 发射信号
 	weakness_hit.emit(attacker, target, result)
-	
+
 	return result
 
 ## AC-3: 击倒机制正常
@@ -298,3 +305,17 @@ func reset():
 	"""
 	participant_weaknesses.clear()
 	participant_down_status.clear()
+
+
+## Element 枚举值 → HUD 期待的字符串名称 (sprint-007 s7-18 A2)
+## 用于桥接 enemy_weakness_revealed(enemy_id, element: String) 信号。
+## 字符串约定: 小写五行名, 与 enemy_info_panel weaknesses 字段保持一致 ("metal"/"wood"/"water"/"fire"/"earth")。
+## 未识别枚举返回空字符串, 调用方应过滤 (避免空字符串污染 discovered_weaknesses)。
+static func element_name(elem: int) -> String:
+	match elem:
+		Element.METAL: return "metal"
+		Element.WOOD: return "wood"
+		Element.WATER: return "water"
+		Element.FIRE: return "fire"
+		Element.EARTH: return "earth"
+		_: return ""

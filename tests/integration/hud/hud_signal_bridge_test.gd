@@ -1,17 +1,17 @@
 extends GutTest
 ## HUD 信号桥接集成测试 (sprint-007 s7-18 P0)
 ##
-## 验证 polish-fixlist #1 的 8 个 P0 半哑火信号已成功从源头桥接到 GameEvents:
+## 验证 polish-fixlist #1 的 10 个 P0 半哑火信号已成功从源头桥接到 GameEvents:
 ## - player_hp_changed / player_qi_changed / player_poise_changed (combat_manager 资源变更桥接)
 ## - player_level_up / player_exp_changed (character_system 升级桥接)
 ## - enemy_hp_changed (combat_manager unit_hp_changed 桥接 - 敌人路径)
 ## - enemy_selected (combat_manager execute_attack 玩家锁定时发射)
 ## - combat_action_queue_updated (combat_manager generate_action_queue 后发射)
-##
-## 后续单独 PR 处理 (A2): enemy_weakness_revealed / enemy_status_changed
-## (需扩 WeaknessSystem 信号签名 + 节点→id 约定, 见 signal-audit.md)
+## - A2 PR: enemy_weakness_revealed (WeaknessSystem.weakness_hit 桥接, 仅 is_weakness_hit=true 时上报)
+## - A2 PR: enemy_status_changed (WeaknessSystem.down_triggered/down_cleared 桥接, "down" / "" 二态)
 
 const CombatManagerScript := preload("res://src/scripts/combat/combat_manager.gd")
+const WeaknessSystemScript := preload("res://src/scripts/combat/weakness_system.gd")
 const FakeGameEventsScript := preload("res://tests/integration/hud/fake_game_events.gd")
 
 var combat_manager: Node
@@ -296,3 +296,128 @@ func _log_action_queue(queue: Array) -> void:
 
 func _log_enemy_selected(enemy: Dictionary) -> void:
 	_signal_log.append(enemy)
+
+func _log_enemy_weakness_revealed(enemy_id: String, element: String) -> void:
+	_signal_log.append([enemy_id, element])
+
+func _log_enemy_status_changed(enemy_id: String, status: String) -> void:
+	_signal_log.append([enemy_id, status])
+
+# ============================================================================
+# 桥接测试 (A2 PR): WeaknessSystem → enemy_weakness_revealed / enemy_status_changed
+# ============================================================================
+
+func test_weakness_system_weakness_hit_bridges_to_enemy_weakness_revealed() -> void:
+	# Arrange — 注入 WeaknessSystem, 设置敌人弱点为 FIRE (暴露)
+	var ws = WeaknessSystemScript.new()
+	add_child(ws)
+	ws.initialize(null)  # 桥接路径不依赖 combat_system; 传 null 跳过 all_out_attack 判定
+	combat_manager.set_weakness_system(ws)
+	game_events.enemy_weakness_revealed.connect(_log_enemy_weakness_revealed)
+
+	var attacker := Node.new()
+	attacker.name = "player_001"
+	var target := Node.new()
+	target.name = "enemy_001"
+	add_child(attacker)
+	add_child(target)
+	ws.set_participant_weakness(target, ws.Element.FIRE, true)
+
+	# Act — 水克火, 触发弱点命中
+	ws.calculate_weakness_hit(attacker, target, ws.Element.WATER)
+
+	# Assert
+	assert_eq(_signal_log.size(), 1, "弱点命中应桥接 1 次 enemy_weakness_revealed")
+	assert_eq(_signal_log[0], ["enemy_001", "water"], "enemy_id + 攻击属性应正确转发")
+
+	attacker.queue_free()
+	target.queue_free()
+	ws.queue_free()
+
+func test_weakness_system_non_weakness_hit_does_not_bridge() -> void:
+	# 普通命中 (非弱点) 不应触发 enemy_weakness_revealed — 语义上"未发现新弱点"
+	var ws = WeaknessSystemScript.new()
+	add_child(ws)
+	ws.initialize(null)
+	combat_manager.set_weakness_system(ws)
+	game_events.enemy_weakness_revealed.connect(_log_enemy_weakness_revealed)
+
+	var attacker := Node.new()
+	var target := Node.new()
+	target.name = "enemy_001"
+	add_child(attacker)
+	add_child(target)
+	ws.set_participant_weakness(target, ws.Element.FIRE, true)
+
+	# Act — 金不克火, 不触发弱点命中
+	ws.calculate_weakness_hit(attacker, target, ws.Element.METAL)
+
+	# Assert
+	assert_eq(_signal_log.size(), 0, "非弱点命中不应触发 enemy_weakness_revealed")
+
+	attacker.queue_free()
+	target.queue_free()
+	ws.queue_free()
+
+func test_weakness_system_down_triggered_bridges_to_enemy_status_changed_down() -> void:
+	var ws = WeaknessSystemScript.new()
+	add_child(ws)
+	ws.initialize(null)
+	combat_manager.set_weakness_system(ws)
+	game_events.enemy_status_changed.connect(_log_enemy_status_changed)
+
+	var target := Node.new()
+	target.name = "enemy_001"
+	add_child(target)
+
+	# Act
+	ws.trigger_down(target)
+
+	# Assert
+	assert_eq(_signal_log.size(), 1, "down_triggered 应桥接 1 次 enemy_status_changed")
+	assert_eq(_signal_log[0], ["enemy_001", "down"], "status 应为 'down'")
+
+	target.queue_free()
+	ws.queue_free()
+
+func test_weakness_system_down_cleared_bridges_to_enemy_status_changed_empty() -> void:
+	var ws = WeaknessSystemScript.new()
+	add_child(ws)
+	ws.initialize(null)
+	combat_manager.set_weakness_system(ws)
+	game_events.enemy_status_changed.connect(_log_enemy_status_changed)
+
+	var target := Node.new()
+	target.name = "enemy_001"
+	add_child(target)
+	ws.trigger_down(target)  # 先进入 down 状态
+
+	# Act — 清除 down
+	ws.clear_down(target)
+
+	# Assert — 共 2 条: trigger_down 的 "down" + clear_down 的 ""
+	assert_eq(_signal_log.size(), 2, "trigger + clear 应共桥接 2 次")
+	assert_eq(_signal_log[1], ["enemy_001", ""], "clear 后 status 应为空字符串")
+
+	target.queue_free()
+	ws.queue_free()
+
+func test_set_weakness_system_idempotent_does_not_double_bridge() -> void:
+	# 同实例重复注入不应产生重复连接
+	var ws = WeaknessSystemScript.new()
+	add_child(ws)
+	ws.initialize(null)
+	combat_manager.set_weakness_system(ws)
+	combat_manager.set_weakness_system(ws)  # 第二次注入
+	game_events.enemy_status_changed.connect(_log_enemy_status_changed)
+
+	var target := Node.new()
+	target.name = "enemy_001"
+	add_child(target)
+
+	ws.trigger_down(target)
+
+	assert_eq(_signal_log.size(), 1, "幂等注入: 仅应桥接 1 次, 不重复")
+
+	target.queue_free()
+	ws.queue_free()
