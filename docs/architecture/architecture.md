@@ -2,18 +2,18 @@
 
 ## Document Status
 
-- **Version**: 2
-- **Last Updated**: 2026-05-21
+- **Version**: 3
+- **Last Updated**: 2026-05-25
 - **Framework**: uni-app (Vue 3 + TypeScript)
 - **Platform**: 微信/抖音/支付宝小程序 + H5
-- **GDDs Covered**: save-system, event-data-engine, resource-management, day-cycle, job-rotation, event-card, choice-resolution, run-manager, game-main-ui
-- **ADRs Referenced**: ADR-001 ~ ADR-007
+- **GDDs Covered**: save-system, event-data-engine, resource-management, day-cycle, job-rotation, event-card, choice-resolution, run-manager, game-main-ui, status-system, passive-skill-system, progression-system, career-progression-system, item-system, ending-system, achievement-system
+- **ADRs Referenced**: ADR-001 ~ ADR-009
 
-> **Note (v2 update 2026-05-21)**: Sprint 4-7 made the architecture significantly
-> richer. See **"Current Architecture (Sprint 4-7)"** section at the bottom of
-> this doc for the up-to-date view. The Layer Map / Module Ownership / Data Flows
-> sections below describe the Sprint 0 design baseline — they are historically
-> accurate but no longer the complete picture.
+> **Note (v3 update 2026-05-25)**: 16 GDD 全部 retrofit 完成（增 6 个 service GDD），
+> ADR 扩到 9 条（新增 ADR-008 EventCondition / ADR-009 Build Pipeline），事件总数 ~354 → 382，
+> 测试 585 → 621。Sprint 4-7 architecture 详见底部 "Current Architecture" section。
+> 早期的 Layer Map / Module Ownership / Data Flows section 是 Sprint 0 baseline —
+> 历史准确但已非全貌。
 
 ---
 
@@ -372,7 +372,7 @@ src/
 
 ---
 
-# Current Architecture (Sprint 4-7) — as of 2026-05-21
+# Current Architecture (Sprint 4-7+) — as of 2026-05-25
 
 ## 新增 ADRs
 
@@ -382,6 +382,8 @@ src/
 | **ADR-005** | 4 层 Modifier Pipeline | raw → passive → equipment → status → resource |
 | **ADR-006** | 多结局 First-Match Catalog | 10 endings，按声明顺序优先级，必有 fallback |
 | **ADR-007** | Save Resume Day-Boundary Checkpoint | 每天结束 checkpoint，resume 跳到 next day |
+| **ADR-008** | EventCondition Pipeline | JSON 驱动 12-type 谓词链 + 纯函数 evaluateCondition，作为 buildPool filter chain 末位 |
+| **ADR-009** | Build Pipeline Subpackage Plugin | Vite plugin `copy-subpackage-data` 双 hook（configureServer + closeBundle）覆盖 dev:h5 + 4 build target |
 
 ## Services（13 个，原 7 个 → 现 13 个）
 
@@ -433,7 +435,11 @@ common-events.json (72)
   researcher-events (21) / slacker-events (21) / fortune-events (20)
 ```
 
-总 ~354 events。
+总 **382 events**（2026-05-25 M-续 后；含 M-2 8 个 common-条件事件 + M-续 19 个 job-specific 条件事件）。
+
+事件 gating 由 ADR-008 EventCondition pipeline 控制：JSON 加 `conditions?: EventCondition[]`，
+buildPool filter chain 末位评估，AND 满足才入池。12 个 type cover resource / day / weekday /
+career-level / has-item / has-equipment / status-active / event-seen 等场景。
 
 ## Item Catalog（0 → 50 items）
 
@@ -493,4 +499,25 @@ choice.effect.value
 
 ## Test 现状
 
-585+ tests across 31 files。100% coverage on services: career-progression / item / ending / achievement / passive-skill / status / resource.
+**621 tests across 32+ files**（2026-05-25）。
+100% coverage on services: career-progression / item / ending / achievement / passive-skill / status / resource / progression / event-condition-evaluator.
+
+## Build Pipeline 修复（2026-05-25, commit b1c1021）
+
+`vite.config.ts` 中的 `copy-subpackage-data` plugin 之前**遗漏了 `configureServer` hook**——
+仅 `closeBundle` 在 production build 时 copy JSON 到 dist，但 dev:h5 模式下 vite dev server
+不知道 src/subpackages/ 的存在，浏览器 fetch `/subpackages/events/*.json` 全部 404，
+uni-event-loader fallback 到 5 个硬编码 events → bug 症状 "每天都是相同 5 个事件"。
+
+修复加入 middleware hook：拦截 `/subpackages/**/*.json` 请求，从 src/ 实时读取并返回。
+现在 dev:h5 实测可拉取完整 9 个职业 JSON / 382 events。详见 ADR-009。
+
+## 设计文档与代码同步状态（2026-05-25 audit）
+
+| Layer | Status |
+|-------|--------|
+| **GDD coverage** | 16/21 systems designed（含 6 个 Sprint 4-7 retrofit） |
+| **Service-level GDD** | passive-skill / progression / career-progression / item / ending / achievement 全部补齐 |
+| **event-data-engine.md** | 加 `conditions?` 字段 + EventCondition 谓词章节 |
+| **ADR coverage** | 9 条（ADR-001 ~ ADR-009），ADR-008 EventCondition / ADR-009 Build Pipeline 为 retrofit |
+| **未补 GDD** | 广告激励 / 分享 / 职业选择页 / 结算页 / 主菜单图鉴 — Beta+ tier，待实现时补 |

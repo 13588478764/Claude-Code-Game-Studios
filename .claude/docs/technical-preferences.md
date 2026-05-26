@@ -56,6 +56,12 @@
 - ADR-001: 事件通信机制 — 自实现 TypedEventEmitter (Accepted)
 - ADR-002: 分包策略 — 按职业分包+通用事件在主包 (Accepted)
 - ADR-003: Store-Service 同步模式 — Service emit → Store subscribe (Accepted)
+- ADR-004: 多周职业架构 — 1 run = N 周（weeksPerCareer from JobConfig），onCareerCompleted 触发 SETTLING (Accepted)
+- ADR-005: 4 层 Modifier Pipeline — raw → passive → equipment → status → resource (Accepted)
+- ADR-006: 多结局 First-Match Catalog — 10 endings + fallback (Accepted)
+- ADR-007: Save Resume Day-Boundary Checkpoint — 每天结束 checkpoint，resume 跳 next day (Accepted)
+- ADR-008: EventCondition Pipeline — JSON 驱动 12-type 谓词链，buildPool filter chain 末位 (Accepted)
+- ADR-009: Build Pipeline Subpackage Plugin — Vite plugin 双 hook（configureServer + closeBundle）双 mode 生效 (Accepted)
 
 ## Specialists
 
