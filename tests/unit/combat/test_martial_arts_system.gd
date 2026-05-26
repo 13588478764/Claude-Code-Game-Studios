@@ -253,4 +253,4 @@ func test_four_equipment_slots():
 func test_constants():
 	assert_eq(MartialArtsSystem.FRAGMENT_NEEDED_FOR_SYNTHESIS, 3, "合成所需残页数应该为3")
 	assert_eq(MartialArtsSystem.MAX_EQUIPPED_MARTIAL_ARTS, 4, "最大装备数应该为4")
-	assert_eq(MartialArtsSystem.MAX_PROFICIENCY_LEVEL, 10, "最大熟练度等级应该为10")
+	assert_eq(MartialArtsSystem.MAX_PROFICIENCY_LEVEL, 15, "最大熟练度等级应该为15 (对齐 design/gdd/martial-arts-system.md)")
