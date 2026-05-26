@@ -141,18 +141,11 @@ active.md 中"工作流节点超标 / 菱形外框崩坏 / 挂机重启"等风�
 
 ## 四、P2 — 卫生类
 
-### 19. 8 个测试文件混在 src/ (打包会进生产包)
+### 19. 8 个测试文件混在 src/ (打包会进生产包) ✅ 2026-05-26
 
-- `src/test_attribute_manager.gd` + `.tscn`
-- `src/scripts/test_mvp_validation.gd`
-- `src/scripts/test/simple_equipment_test.gd`
-- `src/scripts/test/equipment_test_script.gd`
-- `src/scripts/validation/mvp_validation.gd`
-- `src/scripts/ui/equipment_ui_test.gd`
-- `src/scenes/status_ui_test_controller.gd`
-- `src/scenes/attribute_allocation_test_script.gd`
-
-应批量 `mv` 到 `tests/` 对应子目录, 同时排查 import path 连锁。**预估 1h, 但有回归风险**, 必须在白天有时间排查。
+- ✅ `src/test_attribute_manager.gd` + `.tscn` + `.uid` → `tests/manual/attribute_manager/` (修正 ext_resource 路径 `res://test_attribute_manager.gd` → `res://tests/manual/attribute_manager/test_attribute_manager.gd`, 顺手修了原本就 broken 的引用)
+- ✅ 完全 orphan 删除 (zero refs in .tscn / .gd / project.godot, 仅 `.godot/` 编辑器缓存有 cache 条目): `src/scripts/test_mvp_validation.gd` (542) / `src/scripts/test/simple_equipment_test.gd` (131) / `src/scripts/test/equipment_test_script.gd` (176) / `src/scripts/validation/mvp_validation.gd` (~600) / `src/scripts/ui/equipment_ui_test.gd` (213) / `src/scenes/status_ui_test_controller.gd` (123) / `src/scenes/attribute_allocation_test_script.gd` (211)
+- 共减 ~2000 行 src/ 死代码; 134/134 GUT 测试无 loading regression (1 pre-existing `test_constants` 熟练度等级 fail 与本变动无关).
 
 ### 20. 25 处 "暂时" stub 实现
 
