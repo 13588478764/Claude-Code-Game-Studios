@@ -27,7 +27,10 @@ class_name LinkSystem
 
 const DEFAULT_LINK_GAUGE_MAX: float = 100.0  # 默认连携槽最大值
 const DEFAULT_MAX_COMBO: int = 10  # 默认最大连击数
-const COMBO_DAMAGE_INCREMENT: float = 0.1  # 每次连击伤害增加比例（10%）
+## 连击伤害递增比例。注意与 combat_system.gd::COMBO_DAMAGE_INCREMENT (0.05) 区分:
+## 本常量服务 link_system 的 ComboTracker (10% 阶梯), 另一常量服务 combat_system
+## 的全局 combo multiplier (5% 阶梯)。二者语义不同, 不要相互替换。
+const LINK_COMBO_DAMAGE_INCREMENT: float = 0.1  # 每次连击伤害增加比例（10%）
 const LINK_GAUGE_ACCUMULATE_PER_HIT: float = 10.0  # 每次命中积累的连携槽
 
 const FOLLOW_UP_GAUGE_COST: float = 50.0  # 追击消耗的连携槽
@@ -87,7 +90,7 @@ class ComboTracker:
 			current_target = target
 		
 		count = min(count + 1, max_combo)
-		damage_multiplier = 1.0 + (count - 1) * 0.1  # 每次连击增加 10% 伤害
+		damage_multiplier = 1.0 + (count - 1) * LINK_COMBO_DAMAGE_INCREMENT
 		return damage_multiplier
 	
 	func reset():

@@ -78,7 +78,7 @@
 
 - ✅ 已删 `src/scripts/ui/damage_visualization_manager.gd` (281 行空壳)
 - ⚠️ 剩余: `src/scripts/world_streaming_manager.gd` (旧版, 基于像素区块) vs `src/scripts/world/world_streaming_manager.gd` (新版, 简化区域加载) — 需评估合并/删旧, 不能盲删 (新版功能可能不全)
-- ⚠️ `combat_system.gd:37::COMBO_DAMAGE_INCREMENT` (战斗连击 0.05) vs `link_system.gd:30::COMBO_DAMAGE_INCREMENT` (连携槽 0.10) 同名不同义, 建议 link_system 那个重命名为 `LINK_COMBO_DAMAGE_INCREMENT`
+- ✅ `link_system.gd:30::COMBO_DAMAGE_INCREMENT` → `LINK_COMBO_DAMAGE_INCREMENT` (2026-05-26) — 同时把 ComboTracker.hit_target 内硬编码 `0.1` 改用本常量 (dead const 转 live const, 与 combat_system.gd 同名常量 0.05 彻底解耦). 41/41 link_system tests + 5/5 combo_damage_increment 快照通过.
 
 ### 6. character_system.gd 核心 Autoload 缺静态类型
 
