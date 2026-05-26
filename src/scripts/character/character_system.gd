@@ -47,14 +47,14 @@ signal attributes_reset(free_reset_used: bool)
 
 # 角色核心属性
 class CharacterAttributes:
-	var strength = 10      # 力道
-	var agility = 10       # 身法  
-	var constitution = 10  # 根骨
-	var intelligence = 10  # 悟性
-	var willpower = 10     # 定力
-	var luck = 10          # 福缘
-	
-	func get_total():
+	var strength: int = 10      # 力道
+	var agility: int = 10       # 身法
+	var constitution: int = 10  # 根骨
+	var intelligence: int = 10  # 悟性
+	var willpower: int = 10     # 定力
+	var luck: int = 10          # 福缘
+
+	func get_total() -> Dictionary:
 		return {
 			"strength": strength,
 			"agility": agility,
@@ -63,20 +63,20 @@ class CharacterAttributes:
 			"willpower": willpower,
 			"luck": luck
 		}
-	
-	func add_points(points_dict):
+
+	func add_points(points_dict: Dictionary) -> void:
 		if points_dict.has("strength"):
-			strength += points_dict["strength"]
+			strength += int(points_dict["strength"])
 		if points_dict.has("agility"):
-			agility += points_dict["agility"]
+			agility += int(points_dict["agility"])
 		if points_dict.has("constitution"):
-			constitution += points_dict["constitution"]
+			constitution += int(points_dict["constitution"])
 		if points_dict.has("intelligence"):
-			intelligence += points_dict["intelligence"]
+			intelligence += int(points_dict["intelligence"])
 		if points_dict.has("willpower"):
-			willpower += points_dict["willpower"]
+			willpower += int(points_dict["willpower"])
 		if points_dict.has("luck"):
-			luck += points_dict["luck"]
+			luck += int(points_dict["luck"])
 
 # 境界定义
 const REALMS = [
@@ -93,39 +93,39 @@ const REALMS = [
 ]
 
 # 角色状态
-var level = 1
-var experience = 0
-var total_attribute_points = 0
-var allocated_attribute_points = 0
-var total_talent_points = 0    # 天赋点总数
-var allocated_talent_points = 0  # 已分配天赋点数
-var attributes = CharacterAttributes.new()
-var realm_index = 0  # 当前境界索引 (0-9)
-var realm_bonus = 1.0  # 境界加成系数
-var free_reset_count = 0  # 免费重置次数
+var level: int = 1
+var experience: int = 0
+var total_attribute_points: int = 0
+var allocated_attribute_points: int = 0
+var total_talent_points: int = 0    # 天赋点总数
+var allocated_talent_points: int = 0  # 已分配天赋点数
+var attributes: CharacterAttributes = CharacterAttributes.new()
+var realm_index: int = 0  # 当前境界索引 (0-9)
+var realm_bonus: float = 1.0  # 境界加成系数
+var free_reset_count: int = 0  # 免费重置次数
 
 # 寿命管理器引用（用于NPC寿命系统）
 var lifespan_manager: LifespanManager = null
 
-# 天赋网格系统
-var talent_grid = []  # 4x4天赋网格 [[{unlocked: bool, effect: {...}}, ...], ...]
-var talent_definitions = {}  # 天赋定义 {talent_id: {name: str, effect: {...}, description: str}}
+# 天赋网格系统 (Array[Array] — 4x4 dict 网格, GDScript 嵌套泛型限制, 不再细化)
+var talent_grid: Array = []  # 4x4天赋网格 [[{unlocked: bool, effect: {...}}, ...], ...]
+var talent_definitions: Dictionary = {}  # 天赋定义 {talent_id: {name: str, effect: {...}, description: str}}
 
 # 经验值配置
-var exp_curve = {
+var exp_curve: Dictionary = {
 	"base": 100,
 	"exponent": 1.5,
 	"realm_multiplier": [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0]
 }
 
-func _ready():
+func _ready() -> void:
 	# 初始化角色
 	initialize_character()
-	
+
 	# 初始化寿命管理器
 	initialize_lifespan_manager()
 
-func initialize_character():
+func initialize_character() -> void:
 	"""初始化角色默认状态"""
 	level = 1
 	experience = 0
@@ -143,7 +143,7 @@ func initialize_character():
 	
 	print("角色初始化完成")
 
-func initialize_lifespan_manager():
+func initialize_lifespan_manager() -> void:
 	"""初始化寿命管理器"""
 	# 创建寿命管理器实例
 	lifespan_manager = LifespanManager.new()
@@ -159,12 +159,12 @@ func _on_npc_lifespan_warning(npc_id: String, remaining_years: int):
 	print("[CharacterSystem] NPC %s 寿命将尽，剩余 %d 年" % [npc_id, remaining_years])
 	# 这里可以触发特殊剧情或对话
 
-func initialize_talent_grid():
+func initialize_talent_grid() -> void:
 	"""初始化4x4天赋网格"""
 	# 创建4x4网格，所有节点初始为未解锁状态
 	talent_grid.clear()
 	for row in range(4):
-		var grid_row = []
+		var grid_row: Array = []
 		for col in range(4):
 			grid_row.append({
 				"unlocked": false,
@@ -192,12 +192,12 @@ func initialize_talent_grid():
 		"talent_3_3": {"name": "全属性提升", "effect": {"strength": 5, "agility": 5, "constitution": 5, "intelligence": 5, "willpower": 5, "luck": 5}, "description": "所有属性各增加5点"}
 	}
 
-func add_experience(exp_amount):
+func add_experience(exp_amount: int) -> void:
 	"""添加经验值并处理升级"""
 	experience += exp_amount
 
 	# 发射经验值获得信号
-	var required_exp = get_exp_required_for_level(level + 1)
+	var required_exp: int = get_exp_required_for_level(level + 1)
 	experience_gained.emit(exp_amount, experience, required_exp)
 
 	# 全局事件广播 — 让 HUD player_status_panel 刷新经验条
@@ -208,12 +208,12 @@ func add_experience(exp_amount):
 
 	check_level_up()
 
-func check_level_up():
+func check_level_up() -> void:
 	"""检查是否可以升级"""
 	while experience >= get_exp_required_for_level(level + 1) and level < 99:
 		level_up()
 
-func level_up():
+func level_up() -> void:
 	"""角色升级"""
 	if level >= 99:
 		return
@@ -245,16 +245,16 @@ func level_up():
 
 	print("角色升级到 %d 级" % level)
 
-func check_realm_breakthrough():
+func check_realm_breakthrough() -> void:
 	"""检查是否达到境界突破条件"""
-	var current_realm = get_current_realm()
+	var current_realm: Dictionary = get_current_realm()
 	if level == current_realm["level_range"][1]:
 		# 达到当前境界的最大等级
 		print("达到 %s 期圆满，准备突破" % current_realm["name"])
 		# 这里应该触发突破界面，但暂时先自动突破用于测试
 		# 在实际游戏中，玩家需要完成特定条件才能突破
 
-func breakthrough_realm():
+func breakthrough_realm() -> void:
 	"""境界突破"""
 	if realm_index >= 9:  # 已经是最高境界
 		return
@@ -266,7 +266,7 @@ func breakthrough_realm():
 	realm_bonus = 1.0 + (realm_index * 0.1)  # 每次突破增加10%全属性加成
 	free_reset_count += 1  # 获得一次免费重置机会
 
-	var current_realm = get_current_realm()
+	var current_realm: Dictionary = get_current_realm()
 
 	# 发射境界突破信号
 	realm_breakthrough.emit(current_realm["name"], realm_bonus, realm_index)
@@ -277,50 +277,50 @@ func breakthrough_realm():
 
 	print("突破到 %s 期，全属性加成 %.1f%%" % [current_realm["name"], (realm_bonus - 1.0) * 100])
 
-func get_current_realm():
+func get_current_realm() -> Dictionary:
 	"""获取当前境界信息"""
 	return REALMS[realm_index]
 
-func get_realm_by_level(target_level):
+func get_realm_by_level(target_level: int) -> Dictionary:
 	"""根据等级获取对应的境界"""
 	for i in range(REALMS.size()):
-		var realm = REALMS[i]
+		var realm: Dictionary = REALMS[i]
 		if target_level >= realm["level_range"][0] and target_level <= realm["level_range"][1]:
 			return {"realm": realm, "index": i}
 	return {"realm": REALMS[9], "index": 9}  # 默认返回最高境界
 
-func get_exp_required_for_level(target_level):
+func get_exp_required_for_level(target_level: int) -> int:
 	"""计算升级到目标等级所需的经验值"""
 	if target_level <= 1:
 		return 0
 	if target_level > 99:
 		target_level = 99
-	
-	var realm_info = get_realm_by_level(target_level - 1)
-	var realm_multiplier = exp_curve["realm_multiplier"][realm_info["index"]]
-	
-	var exp_required = exp_curve["base"] * pow(target_level, exp_curve["exponent"]) * realm_multiplier
+
+	var realm_info: Dictionary = get_realm_by_level(target_level - 1)
+	var realm_multiplier: float = exp_curve["realm_multiplier"][realm_info["index"]]
+
+	var exp_required: float = exp_curve["base"] * pow(target_level, exp_curve["exponent"]) * realm_multiplier
 	return int(exp_required)
 
-func allocate_attribute_points(attribute_name, points):
+func allocate_attribute_points(attribute_name: String, points: int) -> bool:
 	"""分配属性点"""
 	# 验证输入参数
 	if points <= 0:
 		return false
-	
+
 	# 验证属性点是否足够
 	if allocated_attribute_points + points > total_attribute_points:
 		return false
-	
+
 	# 验证属性名称是否有效
-	var valid_attributes = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
+	var valid_attributes: Array = ["strength", "agility", "constitution", "intelligence", "willpower", "luck"]
 	if not valid_attributes.has(attribute_name):
 		return false
-	
+
 	# 执行属性分配
-	var old_value = 0
-	var new_value = 0
-	
+	var old_value: int = 0
+	var new_value: int = 0
+
 	match attribute_name:
 		"strength":
 			old_value = attributes.strength
@@ -354,10 +354,10 @@ func allocate_attribute_points(attribute_name, points):
 	
 	return true
 
-func reset_attributes():
+func reset_attributes() -> bool:
 	"""重置属性点"""
-	var used_free_reset = false
-	
+	var used_free_reset: bool = false
+
 	if free_reset_count > 0:
 		free_reset_count -= 1
 		used_free_reset = true
@@ -366,20 +366,20 @@ func reset_attributes():
 		if not consume_wash_marrow_pill():
 			push_warning("没有足够的洗髓丹或免费重置次数")
 			return false
-	
+
 	# 重置所有属性到基础值
 	attributes = CharacterAttributes.new()
 	allocated_attribute_points = 0
-	
+
 	# 发射重置信号
 	attributes_reset.emit(used_free_reset)
-	
+
 	return true
 
-func consume_wash_marrow_pill():
+func consume_wash_marrow_pill() -> bool:
 	"""消耗洗髓丹"""
 	# 与物品系统集成
-	var item_manager = get_node_or_null("/root/MainGame/ItemManager")
+	var item_manager: Node = get_node_or_null("/root/MainGame/ItemManager")
 	if item_manager:
 		return item_manager.remove_item(item_manager.ITEM_WASH_MARROW_PILL, 1)
 	else:
@@ -389,63 +389,63 @@ func consume_wash_marrow_pill():
 
 # 天赋网格系统功能
 
-func unlock_talent(row, col):
+func unlock_talent(row: int, col: int) -> bool:
 	"""解锁天赋节点"""
 	# 验证坐标范围
 	if row < 0 or row >= 4 or col < 0 or col >= 4:
 		return false
-	
+
 	# 验证天赋点是否足够
 	if allocated_talent_points >= total_talent_points:
 		return false
-	
+
 	# 验证节点是否已经解锁
 	if talent_grid[row][col]["unlocked"]:
 		return false
-	
+
 	# 解锁天赋节点
 	talent_grid[row][col]["unlocked"] = true
 	allocated_talent_points += 1
-	
+
 	# 设置天赋效果
-	var talent_id = "talent_%d_%d" % [row, col]
+	var talent_id: String = "talent_%d_%d" % [row, col]
 	if talent_definitions.has(talent_id):
 		talent_grid[row][col]["effect"] = talent_definitions[talent_id]["effect"]
-	
+
 	return true
 
-func reset_talents():
+func reset_talents() -> bool:
 	"""重置天赋网格"""
 	# 重置所有天赋节点为未解锁状态
 	for row in range(4):
 		for col in range(4):
 			talent_grid[row][col]["unlocked"] = false
 			talent_grid[row][col]["effect"] = {}
-	
+
 	# 重置已分配天赋点数
 	allocated_talent_points = 0
-	
+
 	return true
 
-func get_talent_effects():
+func get_talent_effects() -> Dictionary:
 	"""获取所有已解锁天赋的效果"""
-	var total_effects = {}
-	
+	var total_effects: Dictionary = {}
+
 	for row in range(4):
 		for col in range(4):
 			if talent_grid[row][col]["unlocked"]:
-				var effect = talent_grid[row][col]["effect"]
+				var effect: Dictionary = talent_grid[row][col]["effect"]
 				for key in effect:
 					if total_effects.has(key):
 						total_effects[key] += effect[key]
 					else:
 						total_effects[key] = effect[key]
-	
+
 	return total_effects
 
-func get_final_attributes():
+func get_final_attributes() -> CharacterAttributes:
 	"""获取最终属性（包含境界加成和天赋效果）"""
-	var final_attrs = CharacterAttributes.new()
+	var final_attrs: CharacterAttributes = CharacterAttributes.new()
 	
 	# 基础属性 + 境界加成
 	final_attrs.strength = int(attributes.strength * realm_bonus)
@@ -456,26 +456,26 @@ func get_final_attributes():
 	final_attrs.luck = int(attributes.luck * realm_bonus)
 	
 	# 应用天赋效果
-	var talent_effects = get_talent_effects()
+	var talent_effects: Dictionary = get_talent_effects()
 	if talent_effects.has("strength"):
-		final_attrs.strength += talent_effects["strength"]
+		final_attrs.strength += int(talent_effects["strength"])
 	if talent_effects.has("agility"):
-		final_attrs.agility += talent_effects["agility"]
+		final_attrs.agility += int(talent_effects["agility"])
 	if talent_effects.has("constitution"):
-		final_attrs.constitution += talent_effects["constitution"]
+		final_attrs.constitution += int(talent_effects["constitution"])
 	if talent_effects.has("intelligence"):
-		final_attrs.intelligence += talent_effects["intelligence"]
+		final_attrs.intelligence += int(talent_effects["intelligence"])
 	if talent_effects.has("willpower"):
-		final_attrs.willpower += talent_effects["willpower"]
+		final_attrs.willpower += int(talent_effects["willpower"])
 	if talent_effects.has("luck"):
-		final_attrs.luck += talent_effects["luck"]
-	
+		final_attrs.luck += int(talent_effects["luck"])
+
 	return final_attrs
 
-func get_combat_stats():
+func get_combat_stats() -> Dictionary:
 	"""获取战斗属性（包含天赋效果）"""
-	var final_attrs = get_final_attributes()
-	var combat_stats = {
+	var final_attrs: CharacterAttributes = get_final_attributes()
+	var combat_stats: Dictionary = {
 		"physical_attack": final_attrs.strength * 2,
 		"magical_attack": final_attrs.intelligence * 2,
 		"max_health": final_attrs.constitution * 10,
@@ -490,7 +490,7 @@ func get_combat_stats():
 	}
 	
 	# 应用天赋效果到战斗属性
-	var talent_effects = get_talent_effects()
+	var talent_effects: Dictionary = get_talent_effects()
 	if talent_effects.has("physical_attack"):
 		combat_stats["physical_attack"] += talent_effects["physical_attack"]
 	if talent_effects.has("max_health"):
@@ -538,7 +538,7 @@ func is_npc_lifespan_warning(npc_id: String) -> bool:
 	return false
 
 # 调试函数
-func debug_print_character_info():
+func debug_print_character_info() -> void:
 	"""打印角色信息用于调试"""
 	print("=== 角色信息 ===")
 	print("等级: %d" % level)
@@ -548,8 +548,8 @@ func debug_print_character_info():
 	print("天赋点: %d / %d" % [allocated_talent_points, total_talent_points])
 	print("免费重置次数: %d" % free_reset_count)
 	print("境界加成: %.1f%%" % ((realm_bonus - 1.0) * 100))
-	
-	var final_attrs = get_final_attributes()
+
+	var final_attrs: CharacterAttributes = get_final_attributes()
 	print("最终属性:")
 	print("  力道: %d" % final_attrs.strength)
 	print("  身法: %d" % final_attrs.agility)
@@ -558,7 +558,7 @@ func debug_print_character_info():
 	print("  定力: %d" % final_attrs.willpower)
 	print("  福缘: %d" % final_attrs.luck)
 	
-	var combat_stats = get_combat_stats()
+	var combat_stats: Dictionary = get_combat_stats()
 	print("战斗属性:")
 	print("  物理攻击: %d" % combat_stats["physical_attack"])
 	print("  内功攻击: %d" % combat_stats["magical_attack"])
@@ -574,39 +574,17 @@ func debug_print_character_info():
 	# 打印天赋网格状态
 	print("天赋网格状态:")
 	for row in range(4):
-		var row_str = ""
+		var row_str: String = ""
 		for col in range(4):
 			if talent_grid[row][col]["unlocked"]:
 				row_str += "X "
 			else:
 				row_str += "O "
 		print("  %s" % row_str)
-	
+
 	# 打印NPC寿命信息
 	if lifespan_manager:
 		print("\n=== NPC寿命信息 ===")
 		lifespan_manager.debug_print_all_npcs()
-	
-	print("================")
 
-# UI回调函数
-func _on_test_button_pressed():
-	"""测试按钮点击回调"""
-	# 测试升级
-	add_experience(1000)
-	
-	# 测试属性分配
-	allocate_attribute_points("strength", 2)
-	allocate_attribute_points("agility", 2)
-	allocate_attribute_points("constitution", 1)
-	
-	# 测试天赋解锁
-	unlock_talent(0, 0)  # 解锁力拔山兮
-	unlock_talent(1, 1)  # 解锁福星高照
-	
-	# 测试境界突破
-	if level >= 10:
-		breakthrough_realm()
-	
-	# 打印调试信息
-	debug_print_character_info()
+	print("================")

@@ -80,9 +80,13 @@
 - ⚠️ 剩余: `src/scripts/world_streaming_manager.gd` (旧版, 基于像素区块) vs `src/scripts/world/world_streaming_manager.gd` (新版, 简化区域加载) — 需评估合并/删旧, 不能盲删 (新版功能可能不全)
 - ✅ `link_system.gd:30::COMBO_DAMAGE_INCREMENT` → `LINK_COMBO_DAMAGE_INCREMENT` (2026-05-26) — 同时把 ComboTracker.hit_target 内硬编码 `0.1` 改用本常量 (dead const 转 live const, 与 combat_system.gd 同名常量 0.05 彻底解耦). 41/41 link_system tests + 5/5 combo_damage_increment 快照通过.
 
-### 6. character_system.gd 核心 Autoload 缺静态类型
+### 6. character_system.gd 核心 Autoload 缺静态类型 ✅ 2026-05-26
 
-`CharacterAttributes` 内部类 6 个成员全部 untyped; `add_points(points_dict)` / `get_total()` 无类型签名。性能损失 + 重构安全为零。**1h** 全文加类型。
+- ✅ CharacterAttributes 内部类 6 个成员 (`strength/agility/...`) 加 `: int`; `get_total() -> Dictionary`; `add_points(points_dict: Dictionary) -> void` (含 int 转换防 dict 来自 JSON 等弱类型源).
+- ✅ 主类 11 个成员 (level/experience/realm_index/realm_bonus/...) 全部 typed.
+- ✅ 22 个函数全部加 typed 参数 + 返回类型 (init/level_up/breakthrough/get_combat_stats/...).
+- ✅ 删 orphan `_on_test_button_pressed` UI 回调 (零外部引用).
+- 验证: tests/unit/character/ 19/19 + 其余 character 套 24/24 + hud_signal_bridge_test 15/15 = **58/58 通过, API 零破坏**.
 
 ### 7. dialogue_data.gd 条件判定永远 `return true`
 
