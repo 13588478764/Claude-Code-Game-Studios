@@ -1,8 +1,8 @@
 # 事件数据引擎 (Event Data Engine)
 
-> **Status**: Designed
+> **Status**: Designed (M-1 EventCondition Retrofit 2026-05-25)
 > **Author**: user + agents
-> **Last Updated**: 2026-05-16
+> **Last Updated**: 2026-05-25
 > **Implements Pillar**: 永远有新的
 
 ## Overview
@@ -35,6 +35,7 @@ interface EventCard {
   prereqs?: string[]      // 前置条件: 需要之前出现过的事件ID
   cooldown?: number       // 冷却: 被抽中后N天内不再出现
   dayRange?: [number, number]  // 仅在第X-Y天出现
+  conditions?: EventCondition[]  // M-1: 上下文谓词链（全 AND 满足才入池）
 }
 
 interface Choice {
@@ -85,6 +86,46 @@ interface ResourceEffect {
 | 职业轮回系统 | ← 告知职业 | `loadJobEvents(jobId): void` |
 | 存档系统 | ← 读取冷却 | `runState.eventCooldowns[]` |
 
+### EventCondition 谓词链（M-1, 2026-05-25）
+
+事件可声明 `conditions?: EventCondition[]` —— 一个 AND-连接的上下文谓词数组，
+在 buildPool filter chain 中**继 prereqs / dayRange / cooldown 之后**评估。
+若任一 condition 返回 false，事件不入池。
+
+谓词由 `evaluateCondition(cond, ctx)` 解析（src/services/event/condition-evaluator.ts）。
+当前支持 12 种类型：
+
+| Type | 语义 | 示例 |
+|------|------|------|
+| `resource-below` | `ctx.resources[res] < threshold` | `{type:'resource-below', resource:'energy', value:30}` |
+| `resource-above` | `ctx.resources[res] >= threshold` | `{type:'resource-above', resource:'money', value:1000}` |
+| `day-equals` | `ctx.currentDay === value` | `{type:'day-equals', value:7}` |
+| `day-above` | `ctx.currentDay >= value` | |
+| `day-below` | `ctx.currentDay < value` | |
+| `weekday` | 周末 review 专用：`ctx.currentDay % 7 === value` | `{type:'weekday', value:0}` |
+| `career-level` | `ctx.careerLevel >= value` | `{type:'career-level', value:2}` |
+| `has-item` | `ctx.inventory[itemId] > 0` | `{type:'has-item', itemId:'coffee'}` |
+| `has-equipment` | `ctx.equipped[slot] === itemId` | `{type:'has-equipment', slot:'tool', itemId:'mac'}` |
+| `status-active` | `ctx.activeStatuses.includes(id)` | `{type:'status-active', statusId:'tired'}` |
+| `event-seen` | `ctx.shownEventIds.includes(id)` | `{type:'event-seen', eventId:'tutorial-1'}` |
+| `event-not-seen` | `!ctx.shownEventIds.includes(id)` | |
+
+**Pipeline 位置**：
+```
+buildPool(ctx):
+  raw events for job + common
+    → filter prereqs satisfied
+    → filter dayRange
+    → filter cooldown == 0
+    → filter conditions.every(c => evaluateCondition(c, ctx))   ← M-1
+    → weighted random
+```
+
+**前向兼容**：未实现的 type → `evaluateCondition` 走 default 返回 false（保守不入池）。
+旧 JSON 无 `conditions` 字段 → 等价于 `conditions: []` → 自动通过。
+
+**详细管线**：参考 ADR-008 (EventCondition Pipeline)。
+
 ## Formulas
 
 ### 权重抽取概率
@@ -119,6 +160,10 @@ interface ResourceEffect {
 - **If 同一天需要抽5个事件但池中只剩3个不同事件**：允许重复抽取（repeatPenalty已降低但不禁止）。
 
 - **If 事件的effects会导致资源超出范围**：由资源管理系统负责clamp，事件数据引擎不做校验。
+
+- **If `conditions` 数组中包含未知 type**（前向兼容场景，旧 build 加载新 JSON）：`evaluateCondition` 默认返回 false，该 condition 失败 → 整个事件不入池。**保守失败**——避免误把不合预期的事件抽出来。
+
+- **If `conditions` 引用的 itemId / statusId / eventId 不存在**（content 错误或被删除）：对应谓词读取到 0 / undefined / false，自然不满足条件 → 事件不入池。不抛错。
 
 ## Dependencies
 
@@ -175,3 +220,11 @@ interface DrawContext {
 - **GIVEN** JSON加载失败, **WHEN** 重试3次仍失败, **THEN** 系统使用备用事件集，游戏继续运行。
 
 - **GIVEN** 新增职业JSON文件"doctor-events.json", **WHEN** 代码未做任何修改, **THEN** 该职业的事件可被正常加载和抽取（数据驱动验证）。
+
+- **GIVEN** event 含 `conditions: [{type:'resource-below', resource:'energy', value:30}]` 且 ctx.energy=50, **WHEN** buildPool, **THEN** 该事件不入池。
+
+- **GIVEN** event 含 `conditions: [{type:'career-level', value:2}, {type:'has-item', itemId:'coffee'}]` 且 ctx.careerLevel=3 + inventory.coffee=1, **WHEN** buildPool, **THEN** 两 condition 都满足 → 事件入池。
+
+- **GIVEN** event 含 `conditions: [{type:'unknown-future-type'}]`（旧 build / 新 JSON）, **WHEN** evaluateCondition, **THEN** 返回 false → 事件不入池（前向兼容失败保守）。
+
+- **GIVEN** event 无 `conditions` 字段（旧 JSON）, **WHEN** buildPool, **THEN** 视为通过 → 事件入池（向后兼容）。
