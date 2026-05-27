@@ -151,6 +151,8 @@ process_category "wuxia_debuff_1024"     "_masters/debuff_1024"  "🗄 1024 Debu
 process_category "wuxia_talent_1024"     "_masters/talent_1024"  "🗄 1024 天赋图标母版备份"
 process_category "wuxia_skill_1024"      "_masters/skill_1024"   "🗄 1024 武学图标母版备份"
 process_category "wuxia_system_1024"     "_masters/system_1024"  "🗄 1024 系统综合图标母版备份"
+process_category "wuxia_item_1024"       "_masters/items_1024"   "🗄 1024 物品图标母版备份"
+process_category "wuxia_frame_1024"      "_masters/frames_1024"  "🗄 1024 UI 边框母版备份"
 
 # ===== 收尾 =====
 echo ""
