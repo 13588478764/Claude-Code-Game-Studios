@@ -101,11 +101,12 @@ class RealmLevelCondition extends Condition:
 	func _init(min_level: int = 1) -> void:
 		super._init(ConditionType.REALM_LEVEL)
 		value = min_level
-	
+
 	func evaluate() -> bool:
-		# 这里需要访问玩家的境界等级
-		# 暂时返回true，实际实现需要连接到角色系统
-		return true
+		var char_sys = DialogueData._get_character_system()
+		if char_sys == null:
+			return false
+		return char_sys.realm_index >= int(value)
 
 ## 关系值条件
 class RelationshipCondition extends Condition:
@@ -140,15 +141,25 @@ class DaoHeartCondition extends Condition:
 
 ## 任务状态条件
 class QuestStatusCondition extends Condition:
+	## 对话 JSON 中的字符串 → QuestManager.QuestStatus 枚举索引映射
+	const _STATUS_MAP: Dictionary = {
+		"locked": 0, "available": 1, "active": 2, "completed": 3, "finished": 4
+	}
+
 	func _init(quest_id: String = "", status: String = "completed") -> void:
 		super._init(ConditionType.QUEST_STATUS)
 		target = quest_id
 		value = status
-	
+
 	func evaluate() -> bool:
-		# 需要访问任务管理器
-		# 暂时返回true
-		return true
+		var quest_sys = DialogueData._get_quest_system()
+		if quest_sys == null:
+			return false
+		var info: Dictionary = quest_sys.get_quest_info(target)
+		if info.is_empty():
+			return false
+		var expected_idx: int = _STATUS_MAP.get(str(value).to_lower(), -1)
+		return int(info.get("status", -2)) == expected_idx
 
 ## 物品持有条件
 class ItemOwnedCondition extends Condition:
@@ -156,11 +167,12 @@ class ItemOwnedCondition extends Condition:
 		super._init(ConditionType.ITEM_OWNED)
 		target = item_id
 		value = min_count
-	
+
 	func evaluate() -> bool:
-		# 需要访问物品管理器
-		# 暂时返回true
-		return true
+		var inv_sys = DialogueData._get_inventory_system()
+		if inv_sys == null:
+			return false
+		return inv_sys.get_item_count(target) >= int(value)
 
 ## 标志位条件
 class FlagCondition extends Condition:
@@ -168,11 +180,9 @@ class FlagCondition extends Condition:
 		super._init(ConditionType.FLAG)
 		target = flag_name
 		value = flag_value
-	
+
 	func evaluate() -> bool:
-		# 需要访问游戏状态管理器
-		# 暂时返回true
-		return true
+		return DialogueData.get_flag(target) == bool(value)
 
 ## 效果基类
 class Effect:
@@ -267,10 +277,9 @@ class SetFlagEffect extends Effect:
 		super._init(EffectType.SET_FLAG)
 		target = flag_name
 		value = flag_value
-	
+
 	func execute() -> void:
-		# 需要访问游戏状态管理器
-		print("[对话效果] 设置标志位: %s = %s" % [target, value])
+		DialogueData.set_flag(target, bool(value))
 
 ## 声望变化效果（新增）
 class ChangeReputationEffect extends Effect:
@@ -414,6 +423,15 @@ class DialogueTree:
 		
 		return true
 
+## 对话标志位存储 (对话系统内部状态, 如"是否已选择过某分支")
+static var _game_flags: Dictionary = {}
+
+static func set_flag(flag_name: String, flag_value: bool) -> void:
+	_game_flags[flag_name] = flag_value
+
+static func get_flag(flag_name: String) -> bool:
+	return _game_flags.get(flag_name, false)
+
 ## 通过SceneTree根节点访问Autoload单例
 static func _get_scene_root() -> Node:
 	var main_loop := Engine.get_main_loop()
@@ -426,6 +444,24 @@ static func _get_relationship_manager():
 	if root == null:
 		return null
 	return root.get_node_or_null("RelationshipManager")
+
+static func _get_character_system():
+	var root := _get_scene_root()
+	if root == null:
+		return null
+	return root.get_node_or_null("CharacterSystem")
+
+static func _get_quest_system():
+	var root := _get_scene_root()
+	if root == null:
+		return null
+	return root.get_node_or_null("QuestSystem")
+
+static func _get_inventory_system():
+	var root := _get_scene_root()
+	if root == null:
+		return null
+	return root.get_node_or_null("InventorySystem")
 
 ## 比较运算辅助函数
 static func _compare(current: int, op: String, target_val: Variant) -> bool:
