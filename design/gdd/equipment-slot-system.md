@@ -6,33 +6,25 @@
 
 ## 2. 核心机制
 
-### 2.1 槽位类型
+### 2.1 槽位类型（共9个）
 - **武器槽**（主手/副手）：可装备剑、刀、枪、棍等武器
 - **防具槽**：
   - 头部：帽子、头盔
-  - 身体：衣服、铠甲  
+  - 身体：衣服、铠甲
   - 手部：手套、护腕
-  - 腿部：裤子、护腿
   - 脚部：鞋子、靴子
 - **饰品槽**：
-  - 戒指（2个槽位）
+  - 戒指（2个槽位：左手/右手）
   - 项链（1个槽位）
-  - 腰带（1个槽位）
-- **特殊槽**：
-  - 内功心法（3个槽位）
-  - 轻功秘籍（1个槽位）
+
+> **注意**：内功心法和轻功秘籍属于"功法配置"范畴，由武学系统管理，不纳入装备槽位。
 
 ### 2.2 境界解锁机制
-- **炼气期**（1-9级）：基础槽位（武器×1、身体、脚部）
-- **筑基期**（10-19级）：解锁头部、手部槽位
-- **金丹期**（20-29级）：解锁腿部、戒指×1槽位
-- **元婴期**（30-39级）：解锁副手武器、项链槽位
-- **化神期**（40-49级）：解锁腰带槽位
-- **返虚期**（50-59级）：解锁内功心法×1槽位
-- **合道期**（60-69级）：解锁内功心法×2槽位
-- **大乘期**（70-79级）：解锁轻功秘籍槽位
-- **渡劫期**（80-89级）：解锁戒指×2槽位
-- **真仙境**（90-99级）：解锁内功心法×3槽位
+- **炼气期**（1-9级）：基础槽位（主手武器、衣袍、靴子）
+- **筑基期**（10-19级）：解锁头饰、护手槽位
+- **金丹期**（20-29级）：解锁戒指(左)槽位
+- **元婴期**（30-39级）：解锁副手、项链槽位
+- **化神期及以上**（40+级）：解锁戒指(右)槽位
 
 ### 2.3 装备规则
 - **品阶限制**：高品阶装备需要达到相应境界才能装备
@@ -48,29 +40,23 @@
 ### 3.1 数据结构
 ```yaml
 EquipmentSlot:
-  slotType: String  # "weapon_main", "weapon_offhand", "head", "body", "hands", "legs", "feet", "ring", "necklace", "belt", "inner_art", "light_art"
+  slotType: String  # "main_weapon", "off_hand", "head", "chest", "hands", "feet", "neck", "ring_left", "ring_right"
   equipmentId: String?  # 装备ID，null表示空槽
   isLocked: Boolean  # 是否被境界锁定
-  requiredRealm: Integer  # 需要的境界等级（0-9对应10个大境界）
+  requiredRealm: Integer  # 需要的境界等级（0-4对应炼气到化神）
   maxEquipmentTier: Integer  # 最大装备品阶（1-4对应白蓝紫金）
 
 CharacterEquipment:
   slots:
-    weapon_main: EquipmentSlot
-    weapon_offhand: EquipmentSlot  
+    main_weapon: EquipmentSlot
+    off_hand: EquipmentSlot
     head: EquipmentSlot
-    body: EquipmentSlot
+    chest: EquipmentSlot
     hands: EquipmentSlot
-    legs: EquipmentSlot
     feet: EquipmentSlot
-    ring_1: EquipmentSlot
-    ring_2: EquipmentSlot
-    necklace: EquipmentSlot
-    belt: EquipmentSlot
-    inner_art_1: EquipmentSlot
-    inner_art_2: EquipmentSlot
-    inner_art_3: EquipmentSlot
-    light_art: EquipmentSlot
+    neck: EquipmentSlot
+    ring_left: EquipmentSlot
+    ring_right: EquipmentSlot
 ```
 
 ### 3.2 接口定义
@@ -89,8 +75,8 @@ CharacterEquipment:
 
 ### 4.2 Build多样性
 - 不同槽位组合支持多样化的build策略
-- 内功心法和轻功秘籍槽位支持武学流派定制
-- 武器双持机制增加战斗策略深度
+- 武器双持机制（主手+副手）增加战斗策略深度
+- 双戒指槽位允许属性搭配组合
 
 ## 5. 依赖关系
 
@@ -101,7 +87,7 @@ CharacterEquipment:
 
 - [ ] 角色根据当前境界自动解锁相应装备槽位
 - [ ] 装备品阶限制正确实施
-- [ ] 支持所有定义的槽位类型（15个槽位）
+- [ ] 支持所有定义的槽位类型（9个槽位）
 - [ ] 装备/卸下操作实时更新角色属性
 - [ ] 职业和性别限制正确应用
 - [ ] 槽位数据正确保存和加载
