@@ -237,6 +237,9 @@ var _used_martial_arts: Array[String] = []
 ## 武学连招系统
 var _combo_system: MartialArtsComboSystem = null
 
+## 伤害乘数管理器（依赖注入）
+var _damage_multiplier_manager: DamageMultiplierManager = null
+
 ## 弱点系统 (依赖注入, 默认 null — 等外部 set_weakness_system() 注入后才桥接到 HUD)
 ## 设计动机: 当前 src/ 内无 WeaknessSystem 实例化点 (autoload/.tscn/.new() 均无),
 ## A2 PR (sprint-007 s7-18) 只负责把桥接通路打通, 不强行实例化以避免影响其他系统行为。
@@ -271,6 +274,13 @@ func _initialize_dependencies() -> void:
 	if has_node("/root/GameEvents"):
 		_game_events = get_node("/root/GameEvents")
 	
+	# 初始化伤害乘数管理器
+	if has_node("/root/DamageMultiplierManager"):
+		_damage_multiplier_manager = get_node("/root/DamageMultiplierManager") as DamageMultiplierManager
+	else:
+		_damage_multiplier_manager = DamageMultiplierManager.new()
+		add_child(_damage_multiplier_manager)
+
 	# 初始化连招系统
 	_combo_system = MartialArtsComboSystem.new()
 	add_child(_combo_system)
@@ -783,20 +793,14 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 # 伤害计算
 # ============================================================================
 
-## 计算伤害（委托给 DamageCalculator）
+## 计算伤害 (GDD 完整公式: 基础×暴击×连击×弱点×破防×状态×随机浮动)
 ## @param attacker: 攻击方战斗单位
 ## @param target: 目标战斗单位
 ## @param attack_data: 攻击数据字典
 ## @return 最终伤害值
 func calculate_damage(attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
-	# 使用本地简化计算（避免 DamageCalculator 的 Node-meta 适配开销）
-	var base_dmg: int = _calculate_damage_fallback(attacker, target, attack_data)
-	
-	# 应用连击值加成（战斗系统特有逻辑）
-	var combo_bonus: float = 1.0 + (float(attacker.combo_value) / float(max_combo) * max_combo_bonus)
-	base_dmg = int(base_dmg * combo_bonus)
-	
-	return base_dmg
+	var base_dmg: int = _calculate_base_damage(attacker, target, attack_data)
+	return _apply_multipliers(base_dmg, attacker, target, attack_data)
 
 ## 创建伤害计算适配节点
 ## @param unit: 战斗单位
@@ -816,30 +820,66 @@ func _create_damage_node(unit: BattleUnit, attack_data: Dictionary) -> Node:
 	
 	return node
 
-## 回退伤害计算（当 DamageCalculator 不可用时）
+## 计算基础伤害 (atk - def 减法公式 + 架势减伤)
 ## @param attacker: 攻击方战斗单位
 ## @param target: 目标战斗单位
 ## @param attack_data: 攻击数据字典
-## @return 基础伤害值
-func _calculate_damage_fallback(attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
+## @return 基础伤害值 (乘数链前)
+func _calculate_base_damage(attacker: BattleUnit, target: BattleUnit, _attack_data: Dictionary) -> int:
 	var attack_attr: int = attacker.attributes.get("force", 10)
 	var defend_attr: int = target.attributes.get("constitution", 0)
-	var raw_dmg: int = max(1, attack_attr - defend_attr / 3) + randi_range(0, damage_random_range)
+	var raw_dmg: int = max(1, attack_attr - defend_attr / 3)
 
-	# 架势减伤：架势值 0~100 对应 0%~30% 减伤
+	# 架势减伤: 架势值 0~100 对应 0%~30% 减伤
 	var stance_reduction: float = float(target.stance) / float(max_stance) * 0.3
-	var base_dmg: int = max(1, int(raw_dmg * (1.0 - stance_reduction)))
+	return max(1, int(raw_dmg * (1.0 - stance_reduction)))
 
-	return base_dmg
+## 应用 GDD 乘数链 (暴击×连击×弱点×破防×状态×随机浮动)
+## @param base_dmg: 基础伤害
+## @param attacker: 攻击方
+## @param target: 目标方
+## @param attack_data: 攻击数据
+## @return 最终伤害
+func _apply_multipliers(base_dmg: int, attacker: BattleUnit, target: BattleUnit, attack_data: Dictionary) -> int:
+	if _damage_multiplier_manager == null:
+		return base_dmg
+
+	# 暴击率: character_system 存为 0-1 小数, DamageMultiplierManager 期望 0-100
+	var crit_chance: float = attacker.attributes.get("critical_rate", 0.0) * 100.0
+	var crit_damage: float = attacker.attributes.get("critical_damage", 50.0)
+
+	# 连击数: combo_value / attack_combo_increase = 有效命中次数
+	var combo_count: int = attacker.combo_value / max(1, attack_combo_increase)
+
+	# 攻击属性 + 目标弱点
+	var attack_element: String = attack_data.get("element", "")
+	var target_weakness: String = target.attributes.get("weakness", "")
+
+	# 目标状态效果
+	var status_effects: Array = target.attributes.get("status_effects", [])
+
+	# 破防判定: 架势归零即 Break
+	var is_broken: bool = target.stance <= 0
+
+	return _damage_multiplier_manager.apply_all_multipliers(
+		base_dmg, crit_chance, crit_damage, combo_count,
+		attack_element, target_weakness, status_effects, is_broken
+	)
 
 ## 设置伤害计算器（依赖注入）
 ## @param calc: 伤害计算器实例
 func set_damage_calculator(calc: DamageCalculator) -> void:
 	_damage_calculator = calc
 
-## 应用技能效果（支持 MartialArtsSystem 熟练度加成）
+## 设置伤害乘数管理器（依赖注入, 用于测试）
+## @param mgr: 伤害乘数管理器实例
+func set_damage_multiplier_manager(mgr: DamageMultiplierManager) -> void:
+	_damage_multiplier_manager = mgr
+
+## 应用技能效果（GDD 完整乘数 + MartialArtsSystem 熟练度 + 连招协同）
 ## @param user: 使用者战斗单位
 ## @param skill_data: 技能数据字典
+## @param damage_multiplier: 连招协同额外倍率
 ## @return 技能效果字典
 func apply_skill_effect(user: BattleUnit, skill_data: Dictionary, damage_multiplier: float = 1.0) -> Dictionary:
 	var target_idx: int = skill_data.get("target_index", -1)
@@ -852,21 +892,21 @@ func apply_skill_effect(user: BattleUnit, skill_data: Dictionary, damage_multipl
 	var defend_attr: int = target.attributes.get("constitution", 0)
 
 	# 基础伤害 = 武学威力 + 力道属性 - 目标防御/3
-	var damage: float = float(max(1, power + attack_attr - defend_attr / 3))
+	var base_dmg: float = float(max(1, power + attack_attr - defend_attr / 3))
 
-	# 从 MartialArtsSystem 读取熟练度加成（每级 +2%）
+	# 熟练度加成（每级 +2%）
 	var ma_id: String = skill_data.get("martial_art_id", "")
 	var martial_sys: Node = get_node_or_null("/root/MartialArtsSystem")
 	if martial_sys and not ma_id.is_empty():
 		var ma_data = martial_sys.get_player_martial_art(ma_id)
 		if ma_data:
-			var prof_bonus: float = 1.0 + ma_data.proficiency_level * 0.02
-			damage *= prof_bonus
+			base_dmg *= 1.0 + ma_data.proficiency_level * 0.02
 
-	# 连招协同伤害倍率
-	damage *= damage_multiplier
+	# 连招协同倍率 (来自 MartialArtsComboSystem)
+	base_dmg *= damage_multiplier
 
-	var final_damage: int = max(1, int(damage))
+	# GDD 乘数链
+	var final_damage: int = _apply_multipliers(max(1, int(base_dmg)), user, target, skill_data)
 
 	var old_hp: int = target.current_hp
 	target.current_hp = max(0, target.current_hp - final_damage)

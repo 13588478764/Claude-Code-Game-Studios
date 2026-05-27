@@ -152,108 +152,109 @@ func test_status_multiplier_empty():
 
 func test_status_multiplier_yishuang():
 	var result = multiplier_manager.calculate_status_multiplier(["易伤"])
-	assert_eq(result, 1.20, "易伤应该返回1.20")
+	assert_eq(result, 1.50, "易伤应该返回1.50 (GDD: 易伤=1.5)")
 
 
-func test_status_multiplier_pojie():
+func test_status_multiplier_pojie_ignored():
 	var result = multiplier_manager.calculate_status_multiplier(["破防"])
-	assert_eq(result, 1.15, "破防应该返回1.15")
+	assert_eq(result, 1.0, "破防在 status_multiplier 中不生效 (由 break_multiplier 单独处理)")
 
 
 func test_status_multiplier_xuoruo():
 	var result = multiplier_manager.calculate_status_multiplier(["虚弱"])
-	assert_eq(result, 1.10, "虚弱应该返回1.10")
+	assert_eq(result, 0.80, "虚弱应该返回0.80 (GDD: 虚弱=0.8)")
 
 
-func test_status_multiplier_multiple():
-	var result = multiplier_manager.calculate_status_multiplier(["易伤", "破防"])
-	assert_eq(result, 1.35, "易伤+破防应该返回1.35")
+func test_status_multiplier_yishuang_and_xuoruo():
+	var result = multiplier_manager.calculate_status_multiplier(["易伤", "虚弱"])
+	assert_eq(result, 1.30, "易伤+虚弱应该返回1.30 (0.50 - 0.20 = 0.30)")
 
 
 func test_status_multiplier_max_clamped():
-	var result = multiplier_manager.calculate_status_multiplier(["易伤", "破防", "虚弱", "虚弱"])
-	assert_eq(result, 1.50, "多个状态效果应该被限制为最大值1.50")
+	var result = multiplier_manager.calculate_status_multiplier(["易伤", "易伤", "易伤"])
+	assert_eq(result, 2.0, "多个易伤叠加上限为 2.0 (GDD 范围 0.5-2.0)")
 
 
 # ============================================================================
-# 综合测试
+# AC-5: 破防系数正确应用
+# ============================================================================
+
+func test_break_multiplier_not_broken():
+	var result = multiplier_manager.calculate_break_multiplier(false)
+	assert_eq(result, 1.0, "未破防时应该返回1.0")
+
+
+func test_break_multiplier_broken():
+	var result = multiplier_manager.calculate_break_multiplier(true)
+	assert_eq(result, 1.5, "破防时应该返回1.5 (GDD)")
+
+
+# ============================================================================
+# AC-6: 随机浮动范围正确
+# ============================================================================
+
+func test_random_variance_in_range():
+	for i in range(100):
+		var result = multiplier_manager.calculate_random_variance()
+		assert_true(result >= 0.95 and result <= 1.05,
+			"随机浮动应该在 0.95-1.05 范围内, 实际: %f" % result)
+
+
+# ============================================================================
+# 综合测试 (apply_all_multipliers 含随机浮动, 用范围断言)
 # ============================================================================
 
 func test_apply_all_multipliers_base():
+	# 无任何乘数时, 结果仅受 random_variance (0.95-1.05) 影响
 	var result = multiplier_manager.apply_all_multipliers(
-		100,      # base_damage
-		0.0,      # critical_chance
-		0.0,      # critical_damage
-		0,        # combo_count
-		"",       # attack_element
-		"",       # target_weakness
-		[]        # status_effects
+		100, 0.0, 0.0, 0, "", "", [], false
 	)
-	assert_eq(result, 100, "无任何修正时应该返回基础伤害")
+	assert_true(result >= 95 and result <= 105,
+		"无修正时基础伤害 100 应在 95-105 范围 (随机浮动), 实际: %d" % result)
 
 
 func test_apply_all_multipliers_with_combo():
+	# combo_count=3 → 1.15, 随机 0.95-1.05 → 期望 109-121
 	var result = multiplier_manager.apply_all_multipliers(
-		100,      # base_damage
-		0.0,      # critical_chance
-		0.0,      # critical_damage
-		3,        # combo_count (1.15倍)
-		"",       # attack_element
-		"",       # target_weakness
-		[]        # status_effects
+		100, 0.0, 0.0, 3, "", "", [], false
 	)
-	assert_eq(result, 115, "连击3段应该返回115")
+	assert_true(result >= 109 and result <= 121,
+		"连击3段 × 随机浮动 应在 109-121, 实际: %d" % result)
 
 
 func test_apply_all_multipliers_with_weakness():
+	# weakness → 1.5, 随机 0.95-1.05 → 期望 142-158
 	var result = multiplier_manager.apply_all_multipliers(
-		100,      # base_damage
-		0.0,      # critical_chance
-		0.0,      # critical_damage
-		0,        # combo_count
-		"金",     # attack_element
-		"木",     # target_weakness (1.5倍)
-		[]        # status_effects
+		100, 0.0, 0.0, 0, "金", "木", [], false
 	)
-	assert_eq(result, 150, "弱点克制应该返回150")
+	assert_true(result >= 142 and result <= 158,
+		"弱点克制 × 随机浮动 应在 142-158, 实际: %d" % result)
+
+
+func test_apply_all_multipliers_with_break():
+	# break → 1.5, 随机 0.95-1.05 → 期望 142-158
+	var result = multiplier_manager.apply_all_multipliers(
+		100, 0.0, 0.0, 0, "", "", [], true
+	)
+	assert_true(result >= 142 and result <= 158,
+		"破防 × 随机浮动 应在 142-158, 实际: %d" % result)
 
 
 func test_apply_all_multipliers_with_status():
+	# 易伤 → 1.50, 随机 0.95-1.05 → 期望 142-158
 	var result = multiplier_manager.apply_all_multipliers(
-		100,      # base_damage
-		0.0,      # critical_chance
-		0.0,      # critical_damage
-		0,        # combo_count
-		"",       # attack_element
-		"",       # target_weakness
-		["易伤"]  # status_effects (1.20倍)
+		100, 0.0, 0.0, 0, "", "", ["易伤"], false
 	)
-	assert_eq(result, 120, "易伤状态应该返回120")
+	assert_true(result >= 142 and result <= 158,
+		"易伤 × 随机浮动 应在 142-158, 实际: %d" % result)
 
 
 func test_apply_all_multipliers_combined():
+	# 100 × crit(1.5) × combo(1.15) × weakness(1.5) × break(1.5) × 易伤(1.5) × random(0.95-1.05)
+	# = 100 × 1.5 × 1.15 × 1.5 × 1.5 × 1.5 = 581.0625
+	# × 0.95 = 552, × 1.05 = 610
 	var result = multiplier_manager.apply_all_multipliers(
-		100,      # base_damage
-		100.0,    # critical_chance (1.5倍)
-		0.0,      # critical_damage
-		3,        # combo_count (1.15倍)
-		"金",     # attack_element
-		"木",     # target_weakness (1.5倍)
-		["易伤"]  # status_effects (1.20倍)
+		100, 100.0, 0.0, 3, "金", "木", ["易伤"], true
 	)
-	# 100 * 1.5 * 1.15 * 1.5 * 1.20 = 311.25 -> 311
-	assert_eq(result, 311, "所有修正组合应该正确计算")
-
-
-func test_apply_all_multipliers_rounding():
-	var result = multiplier_manager.apply_all_multipliers(
-		100,      # base_damage
-		100.0,    # critical_chance (1.5倍)
-		50.0,     # critical_damage (1.75倍)
-		1,        # combo_count (1.05倍)
-		"",       # attack_element
-		"",       # target_weakness
-		[]        # status_effects
-	)
-	# 100 * 1.75 * 1.05 = 183.75 -> 184
-	assert_eq(result, 184, "伤害应该正确四舍五入")
+	assert_true(result >= 552 and result <= 610,
+		"全乘数组合应在 552-610, 实际: %d" % result)
