@@ -11,7 +11,7 @@
 
 | 维度 | 完成度 | 详情 |
 |------|--------|------|
-| **设计文档** | 92% | 55 个 GDD + 13 个 UX spec + 2 个叙事大纲; 缺 game-concept.md / systems-index.md 顶层文件 |
+| **设计文档** | 95% | 55 个 GDD + 13 个 UX spec + 3 幕叙事大纲 + 44 对话 JSON + 30 奇遇 JSON; 缺 game-concept.md / systems-index.md 顶层文件 |
 | **源代码** | 85% | 165 个 .gd 文件, ~48,254 行, 24 个 Autoload, 93 个场景 |
 | **美术资源** | 70% | 236 张游戏用图标 (不含 236 张 _masters 母版), 12 主角 + 16 敌人立绘, 15 背景 |
 | **架构** | 75% | 12 个 ADR; 缺架构总览索引文档 |
@@ -132,8 +132,8 @@ InventorySystem, SaveSystem, MartialArtsSystem, EncounterDataLoader + main_theme
 
 | 门检要求 | 状态 | 备注 |
 |----------|------|------|
-| 三幕剧情全部可玩 | ⚠️ 大纲完成, 数据 0% | **最大风险** — 约 6 周内需填充 |
-| ≥20 条奇遇可触发 | ⚠️ 框架就位, 数据缺失 | 需内容填充 |
+| 三幕剧情全部可玩 | ✅ 大纲 + 数据已填充 | Act1 6 + Act2 11 + Act3 11 = 28 个主线事件 JSON |
+| ≥20 条奇遇可触发 | ✅ 30 条奇遇数据 | data/encounters/ 30 个 JSON, 超过门检要求 |
 | 10 境界可玩 | ✅ | — |
 | UI 图标 100% 入库 | ⚠️ ~65% | 再出 1-2 批 |
 | 暴击/连击/乘数对齐 | ✅ | + 回归测试 |
@@ -151,7 +151,7 @@ InventorySystem, SaveSystem, MartialArtsSystem, EncounterDataLoader + main_theme
 
 | ID | 风险 | 等级 |
 |----|------|------|
-| R-001 | 内容填充进度 (Act 2/3 + 奇遇数据) | HIGH |
+| R-001 | ~~内容填充进度~~ | CLOSED (28 事件 + 30 奇遇已就位) |
 | R-002 | 美术资源覆盖率 (~65%) | MEDIUM |
 | R-003 | ComfyUI 工作流稳定性 | LOW |
 | R-004 | 测试通过率 93.2% < 95% | MEDIUM |
@@ -162,11 +162,11 @@ InventorySystem, SaveSystem, MartialArtsSystem, EncounterDataLoader + main_theme
 
 ## 建议下一步 (优先级排序)
 
-1. **内容填充** — Act 2/3 主线对话数据 + 奇遇事件数据, Beta 最大阻塞项
-2. **性能基线** — 主菜单/探索/战斗三场景 profiling (sprint-008)
-3. **测试修复** — 通过率 93.2% → 95%+
-4. **第四批回流** — ComfyUI 完成后 `import_ai_assets.sh --commit`
-5. **UI Theme 统一** — game_theme.tres 接入按钮/进度条/边框纹理
+1. **性能基线** — 主菜单/探索/战斗三场景 profiling, Beta 门检硬性要求 (sprint-008)
+2. **测试修复** — 通过率 93.2% → 95%+, 修复 ~10 个失败用例
+3. **第四批回流** — ComfyUI 完成后 `import_ai_assets.sh --commit`, 立绘+背景接入代码
+4. **UI Theme 统一** — game_theme.tres 接入按钮/进度条/边框纹理 (fixlist #24-#27)
+5. **Beta Playtest** — 内容已就位, 可开始安排第一轮 Playtest
 6. **顶层设计文件** — 补 game-concept.md + systems-index.md
 
 ---
