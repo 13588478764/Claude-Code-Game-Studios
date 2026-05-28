@@ -5,7 +5,7 @@
 
 ## 一、P0 — 影响玩家体验或工程稳定性, Polish 出口前必修
 
-### 1. HUD 10 个信号全面哑火 (运行时 bug)
+### 1. HUD 10 个信号全面哑火 (运行时 bug) ✅ 2026-05-28 (已有 emit)
 
 **症状**: 玩家看不到 HP / 内力 / 架势 / 经验条变化, 看不到敌人 HP / 弱点暴露, 看不到行动队列更新。
 
@@ -32,17 +32,9 @@
 
 ---
 
-### 2. DamageCalculator 缺所有乘数 (战斗只有 atk-def)
+### 2. DamageCalculator 缺所有乘数 (战斗只有 atk-def) ✅ 2026-05-28 (已有完整实现)
 
-**症状**: 暴击 / 弱点 / 连击 / 随机浮动 (0.95-1.05) 全部没串进伤害公式。
-
-**修复方向**: 
-- 在 `combat_manager.gd` 的伤害结算路径里, 调用 `damage_multiplier_manager.gd::apply_modifiers()` 后再传给 `damage_calculator.gd`
-- 或直接把 `damage_calculator.gd` 改成接受 multiplier dict, 内部应用
-
-**工作量**: 2h, 必须配套单元测试。
-
-**前置**: 需要 game-designer 确认每个乘数的具体公式 (GDD 已有, 但要拍最终值)。
+**已实现**: `combat_manager.gd:843` `_apply_multipliers()` 调用 `DamageMultiplierManager.apply_all_multipliers()` 完整串入暴击×连击×弱点×破防×状态×随机浮动(0.95-1.05)。GDD 公式全部落地。
 
 ---
 
@@ -72,10 +64,10 @@
 
 ## 二、P1 — 重要但可缓 (Polish 阶段中段处理)
 
-### 5. class_name 冲突清剩余
+### 5. class_name 冲突清剩余 ✅ 2026-05-28
 
 - ✅ 已删 `src/scripts/ui/damage_visualization_manager.gd` (281 行空壳)
-- ⚠️ 剩余: `src/scripts/world_streaming_manager.gd` (旧版, 基于像素区块) vs `src/scripts/world/world_streaming_manager.gd` (新版, 简化区域加载) — 需评估合并/删旧, 不能盲删 (新版功能可能不全)
+- ✅ 删除新版 `src/scripts/world/world_streaming_manager.gd` (区域加载版, 412 行, 零产品代码引用) + 配套测试。旧版 (像素区块版) 被 player_position_tracker + memory_optimizer 深度依赖, 保留为唯一实现。
 - ✅ `link_system.gd:30::COMBO_DAMAGE_INCREMENT` → `LINK_COMBO_DAMAGE_INCREMENT` (2026-05-26) — 同时把 ComboTracker.hit_target 内硬编码 `0.1` 改用本常量 (dead const 转 live const, 与 combat_system.gd 同名常量 0.05 彻底解耦). 41/41 link_system tests + 5/5 combo_damage_increment 快照通过.
 
 ### 6. character_system.gd 核心 Autoload 缺静态类型 ✅ 2026-05-26
