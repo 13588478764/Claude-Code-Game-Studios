@@ -195,8 +195,7 @@ func travel_to_location(destination_node_id: String) -> bool:
 func start_travel_process(destination_node_id: String, travel_time_hours: int):
 	current_state = TravelState.TRAVELING
 	
-	# 这里可以添加异步加载、过场动画等
-	# 暂时使用计时器模拟旅行过程
+	# TODO(beta): 接入异步加载、过场动画; 当前用短计时器模拟
 	await get_tree().create_timer(travel_time_hours * 0.1).timeout  # 使用较短的模拟时间
 	
 	# 旅行完成
@@ -219,29 +218,21 @@ func complete_travel(destination_node_id: String):
 	# 重置状态
 	current_state = TravelState.IDLE
 
-# 检查玩家是否在战斗状态
+# TODO(beta): 接入 CombatManager.is_in_combat() 查询
 func is_player_in_combat() -> bool:
-	# 这里应该连接到战斗系统来检查玩家是否在战斗中
-	# 暂时返回false以进行测试
 	return false
 
-# 检查玩家是否有足够银两
+# TODO(beta): 接入 CurrencyManager.get_balance() 查询
 func has_player_enough_money(cost: int) -> bool:
-	# 这里应该连接到经济系统来检查玩家银两
-	# 暂时返回true以进行测试
 	return true
 
-# 扣除旅行费用
+# TODO(beta): 接入 CurrencyManager.deduct()
 func deduct_travel_cost(cost: int):
-	# 这里应该连接到经济系统来扣除玩家银两
-	# 暂时只打印信息
-	print("扣除旅行费用: %d 银两" % cost)
+	print("[FastTravel] 扣除旅行费用: %d 银两 (stub)" % cost)
 
-# 推进游戏时间
+# TODO(beta): 接入 TimeManager.advance_hours()
 func advance_game_time():
-	# 这里应该连接到时间管理系统来推进游戏时间
-	# 暂时只打印信息
-	print("游戏时间已推进")
+	print("[FastTravel] 游戏时间已推进 (stub)")
 
 # 解锁地点
 func unlock_location(node_id: String) -> bool:

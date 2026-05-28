@@ -1,0 +1,5081 @@
+{
+  "last_node_id": 126,
+  "last_link_id": 145,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        50,
+        50
+      ],
+      "size": [
+        350,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "flux1-dev.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "DualCLIPLoader",
+      "pos": [
+        50,
+        170
+      ],
+      "size": [
+        350,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "t5xxl_fp16.safetensors",
+        "clip_l.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        50,
+        330
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [
+        50,
+        420
+      ],
+      "size": [
+        350,
+        110
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1024x1024 (共享 Latent)",
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [
+        50,
+        560
+      ],
+      "size": [
+        350,
+        100
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 25
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "共享负面提示词 (FLUX 留空)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 6,
+      "type": "BRIA_RMBG_ModelLoader_Zho",
+      "pos": [
+        50,
+        700
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "BRMODEL",
+          "links": [
+            62,
+            63,
+            64,
+            65,
+            66,
+            67,
+            68,
+            69,
+            70,
+            71,
+            72,
+            73
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "BRIA 抠图模型 (共享)",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_ModelLoader_Zho"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [
+        50,
+        800
+      ],
+      "size": [
+        350,
+        1000
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "title": "W18 — 主角 + 队友立绘 (第四批)",
+      "properties": {},
+      "widgets_values": [
+        "第四批 AI 资源 — 主角 + 队友立绘\n\n总数: 12 张\n输出: 1024×1024 master + 512×512 最终\n目标目录: assets/ui/_masters/portraits_allies_1024/\n         assets/portraits/protagonist/ + assets/portraits/allies/\n\nFLUX dev + BRIA 抠图, 共享种子 88888888\n提示词来源: assets/specs/ui/06-portraits-protagonist-allies.md"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 10,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        50
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            74
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. portrait_protagonist_male - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young male cultivator around 20 years old, long hair tied in a high ponytail with a cyan jade hairpin, wearing a cyan Taoist robe with cream-white inner layer, a dark silk sash at the waist with jade pendant, holding a cyan-bladed sword in right hand behind back, sharp yet scholarly features, calm confident expression. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. cyan green, cream white, dark ink black, jade highlight color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        50
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 74
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 50
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 38
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            75
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. portrait_protagonist_male - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        50
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 75
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 26
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            76
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 13,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        50
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 62
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 76
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            77,
+            78
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "1. portrait_protagonist_male - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 14,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 77
+        }
+      ],
+      "outputs": [],
+      "title": "1. portrait_protagonist_male - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_protagonist_male"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        50
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 78
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            79
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. portrait_protagonist_male - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 79
+        }
+      ],
+      "outputs": [],
+      "title": "1. portrait_protagonist_male - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_protagonist_male"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        540
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            80
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. portrait_protagonist_female - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young female cultivator around 20 years old, long hair partially pinned up with a cyan jade hairpin flowing over shoulders, wearing a light cyan Taoist robe with cream-white inner layer, a dark silk sash with jade pendant, left hand resting on sword hilt at waist, delicate features with cool composed expression. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. cyan green, cream white, dark ink black, jade highlight color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 21,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        540
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 80
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 51
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 39
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            81
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. portrait_protagonist_female - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 22,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        540
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 81
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            82
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 23,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        540
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 63
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 82
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            83,
+            84
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "2. portrait_protagonist_female - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 24,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 83
+        }
+      ],
+      "outputs": [],
+      "title": "2. portrait_protagonist_female - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_protagonist_female"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        540
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 84
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            85
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. portrait_protagonist_female - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 85
+        }
+      ],
+      "outputs": [],
+      "title": "2. portrait_protagonist_female - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_protagonist_female"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1030
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            86
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. portrait_yunzhonghe - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: An elderly male cultivator around 60 years old, crane-white hair and long chest-length beard, white jade hairpin, wearing a teal-green long robe with jade-white inner layer, waist adorned with jade pendant and antique bronze gourd, holding a white jade horsetail whisk, benevolent immortal-sage appearance with cinnabar mole between eyebrows, wise warm smile. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. teal green, jade white, antique bronze, cinnabar red dot color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 31,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1030
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 86
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 52
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 40
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            87
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. portrait_yunzhonghe - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 32,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1030
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 87
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            88
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 33,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1030
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 64
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 88
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            89,
+            90
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "3. portrait_yunzhonghe - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 34,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 89
+        }
+      ],
+      "outputs": [],
+      "title": "3. portrait_yunzhonghe - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_yunzhonghe"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1030
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 90
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            91
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. portrait_yunzhonghe - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 91
+        }
+      ],
+      "outputs": [],
+      "title": "3. portrait_yunzhonghe - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_yunzhonghe"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1520
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            92
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. portrait_liuruyan - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young female sword cultivator around 22, long hair in high bun with silver hairpin and one loose strand at temple, wearing white robe with red trim sword-wielding martial outfit, crimson sash with jade pendant, a silver-sheathed longsword strapped on back, sharp cold beautiful features, distant aloof expression. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. pure white, crimson red trim, silver steel, ice-cold palette color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 41,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1520
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 92
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 53
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 41
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            93
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. portrait_liuruyan - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 42,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1520
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 93
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 29
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            94
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 43,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1520
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 65
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 94
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            95,
+            96
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "4. portrait_liuruyan - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 44,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 95
+        }
+      ],
+      "outputs": [],
+      "title": "4. portrait_liuruyan - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_liuruyan"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1520
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 96
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            97
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. portrait_liuruyan - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 97
+        }
+      ],
+      "outputs": [],
+      "title": "4. portrait_liuruyan - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_liuruyan"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2010
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            98
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. portrait_xiaohanye - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young male cultivator around 25, long black hair partially loose, wearing ink-black long robe with deep crimson inner lining, gold subtle patterns on hem, holding a pitch-black demonic blade with red blood-vein patterns, handsome sharp features with purple-tinted eyes, sinister smirk expression. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. ink black, deep crimson, gold accent, purple eye highlight color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 51,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2010
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 98
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 54
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 42
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            99
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. portrait_xiaohanye - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 52,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2010
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 99
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            100
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 53,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2010
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 66
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 100
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            101,
+            102
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "5. portrait_xiaohanye - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 54,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 101
+        }
+      ],
+      "outputs": [],
+      "title": "5. portrait_xiaohanye - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_xiaohanye"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2010
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 102
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            103
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. portrait_xiaohanye - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 56,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 103
+        }
+      ],
+      "outputs": [],
+      "title": "5. portrait_xiaohanye - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_xiaohanye"
+      ]
+    },
+    {
+      "id": 60,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2500
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 42,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            104
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. portrait_murongxue - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young female cultivator around 23, silver-white long hair to waist with blue jade ornament, snow-white skin, wearing white and ice-blue layered gauze dress with light blue cloak, blue crystal necklace, ice-sculpted beautiful features with pale blue eyes, elegant distant expression with a hint of melancholy. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. ice blue, silver white, crystal highlight, cold palette color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 61,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2500
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 43,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 6
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 104
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 55
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 43
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            105
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. portrait_murongxue - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 62,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2500
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 44,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 105
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 31
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            106
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 63,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2500
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 45,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 67
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 106
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            107,
+            108
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "6. portrait_murongxue - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 64,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2500
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 46,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 107
+        }
+      ],
+      "outputs": [],
+      "title": "6. portrait_murongxue - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_murongxue"
+      ]
+    },
+    {
+      "id": 65,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2500
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 47,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 108
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            109
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "6. portrait_murongxue - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 66,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2500
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 48,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 109
+        }
+      ],
+      "outputs": [],
+      "title": "6. portrait_murongxue - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_murongxue"
+      ]
+    },
+    {
+      "id": 70,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2990
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 49,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            110
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. portrait_tiewushuang - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young burly male around 20, short black hair with headband, wearing brown martial robe with cream inner layer, thick hemp sash with gourd wine flask, carrying a massive iron staff on shoulder, broad stocky build, honest simple features with thick eyebrows, cheerful hearty laugh expression. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. warm brown, cream white, iron gray, earthy tones color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 71,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2990
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 7
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 110
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 56
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 44
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            111
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. portrait_tiewushuang - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 72,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2990
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 51,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 111
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 32
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            112
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 73,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2990
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 52,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 68
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 112
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            113,
+            114
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "7. portrait_tiewushuang - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 74,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2990
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 53,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 113
+        }
+      ],
+      "outputs": [],
+      "title": "7. portrait_tiewushuang - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_tiewushuang"
+      ]
+    },
+    {
+      "id": 75,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2990
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 54,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 114
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            115
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "7. portrait_tiewushuang - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 76,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2990
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 55,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 115
+        }
+      ],
+      "outputs": [],
+      "title": "7. portrait_tiewushuang - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_tiewushuang"
+      ]
+    },
+    {
+      "id": 80,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        3480
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 56,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            116
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. portrait_shenqingluo - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young female healer cultivator around 18, black hair simply tied up with bangs, wearing light green medical cultivator robe with white inner layer, herb pouch and jade gourd at waist, sweet delicate features with gentle curved smile, holding a luminous green spirit herb in both hands. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. soft green, white, jade green herb glow, gentle palette color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 81,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        3480
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 57,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 8
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 116
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 57
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 45
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            117
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. portrait_shenqingluo - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 82,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        3480
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 58,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 117
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 33
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            118
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 83,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        3480
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 59,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 69
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 118
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            119,
+            120
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "8. portrait_shenqingluo - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 84,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        3480
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 60,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 119
+        }
+      ],
+      "outputs": [],
+      "title": "8. portrait_shenqingluo - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_shenqingluo"
+      ]
+    },
+    {
+      "id": 85,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        3480
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 61,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 120
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            121
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "8. portrait_shenqingluo - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 86,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        3480
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 62,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 121
+        }
+      ],
+      "outputs": [],
+      "title": "8. portrait_shenqingluo - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_shenqingluo"
+      ]
+    },
+    {
+      "id": 90,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        3970
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 63,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            122
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. portrait_chutiannan - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young male wanderer-poet around 27, long hair loosely tied back, wearing cream-white scholar robe with light cyan sash, wine gourd over shoulder, antique sword hung diagonally at waist, handsome weathered features with carefree tipsy expression, holding a scroll in one hand and wine cup in other. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. cream white, light cyan, wine-amber, carefree palette color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 91,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        3970
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 64,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 122
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 58
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 46
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            123
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. portrait_chutiannan - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 92,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        3970
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 65,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 123
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            124
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 93,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        3970
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 66,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 70
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 124
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            125,
+            126
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "9. portrait_chutiannan - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 94,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        3970
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 67,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 125
+        }
+      ],
+      "outputs": [],
+      "title": "9. portrait_chutiannan - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_chutiannan"
+      ]
+    },
+    {
+      "id": 95,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        3970
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 68,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 126
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            127
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "9. portrait_chutiannan - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 96,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        3970
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 69,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 127
+        }
+      ],
+      "outputs": [],
+      "title": "9. portrait_chutiannan - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_chutiannan"
+      ]
+    },
+    {
+      "id": 100,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        4460
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 70,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            128
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. portrait_xuanjizi - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: An elderly male diviner around 70, white sparse hair and long beard, wearing Taoist priest cap, deep purple robe embroidered with gold bagua trigram patterns, holding tortoise shell and divination sticks, gaunt immortal features with enigmatic squinting smile. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. deep purple, gold trigram, bone white, mystic palette color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 101,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        4460
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 71,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 10
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 128
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 59
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 47
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            129
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. portrait_xuanjizi - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 102,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        4460
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 72,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 129
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 35
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            130
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 103,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        4460
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 73,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 71
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 130
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            131,
+            132
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "10. portrait_xuanjizi - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 104,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        4460
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 74,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 131
+        }
+      ],
+      "outputs": [],
+      "title": "10. portrait_xuanjizi - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_xuanjizi"
+      ]
+    },
+    {
+      "id": 105,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        4460
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 75,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 132
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            133
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "10. portrait_xuanjizi - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 106,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        4460
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 76,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 133
+        }
+      ],
+      "outputs": [],
+      "title": "10. portrait_xuanjizi - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_xuanjizi"
+      ]
+    },
+    {
+      "id": 110,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        4950
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 77,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            134
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "11. portrait_guchangge - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young female around 24, black long hair with one red-dyed streak, wearing tattered black-red martial robe, a red scar on shoulder, iron chain at waist with crescent moon blade, cold beautiful sharp features with determined fierce eyes showing inner struggle. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. black, deep red, iron chain gray, conflicted palette color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 111,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        4950
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 78,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 11
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 134
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 60
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 48
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            135
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "11. portrait_guchangge - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 112,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        4950
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 79,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 135
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            136
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 113,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        4950
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 80,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 72
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 136
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            137,
+            138
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "11. portrait_guchangge - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 114,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        4950
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 81,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 137
+        }
+      ],
+      "outputs": [],
+      "title": "11. portrait_guchangge - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_guchangge"
+      ]
+    },
+    {
+      "id": 115,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        4950
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 82,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 138
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            139
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "11. portrait_guchangge - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 116,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        4950
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 83,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 139
+        }
+      ],
+      "outputs": [],
+      "title": "11. portrait_guchangge - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_guchangge"
+      ]
+    },
+    {
+      "id": 120,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        5440
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 84,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            140
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "12. portrait_lingxi - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "A high-quality Chinese cultivation wuxia RPG character portrait, half-body composition with traditional Chinese gongbi (meticulous brushwork) and ink wash style. Subject: A young spirit-form girl around 16, fluffy silver-white hair with faint white fox ears on top, wearing white and pale-red trimmed short hanfu skirt, a fluffy white fox tail at waist, amber-gold eyes, sprite-like playful features with mischievous cute expression, cupping cheeks with both hands. The character occupies about 80 percent of the canvas, centered. Pure clean solid white background for easy background removal. Traditional Chinese ink wash painting style combined with rich gongbi coloring. silver white, pale red trim, amber gold eyes, ethereal palette color palette. No modern elements, no western fantasy, no anime style, no text, no watermarks, no duplicate characters, no full body (half-body only from waist up). Highest quality concept art, detailed face and clothing, cinematic lighting. References:Erta (Three Kingdoms TCG),Erta wuxia portraits, Legend of Sword and Fairy, Black Myth Wukong character concept art."
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 121,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        5440
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 85,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 12
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 140
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 61
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 49
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            141
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "12. portrait_lingxi - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 122,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        5440
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 86,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 141
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            142
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 123,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        5440
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 87,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 73
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 142
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            143,
+            144
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "12. portrait_lingxi - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 124,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        5440
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 88,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 143
+        }
+      ],
+      "outputs": [],
+      "title": "12. portrait_lingxi - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_1024/portrait_lingxi"
+      ]
+    },
+    {
+      "id": 125,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        5440
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 89,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 144
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            145
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "12. portrait_lingxi - 缩放 512",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        512,
+        512,
+        "disabled"
+      ]
+    },
+    {
+      "id": 126,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        5440
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 90,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 145
+        }
+      ],
+      "outputs": [],
+      "title": "12. portrait_lingxi - 512 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "portraits_allies_512/portrait_lingxi"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      1,
+      0,
+      21,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      1,
+      0,
+      31,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      1,
+      0,
+      41,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      1,
+      0,
+      51,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      1,
+      0,
+      61,
+      0,
+      "MODEL"
+    ],
+    [
+      7,
+      1,
+      0,
+      71,
+      0,
+      "MODEL"
+    ],
+    [
+      8,
+      1,
+      0,
+      81,
+      0,
+      "MODEL"
+    ],
+    [
+      9,
+      1,
+      0,
+      91,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      1,
+      0,
+      101,
+      0,
+      "MODEL"
+    ],
+    [
+      11,
+      1,
+      0,
+      111,
+      0,
+      "MODEL"
+    ],
+    [
+      12,
+      1,
+      0,
+      121,
+      0,
+      "MODEL"
+    ],
+    [
+      13,
+      2,
+      0,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      14,
+      2,
+      0,
+      20,
+      0,
+      "CLIP"
+    ],
+    [
+      15,
+      2,
+      0,
+      30,
+      0,
+      "CLIP"
+    ],
+    [
+      16,
+      2,
+      0,
+      40,
+      0,
+      "CLIP"
+    ],
+    [
+      17,
+      2,
+      0,
+      50,
+      0,
+      "CLIP"
+    ],
+    [
+      18,
+      2,
+      0,
+      60,
+      0,
+      "CLIP"
+    ],
+    [
+      19,
+      2,
+      0,
+      70,
+      0,
+      "CLIP"
+    ],
+    [
+      20,
+      2,
+      0,
+      80,
+      0,
+      "CLIP"
+    ],
+    [
+      21,
+      2,
+      0,
+      90,
+      0,
+      "CLIP"
+    ],
+    [
+      22,
+      2,
+      0,
+      100,
+      0,
+      "CLIP"
+    ],
+    [
+      23,
+      2,
+      0,
+      110,
+      0,
+      "CLIP"
+    ],
+    [
+      24,
+      2,
+      0,
+      120,
+      0,
+      "CLIP"
+    ],
+    [
+      25,
+      2,
+      0,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      26,
+      3,
+      0,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      27,
+      3,
+      0,
+      22,
+      1,
+      "VAE"
+    ],
+    [
+      28,
+      3,
+      0,
+      32,
+      1,
+      "VAE"
+    ],
+    [
+      29,
+      3,
+      0,
+      42,
+      1,
+      "VAE"
+    ],
+    [
+      30,
+      3,
+      0,
+      52,
+      1,
+      "VAE"
+    ],
+    [
+      31,
+      3,
+      0,
+      62,
+      1,
+      "VAE"
+    ],
+    [
+      32,
+      3,
+      0,
+      72,
+      1,
+      "VAE"
+    ],
+    [
+      33,
+      3,
+      0,
+      82,
+      1,
+      "VAE"
+    ],
+    [
+      34,
+      3,
+      0,
+      92,
+      1,
+      "VAE"
+    ],
+    [
+      35,
+      3,
+      0,
+      102,
+      1,
+      "VAE"
+    ],
+    [
+      36,
+      3,
+      0,
+      112,
+      1,
+      "VAE"
+    ],
+    [
+      37,
+      3,
+      0,
+      122,
+      1,
+      "VAE"
+    ],
+    [
+      38,
+      4,
+      0,
+      11,
+      3,
+      "LATENT"
+    ],
+    [
+      39,
+      4,
+      0,
+      21,
+      3,
+      "LATENT"
+    ],
+    [
+      40,
+      4,
+      0,
+      31,
+      3,
+      "LATENT"
+    ],
+    [
+      41,
+      4,
+      0,
+      41,
+      3,
+      "LATENT"
+    ],
+    [
+      42,
+      4,
+      0,
+      51,
+      3,
+      "LATENT"
+    ],
+    [
+      43,
+      4,
+      0,
+      61,
+      3,
+      "LATENT"
+    ],
+    [
+      44,
+      4,
+      0,
+      71,
+      3,
+      "LATENT"
+    ],
+    [
+      45,
+      4,
+      0,
+      81,
+      3,
+      "LATENT"
+    ],
+    [
+      46,
+      4,
+      0,
+      91,
+      3,
+      "LATENT"
+    ],
+    [
+      47,
+      4,
+      0,
+      101,
+      3,
+      "LATENT"
+    ],
+    [
+      48,
+      4,
+      0,
+      111,
+      3,
+      "LATENT"
+    ],
+    [
+      49,
+      4,
+      0,
+      121,
+      3,
+      "LATENT"
+    ],
+    [
+      50,
+      5,
+      0,
+      11,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      51,
+      5,
+      0,
+      21,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      52,
+      5,
+      0,
+      31,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      53,
+      5,
+      0,
+      41,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      54,
+      5,
+      0,
+      51,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      55,
+      5,
+      0,
+      61,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      56,
+      5,
+      0,
+      71,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      57,
+      5,
+      0,
+      81,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      58,
+      5,
+      0,
+      91,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      59,
+      5,
+      0,
+      101,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      60,
+      5,
+      0,
+      111,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      61,
+      5,
+      0,
+      121,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      62,
+      6,
+      0,
+      13,
+      0,
+      "BRMODEL"
+    ],
+    [
+      63,
+      6,
+      0,
+      23,
+      0,
+      "BRMODEL"
+    ],
+    [
+      64,
+      6,
+      0,
+      33,
+      0,
+      "BRMODEL"
+    ],
+    [
+      65,
+      6,
+      0,
+      43,
+      0,
+      "BRMODEL"
+    ],
+    [
+      66,
+      6,
+      0,
+      53,
+      0,
+      "BRMODEL"
+    ],
+    [
+      67,
+      6,
+      0,
+      63,
+      0,
+      "BRMODEL"
+    ],
+    [
+      68,
+      6,
+      0,
+      73,
+      0,
+      "BRMODEL"
+    ],
+    [
+      69,
+      6,
+      0,
+      83,
+      0,
+      "BRMODEL"
+    ],
+    [
+      70,
+      6,
+      0,
+      93,
+      0,
+      "BRMODEL"
+    ],
+    [
+      71,
+      6,
+      0,
+      103,
+      0,
+      "BRMODEL"
+    ],
+    [
+      72,
+      6,
+      0,
+      113,
+      0,
+      "BRMODEL"
+    ],
+    [
+      73,
+      6,
+      0,
+      123,
+      0,
+      "BRMODEL"
+    ],
+    [
+      74,
+      10,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      75,
+      11,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      76,
+      12,
+      0,
+      13,
+      1,
+      "IMAGE"
+    ],
+    [
+      77,
+      13,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      78,
+      13,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      79,
+      15,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      80,
+      20,
+      0,
+      21,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      81,
+      21,
+      0,
+      22,
+      0,
+      "LATENT"
+    ],
+    [
+      82,
+      22,
+      0,
+      23,
+      1,
+      "IMAGE"
+    ],
+    [
+      83,
+      23,
+      0,
+      24,
+      0,
+      "IMAGE"
+    ],
+    [
+      84,
+      23,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      85,
+      25,
+      0,
+      26,
+      0,
+      "IMAGE"
+    ],
+    [
+      86,
+      30,
+      0,
+      31,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      87,
+      31,
+      0,
+      32,
+      0,
+      "LATENT"
+    ],
+    [
+      88,
+      32,
+      0,
+      33,
+      1,
+      "IMAGE"
+    ],
+    [
+      89,
+      33,
+      0,
+      34,
+      0,
+      "IMAGE"
+    ],
+    [
+      90,
+      33,
+      0,
+      35,
+      0,
+      "IMAGE"
+    ],
+    [
+      91,
+      35,
+      0,
+      36,
+      0,
+      "IMAGE"
+    ],
+    [
+      92,
+      40,
+      0,
+      41,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      93,
+      41,
+      0,
+      42,
+      0,
+      "LATENT"
+    ],
+    [
+      94,
+      42,
+      0,
+      43,
+      1,
+      "IMAGE"
+    ],
+    [
+      95,
+      43,
+      0,
+      44,
+      0,
+      "IMAGE"
+    ],
+    [
+      96,
+      43,
+      0,
+      45,
+      0,
+      "IMAGE"
+    ],
+    [
+      97,
+      45,
+      0,
+      46,
+      0,
+      "IMAGE"
+    ],
+    [
+      98,
+      50,
+      0,
+      51,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      99,
+      51,
+      0,
+      52,
+      0,
+      "LATENT"
+    ],
+    [
+      100,
+      52,
+      0,
+      53,
+      1,
+      "IMAGE"
+    ],
+    [
+      101,
+      53,
+      0,
+      54,
+      0,
+      "IMAGE"
+    ],
+    [
+      102,
+      53,
+      0,
+      55,
+      0,
+      "IMAGE"
+    ],
+    [
+      103,
+      55,
+      0,
+      56,
+      0,
+      "IMAGE"
+    ],
+    [
+      104,
+      60,
+      0,
+      61,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      105,
+      61,
+      0,
+      62,
+      0,
+      "LATENT"
+    ],
+    [
+      106,
+      62,
+      0,
+      63,
+      1,
+      "IMAGE"
+    ],
+    [
+      107,
+      63,
+      0,
+      64,
+      0,
+      "IMAGE"
+    ],
+    [
+      108,
+      63,
+      0,
+      65,
+      0,
+      "IMAGE"
+    ],
+    [
+      109,
+      65,
+      0,
+      66,
+      0,
+      "IMAGE"
+    ],
+    [
+      110,
+      70,
+      0,
+      71,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      111,
+      71,
+      0,
+      72,
+      0,
+      "LATENT"
+    ],
+    [
+      112,
+      72,
+      0,
+      73,
+      1,
+      "IMAGE"
+    ],
+    [
+      113,
+      73,
+      0,
+      74,
+      0,
+      "IMAGE"
+    ],
+    [
+      114,
+      73,
+      0,
+      75,
+      0,
+      "IMAGE"
+    ],
+    [
+      115,
+      75,
+      0,
+      76,
+      0,
+      "IMAGE"
+    ],
+    [
+      116,
+      80,
+      0,
+      81,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      117,
+      81,
+      0,
+      82,
+      0,
+      "LATENT"
+    ],
+    [
+      118,
+      82,
+      0,
+      83,
+      1,
+      "IMAGE"
+    ],
+    [
+      119,
+      83,
+      0,
+      84,
+      0,
+      "IMAGE"
+    ],
+    [
+      120,
+      83,
+      0,
+      85,
+      0,
+      "IMAGE"
+    ],
+    [
+      121,
+      85,
+      0,
+      86,
+      0,
+      "IMAGE"
+    ],
+    [
+      122,
+      90,
+      0,
+      91,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      123,
+      91,
+      0,
+      92,
+      0,
+      "LATENT"
+    ],
+    [
+      124,
+      92,
+      0,
+      93,
+      1,
+      "IMAGE"
+    ],
+    [
+      125,
+      93,
+      0,
+      94,
+      0,
+      "IMAGE"
+    ],
+    [
+      126,
+      93,
+      0,
+      95,
+      0,
+      "IMAGE"
+    ],
+    [
+      127,
+      95,
+      0,
+      96,
+      0,
+      "IMAGE"
+    ],
+    [
+      128,
+      100,
+      0,
+      101,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      129,
+      101,
+      0,
+      102,
+      0,
+      "LATENT"
+    ],
+    [
+      130,
+      102,
+      0,
+      103,
+      1,
+      "IMAGE"
+    ],
+    [
+      131,
+      103,
+      0,
+      104,
+      0,
+      "IMAGE"
+    ],
+    [
+      132,
+      103,
+      0,
+      105,
+      0,
+      "IMAGE"
+    ],
+    [
+      133,
+      105,
+      0,
+      106,
+      0,
+      "IMAGE"
+    ],
+    [
+      134,
+      110,
+      0,
+      111,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      135,
+      111,
+      0,
+      112,
+      0,
+      "LATENT"
+    ],
+    [
+      136,
+      112,
+      0,
+      113,
+      1,
+      "IMAGE"
+    ],
+    [
+      137,
+      113,
+      0,
+      114,
+      0,
+      "IMAGE"
+    ],
+    [
+      138,
+      113,
+      0,
+      115,
+      0,
+      "IMAGE"
+    ],
+    [
+      139,
+      115,
+      0,
+      116,
+      0,
+      "IMAGE"
+    ],
+    [
+      140,
+      120,
+      0,
+      121,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      141,
+      121,
+      0,
+      122,
+      0,
+      "LATENT"
+    ],
+    [
+      142,
+      122,
+      0,
+      123,
+      1,
+      "IMAGE"
+    ],
+    [
+      143,
+      123,
+      0,
+      124,
+      0,
+      "IMAGE"
+    ],
+    [
+      144,
+      123,
+      0,
+      125,
+      0,
+      "IMAGE"
+    ],
+    [
+      145,
+      125,
+      0,
+      126,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "共享模型 + Latent + 负面 + BRIA",
+      "bounding": [
+        40,
+        30,
+        380,
+        760
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "说明 Note",
+      "bounding": [
+        40,
+        790,
+        380,
+        1020
+      ],
+      "color": "#a04060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "1. portrait_protagonist_male 链",
+      "bounding": [
+        440,
+        30,
+        2750,
+        490
+      ],
+      "color": "#2E8B57",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "2. portrait_protagonist_female 链",
+      "bounding": [
+        440,
+        520,
+        2750,
+        490
+      ],
+      "color": "#2E8B57",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "3. portrait_yunzhonghe 链",
+      "bounding": [
+        440,
+        1010,
+        2750,
+        490
+      ],
+      "color": "#3CB371",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "4. portrait_liuruyan 链",
+      "bounding": [
+        440,
+        1500,
+        2750,
+        490
+      ],
+      "color": "#DC143C",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "5. portrait_xiaohanye 链",
+      "bounding": [
+        440,
+        1990,
+        2750,
+        490
+      ],
+      "color": "#4B0082",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "6. portrait_murongxue 链",
+      "bounding": [
+        440,
+        2480,
+        2750,
+        490
+      ],
+      "color": "#4682B4",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "7. portrait_tiewushuang 链",
+      "bounding": [
+        440,
+        2970,
+        2750,
+        490
+      ],
+      "color": "#8B4513",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "8. portrait_shenqingluo 链",
+      "bounding": [
+        440,
+        3460,
+        2750,
+        490
+      ],
+      "color": "#90EE90",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "9. portrait_chutiannan 链",
+      "bounding": [
+        440,
+        3950,
+        2750,
+        490
+      ],
+      "color": "#F5F5DC",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "10. portrait_xuanjizi 链",
+      "bounding": [
+        440,
+        4440,
+        2750,
+        490
+      ],
+      "color": "#4B0082",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "11. portrait_guchangge 链",
+      "bounding": [
+        440,
+        4930,
+        2750,
+        490
+      ],
+      "color": "#8B0000",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "12. portrait_lingxi 链",
+      "bounding": [
+        440,
+        5420,
+        2750,
+        490
+      ],
+      "color": "#FFD700",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

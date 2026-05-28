@@ -254,10 +254,8 @@ func check_realm_breakthrough() -> void:
 	"""检查是否达到境界突破条件"""
 	var current_realm: Dictionary = get_current_realm()
 	if level == current_realm["level_range"][1]:
-		# 达到当前境界的最大等级
+		# TODO(beta): 触发突破界面, 当前自动突破用于测试
 		print("达到 %s 期圆满，准备突破" % current_realm["name"])
-		# 这里应该触发突破界面，但暂时先自动突破用于测试
-		# 在实际游戏中，玩家需要完成特定条件才能突破
 
 func breakthrough_realm() -> void:
 	"""境界突破"""

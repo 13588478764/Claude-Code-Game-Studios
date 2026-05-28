@@ -117,11 +117,9 @@ func _ready():
 	print("音效系统初始化完成")
 	load_audio_resources()
 
+## TODO(beta): 预加载常用音频资源到 audio_resources 缓存
 func load_audio_resources():
-	"""加载音频资源"""
-	# 这里可以预加载常用音频资源
-	# 简化实现：暂时只打印信息
-	print("加载音频资源...")
+	print("[Audio] load_audio_resources (stub)")
 
 func play_background_music(music_id, fade_in_time=1.0):
 	"""播放背景音乐"""

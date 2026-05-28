@@ -203,14 +203,10 @@ func create_attribute_comparison_panel():
 
 # 更新UI显示
 func update_ui():
-	# 更新装备槽位显示
+	# TODO(beta): 根据 InventorySystem 实际数据刷新装备槽位 + 背包内容
 	for slot_type in equipment_slots:
 		var slot_button = equipment_slots[slot_type]
-		# 这里应该根据实际装备情况更新显示
-		# 暂时保持静态显示
-	
-	# 更新背包显示
-	# 这里应该根据实际背包内容更新显示
+		pass
 
 # 槽位点击事件
 func _on_slot_pressed(slot_type: String):

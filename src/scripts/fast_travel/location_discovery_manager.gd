@@ -270,14 +270,10 @@ func force_unlock_location_by_quest(location_id: String) -> bool:
 	# 然后解锁
 	return unlock_location(location_id)
 
-# 更新地图标记
+# TODO(beta): 接入 MinimapSystem 刷新可见标记
 func update_map_markers():
-	# 这里会通知地图系统更新标记
-	# 暂时只打印信息
 	for location_id in unlocked_locations:
 		map_marker_updated.emit(location_id)
-	
-	print("地图标记已更新")
 
 # 获取可旅行的地点（已解锁的地点）
 func get_traversable_locations() -> Array:
