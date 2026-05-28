@@ -1,174 +1,175 @@
 # 项目阶段分析报告
 
-**日期**: 2026-05-23
+**日期**: 2026-05-28
 **阶段**: **Polish**
-**阶段置信度**: PASS — `production/stage.txt` 显式标记为 Polish，且 `production/gate-checks/gate-production-to-polish-2026-05-15.md` 门检判定为 CONCERNS（已带 concerns 进入 Polish）
-**生成方式**: `/project-stage-detect` 自动扫描
-**项目类型**: 修真武侠RPG（Godot 4.6 / GDScript / Steam PC）
+**阶段置信度**: PASS — `production/stage.txt` 标记为 Polish, Production→Polish 门检已通过
+**上次更新**: 2026-05-23 → 本次 (第 5 天增量更新)
 
 ---
 
 ## 完整度概览
 
-| 领域 | 完成度 | 关键数字 |
-|---|---|---|
-| **设计文档** | ~95% | 62 个 GDD + 13 个 UX spec + 完整 systems-index |
-| **叙事** | ~95% | 三幕完整剧本（178KB）+ 42 个对话 JSON + 角色档案库 |
-| **源代码** | ~90% | 183 个自研 .gd 文件（53,448 行），26 个子系统目录 |
-| **架构** | ~85% | 10 个 ADR + 主架构文档 + 控制清单 + TR 注册表 |
-| **生产管理** | ~90% | 6 个 Sprint 完成，Alpha 里程碑，6 个 QA 签收 |
-| **测试** | ~75% | 143 个测试文件（**29 个失败未修复**） |
-| **美术/资源** | ~40% | 主题系统初建，大部分为占位符 |
-| **本地化** | ~30% | 107 处 `tr()` 调用，但无 .po/.csv 翻译文件 |
+| 维度 | 完成度 | 详情 |
+|------|--------|------|
+| **设计文档** | 92% | 55 个 GDD + 13 个 UX spec + 2 个叙事大纲; 缺 game-concept.md / systems-index.md 顶层文件 |
+| **源代码** | 85% | 165 个 .gd 文件, ~48,254 行, 24 个 Autoload, 93 个场景 |
+| **美术资源** | 70% | 236 张游戏用图标 (不含 236 张 _masters 母版), 12 主角 + 16 敌人立绘, 15 背景 |
+| **架构** | 75% | 12 个 ADR; 缺架构总览索引文档 |
+| **生产管理** | 90% | 7 sprints, 3 milestones, 44 epics, 3 playtests, risk-register, polish-fixlist |
+| **测试** | 80% | 152 个测试文件, ~31,075 行; unit/integration/smoke/performance 四层覆盖 |
+| **代码健康** | 95% | 10 个 TODO(beta), 0 个 FIXME; polish-fixlist 27 项中 21 项已关闭 |
 
 ---
 
-## 设计层
+## 与上次报告 (05-23) 的变化
 
-### GDD 覆盖（62 份）
-核心系统 GDD 齐全：战斗、角色成长、对话、关系、经济、装备、奇遇、敌人 AI、敌人缩放、属性点分配、伤害计算、经验、快速旅行、装备槽位、状态效果、技能树、任务、存档等。还包含多份 consistency check 报告和跨 GDD 评审记录。
-
-### UX 规格（13 份）
-覆盖：主菜单、暂停菜单、设置、HUD、世界地图、装备面板、库存、角色面板、奇遇 UI、对话框、加载屏、帮助/教程、交互模式库、可访问性需求。
-
-### 叙事产出
-- 三幕主线剧本：Act1 (19KB) + Act2 (77KB) + Act3 (82KB) = **178KB**
-- 对话 JSON：Act1 (138 节点) + Act2 (128 节点) + Act3 (164 节点) = **430 节点**
-- 选择点：35 + 33 + 27 = **95 个分支选项**
-- 角色档案、世界设定、奇遇内容设计文档齐备
+| 维度 | 05-23 | 05-28 | 变化 |
+|------|-------|-------|------|
+| 源代码 | ~45K 行 | ~48K 行 | +3K (UI 接入 + 乘数管线 + 信号桥) |
+| 美术资源 | 41 张 | 236 张 (游戏用) | +195 张 (3 批 AI 出图入库) |
+| polish-fixlist | 5/27 完成 | 21/27 完成 | +16 项闭环 |
+| TODO/FIXME | 39 / 0 | 10 / 0 | -29 (stub 标准化 + 清理) |
+| Sprints | 6 | 7 | +sprint-007 (Polish Week 1-2) |
+| Risk register | 不存在 | 6 风险 | 新建 |
 
 ---
 
-## 源代码层
+## 系统实现覆盖率
 
-### 子系统列表（26 个）
-`combat`, `character`, `dialogue`, `economy`, `encounter`, `equipment`, `quest`, `relationship`, `save`, `skill_tree`, `story`, `fast_travel`, `enemy_scaling`, `npc`, `world`, `audio`, `rendering`, `ui`, `ui/hud`, `core`, `core/performance`, `data`, `database`, `persistence`, `reward_distribution`, `validation`
+### 主要系统 (按目录)
 
-### UI 场景
-33 个 .tscn UI 场景，13 个 UX 规格 — 设计→实现覆盖率良好。
+| 系统 | 文件数 | 状态 | 备注 |
+|------|--------|------|------|
+| UI 系统 | 48 | ✅ DONE | buff/item/talent/skill 图标已接入 |
+| 战斗系统 | 17 | ✅ DONE | 完整乘数链 (暴击×连击×弱点×破防×状态×浮动) |
+| 奇遇系统 | 13 | ⚠️ 框架完成 | 触发/条件/奖励/历史全部就位, 缺内容数据 |
+| HUD 系统 | 10 | ✅ DONE | 10 个信号全部接通 |
+| 敌人缩放 | 9 | ✅ DONE | — |
+| 装备系统 | 8 | ✅ DONE | 9 槽统一, 8 文件实现 |
+| 角色系统 | 8 | ✅ DONE | 静态类型化, 暴击/经验/福缘公式全部对齐 GDD |
+| 性能框架 | 7 | ✅ DONE | 对象池 + 批量更新 + LOD 调度 |
+| 数据层 | 6 | ✅ DONE | martial_art/item/equipment/consumable/quest_item 数据类 |
+| 对话系统 | 5 | ✅ DONE | 6 种条件判定已实现 |
+| 世界系统 | 4 | ✅ DONE | 流式加载 + POI + 移动控制 + 探索追踪 |
+| 关系系统 | 4 | ✅ DONE | — |
+| 任务系统 | 4 | ✅ DONE | — |
+| 经济系统 | 4 | ✅ DONE | — |
 
----
+### Autoload 注册 (24 个)
 
-## 架构层
-
-### ADR 清单（10 份）
-| ADR | 主题 | 状态 |
-|---|---|---|
-| ADR-001 | 核心架构 | Accepted |
-| ADR-002 | HUD 架构模式 | Accepted |
-| ADR-003 | 数据绑定机制 | Accepted |
-| ADR-004 | 性能优化策略 | Accepted |
-| ADR-005 | 战斗系统架构 | Accepted |
-| ADR-006 | 奇遇系统架构 | Accepted |
-| ADR-007 | 对话系统架构 | Accepted |
-| (deprecated) ADR-001 | 旧版核心架构 | Deprecated |
-
-支撑文档：`architecture.md`（主架构）、`control-manifest.md`（控制清单）、`tr-registry.yaml`（TR 注册表）。
-
----
-
-## 生产管理层
-
-### Sprint 进度
-6 个 Sprint 全部完成（sprint-001 至 sprint-006），均有对应 QA 计划 + QA 签收报告。
-
-### 里程碑
-Alpha 里程碑文档存在 (`production/milestones/milestone-alpha.md`)。
-
-### Playtest 记录（3 次）
-- 2026-04-29 (两次)
-- 2026-05-15 (Alpha 阶段)
-
-### Gate Check 记录
-- `gate-production-to-polish-2026-05-15.md`: **CONCERNS** → 已进入 Polish
+GameEvents, CharacterSystem, CombatSystem, EncounterSystem, EncounterRecordManager,
+EncounterRewardManager, HistoryLogger, HistoryPersistenceManager, AudioSystem,
+QuestSystem, QuestTriggerManager, RelationshipManager, DialogueManager, DialogueLoader,
+DialogueCombatBridge, ActManager, PauseMenuManager, CurrencyManager, GameLoopManager,
+InventorySystem, SaveSystem, MartialArtsSystem, EncounterDataLoader + main_theme.tres
 
 ---
 
-## 测试层
+## 美术资源清单
 
-- 测试文件总数：143
-- 测试目录覆盖：character / dialogue / e2e / economy / enemy_scaling / equipment / game_flow / hud / martial_arts_combo / open_world / quest / random_event / settings / status_effect / ui / ui/hud
-- 已知失败：**29 个测试用例**（Polish 阶段必须修复）
-
----
-
-## 已识别的差距
-
-### 1. 测试套件 29 个失败用例（**P0 阻塞**）
-Polish→Release 门检要求测试全绿。当前 143 个测试中 29 个失败，约 20% 失败率。需立即排查并修复。
-
-> **决策点**: 这些失败是核心系统回归还是边缘测试？建议先分类（必修 vs 可删），再决定修复优先级。
-
-### 2. 性能基线缺失（**P0**）
-Polish 阶段核心 KPI 是稳定 60FPS。当前无 `/perf-profile` 输出，无法判断是否达标。
-
-> **决策点**: 是否已有非正式性能测试数据（如 Godot Profiler 截图）？还是需要从零建立基线？
-
-### 3. 本地化管线未建立（**P1**）
-代码中 107 处 `tr()` 调用说明字符串已开始外化，但缺少：
-- `.po` 翻译文件
-- 翻译流程文档
-- 多语言切换 UI 测试
-
-> **决策点**: Steam 首发计划支持哪些语言？仅简体中文还是中英双语？
-
-### 4. 美术资源占位严重（**P1**）
-- `assets/ui/realm_icons/`: 9 个 .txt 占位符
-- `assets/ui/party_portraits/`: 仅 README + .gitkeep
-- 主题资源 (`main_theme.tres`) 已创建，但应用到所有 UI 场景的状态未确认
-
-> **决策点**: 美术资源是外包/AI 生成/自制？需要在 Polish 阶段排期资源替换工作。
-
-### 5. 奇遇内容数据填充不足（**P1**）
-门检报告指出：奇遇系统框架完整，但缺少中后期事件数据填充。
-
-> **决策点**: 估算还需多少奇遇内容？以 Act 2/Act 3 剧本为基础扩展？
-
-### 6. 中期 Playtest 缺失（**P2**）
-3 次 Playtest 覆盖了 Alpha 阶段，但未专项测试中期系统和难度曲线。
-
-> **决策点**: 安排 1-2 次专项 Playtest，重点验证 Act 2 中期推进和难度爬升体验。
-
-### 7. game-concept.md 无显式乐趣假设（**P2**）
-门检报告遗留项。在 game-concept.md 中补充一段「核心乐趣假设 + 验证状态」即可。
-
-### 8. design/levels/ 为空（**澄清需求**）
-对于节点制地图 + 文字冒险类型，是否将关卡设计纳入 `world-map` 或 `fast-travel-system` GDD？若是，可标记为 N/A；若否，需补充关卡设计文档。
+| 类别 | 数量 | 代码接入 | 备注 |
+|------|------|----------|------|
+| 五行元素图标 | 5 | ✅ weakness_icon_display.gd | — |
+| 境界图标 | 10 | ✅ player_status_panel.gd | — |
+| 战斗状态图标 | 5 | ✅ status_icon.gd (→status_icons/) | — |
+| Buff/Debuff 图标 | 36 | ✅ status_icon.gd (→buff_icons/) | 16 个 EffectType 已映射 |
+| 物品图标 | 65 | ✅ inventory_panel.gd + items.json | 69 物品路径已更新 |
+| 技能图标 | 16 | ✅ combat_action_panel.gd | 按 id→weapon_type 回退 |
+| 天赋图标 | 16 | ✅ character_growth_ui_script.gd | 4×4 网格按位置映射 |
+| 系统图标 | 23 | ❌ 未接入 | 待地图/任务 UI 使用 |
+| 边框装饰 | 17 | ⚠️ 部分 | frame_dialogue.png 已接入; 品阶边框/按钮纹理待 Theme |
+| 主角立绘 | 12 | ❌ 待接入 | 第四批产出, 对话框/队伍面板 |
+| 敌人立绘 | 16 | ❌ 待接入 | 第四批产出, 战斗 UI 敌人信息面板 |
+| 背景 | 15 | ❌ 待接入 | 第四批产出, 加载画面/主菜单 |
+| 主角队伍头像 | 0 | ❌ 待出图 | party_portraits/ 空 |
 
 ---
 
-## 推荐下一步
+## Polish-Fixlist 状态
 
-### Polish 阶段冲刺优先级
+**来源**: `production/qa/polish-fixlist-2026-05-25.md`
 
-| P | 行动 | 命令 | 预计工作量 |
-|---|---|---|---|
-| **P0** | 修复 29 个失败测试 | 直接修复 | 2-3 天 |
-| **P0** | 建立性能基线 | `/perf-profile` | 1 天 |
-| **P1** | 应用主题到全部 UI 场景 | 手动 + 验证 | 1-2 天 |
-| **P1** | 补齐奇遇内容数据 | 数据填充 | 3-5 天 |
-| **P1** | 美术资源替换计划 | 排期 + 替换 | 持续 |
-| **P2** | 建立本地化管线 | `tr()` 字符串导出到 .po | 1 天 + 翻译时间 |
-| **P2** | 中期 Playtest | `/playtest-plan` | 0.5 天准备 |
-| **P3** | 补充乐趣假设 | 编辑 game-concept.md | 0.5 天 |
+### 已关闭 (21/27)
 
-### 验证用命令
-- `/sprint-status` — 当前 Sprint 进度
-- `/gate-check` — 检查 Polish→Release 门检准备度
-- `/qa-plan` — 为 Polish 阶段规划 QA
-- `/perf-profile` — 性能基线
+| # | 项目 | 关闭日期 |
+|---|------|----------|
+| 1 | HUD 10 信号哑火 | 05-28 (确认已有 emit) |
+| 2 | DamageCalculator 乘数 | 05-28 (确认完整实现) |
+| 3 | 境界 9/10 统一 | 05-26 |
+| 4 | 暴击/连击/熟练度 + 回归测试 | 05-28 (确认测试存在) |
+| 5 | class_name 冲突 | 05-28 |
+| 6 | character_system 静态类型 | 05-26 |
+| 7 | 对话条件判定 | 05-28 (确认 6 子类实现) |
+| 8 | 装备 9 槽统一 | 05-28 |
+| 9 | EXP 分段指数 | 05-26 |
+| 10 | 武器类型补齐 (GDD) | 05-26 |
+| 11 | 奇遇概率统一 | 05-26 |
+| 12 | 福缘软上限 | 05-26 |
+| 13 | sprint-007 | 05-28 (确认已创建) |
+| 14 | milestone-beta | 05-28 (确认已创建) |
+| 15 | epics/index 修复 | 05-28 |
+| 18 | risk-register | 05-28 |
+| 19 | 测试文件迁出 src/ | 05-26 |
+| 20 | stub 标准化 | 05-27 |
+| 22 | documentation/ 空壳删除 | 05-27 |
+| 23 | milestone-alpha-review | 05-28 (确认已创建) |
+
+### 剩余 (6/27)
+
+| # | 项目 | 原因 |
+|---|------|------|
+| 16 | project-stage-report 过时 | ✅ 本报告即修复 |
+| 17 | session-state 完工记录 | 历史回溯, 低优先 |
+| 21 | 死信号清理 | 评估后风险>收益 |
+| 24 | 品阶边框接入 | 需自定义 ItemSlot 场景 |
+| 25 | 进度条/按钮 Theme | 需 Godot 编辑器 |
+| 26 | system_icons 接入 | 需地图/任务 UI 完善 |
+| 27 | 装饰纹理接入 | 纳入 #25 Theme 一并处理 |
 
 ---
 
-## 阶段判定依据
+## Beta 门检距离
 
-- ✅ `production/stage.txt` = `Polish`（显式覆写，最高优先级）
-- ✅ `production/gate-checks/gate-production-to-polish-2026-05-15.md` 判定 CONCERNS（已通过门检）
-- ✅ 满足 Production 阶段所有特征（183 个源码文件、26 个子系统、6 个 Sprint）
-- ✅ 已开始 Polish 工作（playtest 003 已完成，美术主题初建）
-
-**结论**: 项目处于 Polish 阶段中早期。核心系统稳定，但仍有相当数量的 polish 工作需要完成才能进入 Release 门检。
+| 门检要求 | 状态 | 备注 |
+|----------|------|------|
+| 三幕剧情全部可玩 | ⚠️ 大纲完成, 数据 0% | **最大风险** — 约 6 周内需填充 |
+| ≥20 条奇遇可触发 | ⚠️ 框架就位, 数据缺失 | 需内容填充 |
+| 10 境界可玩 | ✅ | — |
+| UI 图标 100% 入库 | ⚠️ ~65% | 再出 1-2 批 |
+| 暴击/连击/乘数对齐 | ✅ | + 回归测试 |
+| HUD 信号接通 | ✅ 10/10 | — |
+| 60 FPS 基线 | ❌ 无数据 | sprint-008 安排 perf-profile |
+| 测试通过率 ≥95% | ⚠️ 93.2% | 修复 ~10 个失败用例 |
+| P0 bug = 0 | ✅ | 全清 |
+| P1 bug = 0 | ⚠️ | #10 武器类型补齐 (Blade/Exotic/Bow 待 Beta 数据) |
+| Beta Playtest ≥3 | ❌ 0/3 | 内容 50%+ 后开始 |
+| 测试文件不在 src/ | ✅ | — |
 
 ---
 
-*报告生成: `/project-stage-detect` — 2026-05-23*
+## 活跃风险 (详见 production/risk-register/active.md)
+
+| ID | 风险 | 等级 |
+|----|------|------|
+| R-001 | 内容填充进度 (Act 2/3 + 奇遇数据) | HIGH |
+| R-002 | 美术资源覆盖率 (~65%) | MEDIUM |
+| R-003 | ComfyUI 工作流稳定性 | LOW |
+| R-004 | 测试通过率 93.2% < 95% | MEDIUM |
+| R-005 | 性能基线缺失 | MEDIUM |
+| R-006 | Beta Playtest 组织 | LOW |
+
+---
+
+## 建议下一步 (优先级排序)
+
+1. **内容填充** — Act 2/3 主线对话数据 + 奇遇事件数据, Beta 最大阻塞项
+2. **性能基线** — 主菜单/探索/战斗三场景 profiling (sprint-008)
+3. **测试修复** — 通过率 93.2% → 95%+
+4. **第四批回流** — ComfyUI 完成后 `import_ai_assets.sh --commit`
+5. **UI Theme 统一** — game_theme.tres 接入按钮/进度条/边框纹理
+6. **顶层设计文件** — 补 game-concept.md + systems-index.md
+
+---
+
+> 本报告由 `/project-stage-detect` 生成, 取代 2026-05-23 版本。
+> 下次更新建议: sprint-007 结束时 (2026-05-29) 或 sprint-008 中期。

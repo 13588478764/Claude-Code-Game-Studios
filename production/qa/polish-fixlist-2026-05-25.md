@@ -126,9 +126,9 @@ GDD 已改为 9 槽对齐代码 (polish-fixlist #8 2026-05-27)。装备系统 8 
 
 index.md 已完整列出 44 个 epic (97 行), 3 个 polish epic 目录已存在, 状态已更新至最新 (HUD/对话/装备/伤害乘数均标为 DONE)。
 
-### 16. project-stage-report.md 05-23 快照已过时
+### 16. project-stage-report.md 05-23 快照已过时 ✅ 2026-05-28
 
-美术 40% 未含 56 张图标入库, 未提主题系统/启动场景切换/三幕大纲。
+已由 `/project-stage-detect` 全面重写, 反映 236 张图标入库 + 21/27 fixlist 闭环 + Beta 门检距离。
 
 ### 17. session-state 缺 4 个完工记录
 
