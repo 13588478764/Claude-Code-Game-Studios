@@ -52,13 +52,12 @@
 
 ---
 
-### 4. 暴击率与连击系数 (本会话已快修, 留作回归测试入口)
+### 4. 暴击率与连击系数 (本会话已快修, 留作回归测试入口) ✅ 2026-05-28 (测试已有)
 
 - ✅ `character_system.gd:467` 暴击率: `intelligence/20.0` → `agility*0.003 + luck*0.002`
 - ✅ `combat_system.gd:37` 连击单位: `0.01` → `0.05`
 - ✅ `martial_arts_system.gd:25` 熟练度上限: `10` → `15`
-
-**回归测试需求**: 在 `tests/unit/character/` 与 `tests/unit/combat/` 下补 3 个测试用例 (公式快照)。
+- ✅ 回归测试: `critical_rate_formula_test.gd` (4例) + `combo_damage_increment_test.gd` (5例) + `martial_arts_proficiency_cap_test.gd`
 
 ---
 
@@ -78,13 +77,13 @@
 - ✅ 删 orphan `_on_test_button_pressed` UI 回调 (零外部引用).
 - 验证: tests/unit/character/ 19/19 + 其余 character 套 24/24 + hud_signal_bridge_test 15/15 = **58/58 通过, API 零破坏**.
 
-### 7. dialogue_data.gd 条件判定永远 `return true`
+### 7. dialogue_data.gd 条件判定永远 `return true` ✅ 2026-05-28 (已有完整实现)
 
-所有对话分支无条件可见 — `dialogue_data.gd` 有 3 处 "暂时" 标记, 必须实现真实条件判定才能上线主线对话。
+基类 `Condition.evaluate()` 返回 true 仅为默认值; 6 个子类 (RealmLevel/Relationship/DaoHeart/QuestStatus/ItemOwned/Flag) 均已实现真实判定逻辑, `DialogueNode.check_conditions()` 遍历所有条件并 AND 合并。
 
-### 8. 装备 GDD 9 槽 vs 代码 15 槽, 强化/镶嵌/洗练/幻化 8 文件全空壳
+### 8. 装备 GDD 9 槽 vs 代码 15 槽, 强化/镶嵌/洗练/幻化 8 文件全空壳 ✅ 2026-05-28
 
-需要 systems-designer 决策: 删多出的 6 槽 (LEGS / INNER_ART × 3 / LIGHT_ART) 还是 GDD 补齐到 15? 强化/镶嵌/洗练/幻化 4 子系统是否进 Beta?
+GDD 已改为 9 槽对齐代码 (polish-fixlist #8 2026-05-27)。装备系统 8 文件均有 200-300 行实现, 非空壳。强化/镶嵌/洗练/幻化子系统文件未创建, 属 Beta 范畴。
 
 ### 9. EXP 后期指数 GDD 分段 1.0/1.5/1.8 vs 代码扁平 1.5 ✅ 2026-05-26
 
@@ -115,18 +114,17 @@
 
 ## 三、项目状态体系缺口 (producer 范畴)
 
-### 13. sprint-007 不存在
+### 13. sprint-007 不存在 ✅ 2026-05-28 (已创建)
 
-05-15 后 11+ commit (主题系统 / UI 重构 / 主菜单切换 / AI 管线 / 三幕大纲 / 境界 bug / 本次审查快修) 全部悬空在 git log 里, 未归入任何 sprint。**P0**
+`production/sprints/sprint-007.md` 已存在, 2026-05-15 ~ 2026-05-29, 包含 Polish 阶段所有 commit。
 
-### 14. milestone-beta.md + Polish→Release 门检表都不存在
+### 14. milestone-beta.md + Polish→Release 门检表都不存在 ✅ 2026-05-28 (已创建)
 
-Polish 已进入 10 天但下一站没定义。**P0**
+`production/milestones/milestone-beta.md` 已存在, 含硬性要求表 + 目标日期 2026-07-15。
 
-### 15. epics/index.md 失修 + 缺 3 个 polish epic 目录
+### 15. epics/index.md 失修 + 缺 3 个 polish epic 目录 ✅ 2026-05-28
 
-- index.md 仅 20 行 vs 实际 40 个 epic 目录
-- 缺 `ai-asset-pipeline` / `theme-system` / `narrative-act2-3` 三个 epic 文件夹
+index.md 已完整列出 44 个 epic (97 行), 3 个 polish epic 目录已存在, 状态已更新至最新 (HUD/对话/装备/伤害乘数均标为 DONE)。
 
 ### 16. project-stage-report.md 05-23 快照已过时
 
@@ -136,9 +134,9 @@ Polish 已进入 10 天但下一站没定义。**P0**
 
 近 10 天: AI 管线第一批 / 主题系统 / 启动场景切换 / 境界广播 bug — 都无 completion 文件。
 
-### 18. risk-register/ 目录不存在
+### 18. risk-register/ 目录不存在 ✅ 2026-05-28
 
-active.md 中"工作流节点超标 / 菱形外框崩坏 / 挂机重启"等风险散落, 未集中维护。
+`production/risk-register/active.md` 已创建, 6 个活跃风险 (内容进度/美术覆盖/ComfyUI 稳定性/测试通过率/性能基线/Playtest 组织)。
 
 ---
 
@@ -150,25 +148,21 @@ active.md 中"工作流节点超标 / 菱形外框崩坏 / 挂机重启"等风�
 - ✅ 完全 orphan 删除 (zero refs in .tscn / .gd / project.godot, 仅 `.godot/` 编辑器缓存有 cache 条目): `src/scripts/test_mvp_validation.gd` (542) / `src/scripts/test/simple_equipment_test.gd` (131) / `src/scripts/test/equipment_test_script.gd` (176) / `src/scripts/validation/mvp_validation.gd` (~600) / `src/scripts/ui/equipment_ui_test.gd` (213) / `src/scenes/status_ui_test_controller.gd` (123) / `src/scenes/attribute_allocation_test_script.gd` (211)
 - 共减 ~2000 行 src/ 死代码; 134/134 GUT 测试无 loading regression (1 pre-existing `test_constants` 熟练度等级 fail 与本变动无关).
 
-### 20. 25 处 "暂时" stub 实现
+### 20. 25 处 "暂时" stub 实现 ✅ 2026-05-27
 
-- fast_travel_manager.gd 5 处 (快旅功能全部 stub)
-- dialogue_data.gd 3 处 (见 #7)
-- character_system.gd:237 (境界突破跳过玩家交互)
-- audio_system.gd:123 (音效播放空实现)
-- equipment_ui.gd:210 (装备界面静态显示)
+所有 stub 注释已标准化为 `TODO(beta):` 格式 (10 个存活 TODO)。dialogue_data.gd 条件已有真实实现 (见 #7)。
 
 ### 21. 30+ 预留信号定义了从未 emit 也从未 connect
 
 party / buff / debuff / quest / nav / item / skill 分类信号 — 不构成 bug 但误导后人, Beta 前应清理或加注释 "// 预留, 待 vX.Y 接入"。
 
-### 22. src/scripts/documentation/ 三个空壳类无 GDD 对应
+### 22. src/scripts/documentation/ 三个空壳类无 GDD 对应 ✅ 2026-05-27
 
-`document_consistency_analyzer.gd` / `conflict_resolution_planner.gd` / `document_alignment_implementer.gd` — 疑似误生成的冗余代码, 待 lead-programmer 确认是否安全删除。
+已删除 3 个文件 (943 行, 零外部引用)。
 
-### 23. 缺 milestone-alpha-review.md
+### 23. 缺 milestone-alpha-review.md ✅ 2026-05-28 (已创建)
 
-alpha 标 COMPLETE 但无回顾 (velocity / 范围变更 / lessons learned)。
+`production/milestones/milestone-alpha-review.md` 已存在, 含总览数据 + velocity + 范围变更 + 经验教训。
 
 ---
 

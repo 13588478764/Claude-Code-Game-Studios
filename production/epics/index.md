@@ -1,6 +1,6 @@
 # Epics Index
 
-Last Updated: 2026-05-25
+Last Updated: 2026-05-28
 Engine: Godot 4.6
 Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 
@@ -35,7 +35,7 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 | combat-system | 战斗系统 | design/gdd/combat-system.md | Done | DONE |
 | martial-arts-system | 武学系统 | design/gdd/martial-arts-system.md | Done | DONE |
 | martial-arts-combo-system | 武学组合/连招系统 | design/gdd/martial-arts-combo-system.md | Done | DONE |
-| damage-calculation-system | 伤害计算系统 | design/gdd/damage-calculation-system.md | Done (乘数 PENDING) | POLISH |
+| damage-calculation-system | 伤害计算系统 | design/gdd/damage-calculation-system.md | Done (乘数已串入) | DONE |
 | hit-detection-system | 命中检测系统 | design/gdd/hit-detection-system.md | Done | DONE |
 | status-effect-system | 状态效果系统 | design/gdd/status-effect-system.md | Done | DONE |
 | enemy-ai-system | 敌人 AI 系统 | design/gdd/enemy-ai-system.md | Done | DONE |
@@ -52,7 +52,7 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 | experience-system | 经验值系统 | design/gdd/experience-system.md | Done | DONE |
 | attribute-point-allocation-system | 属性点分配系统 | design/gdd/attribute-point-allocation-system.md | Done | DONE |
 | skill-tree-learning-path-system | 技能树/学习路径系统 | design/gdd/skill-tree-learning-path-system.md | Done | DONE |
-| equipment-system | 装备系统 | design/gdd/equipment-system.md | Done (9/15 槽决策 PENDING) | POLISH |
+| equipment-system | 装备系统 | design/gdd/equipment-system.md | Done (9 槽已统一) | DONE |
 | equipment-slot-system | 装备槽位系统 | design/gdd/equipment-slot-system.md | Done | POLISH |
 | equipment-attribute-calculation | 装备属性计算 | design/gdd/equipment-attribute-calculation.md | Done | DONE |
 
@@ -71,8 +71,8 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 
 | Epic | System | GDD | Stories | Status |
 |------|--------|-----|---------|--------|
-| hud-system | HUD 系统 | design/ux/hud.md | Done (10 信号 PENDING) | POLISH |
-| dialogue-system | 对话系统 | design/gdd/dialogue-system.md | Done (3 stub) | POLISH |
+| hud-system | HUD 系统 | design/ux/hud.md | Done (10 信号已接通) | DONE |
+| dialogue-system | 对话系统 | design/gdd/dialogue-system.md | Done (条件判定已实现) | DONE |
 | character-relationship-system | 角色关系系统 | design/gdd/character-relationship-system.md | Done | DONE |
 | combat-ui | 战斗 UI | design/ux/combat-ui.md | Done | DONE |
 | equipment-ui | 装备 UI | design/ux/equipment-ui.md | Done (1 stub) | POLISH |
@@ -81,7 +81,7 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 
 | Epic | System | GDD | Stories | Status |
 |------|--------|-----|---------|--------|
-| ai-asset-pipeline | AI 美术批量出图管线 (ComfyUI + FLUX) | production/epics/ai-asset-pipeline/EPIC.md | 第一批 41 张 DONE; 第二批 54 张挂机中 | IN PROGRESS |
+| ai-asset-pipeline | AI 美术批量出图管线 (ComfyUI + FLUX) | production/epics/ai-asset-pipeline/EPIC.md | 1-3 批 ~193 张入库; 第 4 批 43 张挂机中 | IN PROGRESS |
 | theme-system | Godot 主题系统 (main_theme.tres + 生成器) | production/epics/theme-system/EPIC.md | Theme 已就位; 全 UI 普及中 | IN PROGRESS |
 | narrative-act2-3 | 第二三幕剧情大纲 + 数据填充 | design/narrative/act-2-outline.md + act-3-outline.md | 大纲 DONE; 数据填充 PENDING | IN PROGRESS |
 
@@ -95,3 +95,4 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 - **Infra**: 元工具/元目录类 epic, 不对应单一 GDD
 
 更新此索引时, 请同时验证 `production/epics/` 实际目录数量与本文件一致 (当前 41 + 3 新 polish = 44)。
+实际目录数: 45 (含 index.md 和 systems-index 两个元条目)。
