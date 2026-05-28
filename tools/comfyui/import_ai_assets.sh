@@ -134,12 +134,14 @@ process_category "wuxia_debuff_64"       "buff_icons"      "Debuff 减益图标 
 # 系统/任务/地图图标（96x96,HUD 48x48 显示,三类同目录前缀区分）
 process_category "wuxia_system_96"       "system_icons"    "系统/任务/地图综合图标 (96×96)"
 
-# 立绘类（512x512）
-process_category "wuxia_portrait_512"    "portraits"        "主角/队友立绘 (512×512)"
-process_category "wuxia_enemy_512"       "enemy_portraits"  "敌人立绘 (512×512)"
+# 立绘类（512x512）— 第四批 W18/W19
+process_category "portraits_allies_512"  "portraits"        "主角/队友立绘 (512×512)"
+process_category "portraits_enemies_512" "enemy_portraits"  "敌人立绘 (512×512)"
 
-# 背景与边框
-process_category "wuxia_bg_1920"         "backgrounds"     "场景背景 (1920×1080)"
+# 背景（1024x1024 原始，后续手动放大）— 第四批 W20
+process_category "backgrounds_final"     "backgrounds"     "场景背景 (1024×1024)"
+
+# 边框装饰
 process_category "wuxia_frame_256"       "frames"          "边框装饰 (256×256)"
 
 # 备份高清母版（开发期参考用，不入游戏包）
@@ -153,6 +155,9 @@ process_category "wuxia_skill_1024"      "_masters/skill_1024"   "🗄 1024 武�
 process_category "wuxia_system_1024"     "_masters/system_1024"  "🗄 1024 系统综合图标母版备份"
 process_category "wuxia_item_1024"       "_masters/items_1024"   "🗄 1024 物品图标母版备份"
 process_category "wuxia_frame_1024"      "_masters/frames_1024"  "🗄 1024 UI 边框母版备份"
+process_category "portraits_allies_1024" "_masters/portraits_allies_1024" "🗄 1024 主角队友立绘母版备份"
+process_category "portraits_enemies_1024" "_masters/portraits_enemies_1024" "🗄 1024 敌人立绘母版备份"
+process_category "backgrounds_1024"      "_masters/backgrounds_1024" "🗄 1024 背景母版备份"
 
 # ===== 收尾 =====
 echo ""
