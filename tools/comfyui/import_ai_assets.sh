@@ -82,6 +82,7 @@ process_category() {
     mkdir -p "$dst_dir"
 
     local count=0
+    local skipped=0
     while IFS= read -r base; do
         [[ -z "$base" ]] && continue
         # 取该基础名最新版本（按 mtime 排序，取第一个）
@@ -90,6 +91,12 @@ process_category() {
         [[ -z "$latest" ]] && continue
 
         local dst_file="${dst_dir}/${base}.png"
+
+        # 跳过未更新的文件（目标存在且不比源旧）
+        if [[ -f "$dst_file" && ! "$latest" -nt "$dst_file" ]]; then
+            ((skipped++))
+            continue
+        fi
 
         if [[ $DRY_RUN -eq 1 ]]; then
             echo -e "  ${YELLOW}[预览]${NC} $(basename "$latest") -> ${base}.png"
@@ -100,7 +107,11 @@ process_category() {
         ((count++))
     done <<< "$bases"
 
-    echo "  $count 个文件"
+    if [[ $skipped -gt 0 ]]; then
+        echo -e "  ${count} 个新/更新, ${skipped} 个跳过(未变)"
+    else
+        echo "  $count 个文件"
+    fi
 }
 
 # ===== 头信息 =====
