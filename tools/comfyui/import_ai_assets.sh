@@ -152,6 +152,12 @@ process_category "portraits_enemies_512" "enemy_portraits"  "敌人立绘 (512×
 # 背景（1024x1024 原始，后续手动放大）— 第四批 W20
 process_category "backgrounds_final"     "backgrounds"     "场景背景 (1024×1024)"
 
+# 次要NPC立绘（512x512）— 第五批 W21
+process_category "npc_secondary_512"     "portraits"        "次要NPC立绘 (512×512)"
+
+# 奇遇场景插图（512x512）— 第五批 W22
+process_category "encounter_scenes_512"  "encounter_scenes" "奇遇场景插图 (512×512)"
+
 # 边框装饰
 process_category "wuxia_frame_256"       "frames"          "边框装饰 (256×256)"
 
@@ -169,6 +175,8 @@ process_category "wuxia_frame_1024"      "_masters/frames_1024"  "🗄 1024 UI �
 process_category "portraits_allies_1024" "_masters/portraits_allies_1024" "🗄 1024 主角队友立绘母版备份"
 process_category "portraits_enemies_1024" "_masters/portraits_enemies_1024" "🗄 1024 敌人立绘母版备份"
 process_category "backgrounds_1024"      "_masters/backgrounds_1024" "🗄 1024 背景母版备份"
+process_category "npc_secondary_1024"    "_masters/npc_secondary_1024" "🗄 1024 次要NPC母版备份"
+process_category "encounter_scenes_1024" "_masters/encounter_scenes_1024" "🗄 1024 奇遇场景母版备份"
 
 # ===== 收尾 =====
 echo ""
