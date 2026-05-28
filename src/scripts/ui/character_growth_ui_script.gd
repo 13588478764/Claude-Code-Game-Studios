@@ -38,6 +38,26 @@ class_name CharacterGrowthUiScript
 # 角色系统引用
 var character_system: CharacterSystem = null
 
+# 天赋图标路径映射（按 row*4+col 顺序）
+const TALENT_ICON_PATHS: Array = [
+	"res://assets/ui/talent_icons/talent_icon_sharp_edge.png",
+	"res://assets/ui/talent_icons/talent_icon_perception_expand.png",
+	"res://assets/ui/talent_icons/talent_icon_jade_body.png",
+	"res://assets/ui/talent_icons/talent_icon_epiphany_seeker.png",
+	"res://assets/ui/talent_icons/talent_icon_firm_heart.png",
+	"res://assets/ui/talent_icons/talent_icon_great_fortune.png",
+	"res://assets/ui/talent_icons/talent_icon_inner_circulation.png",
+	"res://assets/ui/talent_icons/talent_icon_longevity.png",
+	"res://assets/ui/talent_icons/talent_icon_lethal_strike.png",
+	"res://assets/ui/talent_icons/talent_icon_soul_render.png",
+	"res://assets/ui/talent_icons/talent_icon_divination.png",
+	"res://assets/ui/talent_icons/talent_icon_five_element_sword.png",
+	"res://assets/ui/talent_icons/talent_icon_qi_barrier.png",
+	"res://assets/ui/talent_icons/talent_icon_healing_hand.png",
+	"res://assets/ui/talent_icons/talent_icon_immortal_body.png",
+	"res://assets/ui/talent_icons/talent_icon_elements_harmony.png",
+]
+
 # 临时属性分配数据
 var temp_attribute_allocation = {
 	"strength": 0,
@@ -283,46 +303,46 @@ func _initialize_talent_grid() -> void:
 	"""初始化天赋网格按钮"""
 	if not talent_grid_container:
 		return
-	
-	# 使用场景中已有的16个按钮，为它们连接信号
+
+	# 使用场景中已有的16个按钮，为它们连接信号并加载图标
 	var button_index = 0
 	for row in range(4):
 		for col in range(4):
 			if button_index >= talent_grid_container.get_child_count():
 				break
-			
+
 			var button = talent_grid_container.get_child(button_index)
 			if button is Button:
-				# 连接按钮信号
 				button.pressed.connect(_on_talent_button_pressed.bind(row, col))
-				# 设置初始文本
-				button.text = "天赋\n%d,%d" % [row, col]
-			
+				button.text = ""
+				# 加载天赋图标
+				if button_index < TALENT_ICON_PATHS.size():
+					var icon_path = TALENT_ICON_PATHS[button_index]
+					if ResourceLoader.exists(icon_path):
+						button.icon = load(icon_path) as Texture2D
+						button.expand_icon = true
+
 			button_index += 1
 
 func _update_talent_grid_buttons() -> void:
 	"""更新天赋网格按钮状态"""
 	if not character_system or not talent_grid_container:
 		return
-	
+
 	var button_index = 0
 	for row in range(4):
 		for col in range(4):
 			if button_index >= talent_grid_container.get_child_count():
 				break
-			
+
 			var button = talent_grid_container.get_child(button_index)
 			if button is Button:
 				var is_unlocked = character_system.talent_grid[row][col]["unlocked"]
-				
-				# 更新按钮外观
 				if is_unlocked:
-					button.modulate = Color(1.0, 0.84, 0.0)  # 金色
-					button.text = "已点亮\n%d,%d" % [row, col]
+					button.modulate = Color(1.0, 0.84, 0.0)
 				else:
-					button.modulate = Color(0.5, 0.5, 0.5)  # 灰色
-					button.text = "未点亮\n%d,%d" % [row, col]
-			
+					button.modulate = Color(0.5, 0.5, 0.5)
+
 			button_index += 1
 
 func _on_talent_button_pressed(row: int, col: int) -> void:

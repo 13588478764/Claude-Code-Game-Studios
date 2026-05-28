@@ -20,22 +20,22 @@ var ICON_TEXTURES: Dictionary = {}
 
 func _init_textures() -> void:
 	ICON_TEXTURES = {
-		StatusEffect.EffectType.BURN: "res://assets/icons/status/burn.png",
-		StatusEffect.EffectType.POISON: "res://assets/icons/status/poison.png",
-		StatusEffect.EffectType.BLEED: "res://assets/icons/status/bleed.png",
-		StatusEffect.EffectType.REGEN: "res://assets/icons/status/regen.png",
-		StatusEffect.EffectType.STRENGTH_UP: "res://assets/icons/status/strength_up.png",
-		StatusEffect.EffectType.FOCUS: "res://assets/icons/status/focus.png",
-		StatusEffect.EffectType.SHIELD: "res://assets/icons/status/shield.png",
-		StatusEffect.EffectType.WEAKEN: "res://assets/icons/status/weaken.png",
-		StatusEffect.EffectType.VULNERABLE: "res://assets/icons/status/vulnerable.png",
-		StatusEffect.EffectType.BLIND: "res://assets/icons/status/blind.png",
-		StatusEffect.EffectType.STUN: "res://assets/icons/status/stun.png",
-		StatusEffect.EffectType.ROOT: "res://assets/icons/status/root.png",
-		StatusEffect.EffectType.SILENCE: "res://assets/icons/status/silence.png",
-		StatusEffect.EffectType.FREEZE: "res://assets/icons/status/freeze.png",
-		StatusEffect.EffectType.BREAK: "res://assets/icons/status/break.png",
-		StatusEffect.EffectType.MARK: "res://assets/icons/status/mark.png",
+		StatusEffect.EffectType.BURN: "res://assets/ui/buff_icons/debuff_icon_burn.png",
+		StatusEffect.EffectType.POISON: "res://assets/ui/buff_icons/debuff_icon_poison.png",
+		StatusEffect.EffectType.BLEED: "res://assets/ui/buff_icons/debuff_icon_bleed.png",
+		StatusEffect.EffectType.REGEN: "res://assets/ui/buff_icons/buff_icon_hp_regen.png",
+		StatusEffect.EffectType.STRENGTH_UP: "res://assets/ui/buff_icons/buff_icon_atk_up.png",
+		StatusEffect.EffectType.FOCUS: "res://assets/ui/buff_icons/buff_icon_perception_up.png",
+		StatusEffect.EffectType.SHIELD: "res://assets/ui/buff_icons/buff_icon_qi_shield.png",
+		StatusEffect.EffectType.WEAKEN: "res://assets/ui/buff_icons/debuff_icon_atk_down.png",
+		StatusEffect.EffectType.VULNERABLE: "res://assets/ui/buff_icons/debuff_icon_def_down.png",
+		StatusEffect.EffectType.BLIND: "res://assets/ui/buff_icons/debuff_icon_disarm.png",
+		StatusEffect.EffectType.STUN: "res://assets/ui/buff_icons/debuff_icon_stun.png",
+		StatusEffect.EffectType.ROOT: "res://assets/ui/buff_icons/debuff_icon_slow.png",
+		StatusEffect.EffectType.SILENCE: "res://assets/ui/buff_icons/debuff_icon_silence.png",
+		StatusEffect.EffectType.FREEZE: "res://assets/ui/buff_icons/debuff_icon_frozen.png",
+		StatusEffect.EffectType.BREAK: "res://assets/ui/status_icons/status_icon_break.png",
+		StatusEffect.EffectType.MARK: "res://assets/ui/buff_icons/buff_icon_lethal.png",
 	}
 
 func _ready() -> void:

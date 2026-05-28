@@ -179,7 +179,13 @@ func _refresh_inventory() -> void:
 
 		var tier = item.get("tier", "common")
 		var tier_color = TIER_COLORS.get(tier, Color.WHITE)
-		_item_list.add_item(display_name)
+
+		var icon_tex: Texture2D = null
+		var icon_path = item.get("icon", "")
+		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
+			icon_tex = load(icon_path) as Texture2D
+
+		_item_list.add_item(display_name, icon_tex)
 		_item_list.set_item_custom_fg_color(i, tier_color)
 
 	# 更新容量

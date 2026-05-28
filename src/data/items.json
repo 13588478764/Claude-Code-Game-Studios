@@ -20,7 +20,7 @@
     "durability": 100,
     "value_gold": 50,
     "weight": 2,
-    "icon": "res://assets/icons/items/common_sword.png"
+    "icon": "res://assets/ui/item_icons/item_sword_iron.png"
   },
   "rare_sword": {
     "id": "rare_sword",
@@ -45,7 +45,7 @@
     "durability": 150,
     "value_gold": 200,
     "weight": 2,
-    "icon": "res://assets/icons/items/rare_sword.png"
+    "icon": "res://assets/ui/item_icons/item_sword_qingfeng.png"
   },
   "epic_sword": {
     "id": "epic_sword",
@@ -75,7 +75,7 @@
     "durability": 200,
     "value_gold": 800,
     "weight": 1.5,
-    "icon": "res://assets/icons/items/epic_sword.png",
+    "icon": "res://assets/ui/item_icons/item_sword_zidian.png",
     "special_effects": [
       "对火属性敌人造成1.2倍伤害"
     ]
@@ -114,7 +114,7 @@
     "durability": 999,
     "value_gold": 5000,
     "weight": 1,
-    "icon": "res://assets/icons/items/legendary_sword.png",
+    "icon": "res://assets/ui/item_icons/item_sword_taiji.png",
     "special_effects": [
       "免疫所有控制效果",
       "攻击时有10%几率触发全属性+50%",
@@ -143,7 +143,7 @@
     "durability": 80,
     "value_gold": 30,
     "weight": 0.5,
-    "icon": "res://assets/icons/items/common_helmet.png"
+    "icon": "res://assets/ui/item_icons/item_hat_taoist.png"
   },
   "rare_helmet": {
     "id": "rare_helmet",
@@ -168,7 +168,7 @@
     "durability": 120,
     "value_gold": 150,
     "weight": 1,
-    "icon": "res://assets/icons/items/rare_helmet.png"
+    "icon": "res://assets/ui/item_icons/item_helm_zijin.png"
   },
   "epic_helmet": {
     "id": "epic_helmet",
@@ -199,7 +199,7 @@
     "durability": 180,
     "value_gold": 600,
     "weight": 0.8,
-    "icon": "res://assets/icons/items/epic_helmet.png",
+    "icon": "res://assets/ui/item_icons/item_helm_zijin.png",
     "special_effects": [
       "受到火属性攻击时，50%伤害转化为生命值"
     ]
@@ -237,7 +237,7 @@
     "durability": 999,
     "value_gold": 4000,
     "weight": 0.3,
-    "icon": "res://assets/icons/items/legendary_helmet.png",
+    "icon": "res://assets/ui/item_icons/item_helm_zijin.png",
     "special_effects": [
       "完全免疫所有负面状态效果",
       "内力回复速度提升100%"
@@ -262,7 +262,7 @@
     "durability": 200,
     "value_gold": 20,
     "weight": 0.1,
-    "icon": "res://assets/icons/items/common_ring.png"
+    "icon": "res://assets/ui/item_icons/item_spirit_ring.png"
   },
   "rare_ring": {
     "id": "rare_ring",
@@ -286,7 +286,7 @@
     "durability": 200,
     "value_gold": 100,
     "weight": 0.1,
-    "icon": "res://assets/icons/items/rare_ring.png"
+    "icon": "res://assets/ui/item_icons/item_spirit_ring.png"
   },
   "epic_ring": {
     "id": "epic_ring",
@@ -314,7 +314,7 @@
     "durability": 200,
     "value_gold": 500,
     "weight": 0.1,
-    "icon": "res://assets/icons/items/epic_ring.png",
+    "icon": "res://assets/ui/item_icons/item_jade_pendant.png",
     "special_effects": [
       "所有火属性技能伤害提升20%"
     ]
@@ -355,7 +355,7 @@
     "durability": 999,
     "value_gold": 3000,
     "weight": 0.1,
-    "icon": "res://assets/icons/items/legendary_ring.png",
+    "icon": "res://assets/ui/item_icons/item_jade_pendant.png",
     "special_effects": [
       "所有元素属性伤害提升50%",
       "免疫所有元素属性弱点"
@@ -379,7 +379,7 @@
     "max_stack": 99,
     "value_gold": 500,
     "weight": 0.01,
-    "icon": "res://assets/icons/items/breakthrough_pill.png"
+    "icon": "res://assets/ui/item_icons/item_pill_zhuji.png"
   },
   "wash_marrow_pill": {
     "id": "wash_marrow_pill",
@@ -398,7 +398,7 @@
     "max_stack": 10,
     "value_gold": 1000,
     "weight": 0.01,
-    "icon": "res://assets/icons/items/wash_marrow_pill.png"
+    "icon": "res://assets/ui/item_icons/item_pill_dahuan.png"
   },
   "health_pill": {
     "id": "health_pill",
@@ -417,7 +417,7 @@
     "max_stack": 99,
     "value_gold": 20,
     "weight": 0.01,
-    "icon": "res://assets/icons/items/health_pill.png"
+    "icon": "res://assets/ui/item_icons/item_potion_hp.png"
   },
   "spirit_stone_small": {
     "id": "spirit_stone_small",
@@ -432,7 +432,7 @@
     "max_stack": 999,
     "value_gold": 10,
     "weight": 0.05,
-    "icon": "res://assets/icons/items/spirit_stone_small.png"
+    "icon": "res://assets/ui/item_icons/item_spirit_stone_low.png"
   },
   "iron_ingot": {
     "id": "iron_ingot",
@@ -447,7 +447,7 @@
     "max_stack": 999,
     "value_gold": 5,
     "weight": 0.5,
-    "icon": "res://assets/icons/items/iron_ingot.png"
+    "icon": "res://assets/ui/item_icons/item_ore_xuantie.png"
   },
   "healing_pill": {
     "id": "healing_pill",
@@ -465,7 +465,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 15,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_potion_hp.png"
   },
   "qi_gathering_pill": {
     "id": "qi_gathering_pill",
@@ -483,7 +484,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 30,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_pill_ningqi.png"
   },
   "yuan_condensing_pill": {
     "id": "yuan_condensing_pill",
@@ -501,7 +503,8 @@
     "stackable": true,
     "max_stack": 50,
     "value_gold": 100,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_pill_jindan.png"
   },
   "yuan_condensing_pill_half": {
     "id": "yuan_condensing_pill_half",
@@ -519,7 +522,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 40,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_pill_jindan.png"
   },
   "random_pill": {
     "id": "random_pill",
@@ -537,7 +541,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 25,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_pill_jiedu.png"
   },
   "spirit_herb": {
     "id": "spirit_herb",
@@ -551,7 +556,8 @@
     "stackable": true,
     "max_stack": 999,
     "value_gold": 8,
-    "weight": 0.02
+    "weight": 0.02,
+    "icon": "res://assets/ui/item_icons/item_herb_wuxing.png"
   },
   "spirit_crystal": {
     "id": "spirit_crystal",
@@ -565,7 +571,8 @@
     "stackable": true,
     "max_stack": 999,
     "value_gold": 50,
-    "weight": 0.05
+    "weight": 0.05,
+    "icon": "res://assets/ui/item_icons/item_spirit_stone_mid.png"
   },
   "spirit_crystal_high": {
     "id": "spirit_crystal_high",
@@ -579,7 +586,8 @@
     "stackable": true,
     "max_stack": 999,
     "value_gold": 200,
-    "weight": 0.05
+    "weight": 0.05,
+    "icon": "res://assets/ui/item_icons/item_spirit_stone_high.png"
   },
   "spirit_essence": {
     "id": "spirit_essence",
@@ -593,7 +601,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 300,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_spirit_stone_high.png"
   },
   "spirit_stones": {
     "id": "spirit_stones",
@@ -607,7 +616,8 @@
     "stackable": true,
     "max_stack": 9999,
     "value_gold": 10,
-    "weight": 0.05
+    "weight": 0.05,
+    "icon": "res://assets/ui/item_icons/item_spirit_stone_mid.png"
   },
   "millennium_lingzhi": {
     "id": "millennium_lingzhi",
@@ -621,7 +631,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 500,
-    "weight": 0.1
+    "weight": 0.1,
+    "icon": "res://assets/ui/item_icons/item_herb_lingzhi.png"
   },
   "purple_salvia": {
     "id": "purple_salvia",
@@ -635,7 +646,8 @@
     "stackable": true,
     "max_stack": 999,
     "value_gold": 30,
-    "weight": 0.02
+    "weight": 0.02,
+    "icon": "res://assets/ui/item_icons/item_herb_renshen.png"
   },
   "snow_lotus_fragment": {
     "id": "snow_lotus_fragment",
@@ -649,7 +661,8 @@
     "stackable": true,
     "max_stack": 999,
     "value_gold": 40,
-    "weight": 0.02
+    "weight": 0.02,
+    "icon": "res://assets/ui/item_icons/item_herb_xuelian.png"
   },
   "inner_demon_essence": {
     "id": "inner_demon_essence",
@@ -663,7 +676,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 250,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_beast_core.png"
   },
   "ancient_martial_art_fragment": {
     "id": "ancient_martial_art_fragment",
@@ -681,7 +695,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 40
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "ancient_technique_scroll": {
     "id": "ancient_technique_scroll",
@@ -699,7 +714,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 60
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "ancient_xuan_technique_scroll": {
     "id": "ancient_xuan_technique_scroll",
@@ -717,7 +733,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 100
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "ancient_technique_complete": {
     "id": "ancient_technique_complete",
@@ -735,7 +752,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 200
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_ancient_book.png"
   },
   "righteous_technique": {
     "id": "righteous_technique",
@@ -753,7 +771,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 50
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "demonic_technique": {
     "id": "demonic_technique",
@@ -771,7 +790,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 50
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "taixu_sword_basic": {
     "id": "taixu_sword_basic",
@@ -789,7 +809,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 80
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "taixu_sword_complete": {
     "id": "taixu_sword_complete",
@@ -807,7 +828,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 180
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_ancient_book.png"
   },
   "ancient_sword_technique_fragment": {
     "id": "ancient_sword_technique_fragment",
@@ -825,7 +847,8 @@
     "consumable_effect": {
       "type": "exp_boost",
       "value": 35
-    }
+    },
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "ancient_sword_fragment": {
     "id": "ancient_sword_fragment",
@@ -839,7 +862,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 60,
-    "weight": 0.2
+    "weight": 0.2,
+    "icon": "res://assets/ui/item_icons/item_flying_sword.png"
   },
   "broken_flying_sword": {
     "id": "broken_flying_sword",
@@ -853,7 +877,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 30,
-    "weight": 0.5
+    "weight": 0.5,
+    "icon": "res://assets/ui/item_icons/item_flying_sword.png"
   },
   "low_tier_artifact": {
     "id": "low_tier_artifact",
@@ -867,7 +892,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 50,
-    "weight": 0.3
+    "weight": 0.3,
+    "icon": "res://assets/ui/item_icons/item_artifact_fuchen.png"
   },
   "artifact_fragment": {
     "id": "artifact_fragment",
@@ -881,7 +907,8 @@
     "stackable": true,
     "max_stack": 999,
     "value_gold": 15,
-    "weight": 0.1
+    "weight": 0.1,
+    "icon": "res://assets/ui/item_icons/item_artifact_bagua_mirror.png"
   },
   "artifact_fragment_half": {
     "id": "artifact_fragment_half",
@@ -895,7 +922,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 80,
-    "weight": 0.3
+    "weight": 0.3,
+    "icon": "res://assets/ui/item_icons/item_artifact_bagua_mirror.png"
   },
   "resonance_treasure": {
     "id": "resonance_treasure",
@@ -909,7 +937,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 400,
-    "weight": 0.2
+    "weight": 0.2,
+    "icon": "res://assets/ui/item_icons/item_artifact_guqin.png"
   },
   "basic_furnace": {
     "id": "basic_furnace",
@@ -923,7 +952,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 100,
-    "weight": 2.0
+    "weight": 2.0,
+    "icon": "res://assets/ui/item_icons/item_artifact_yudi.png"
   },
   "demonic_storage_bag": {
     "id": "demonic_storage_bag",
@@ -937,7 +967,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 150,
-    "weight": 0.1
+    "weight": 0.1,
+    "icon": "res://assets/ui/item_icons/item_storage_bag.png"
   },
   "spirit_gathering_formation": {
     "id": "spirit_gathering_formation",
@@ -951,7 +982,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 200,
-    "weight": 0.1
+    "weight": 0.1,
+    "icon": "res://assets/ui/item_icons/item_talisman.png"
   },
   "cave_location_clue": {
     "id": "cave_location_clue",
@@ -965,7 +997,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 0,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_quest_ancient_map.png"
   },
   "rune_rubbing_fragment": {
     "id": "rune_rubbing_fragment",
@@ -979,7 +1012,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 10,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_quest_mystery_token.png"
   },
   "memory_note": {
     "id": "memory_note",
@@ -993,7 +1027,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 0,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_letter.png"
   },
   "alchemy_note": {
     "id": "alchemy_note",
@@ -1007,7 +1042,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 20,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_letter.png"
   },
   "intelligence_clue": {
     "id": "intelligence_clue",
@@ -1021,7 +1057,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 0,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_quest_enemy_portrait.png"
   },
   "furnace_info": {
     "id": "furnace_info",
@@ -1035,7 +1072,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 0,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_letter.png"
   },
   "treasure_location_info": {
     "id": "treasure_location_info",
@@ -1049,7 +1087,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 0,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_quest_ancient_map.png"
   },
   "treasure_fragment": {
     "id": "treasure_fragment",
@@ -1063,7 +1102,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 50,
-    "weight": 0.1
+    "weight": 0.1,
+    "icon": "res://assets/ui/item_icons/item_phoenix_feather.png"
   },
   "beast_knowledge_snow_fox": {
     "id": "beast_knowledge_snow_fox",
@@ -1077,7 +1117,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 10,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_ancient_book.png"
   },
   "ancient_formation_knowledge": {
     "id": "ancient_formation_knowledge",
@@ -1091,7 +1132,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 80,
-    "weight": 0.01
+    "weight": 0.01,
+    "icon": "res://assets/ui/item_icons/item_ancient_book.png"
   },
   "golden_wound_medicine": {
     "id": "golden_wound_medicine",
@@ -1110,7 +1152,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 150,
-    "weight": 0.02
+    "weight": 0.02,
+    "icon": "res://assets/ui/item_icons/item_potion_hp.png"
   },
   "ancient_sword": {
     "id": "ancient_sword",
@@ -1124,7 +1167,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 500,
-    "weight": 1.5
+    "weight": 1.5,
+    "icon": "res://assets/ui/item_icons/item_sword_xuantie.png"
   },
   "sword_manual": {
     "id": "sword_manual",
@@ -1138,7 +1182,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 300,
-    "weight": 0.1
+    "weight": 0.1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "jade_pendant": {
     "id": "jade_pendant",
@@ -1152,7 +1197,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 450,
-    "weight": 0.2
+    "weight": 0.2,
+    "icon": "res://assets/ui/item_icons/item_jade_pendant.png"
   },
   "poetry_book": {
     "id": "poetry_book",
@@ -1166,7 +1212,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 100,
-    "weight": 0.3
+    "weight": 0.3,
+    "icon": "res://assets/ui/item_icons/item_ancient_book.png"
   },
   "tea": {
     "id": "tea",
@@ -1180,7 +1227,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 30,
-    "weight": 0.05
+    "weight": 0.05,
+    "icon": "res://assets/ui/item_icons/item_food_xiantao.png"
   },
   "calligraphy": {
     "id": "calligraphy",
@@ -1194,7 +1242,8 @@
     "stackable": true,
     "max_stack": 10,
     "value_gold": 120,
-    "weight": 0.2
+    "weight": 0.2,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   },
   "wine": {
     "id": "wine",
@@ -1208,7 +1257,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 50,
-    "weight": 0.5
+    "weight": 0.5,
+    "icon": "res://assets/ui/item_icons/item_food_wine.png"
   },
   "flowers": {
     "id": "flowers",
@@ -1222,7 +1272,8 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 20,
-    "weight": 0.05
+    "weight": 0.05,
+    "icon": "res://assets/ui/item_icons/item_herb_lingzhi.png"
   },
   "cheap_jewelry": {
     "id": "cheap_jewelry",
@@ -1236,6 +1287,7 @@
     "stackable": true,
     "max_stack": 99,
     "value_gold": 5,
-    "weight": 0.1
+    "weight": 0.1,
+    "icon": "res://assets/ui/item_icons/item_necklace_xianhe.png"
   }
 }

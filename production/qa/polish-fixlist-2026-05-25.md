@@ -192,6 +192,39 @@ alpha 标 COMPLETE 但无回顾 (velocity / 范围变更 / lessons learned)。
 
 ---
 
+## 五-B、UI 资源接入遗留 (2026-05-28 审查)
+
+> 以下资源已存在于 `assets/ui/` 但尚未被代码加载，需后续在编辑器中或代码中接入。
+
+### 24. 品阶边框 frame_rarity_*.png (5张) 未接入物品槽
+
+**现状**: `assets/ui/frames/` 有 `frame_rarity_common/fine/epic/legendary/immortal.png`，但 inventory 用 ItemList 无法为单项设独立边框。
+**修复方向**: 将 ItemList 改为 GridContainer + 自定义 ItemSlot.tscn (TextureRect 边框 + TextureRect 图标 + Label 数量)，根据 tier 加载对应品阶边框。
+**工作量**: 4-6h (含 .tscn 布局 + 脚本适配)
+
+### 25. 进度条/按钮纹理 (progress_bar_*.png, button_*.png) 未接入 Theme
+
+**现状**: `progress_bar_bg.png` / `progress_bar_fill.png` / `button_standard.png` / `button_close.png` / `button_main_menu.png` 存在但 UI 用 Godot 默认 StyleBox。
+**修复方向**: 创建 `assets/ui/theme/game_theme.tres` (Godot Theme 资源), 在 ProgressBar / Button 的 StyleBox 中设置这些纹理, 项目根场景统一引用。
+**工作量**: 2-3h (含 NinePatch margin 调试)
+
+### 26. system_icons/ (23张地图/任务图标) 未接入
+
+**现状**: `map_icon_*.png` (6张) + `quest_icon_*.png` (6张) + `system_icon_*.png` (11张) 已有, 但 `world_map.gd` / `quest_log_panel.gd` / `minimap.gd` 中未加载。
+**修复方向**: 
+- `world_map.gd`: 用 `map_icon_*.png` 替代当前 ColorRect 标记
+- `quest_log_panel.gd`: 任务类型图标 (主线/支线/完成)
+- `minimap.gd`: POI 标记用 `map_icon_*.png`
+**工作量**: 3-4h
+
+### 27. title_banner.png / divider_horizontal.png / scrollbar_handle.png 装饰未接入
+
+**现状**: 面板标题栏、分隔线、滚动条均使用默认样式。
+**修复方向**: 纳入 #25 的统一 Theme 资源中一并处理。
+**工作量**: 含在 #25 中
+
+---
+
 ## 六、推荐执行顺序
 
 1. **明早**: HUD 10 信号哑火 (#1) — 这是玩家最早会注意到的 bug

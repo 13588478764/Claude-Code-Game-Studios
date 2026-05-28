@@ -262,6 +262,11 @@ func _populate_skill_list() -> void:
 			if not has_energy:
 				btn.tooltip_text = "内力不足"
 
+			# 加载武学技能图标（优先按 id，回退按 weapon_type）
+			var skill_icon := _load_skill_icon(ma.id, ma.weapon_type)
+			if skill_icon:
+				btn.icon = skill_icon
+
 			var skill_data := {
 				"type": "use_skill",
 				"name": ma.name,
@@ -413,3 +418,24 @@ func _add_log_line(line: String) -> void:
 func _update_log() -> void:
 	if _log_label:
 		_log_label.text = "\n".join(_log_lines)
+
+
+## 武器类型 → 默认技能图标映射
+const WEAPON_TYPE_ICON: Dictionary = {
+	"Sword": "res://assets/ui/skill_icons/skill_icon_cold_light_sword.png",
+	"Fist": "res://assets/ui/skill_icons/skill_icon_luohan_fist.png",
+	"Palm": "res://assets/ui/skill_icons/skill_icon_fire_palm.png",
+}
+
+
+## 加载武学图标：优先按 ID 查找，回退按 weapon_type
+func _load_skill_icon(martial_art_id: String, weapon_type: String) -> Texture2D:
+	var path := "res://assets/ui/skill_icons/skill_icon_%s.png" % martial_art_id
+	if ResourceLoader.exists(path):
+		return load(path) as Texture2D
+
+	var fallback := WEAPON_TYPE_ICON.get(weapon_type, "")
+	if not fallback.is_empty() and ResourceLoader.exists(fallback):
+		return load(fallback) as Texture2D
+
+	return null

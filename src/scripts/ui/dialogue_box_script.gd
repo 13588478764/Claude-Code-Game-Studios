@@ -27,6 +27,9 @@ var _waiting_for_input: bool = false
 var _has_choices: bool = false
 
 func _ready() -> void:
+	# 设置对话框纹理边框
+	_apply_dialogue_frame()
+
 	# 缓存选择按钮
 	_choice_buttons.assign([
 		$VBoxContainer/ChoicesContainer/Choice1,
@@ -34,19 +37,43 @@ func _ready() -> void:
 		$VBoxContainer/ChoicesContainer/Choice3,
 		$VBoxContainer/ChoicesContainer/Choice4
 	])
-	
+
 	# 隐藏所有选择按钮
 	_hide_all_choices()
-	
+
 	# 连接按钮信号
 	for i in range(_choice_buttons.size()):
 		_choice_buttons[i].pressed.connect(_on_choice_pressed.bind(i))
-	
+
 	# 隐藏继续提示
 	_continue_hint.visible = false
 
 	# 连接关闭按钮
 	_close_button.pressed.connect(_on_close_pressed)
+
+
+func _apply_dialogue_frame() -> void:
+	var frame_path := "res://assets/ui/frames/frame_dialogue.png"
+	if not ResourceLoader.exists(frame_path):
+		return
+
+	var tex := load(frame_path) as Texture2D
+	if tex == null:
+		return
+
+	var style := StyleBoxTexture.new()
+	style.texture = tex
+	# NinePatch margin (像素) — 适用于 256x256 源图缩放
+	var margin := 24
+	style.texture_margin_left = margin
+	style.texture_margin_right = margin
+	style.texture_margin_top = margin
+	style.texture_margin_bottom = margin
+	style.content_margin_left = margin + 8
+	style.content_margin_right = margin + 8
+	style.content_margin_top = margin + 4
+	style.content_margin_bottom = margin + 4
+	add_theme_stylebox_override("panel", style)
 
 	# 自动连接DialogueManager
 	var dialogue_manager = get_node_or_null("/root/DialogueManager")
