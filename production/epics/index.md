@@ -74,8 +74,8 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 | hud-system | HUD 系统 | design/ux/hud.md | Done (10 信号已接通) | DONE |
 | dialogue-system | 对话系统 | design/gdd/dialogue-system.md | Done (条件判定已实现) | DONE |
 | character-relationship-system | 角色关系系统 | design/gdd/character-relationship-system.md | Done | DONE |
-| combat-ui | 战斗 UI | design/ux/combat-ui.md | Done | DONE |
-| equipment-ui | 装备 UI | design/ux/equipment-ui.md | Done (1 stub) | POLISH |
+| combat-ui | 战斗 UI | design/gdd/combat-ui.md | Done | DONE |
+| equipment-ui | 装备 UI | design/gdd/equipment-ui.md | Done (1 stub) | POLISH |
 
 ## Polish Phase Epics (2026-05-15+ 新增)
 

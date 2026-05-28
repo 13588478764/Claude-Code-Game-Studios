@@ -98,7 +98,7 @@ func _on_pause_menu_quit_confirmed(_saved: bool) -> void:
 
 ## 信号回调：返回主菜单
 func _on_pause_menu_return_to_main(_saved: bool) -> void:
-	var main_menu_path = "res://src/scenes/main_menu.tscn"
+	var main_menu_path = "res://src/scenes/ui/main_menu.tscn"
 	if ResourceLoader.exists(main_menu_path):
 		get_tree().change_scene_to_file(main_menu_path)
 	else:

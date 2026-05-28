@@ -229,7 +229,7 @@ func _on_retry_pressed() -> void:
 
 ## 返回主菜单
 func _on_return_pressed() -> void:
-	var main_menu_path = "res://src/scenes/main_menu.tscn"
+	var main_menu_path = "res://src/scenes/ui/main_menu.tscn"
 	if ResourceLoader.exists(main_menu_path):
 		get_tree().change_scene_to_file(main_menu_path)
 

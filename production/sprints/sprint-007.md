@@ -47,9 +47,9 @@
 
 | ID | Task | Owner | Est. Days | Status | Acceptance Criteria |
 |----|------|-------|-----------|--------|---------------------|
-| s7-18 | HUD 10 个信号全面接通 (fixlist #1) | UI/Gameplay Programmer | 2 | PENDING | player_hp/qi/poise/level_up/exp + enemy_*/combat_action_queue 共 10 信号在源头 emit, HUD 实时刷新 |
-| s7-19 | 境界 9/10 决策 + 跨系统统一 (fixlist #3) | Game Designer | 0.5 | PENDING | GDD 加"真仙"或代码改回 9; cross-check character_system + equipment_slot_manager + 图标资源 |
-| s7-20 | 奇遇内容补齐 (gate-check Concern #1) | Writer + Systems Designer | 3 | PENDING | encounter-system 数据填充, ≥20 条可触发奇遇 |
+| s7-18 | HUD 10 个信号全面接通 (fixlist #1) | UI/Gameplay Programmer | 2 | DONE | 10 信号在 combat_manager.gd + character_system.gd 中全部有 emit (3007324 + 857cdb1) |
+| s7-19 | 境界 9/10 决策 + 跨系统统一 (fixlist #3) | Game Designer | 0.5 | DONE | GDD 统一为 10 大境界含真仙 (664b69d) |
+| s7-20 | 奇遇内容补齐 (gate-check Concern #1) | Writer + Systems Designer | 3 | DONE | data/encounters/ 30 条完整奇遇 JSON, 超过 ≥20 要求 |
 
 **Nice to Have Total**: 5.5 days
 
@@ -74,9 +74,9 @@
 
 ## Definition of Done for this Sprint
 - [x] All Must Have tasks completed (13/13 DONE)
-- [ ] All Should Have tasks completed (0/4)
-- [ ] All Nice to Have tasks evaluated (0/3)
-- [ ] polish-fixlist-2026-05-25.md 至少处理 P0 #1 (HUD 信号) + #3 (境界 9/10)
+- [ ] All Should Have tasks completed (1/4 — s7-14 性能基线未做)
+- [x] All Nice to Have tasks evaluated (3/3 DONE)
+- [x] polish-fixlist-2026-05-25.md P0 #1 (HUD 信号) ✅ + #3 (境界 9/10) ✅ + 额外 22/27 项已关闭
 - [ ] 性能基线落档
 - [ ] 测试通过率 ≥95%
 - [ ] session-state/active.md 同步收尾
