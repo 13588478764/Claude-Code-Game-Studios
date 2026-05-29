@@ -344,10 +344,15 @@ func _make_npc_row(npc_id: String, npc_name: String, sect: String) -> HBoxContai
 
 
 func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
-	# 先检查是否有主线事件可以通过此 NPC 触发
+	# 1. 先检查主线事件
 	if _try_trigger_story_via_npc(npc_id, npc_name):
 		return
 
+	# 2. 再检查支线任务
+	if _try_trigger_side_quest(npc_id, npc_name):
+		return
+
+	# 3. 普通 NPC 对话
 	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
 	if dialogue_mgr == null:
 		log_label.text = "（对话系统不可用）"
@@ -356,6 +361,37 @@ func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
 	var success: bool = dialogue_mgr.start_dialogue_with_npc(npc_id)
 	if not success:
 		log_label.text = "（%s没有什么特别想说的）" % npc_name
+
+
+## NPC 支线对话 ID 映射
+const NPC_SIDE_QUEST_DIALOGUE: Dictionary = {
+	"yunzhonghe_sword_path": "side_quests/yunzhonghe_sword_heart_path",
+	"tiewushuang_beggars": "side_quests/tiewushuang_brotherhood",
+	"liuruyan_righteous": "side_quests/liuruyan_righteous_path",
+	"murongxue_past_life": "side_quests/murongxue_past_life",
+	"xiaohanye_demonic": "side_quests/xiaohanye_demonic_path",
+}
+
+
+func _try_trigger_side_quest(npc_id: String, npc_name: String) -> bool:
+	var trigger_mgr: Node = get_node_or_null("/root/QuestTriggerManager")
+	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
+	if trigger_mgr == null or dialogue_mgr == null:
+		return false
+
+	var available: Array = trigger_mgr.get_available_quests_for_npc(npc_id)
+	if available.is_empty():
+		return false
+
+	# 触发第一个可用支线
+	var quest_id: String = available[0]
+	var dialogue_id: String = NPC_SIDE_QUEST_DIALOGUE.get(quest_id, "")
+	if dialogue_id.is_empty():
+		return false
+
+	dialogue_mgr.start_dialogue(dialogue_id)
+	log_label.text = "[color=cyan]支线任务：与%s的故事[/color]" % npc_name
+	return true
 
 
 ## 尝试通过 NPC 交谈触发主线事件
