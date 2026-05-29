@@ -87,27 +87,20 @@
     "tier": "legendary",
     "type": "weapon",
     "slot": "weapon_main",
-    "required_level": 70,
+    "required_level": 65,
     "required_realm": 7,
     "attributes": {
       "base": {
-        "strength": 20,
-        "agility": 10,
-        "intelligence": 15,
-        "constitution": 5
+        "strength": 15,
+        "agility": 8
       },
       "combat": {
-        "attack": 100,
-        "critical_rate": 0.2,
-        "critical_damage": 0.5,
-        "hit_rate": 0.1
+        "attack": 80,
+        "critical_rate": 0.15,
+        "critical_damage": 0.3
       },
       "elemental": {
-        "fire": 50,
-        "water": 50,
-        "earth": 50,
-        "metal": 50,
-        "wood": 50
+        "metal": 30
       }
     },
     "element": "none",
@@ -211,26 +204,17 @@
     "tier": "legendary",
     "type": "armor",
     "slot": "head",
-    "required_level": 70,
+    "required_level": 65,
     "required_realm": 7,
     "attributes": {
       "base": {
-        "constitution": 15,
-        "willpower": 12,
-        "intelligence": 10,
-        "luck": 5
+        "constitution": 12,
+        "willpower": 10
       },
       "combat": {
-        "defense": 80,
-        "max_health": 500,
-        "evasion": 0.15,
-        "internal_energy_regen": 0.1
-      },
-      "resistances": {
-        "poison": 1.0,
-        "stun": 1.0,
-        "freeze": 1.0,
-        "burn": 1.0
+        "defense": 60,
+        "max_health": 300,
+        "evasion": 0.08
       }
     },
     "element": "none",
@@ -326,29 +310,17 @@
     "tier": "legendary",
     "type": "accessory",
     "slot": "ring",
-    "required_level": 70,
+    "required_level": 65,
     "required_realm": 7,
     "attributes": {
       "base": {
         "luck": 10,
-        "intelligence": 15,
-        "strength": 10,
-        "agility": 10,
-        "constitution": 10,
-        "willpower": 10
+        "intelligence": 10
       },
       "combat": {
-        "critical_rate": 0.15,
-        "critical_damage": 0.3,
-        "hit_rate": 0.1,
-        "evasion": 0.1
-      },
-      "elemental": {
-        "fire": 100,
-        "water": 100,
-        "earth": 100,
-        "metal": 100,
-        "wood": 100
+        "critical_rate": 0.12,
+        "critical_damage": 0.2,
+        "evasion": 0.08
       }
     },
     "element": "none",
@@ -1338,8 +1310,11 @@
     "required_level": 30,
     "attributes": {
       "combat": {
-        "defense": 30,
-        "block_rate": 0.1
+        "defense": 35,
+        "block_rate": 0.12
+      },
+      "base": {
+        "constitution": 5
       }
     },
     "element": "water",
@@ -1356,11 +1331,17 @@
     "type": "armor",
     "slot": "weapon_offhand",
     "tier": "legendary",
-    "required_level": 60,
+    "required_level": 65,
     "attributes": {
       "combat": {
-        "defense": 50,
-        "block_rate": 0.2
+        "defense": 65,
+        "block_rate": 0.2,
+        "evasion": 0.08
+      },
+      "base": {
+        "constitution": 12,
+        "intelligence": 10,
+        "willpower": 8
       }
     },
     "element": "metal",
@@ -1420,10 +1401,12 @@
     "required_level": 30,
     "attributes": {
       "combat": {
-        "defense": 35
+        "defense": 40,
+        "evasion": 0.05
       },
       "base": {
-        "agility": 5
+        "agility": 8,
+        "intelligence": 3
       }
     },
     "element": "wood",
@@ -1440,14 +1423,16 @@
     "type": "armor",
     "slot": "body",
     "tier": "legendary",
-    "required_level": 60,
+    "required_level": 65,
     "attributes": {
       "combat": {
-        "defense": 60,
-        "evasion": 0.1
+        "defense": 75,
+        "evasion": 0.12
       },
       "base": {
-        "constitution": 10
+        "constitution": 15,
+        "agility": 10,
+        "strength": 5
       }
     },
     "element": "earth",
@@ -1508,8 +1493,11 @@
     "required_level": 30,
     "attributes": {
       "combat": {
-        "attack": 15,
-        "critical_rate": 0.05
+        "attack": 18,
+        "critical_rate": 0.06
+      },
+      "base": {
+        "strength": 5
       }
     },
     "element": "fire",
@@ -1526,12 +1514,16 @@
     "type": "armor",
     "slot": "hands",
     "tier": "legendary",
-    "required_level": 60,
+    "required_level": 65,
     "attributes": {
       "combat": {
-        "attack": 25,
-        "critical_rate": 0.08,
-        "critical_damage": 0.2
+        "attack": 45,
+        "critical_rate": 0.12,
+        "critical_damage": 0.3
+      },
+      "base": {
+        "strength": 12,
+        "agility": 8
       }
     },
     "element": "fire",
@@ -1594,10 +1586,10 @@
     "required_level": 30,
     "attributes": {
       "base": {
-        "agility": 10
+        "agility": 12
       },
       "combat": {
-        "evasion": 0.08
+        "evasion": 0.1
       }
     },
     "element": "water",
@@ -1614,13 +1606,15 @@
     "type": "armor",
     "slot": "feet",
     "tier": "legendary",
-    "required_level": 60,
+    "required_level": 65,
     "attributes": {
-      "base": {
-        "agility": 20
-      },
       "combat": {
-        "evasion": 0.15
+        "evasion": 0.18,
+        "critical_rate": 0.05
+      },
+      "base": {
+        "agility": 25,
+        "luck": 8
       }
     },
     "element": "wood",
@@ -1685,7 +1679,7 @@
         "willpower": 5
       },
       "combat": {
-        "defense": 10
+        "defense": 15
       }
     },
     "element": "water",
@@ -1702,12 +1696,17 @@
     "type": "accessory",
     "slot": "necklace",
     "tier": "legendary",
-    "required_level": 60,
+    "required_level": 65,
     "attributes": {
+      "combat": {
+        "defense": 25,
+        "critical_rate": 0.08,
+        "critical_damage": 0.15
+      },
       "base": {
-        "intelligence": 15,
-        "willpower": 10,
-        "luck": 8
+        "intelligence": 18,
+        "willpower": 12,
+        "luck": 10
       }
     },
     "element": "fire",
