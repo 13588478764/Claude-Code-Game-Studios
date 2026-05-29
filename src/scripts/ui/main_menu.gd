@@ -41,6 +41,8 @@ func _ready() -> void:
 	for btn in buttons:
 		btn.modulate = Color(1, 1, 1, 0)
 
+	_apply_button_textures()
+
 	_logo_title.modulate = Color(1, 1, 1, 0)
 	_logo_subtitle.modulate = Color(1, 1, 1, 0)
 
@@ -409,3 +411,43 @@ func _load_credits_panel() -> void:
 		get_tree().root.add_child(_credits_panel)
 	else:
 		push_warning("无法加载制作人员面板场景")
+
+
+func _apply_button_textures() -> void:
+	var menu_tex_path := "res://assets/ui/frames/button_main_menu.png"
+	var std_tex_path := "res://assets/ui/frames/button_standard.png"
+
+	if ResourceLoader.exists(menu_tex_path):
+		var tex: Texture2D = load(menu_tex_path)
+		_set_button_texture_bg(_new_game_btn, tex)
+
+	if ResourceLoader.exists(std_tex_path):
+		var tex: Texture2D = load(std_tex_path)
+		_set_button_texture_bg(_continue_btn, tex)
+		_set_button_texture_bg(_settings_btn, tex)
+		_set_button_texture_bg(_credits_btn, tex)
+		_set_button_texture_bg(_quit_btn, tex)
+
+
+func _set_button_texture_bg(btn: Button, tex: Texture2D) -> void:
+	# 按钮背景透明化
+	var transparent := StyleBoxFlat.new()
+	transparent.bg_color = Color(0, 0, 0, 0)
+	btn.add_theme_stylebox_override("normal", transparent)
+	var hover := StyleBoxFlat.new()
+	hover.bg_color = Color(1, 1, 1, 0.1)
+	btn.add_theme_stylebox_override("hover", hover)
+	var pressed := StyleBoxFlat.new()
+	pressed.bg_color = Color(0, 0, 0, 0.2)
+	btn.add_theme_stylebox_override("pressed", pressed)
+
+	# 纹理背景层
+	var bg := TextureRect.new()
+	bg.texture = tex
+	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	bg.anchors_preset = Control.PRESET_FULL_RECT
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bg.modulate = Color(1, 1, 1, 0.85)
+	btn.add_child(bg)
+	btn.move_child(bg, 0)
