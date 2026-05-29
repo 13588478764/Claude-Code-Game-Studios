@@ -194,6 +194,9 @@ func load_basic_martial_arts():
 	martial_arts_database[basic_fist.id] = basic_fist
 	martial_arts_database[basic_palm.id] = basic_palm
 
+	# 从 data/martial_arts/ 加载 .tres 武学数据
+	_load_martial_arts_from_resources()
+
 # 获取武学数据
 func get_martial_art_data(martial_art_id: String):
 	if martial_arts_database.has(martial_art_id):
@@ -422,5 +425,72 @@ func can_equip_martial_art(martial_art_id: String, player_level: int, current_we
 		# 武器不匹配，但仍可装备但效果降低
 		# 这里返回true，但实际使用时会有惩罚
 		pass
-	
+
 	return true
+
+
+## 从 res://data/martial_arts/*.tres 加载 MartialArtData 资源并转换为 MartialArtInfo
+func _load_martial_arts_from_resources() -> void:
+	var dir_path := "res://data/martial_arts/"
+	if not DirAccess.dir_exists_absolute(dir_path):
+		return
+
+	var dir := DirAccess.open(dir_path)
+	if dir == null:
+		return
+
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	var loaded_count: int = 0
+	while file_name != "":
+		if file_name.ends_with(".tres"):
+			var res_path := dir_path + file_name
+			var res: Resource = load(res_path)
+			if res and res.get("id") != null and not martial_arts_database.has(res.id):
+				var info := _convert_resource_to_info(res)
+				martial_arts_database[info.id] = info
+				loaded_count += 1
+		file_name = dir.get_next()
+	dir.list_dir_end()
+
+	if loaded_count > 0:
+		print("[MartialArtsSystem] 从 data/martial_arts/ 加载 %d 个武学" % loaded_count)
+
+
+func _convert_resource_to_info(res: Resource) -> MartialArtInfo:
+	var grade_str := "黄阶"
+	var grade_val: int = res.get("grade") if res.get("grade") != null else 0
+	match grade_val:
+		0: grade_str = "黄阶"
+		1: grade_str = "玄阶"
+		2: grade_str = "地阶"
+		3: grade_str = "天阶"
+
+	var weapon_str := "Sword"
+	var weapon_val: int = res.get("weapon_type") if res.get("weapon_type") != null else 0
+	match weapon_val:
+		0: weapon_str = "None"
+		1: weapon_str = "Sword"
+		2: weapon_str = "Fist"
+		3: weapon_str = "Palm"
+
+	return MartialArtInfo.new(
+		res.id,
+		res.name,
+		res.get("description") if res.get("description") else "",
+		"通用",
+		grade_str,
+		weapon_str,
+		res.get("damage_base") if res.get("damage_base") else 50.0,
+		res.get("damage_scale") if res.get("damage_scale") else 1.0,
+		res.get("hit_count") if res.get("hit_count") else 1,
+		res.get("element_type") if res.get("element_type") else "无",
+		res.get("startup_frames") if res.get("startup_frames") else 0.5,
+		res.get("active_frames") if res.get("active_frames") else 0.3,
+		res.get("recovery_frames") if res.get("recovery_frames") else 1.0,
+		res.get("total_duration") if res.get("total_duration") else 1.8,
+		res.get("cost_stamina") if res.get("cost_stamina") else 5.0,
+		res.get("cost_mana") if res.get("cost_mana") else 10.0,
+		res.get("cooldown") if res.get("cooldown") else 2.0,
+		res.get("unlock_level") if res.get("unlock_level") else 1,
+	)

@@ -726,19 +726,33 @@ func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> vo
 	_grant_story_reward(event_id)
 
 
-## 主线完成奖励 (经验 + 银两, 按事件等级缩放)
+## 主线关键事件的装备/武学奖励
+const STORY_ITEM_REWARDS: Dictionary = {
+	"act1_event2_cultivation": "ancient_sword_technique_fragment",
+	"act1_event4_boss": "rare_sword",
+	"act1_event6_resolution": "rare_helmet",
+	"act2_event3_first_trial": "epic_sword",
+	"act2_event5_secret_realm": "ancient_technique_scroll",
+	"act2_event8_battlefield": "epic_helmet",
+	"act2_event11_act2_finale": "epic_ring",
+	"act3_event5_ancient_battlefield": "legendary_sword",
+	"act3_event7_sword_bone_awakening": "ancient_technique_complete",
+	"act3_event10_final_battle": "legendary_ring",
+}
+
+
+## 主线完成奖励 (经验 + 银两 + 可能的装备/武学)
 func _grant_story_reward(event_id: String) -> void:
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	var currency: Node = get_node_or_null("/root/CurrencyManager")
+	var inv: Node = get_node_or_null("/root/InventorySystem")
 
-	# 找到这个事件的等级要求来计算奖励
 	var event_level: int = 1
 	for event in MAIN_STORY_EVENTS:
 		if event.event_id == event_id:
 			event_level = event.get("required_level", 1)
 			break
 
-	# 主线奖励 = 相当于 10 场同等级战斗的经验 + 5 场战斗的银两
 	var exp_reward: int = event_level * 50 * 10
 	var silver_reward: int = event_level * 20 * 5
 
@@ -747,10 +761,27 @@ func _grant_story_reward(event_id: String) -> void:
 	if currency and currency.has_method("add_currency"):
 		currency.add_currency(0, silver_reward)
 
+	var reward_text := "+%d 经验 +%d 银两" % [exp_reward, silver_reward]
+
+	# 装备/物品奖励
+	var item_id: String = STORY_ITEM_REWARDS.get(event_id, "")
+	if not item_id.is_empty() and inv and inv.has_method("add_item"):
+		inv.add_item(item_id, 1)
+		var items_data: Dictionary = {}
+		if ResourceLoader.exists("res://src/data/items.json"):
+			var file := FileAccess.open("res://src/data/items.json", FileAccess.READ)
+			if file:
+				var json := JSON.new()
+				if json.parse(file.get_as_text()) == OK:
+					items_data = json.data
+				file.close()
+		var item_name: String = items_data.get(item_id, {}).get("name", item_id)
+		reward_text += " +[%s]" % item_name
+
 	if log_label:
-		log_label.text = "[color=gold]主线完成！获得 %d 经验, %d 银两[/color]" % [exp_reward, silver_reward]
+		log_label.text = "[color=gold]主线完成！%s[/color]" % reward_text
 	if GameEvents and GameEvents.has_signal("system_notification"):
-		GameEvents.system_notification.emit("主线完成！+%d 经验 +%d 银两" % [exp_reward, silver_reward], "success", 4.0)
+		GameEvents.system_notification.emit("主线完成！%s" % reward_text, "success", 4.0)
 
 
 ## 获取当前主线任务提示 (BBCode 格式)

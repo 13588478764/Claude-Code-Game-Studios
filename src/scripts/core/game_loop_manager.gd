@@ -80,22 +80,57 @@ const BASE_EXP_PER_ENEMY: int = 50
 const BASE_SILVER_PER_ENEMY: int = 20
 const REGION_REWARD_MULTIPLIER: Array[float] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
 
-## 战斗掉落物品表（按区域）
+## 战斗掉落物品表（按区域, 含装备和武学残页）
 const BATTLE_DROP_TABLE: Dictionary = {
 	"start_village": [
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.3, "count": 1},
+		{"item_id": "common_sword", "name": "普通铁剑", "chance": 0.05, "count": 1},
 	],
 	"bandit_fortress": [
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.25, "count": 1},
 		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.15, "count": 1},
-	],
-	"qingyun_mountain": [
-		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.3, "count": 2},
-		{"item_id": "health_pill", "name": "回春丹", "chance": 0.2, "count": 2},
+		{"item_id": "common_helmet", "name": "布帽", "chance": 0.08, "count": 1},
 	],
 	"jiangnan_water": [
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.25, "count": 1},
 		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.2, "count": 1},
+		{"item_id": "common_ring", "name": "铜戒", "chance": 0.08, "count": 1},
+	],
+	"qingyun_mountain": [
+		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.3, "count": 2},
+		{"item_id": "health_pill", "name": "回春丹", "chance": 0.2, "count": 2},
+		{"item_id": "rare_sword", "name": "精钢剑", "chance": 0.06, "count": 1},
+		{"item_id": "ancient_sword_technique_fragment", "name": "古剑术残篇", "chance": 0.1, "count": 1},
+	],
+	"ancient_tomb": [
+		{"item_id": "health_pill", "name": "回春丹", "chance": 0.2, "count": 2},
+		{"item_id": "rare_helmet", "name": "铁盔", "chance": 0.1, "count": 1},
+		{"item_id": "rare_ring", "name": "银戒", "chance": 0.08, "count": 1},
+		{"item_id": "ancient_martial_art_fragment", "name": "上古武学残卷", "chance": 0.12, "count": 1},
+	],
+	"demon_domain": [
+		{"item_id": "health_pill", "name": "回春丹", "chance": 0.15, "count": 3},
+		{"item_id": "epic_sword", "name": "青冥剑", "chance": 0.04, "count": 1},
+		{"item_id": "epic_helmet", "name": "龙鳞盔", "chance": 0.04, "count": 1},
+		{"item_id": "ancient_martial_art_fragment", "name": "上古武学残卷", "chance": 0.15, "count": 1},
+	],
+	"immortal_palace": [
+		{"item_id": "epic_ring", "name": "火焰戒指", "chance": 0.06, "count": 1},
+		{"item_id": "epic_sword", "name": "青冥剑", "chance": 0.05, "count": 1},
+		{"item_id": "ancient_technique_scroll", "name": "上古功法卷轴", "chance": 0.1, "count": 1},
+		{"item_id": "breakthrough_pill", "name": "筑基丹", "chance": 0.08, "count": 1},
+	],
+	"heavenly_peak": [
+		{"item_id": "legendary_sword", "name": "轩辕剑", "chance": 0.02, "count": 1},
+		{"item_id": "legendary_helmet", "name": "九天玄女冠", "chance": 0.02, "count": 1},
+		{"item_id": "ancient_technique_complete", "name": "完整上古功法", "chance": 0.05, "count": 1},
+		{"item_id": "wash_marrow_pill", "name": "洗髓丹", "chance": 0.06, "count": 1},
+	],
+	"void_realm": [
+		{"item_id": "legendary_sword", "name": "轩辕剑", "chance": 0.04, "count": 1},
+		{"item_id": "legendary_ring", "name": "五行轮回戒", "chance": 0.03, "count": 1},
+		{"item_id": "ancient_technique_complete", "name": "完整上古功法", "chance": 0.08, "count": 1},
+		{"item_id": "wash_marrow_pill", "name": "洗髓丹", "chance": 0.1, "count": 1},
 	],
 }
 
