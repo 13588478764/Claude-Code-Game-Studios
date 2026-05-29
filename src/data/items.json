@@ -1289,5 +1289,434 @@
     "value_gold": 5,
     "weight": 0.1,
     "icon": "res://assets/ui/item_icons/item_necklace_xianhe.png"
+  },
+  "offhand_wooden_shield": {
+    "name": "木盾",
+    "type": "armor",
+    "slot": "weapon_offhand",
+    "tier": "common",
+    "required_level": 1,
+    "attributes": {
+      "combat": {
+        "defense": 5
+      }
+    },
+    "element": "",
+    "value_gold": 30,
+    "id": "offhand_wooden_shield",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "offhand_iron_shield": {
+    "name": "铁盾",
+    "type": "armor",
+    "slot": "weapon_offhand",
+    "tier": "rare",
+    "required_level": 10,
+    "attributes": {
+      "combat": {
+        "defense": 15
+      }
+    },
+    "element": "metal",
+    "value_gold": 150,
+    "id": "offhand_iron_shield",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "offhand_xuanwu_shield": {
+    "name": "玄武盾",
+    "type": "armor",
+    "slot": "weapon_offhand",
+    "tier": "epic",
+    "required_level": 30,
+    "attributes": {
+      "combat": {
+        "defense": 30,
+        "block_rate": 0.1
+      }
+    },
+    "element": "water",
+    "value_gold": 600,
+    "id": "offhand_xuanwu_shield",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "offhand_divine_mirror": {
+    "name": "照妖镜",
+    "type": "armor",
+    "slot": "weapon_offhand",
+    "tier": "legendary",
+    "required_level": 60,
+    "attributes": {
+      "combat": {
+        "defense": 50,
+        "block_rate": 0.2
+      }
+    },
+    "element": "metal",
+    "value_gold": 2000,
+    "id": "offhand_divine_mirror",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "body_cloth_robe": {
+    "name": "布衣",
+    "type": "armor",
+    "slot": "body",
+    "tier": "common",
+    "required_level": 1,
+    "attributes": {
+      "combat": {
+        "defense": 8
+      }
+    },
+    "element": "",
+    "value_gold": 40,
+    "id": "body_cloth_robe",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "body_iron_armor": {
+    "name": "铁甲",
+    "type": "armor",
+    "slot": "body",
+    "tier": "rare",
+    "required_level": 10,
+    "attributes": {
+      "combat": {
+        "defense": 20
+      }
+    },
+    "element": "metal",
+    "value_gold": 200,
+    "id": "body_iron_armor",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "body_cloud_robe": {
+    "name": "流云袍",
+    "type": "armor",
+    "slot": "body",
+    "tier": "epic",
+    "required_level": 30,
+    "attributes": {
+      "combat": {
+        "defense": 35
+      },
+      "base": {
+        "agility": 5
+      }
+    },
+    "element": "wood",
+    "value_gold": 800,
+    "id": "body_cloud_robe",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "body_celestial_armor": {
+    "name": "天蚕宝甲",
+    "type": "armor",
+    "slot": "body",
+    "tier": "legendary",
+    "required_level": 60,
+    "attributes": {
+      "combat": {
+        "defense": 60,
+        "evasion": 0.1
+      },
+      "base": {
+        "constitution": 10
+      }
+    },
+    "element": "earth",
+    "value_gold": 3000,
+    "id": "body_celestial_armor",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "hands_cloth_gloves": {
+    "name": "布手套",
+    "type": "armor",
+    "slot": "hands",
+    "tier": "common",
+    "required_level": 1,
+    "attributes": {
+      "combat": {
+        "attack": 3
+      }
+    },
+    "element": "",
+    "value_gold": 25,
+    "id": "hands_cloth_gloves",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "hands_iron_gauntlets": {
+    "name": "铁护手",
+    "type": "armor",
+    "slot": "hands",
+    "tier": "rare",
+    "required_level": 10,
+    "attributes": {
+      "combat": {
+        "attack": 8,
+        "critical_rate": 0.02
+      }
+    },
+    "element": "metal",
+    "value_gold": 120,
+    "id": "hands_iron_gauntlets",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "hands_dragon_gloves": {
+    "name": "龙爪手套",
+    "type": "armor",
+    "slot": "hands",
+    "tier": "epic",
+    "required_level": 30,
+    "attributes": {
+      "combat": {
+        "attack": 15,
+        "critical_rate": 0.05
+      }
+    },
+    "element": "fire",
+    "value_gold": 500,
+    "id": "hands_dragon_gloves",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "hands_void_gauntlets": {
+    "name": "虚空护手",
+    "type": "armor",
+    "slot": "hands",
+    "tier": "legendary",
+    "required_level": 60,
+    "attributes": {
+      "combat": {
+        "attack": 25,
+        "critical_rate": 0.08,
+        "critical_damage": 0.2
+      }
+    },
+    "element": "fire",
+    "value_gold": 2500,
+    "id": "hands_void_gauntlets",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "feet_straw_sandals": {
+    "name": "草鞋",
+    "type": "armor",
+    "slot": "feet",
+    "tier": "common",
+    "required_level": 1,
+    "attributes": {
+      "base": {
+        "agility": 2
+      }
+    },
+    "element": "",
+    "value_gold": 20,
+    "id": "feet_straw_sandals",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "feet_cloud_boots": {
+    "name": "踏云靴",
+    "type": "armor",
+    "slot": "feet",
+    "tier": "rare",
+    "required_level": 10,
+    "attributes": {
+      "base": {
+        "agility": 5
+      },
+      "combat": {
+        "evasion": 0.03
+      }
+    },
+    "element": "wood",
+    "value_gold": 130,
+    "id": "feet_cloud_boots",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "feet_lingbo_boots": {
+    "name": "凌波微步靴",
+    "type": "armor",
+    "slot": "feet",
+    "tier": "epic",
+    "required_level": 30,
+    "attributes": {
+      "base": {
+        "agility": 10
+      },
+      "combat": {
+        "evasion": 0.08
+      }
+    },
+    "element": "water",
+    "value_gold": 700,
+    "id": "feet_lingbo_boots",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "feet_wind_treader": {
+    "name": "御风靴",
+    "type": "armor",
+    "slot": "feet",
+    "tier": "legendary",
+    "required_level": 60,
+    "attributes": {
+      "base": {
+        "agility": 20
+      },
+      "combat": {
+        "evasion": 0.15
+      }
+    },
+    "element": "wood",
+    "value_gold": 2800,
+    "id": "feet_wind_treader",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "neck_hemp_necklace": {
+    "name": "麻绳",
+    "type": "accessory",
+    "slot": "necklace",
+    "tier": "common",
+    "required_level": 1,
+    "attributes": {
+      "base": {
+        "luck": 2
+      }
+    },
+    "element": "",
+    "value_gold": 15,
+    "id": "neck_hemp_necklace",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "neck_jade_pendant": {
+    "name": "翡翠坠",
+    "type": "accessory",
+    "slot": "necklace",
+    "tier": "rare",
+    "required_level": 10,
+    "attributes": {
+      "base": {
+        "luck": 5,
+        "intelligence": 3
+      }
+    },
+    "element": "earth",
+    "value_gold": 180,
+    "id": "neck_jade_pendant",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "neck_spirit_necklace": {
+    "name": "灵气项链",
+    "type": "accessory",
+    "slot": "necklace",
+    "tier": "epic",
+    "required_level": 30,
+    "attributes": {
+      "base": {
+        "intelligence": 8,
+        "willpower": 5
+      },
+      "combat": {
+        "defense": 10
+      }
+    },
+    "element": "water",
+    "value_gold": 650,
+    "id": "neck_spirit_necklace",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
+  },
+  "neck_dragon_pendant": {
+    "name": "龙骨吊坠",
+    "type": "accessory",
+    "slot": "necklace",
+    "tier": "legendary",
+    "required_level": 60,
+    "attributes": {
+      "base": {
+        "intelligence": 15,
+        "willpower": 10,
+        "luck": 8
+      }
+    },
+    "element": "fire",
+    "value_gold": 3500,
+    "id": "neck_dragon_pendant",
+    "description": "",
+    "required_realm": 0,
+    "durability": 100,
+    "weight": 1,
+    "icon": "res://assets/ui/item_icons/item_scroll.png"
   }
 }
