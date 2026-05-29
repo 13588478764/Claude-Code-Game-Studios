@@ -75,10 +75,56 @@ BUTTON_TEXTURES = [
 ]
 
 
+# =============================================================================
+# W24: 区域战斗背景 (4张, 对应4个区域的战斗场景)
+# =============================================================================
+
+PROMPT_TEMPLATE_BATTLE_BG = (
+    "wide panoramic battle arena scene, {desc}, "
+    "Song Dynasty Chinese landscape painting style, "
+    "dramatic lighting, wide open ground for combat, "
+    "no characters no people, empty battlefield, "
+    "cinematic composition, cultivation immortal xianxia world, "
+    "no text no watermark, high quality, 8k"
+)
+
+BATTLE_BACKGROUNDS = [
+    {
+        "name": "bg_battle_village",
+        "prompt": PROMPT_TEMPLATE_BATTLE_BG.format(
+            desc="village outskirts clearing surrounded by wooden fences and thatched houses, dust road, afternoon light"
+        ),
+        "color": "#c2b280",
+    },
+    {
+        "name": "bg_battle_fortress",
+        "prompt": PROMPT_TEMPLATE_BATTLE_BG.format(
+            desc="dark bandit fortress courtyard with stone walls and burning torches, ominous atmosphere, night time"
+        ),
+        "color": "#4a3728",
+    },
+    {
+        "name": "bg_battle_mountain",
+        "prompt": PROMPT_TEMPLATE_BATTLE_BG.format(
+            desc="misty mountain peak platform with ancient stone pillars, clouds below, dramatic cliff edge, sunrise"
+        ),
+        "color": "#6b8fad",
+    },
+    {
+        "name": "bg_battle_watertown",
+        "prompt": PROMPT_TEMPLATE_BATTLE_BG.format(
+            desc="jiangnan water town bridge and canal, willow trees, stone pavement, gentle rain, poetic atmosphere"
+        ),
+        "color": "#5f8575",
+    },
+]
+
+
 def main():
     out_dir = os.path.join(os.path.dirname(__file__), "workflows")
     os.makedirs(out_dir, exist_ok=True)
 
+    # W23: 横向按钮纹理
     wf23 = build_workflow(
         icons=BUTTON_TEXTURES,
         master_dir="button_textures_1024",
@@ -95,7 +141,29 @@ def main():
     path23 = os.path.join(out_dir, "23_button_textures_batch_flux.json")
     save(wf23, path23)
     print(f"✓ W23 横向按钮纹理 ({len(BUTTON_TEXTURES)} 张) → {path23}")
-    print("\n出图后需裁剪: bash tools/comfyui/crop_buttons.sh --commit")
+
+    # W24: 区域战斗背景
+    wf24 = build_workflow(
+        icons=BATTLE_BACKGROUNDS,
+        master_dir="battle_bg_1024",
+        final_dir="battle_bg_final",
+        final_size=1024,
+        title="W24 · 区域战斗背景 (4张)",
+        note_body=(
+            "第六批 — 区域战斗背景\n"
+            "4 个区域各 1 张战斗场景: 村庄/山寨/山顶/水乡\n"
+            "风格: 宋代山水, 宽阔战场, 无人物\n"
+            "输出: 1024 母版 + 1024 游戏用 (背景不缩小)\n\n"
+            f"共 {len(BATTLE_BACKGROUNDS)} 张"
+        ),
+    )
+    path24 = os.path.join(out_dir, "24_battle_backgrounds_batch_flux.json")
+    save(wf24, path24)
+    print(f"✓ W24 区域战斗背景 ({len(BATTLE_BACKGROUNDS)} 张) → {path24}")
+
+    total = len(BUTTON_TEXTURES) + len(BATTLE_BACKGROUNDS)
+    print(f"\n总计: {total} 张")
+    print("按顺序在 ComfyUI 中加载 W23 / W24 执行")
 
 
 if __name__ == "__main__":

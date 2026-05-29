@@ -158,6 +158,12 @@ process_category "npc_secondary_512"     "portraits"        "次要NPC立绘 (51
 # 奇遇场景插图（512x512）— 第五批 W22
 process_category "encounter_scenes_512"  "encounter_scenes" "奇遇场景插图 (512×512)"
 
+# 按钮纹理（512x512）— 第六批 W23 (回流后需 crop_buttons.sh 裁剪)
+process_category "button_textures_512"   "frames"          "按钮纹理 (512×512, 需裁剪)"
+
+# 区域战斗背景（1024x1024）— 第六批 W24
+process_category "battle_bg_final"       "backgrounds"     "区域战斗背景 (1024×1024)"
+
 # 边框装饰
 process_category "wuxia_frame_256"       "frames"          "边框装饰 (256×256)"
 
@@ -177,6 +183,8 @@ process_category "portraits_enemies_1024" "_masters/portraits_enemies_1024" "�
 process_category "backgrounds_1024"      "_masters/backgrounds_1024" "🗄 1024 背景母版备份"
 process_category "npc_secondary_1024"    "_masters/npc_secondary_1024" "🗄 1024 次要NPC母版备份"
 process_category "encounter_scenes_1024" "_masters/encounter_scenes_1024" "🗄 1024 奇遇场景母版备份"
+process_category "button_textures_1024"  "_masters/button_textures_1024" "🗄 1024 按钮纹理母版备份"
+process_category "battle_bg_1024"        "_masters/battle_bg_1024" "🗄 1024 战斗背景母版备份"
 
 # ===== 收尾 =====
 echo ""
