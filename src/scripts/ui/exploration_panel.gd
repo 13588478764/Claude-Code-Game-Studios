@@ -344,6 +344,10 @@ func _make_npc_row(npc_id: String, npc_name: String, sect: String) -> HBoxContai
 
 
 func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
+	# 先检查是否有主线事件可以通过此 NPC 触发
+	if _try_trigger_story_via_npc(npc_id, npc_name):
+		return
+
 	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
 	if dialogue_mgr == null:
 		log_label.text = "（对话系统不可用）"
@@ -352,6 +356,48 @@ func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
 	var success: bool = dialogue_mgr.start_dialogue_with_npc(npc_id)
 	if not success:
 		log_label.text = "（%s没有什么特别想说的）" % npc_name
+
+
+## 尝试通过 NPC 交谈触发主线事件
+func _try_trigger_story_via_npc(npc_id: String, npc_name: String) -> bool:
+	var act_mgr: Node = get_node_or_null("/root/ActManager")
+	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
+	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
+	if act_mgr == null or dialogue_mgr == null:
+		return false
+
+	var player_level: int = 1
+	if char_sys:
+		player_level = char_sys.level
+
+	# 找当前未完成的主线事件
+	var next_event: Dictionary = _get_next_story_event(act_mgr)
+	if next_event.is_empty():
+		return false
+
+	var required: int = next_event.get("required_level", 1)
+
+	# 等级不够 → 给提示，不触发
+	if player_level < required:
+		log_label.text = "[color=red]%s：「你实力尚浅，还需历练... 」（需要等级 %d）[/color]" % [npc_name, required]
+		return true
+
+	# 等级够了 → 触发主线对话
+	var event_id: String = next_event.event_id
+	var dialogue_id: String = next_event.dialogue_id
+	act_mgr.trigger_event(act_mgr.current_act, event_id)
+	dialogue_mgr.start_dialogue(dialogue_id)
+
+	if not dialogue_mgr.dialogue_ended.is_connected(_on_main_story_dialogue_ended):
+		dialogue_mgr.dialogue_ended.connect(_on_main_story_dialogue_ended.bind(event_id), CONNECT_ONE_SHOT)
+	return true
+
+
+func _get_next_story_event(act_mgr: Node) -> Dictionary:
+	for event in MAIN_STORY_EVENTS:
+		if not act_mgr.is_event_completed(event.event_id):
+			return event
+	return {}
 
 
 # ============================================================================
@@ -427,12 +473,18 @@ func _refresh_display() -> void:
 	player_realm_label.text = "境界: %s" % summary.get("realm", "炼气")
 	player_silver_label.text = "银两: %d" % summary.get("silver", 0)
 
-	# 任务提示
+	# 任务提示 (始终显示在日志上方)
 	var hint := get_current_story_hint()
 	if hint != "" and log_label:
-		var current_text: String = log_label.text
-		if not current_text.begins_with("[color"):
-			log_label.text = "[color=gold]当前目标: %s[/color]\n%s" % [hint, current_text]
+		var current_log: String = log_label.text
+		# 去除旧的任务提示行
+		if current_log.begins_with("[color"):
+			var newline_pos: int = current_log.find("\n")
+			if newline_pos >= 0:
+				current_log = current_log.substr(newline_pos + 1)
+			else:
+				current_log = ""
+		log_label.text = "%s\n%s" % [hint, current_log]
 
 
 ## 根据当前区域加载背景图
@@ -600,44 +652,9 @@ const MAIN_STORY_EVENTS: Array[Dictionary] = [
 var _story_triggered_this_session: bool = false
 
 
+## 主线不再自动触发，改为玩家主动与 NPC 交谈时检查
 func _try_advance_main_story() -> void:
-	if _story_triggered_this_session:
-		return
-	if _tutorial_overlay != null:
-		return
-
-	var act_mgr: Node = get_node_or_null("/root/ActManager")
-	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
-	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
-	if act_mgr == null or dialogue_mgr == null:
-		return
-
-	var player_level: int = 1
-	if char_sys:
-		player_level = char_sys.level
-
-	for event in MAIN_STORY_EVENTS:
-		var event_id: String = event.event_id
-		if act_mgr.is_event_completed(event_id):
-			continue
-
-		# 等级不够 → 不触发，任务提示会显示需要的等级
-		var required: int = event.get("required_level", 1)
-		if player_level < required:
-			return
-
-		_story_triggered_this_session = true
-		var dialogue_id: String = event.dialogue_id
-		act_mgr.trigger_event(act_mgr.current_act, event_id)
-
-		await get_tree().process_frame
-		dialogue_mgr.start_dialogue(dialogue_id)
-
-		if not dialogue_mgr.dialogue_ended.is_connected(_on_main_story_dialogue_ended):
-			dialogue_mgr.dialogue_ended.connect(_on_main_story_dialogue_ended.bind(event_id), CONNECT_ONE_SHOT)
-		return
-
-	_story_triggered_this_session = true
+	pass
 
 
 func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> void:
@@ -647,7 +664,7 @@ func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> vo
 	_story_triggered_this_session = false
 
 
-## 获取当前主线任务提示
+## 获取当前主线任务提示 (BBCode 格式)
 func get_current_story_hint() -> String:
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
@@ -661,6 +678,6 @@ func get_current_story_hint() -> String:
 		if not act_mgr.is_event_completed(event.event_id):
 			var required: int = event.get("required_level", 1)
 			if player_level < required:
-				return "%s (需要等级 %d, 当前 %d)" % [event.hint, required, player_level]
-			return event.hint
-	return "主线完成，自由探索"
+				return "[color=gray]%s (需要等级 %d, 当前 %d) 🔒[/color]" % [event.hint, required, player_level]
+			return "[color=gold]%s ← 与附近修士交谈触发[/color]" % event.hint
+	return "[color=green]主线完成，自由探索修真界[/color]"
