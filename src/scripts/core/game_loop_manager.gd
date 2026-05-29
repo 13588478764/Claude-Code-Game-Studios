@@ -24,10 +24,10 @@ enum GameState {
 # ============================================================================
 
 const REGIONS: Array[Dictionary] = [
-	{"id": "start_village", "name": "新手村·青石镇", "level": 1, "region_id": 0, "encounter_rate": 0.4},
-	{"id": "bandit_fortress", "name": "黑风寨", "level": 5, "region_id": 1, "encounter_rate": 0.6},
-	{"id": "qingyun_mountain", "name": "青云山", "level": 10, "region_id": 2, "encounter_rate": 0.5},
-	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 3, "encounter_rate": 0.35},
+	{"id": "start_village", "name": "新手村·青石镇", "level": 1, "region_id": 0, "encounter_rate": 0.4, "bg": "bg_town_street"},
+	{"id": "bandit_fortress", "name": "黑风寨", "level": 5, "region_id": 1, "encounter_rate": 0.6, "bg": "bg_evil_camp"},
+	{"id": "qingyun_mountain", "name": "青云山", "level": 10, "region_id": 2, "encounter_rate": 0.5, "bg": "bg_sect_hall"},
+	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 3, "encounter_rate": 0.35, "bg": "bg_mystic_forest"},
 ]
 
 # 敌人模板：按区域定义基础数据

@@ -115,17 +115,12 @@ func _load_portrait(target: TextureRect, char_id: String) -> void:
 
 func _load_dialogue_bg() -> void:
 	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
-	if game_loop == null:
-		return
-	var region_id: String = game_loop.current_region.get("id", "")
-	var bg_path := "res://assets/ui/backgrounds/bg_%s.png" % region_id
+	var bg_name := "bg_sect_hall"  # 默认背景
+	if game_loop != null:
+		bg_name = game_loop.current_region.get("bg", bg_name)
+	var bg_path := "res://assets/ui/backgrounds/%s.png" % bg_name
 	if ResourceLoader.exists(bg_path):
 		_dialogue_bg.texture = load(bg_path) as Texture2D
-	else:
-		# 回退到通用背景
-		var fallback := "res://assets/ui/backgrounds/bg_qingyun_sect.png"
-		if ResourceLoader.exists(fallback):
-			_dialogue_bg.texture = load(fallback) as Texture2D
 
 
 func _update_text(text: String) -> void:

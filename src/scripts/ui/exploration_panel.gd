@@ -10,18 +10,18 @@ extends CanvasLayer
 # 节点引用
 # ============================================================================
 
-@onready var region_name_label: Label = $PanelContainer/VBox/HeaderBox/RegionNameLabel
-@onready var region_level_label: Label = $PanelContainer/VBox/HeaderBox/RegionLevelLabel
-@onready var player_level_label: Label = $PanelContainer/VBox/StatusBox/PlayerLevelLabel
-@onready var player_exp_label: Label = $PanelContainer/VBox/StatusBox/PlayerExpLabel
-@onready var player_realm_label: Label = $PanelContainer/VBox/StatusBox/PlayerRealmLabel
-@onready var player_silver_label: Label = $PanelContainer/VBox/StatusBox/PlayerSilverLabel
-@onready var explore_button: Button = $PanelContainer/VBox/ActionBox/ExploreButton
-@onready var region_list: VBoxContainer = $PanelContainer/VBox/RegionBox/RegionList
-@onready var log_label: Label = $PanelContainer/VBox/LogBox/LogLabel
+@onready var scene_background: TextureRect = $Root/SceneBackground
+@onready var region_name_label: Label = $Root/TopBar/TopHBox/RegionNameLabel
+@onready var player_level_label: Label = $Root/TopBar/TopHBox/PlayerLevelLabel
+@onready var player_exp_label: Label = $Root/TopBar/TopHBox/PlayerExpLabel
+@onready var player_realm_label: Label = $Root/TopBar/TopHBox/PlayerRealmLabel
+@onready var player_silver_label: Label = $Root/TopBar/TopHBox/PlayerSilverLabel
+@onready var explore_button: Button = $Root/ActionPanel/ActionVBox/ExploreButton
+@onready var region_list: VBoxContainer = $Root/ActionPanel/ActionVBox/RegionList
+@onready var log_label: RichTextLabel = $Root/LogPanel/LogVBox/LogLabel
+@onready var _npc_container: VBoxContainer = $Root/NPCPanel/NPCScroll/NPCVBox/NPCList
 
 var _game_loop: Node = null
-var _npc_container: VBoxContainer = null
 
 ## 核心NPC列表（RelationshipManager._npc_database 降级后备）
 var NPC_FALLBACK: Array = []
@@ -282,23 +282,11 @@ func _build_region_buttons() -> void:
 # ============================================================================
 
 func _build_npc_buttons() -> void:
-	var panel_container: PanelContainer = $PanelContainer
-	var vbox: VBoxContainer = $PanelContainer/VBox
-	if vbox == null:
+	if _npc_container == null:
 		return
 
-	# 创建NPC区域容器
-	var separator := HSeparator.new()
-	vbox.add_child(separator)
-
-	var npc_label := Label.new()
-	npc_label.text = "附近的修士"
-	npc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	vbox.add_child(npc_label)
-
-	_npc_container = VBoxContainer.new()
-	_npc_container.name = "NPCList"
-	vbox.add_child(_npc_container)
+	for child in _npc_container.get_children():
+		child.queue_free()
 
 	# 从 RelationshipManager 获取 NPC 数据
 	var npc_list: Array = []
@@ -315,14 +303,31 @@ func _build_npc_buttons() -> void:
 		npc_list.assign(NPC_FALLBACK)
 
 	for npc in npc_list:
-		var btn := Button.new()
-		var sect_text: String = " (%s)" % npc.sect if npc.sect != "" else ""
-		btn.text = "与 %s 交谈%s" % [npc.name, sect_text]
-		btn.custom_minimum_size = Vector2(200, 32)
-		var npc_id: String = npc.id
-		var npc_name: String = npc.name
-		btn.pressed.connect(_on_npc_talk_pressed.bind(npc_id, npc_name))
-		_npc_container.add_child(btn)
+		_npc_container.add_child(_make_npc_row(npc.id, npc.name, npc.sect))
+
+
+## 构建单个 NPC 行：小头像 + 交谈按钮
+func _make_npc_row(npc_id: String, npc_name: String, sect: String) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 6)
+
+	var portrait := TextureRect.new()
+	portrait.custom_minimum_size = Vector2(40, 40)
+	portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var portrait_path := "res://assets/ui/portraits/portrait_%s.png" % npc_id
+	if ResourceLoader.exists(portrait_path):
+		portrait.texture = load(portrait_path) as Texture2D
+	row.add_child(portrait)
+
+	var btn := Button.new()
+	btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var sect_text: String = " (%s)" % sect if sect != "" else ""
+	btn.text = "%s%s" % [npc_name, sect_text]
+	btn.pressed.connect(_on_npc_talk_pressed.bind(npc_id, npc_name))
+	row.add_child(btn)
+
+	return row
 
 
 func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
@@ -401,11 +406,23 @@ func _refresh_display() -> void:
 		return
 
 	var region: Dictionary = _game_loop.current_region
-	region_name_label.text = region.get("name", "未知区域")
-	region_level_label.text = "推荐等级: %d" % region.get("level", 1)
+	region_name_label.text = "%s · Lv.%d" % [region.get("name", "未知区域"), region.get("level", 1)]
+	_load_region_background(region)
 
 	var summary: Dictionary = _game_loop.get_player_summary()
 	player_level_label.text = "等级: %d" % summary.get("level", 1)
-	player_exp_label.text = "经验: %d / %d" % [summary.get("exp", 0), summary.get("exp_next", 100)]
+	player_exp_label.text = "经验: %d/%d" % [summary.get("exp", 0), summary.get("exp_next", 100)]
 	player_realm_label.text = "境界: %s" % summary.get("realm", "炼气")
 	player_silver_label.text = "银两: %d" % summary.get("silver", 0)
+
+
+## 根据当前区域加载背景图
+func _load_region_background(region: Dictionary) -> void:
+	if scene_background == null:
+		return
+	var bg_name: String = region.get("bg", "")
+	if bg_name.is_empty():
+		return
+	var bg_path := "res://assets/ui/backgrounds/%s.png" % bg_name
+	if ResourceLoader.exists(bg_path):
+		scene_background.texture = load(bg_path) as Texture2D
