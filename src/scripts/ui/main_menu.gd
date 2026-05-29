@@ -277,7 +277,7 @@ func _initialize_game_systems() -> void:
 	var martial_arts: Node = get_node_or_null("/root/MartialArtsSystem")
 	if martial_arts:
 		for ma_id in ["sword_basic_01", "fist_basic_01", "palm_basic_01"]:
-			var ma_data = martial_arts.get_martial_art_data(ma_id)
+			var ma_data: Variant = martial_arts.get_martial_art_data(ma_id)
 			if ma_data:
 				martial_arts.player_martial_arts[ma_id] = ma_data.duplicate(true)
 		martial_arts.equip_martial_art("sword_basic_01", 0)
