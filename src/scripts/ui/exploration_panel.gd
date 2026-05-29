@@ -105,6 +105,7 @@ func _init_panels() -> void:
 	_panels["help"] = root.get_node_or_null("HelpPanel")
 	_panels["quest_log"] = root.get_node_or_null("QuestLogPanel")
 	_panels["relationship"] = root.get_node_or_null("RelationshipPanel")
+	_panels["character"] = root.get_node_or_null("CharacterGrowthUI")
 
 	_connect_panel_close_signals()
 

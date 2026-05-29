@@ -33,20 +33,20 @@ const REGIONS: Array[Dictionary] = [
 # 敌人模板：按区域定义基础数据
 const ENEMY_TEMPLATES: Dictionary = {
 	"start_village": [
-		{"name": "野狼", "base_hp": 60, "base_attack": 8, "speed": 8, "type": 0},
-		{"name": "山贼喽啰", "base_hp": 80, "base_attack": 10, "speed": 7, "type": 0},
+		{"id": "enemy_fire_wolf", "name": "野狼", "base_hp": 60, "base_attack": 8, "speed": 8, "type": 0},
+		{"id": "enemy_bandit_minion", "name": "山贼喽啰", "base_hp": 80, "base_attack": 10, "speed": 7, "type": 0},
 	],
 	"bandit_fortress": [
-		{"name": "黑风寨匪徒", "base_hp": 120, "base_attack": 18, "speed": 9, "type": 1},
-		{"name": "黑风寨头目", "base_hp": 200, "base_attack": 25, "speed": 6, "type": 2},
+		{"id": "enemy_evil_disciple", "name": "黑风寨匪徒", "base_hp": 120, "base_attack": 18, "speed": 9, "type": 1},
+		{"id": "enemy_evil_elder", "name": "黑风寨头目", "base_hp": 200, "base_attack": 25, "speed": 6, "type": 2},
 	],
 	"qingyun_mountain": [
-		{"name": "妖兽", "base_hp": 150, "base_attack": 22, "speed": 12, "type": 1},
-		{"name": "护山灵兽", "base_hp": 250, "base_attack": 30, "speed": 8, "type": 2},
+		{"id": "enemy_thunder_beast_king", "name": "妖兽", "base_hp": 150, "base_attack": 22, "speed": 12, "type": 1},
+		{"id": "enemy_elemental_guardian", "name": "护山灵兽", "base_hp": 250, "base_attack": 30, "speed": 8, "type": 2},
 	],
 	"jiangnan_water": [
-		{"name": "水贼", "base_hp": 100, "base_attack": 15, "speed": 10, "type": 0},
-		{"name": "邪修弟子", "base_hp": 180, "base_attack": 20, "speed": 11, "type": 1},
+		{"id": "enemy_water_serpent", "name": "水贼", "base_hp": 100, "base_attack": 15, "speed": 10, "type": 0},
+		{"id": "enemy_ghost_cultivator", "name": "邪修弟子", "base_hp": 180, "base_attack": 20, "speed": 11, "type": 1},
 	],
 }
 
@@ -343,6 +343,7 @@ func _build_enemy_battle_data(template: Dictionary) -> Dictionary:
 			template, player_level, current_region.region_id, template.type
 		)
 		return {
+			"id": template.get("id", ""),
 			"name": template.name,
 			"hp": int(scaled.final_hp),
 			"max_hp": int(scaled.final_hp),
@@ -358,6 +359,7 @@ func _build_enemy_battle_data(template: Dictionary) -> Dictionary:
 
 	# 降级：直接使用模板数据
 	return {
+		"id": template.get("id", ""),
 		"name": template.name,
 		"hp": template.base_hp,
 		"max_hp": template.base_hp,

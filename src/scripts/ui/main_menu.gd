@@ -300,6 +300,7 @@ func _load_game_panels() -> void:
 		{"path": "res://src/scenes/ui/help_panel.tscn", "visible": false},
 		{"path": "res://src/scenes/ui/quest_log_panel.tscn", "visible": false},
 		{"path": "res://src/scenes/ui/relationship_panel.tscn", "visible": false},
+		{"path": "res://src/scenes/ui/character_growth_ui.tscn", "visible": false},
 		{"path": "res://src/scenes/ui/encounter_ui.tscn", "visible": false},
 		{"path": "res://src/scenes/ui/combat_action_panel.tscn", "visible": false},
 		{"path": "res://src/scenes/ui/battle_result_panel.tscn", "visible": false},

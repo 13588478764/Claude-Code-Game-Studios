@@ -226,7 +226,7 @@ func _gui_input(event: InputEvent) -> void:
 func _create_speaker_portrait() -> void:
 	_speaker_portrait = TextureRect.new()
 	_speaker_portrait.name = "SpeakerPortrait"
-	_speaker_portrait.custom_minimum_size = Vector2(64, 64)
+	_speaker_portrait.custom_minimum_size = Vector2(128, 128)
 	_speaker_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_speaker_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_speaker_portrait.visible = false
