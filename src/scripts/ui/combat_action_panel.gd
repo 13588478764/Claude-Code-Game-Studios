@@ -114,14 +114,15 @@ func _on_turn_started(unit) -> void:
 		_wait_label.visible = false
 		_attack_btn.grab_focus()
 		_add_log_line("— 轮到你行动 —")
+		_show_turn_banner("你的回合", Color(0.2, 0.8, 1.0))
 
-		# 阻止 GameLoopManager 的自动战斗
 		if _game_loop and _game_loop._auto_battle_timer:
 			_game_loop._auto_battle_timer.stop()
 	else:
 		_set_actions_visible(false)
 		_wait_label.text = "敌人行动中..."
 		_wait_label.visible = true
+		_show_turn_banner("敌方回合", Color(1.0, 0.4, 0.3))
 
 
 func _on_action_executed(result: Dictionary) -> void:
@@ -134,9 +135,11 @@ func _on_action_executed(result: Dictionary) -> void:
 			if _player_turn:
 				_add_log_line("你发起攻击，造成 %d 点伤害" % dmg)
 				_play_attack_anim(_player_sprite, _enemy_sprite)
+				_spawn_damage_number(_enemy_sprite, dmg, false)
 			else:
 				_add_log_line("敌人攻击你，造成 %d 点伤害" % dmg)
 				_play_attack_anim(_enemy_sprite, _player_sprite)
+				_spawn_damage_number(_player_sprite, dmg, false)
 		"defend":
 			var stance_pct: int = result.get("stance_reduction_pct", 0)
 			if _player_turn:
@@ -148,12 +151,15 @@ func _on_action_executed(result: Dictionary) -> void:
 		"skill":
 			var skill_name: String = result.get("skill_name", "未知技能")
 			var skill_dmg: int = result.get("damage_dealt", 0)
+			var is_critical: bool = result.get("is_critical", false)
 			if _player_turn:
 				_add_log_line("你使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
 				_play_attack_anim(_player_sprite, _enemy_sprite)
+				_spawn_damage_number(_enemy_sprite, skill_dmg, is_critical)
 			else:
 				_add_log_line("敌人使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
 				_play_attack_anim(_enemy_sprite, _player_sprite)
+				_spawn_damage_number(_player_sprite, skill_dmg, is_critical)
 			var synergy_name: String = result.get("synergy_name", "")
 			if synergy_name != "":
 				var multiplier: float = result.get("damage_multiplier", 1.0)
@@ -265,10 +271,11 @@ func _populate_skill_list() -> void:
 			var grade_str: String = ma.grade if ma.grade else ""
 			var elem_str: String = (" " + ma.element_type) if (ma.element_type and ma.element_type != "无") else ""
 			btn.text = "%s [%s%s] (内力:%d 威力:%d)" % [ma.name, grade_str, elem_str, int(ma.cost_mana), int(ma.base_damage)]
-			btn.custom_minimum_size = Vector2(200, 36)
+			btn.custom_minimum_size = Vector2(200, 40)
 			btn.disabled = not has_energy
 			if not has_energy:
 				btn.tooltip_text = "内力不足"
+				btn.add_theme_color_override("font_disabled_color", Color(1.0, 0.3, 0.3, 0.6))
 
 			# 加载武学技能图标（优先按 id，回退按 weapon_type）
 			var skill_icon := _load_skill_icon(ma.id, ma.weapon_type)
@@ -485,7 +492,7 @@ func _load_battle_visuals() -> void:
 					_enemy_sprite.texture = load(enemy_path) as Texture2D
 
 
-## 攻击动画: 攻击方前冲 → 目标闪烁 → 弹回
+## 攻击动画: 攻击方前冲 → 目标闪烁+抖动 → 弹回
 func _play_attack_anim(attacker: TextureRect, target: TextureRect) -> void:
 	if attacker == null or target == null:
 		return
@@ -494,6 +501,7 @@ func _play_attack_anim(attacker: TextureRect, target: TextureRect) -> void:
 	var tween := create_tween()
 	tween.tween_property(attacker, "position:x", orig_x + 80.0 * direction, 0.12)
 	tween.tween_callback(_flash_sprite.bind(target))
+	tween.tween_callback(_shake_sprite.bind(target))
 	tween.tween_property(attacker, "position:x", orig_x, 0.12)
 
 
@@ -506,10 +514,88 @@ func _play_defend_anim(defender: TextureRect) -> void:
 	tween.tween_property(defender, "modulate", Color.WHITE, 0.15)
 
 
-## 被击闪烁: 白色闪烁
+## 被击闪烁
 func _flash_sprite(sprite: TextureRect) -> void:
 	if sprite == null:
 		return
 	var tween := create_tween()
 	tween.tween_property(sprite, "modulate", Color(2.0, 0.5, 0.5, 1.0), 0.06)
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
+
+
+## 受击抖动
+func _shake_sprite(sprite: TextureRect) -> void:
+	if sprite == null:
+		return
+	var orig_pos := sprite.position
+	var tween := create_tween()
+	tween.tween_property(sprite, "position", orig_pos + Vector2(12, -6), 0.03)
+	tween.tween_property(sprite, "position", orig_pos + Vector2(-10, 4), 0.03)
+	tween.tween_property(sprite, "position", orig_pos + Vector2(6, -3), 0.03)
+	tween.tween_property(sprite, "position", orig_pos, 0.04)
+
+
+## 伤害数字飞出
+## 预留: 未来用 AnimatedSprite2D 替换为序列帧打击特效时,
+## 在此函数中同步播放技能对应的 SpriteFrames
+func _spawn_damage_number(target: TextureRect, damage: int, is_critical: bool) -> void:
+	if target == null or damage <= 0:
+		return
+
+	var label := Label.new()
+	label.text = str(damage)
+	if is_critical:
+		label.text = str(damage) + " 暴击!"
+		label.add_theme_font_size_override("font_size", 36)
+		label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.1))
+	else:
+		label.add_theme_font_size_override("font_size", 28)
+		label.add_theme_color_override("font_color", Color(1.0, 1.0, 0.2))
+
+	label.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	label.add_theme_constant_override("shadow_offset_x", 2)
+	label.add_theme_constant_override("shadow_offset_y", 2)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+	var root: Control = $Root
+	root.add_child(label)
+
+	var start_pos := target.position + target.size * 0.5 + Vector2(0, -30)
+	label.position = start_pos
+	label.z_index = 100
+
+	var tween := create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(label, "position:y", start_pos.y - 80.0, 0.8).set_ease(Tween.EASE_OUT)
+	tween.tween_property(label, "modulate:a", 0.0, 0.8).set_delay(0.4)
+	tween.chain().tween_callback(label.queue_free)
+
+
+## 回合提示横幅
+func _show_turn_banner(text: String, color: Color) -> void:
+	var banner := Label.new()
+	banner.text = text
+	banner.add_theme_font_size_override("font_size", 42)
+	banner.add_theme_color_override("font_color", color)
+	banner.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.7))
+	banner.add_theme_constant_override("shadow_offset_x", 3)
+	banner.add_theme_constant_override("shadow_offset_y", 3)
+	banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	banner.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+
+	var root: Control = $Root
+	root.add_child(banner)
+	banner.anchors_preset = Control.PRESET_CENTER
+	banner.position = root.size * 0.5 - Vector2(150, 30)
+	banner.z_index = 200
+
+	banner.modulate = Color(1, 1, 1, 0)
+	banner.scale = Vector2(1.5, 1.5)
+	banner.pivot_offset = Vector2(150, 30)
+
+	var tween := create_tween()
+	tween.tween_property(banner, "modulate:a", 1.0, 0.15)
+	tween.parallel().tween_property(banner, "scale", Vector2.ONE, 0.2).set_ease(Tween.EASE_OUT)
+	tween.tween_interval(0.6)
+	tween.tween_property(banner, "modulate:a", 0.0, 0.3)
+	tween.tween_callback(banner.queue_free)

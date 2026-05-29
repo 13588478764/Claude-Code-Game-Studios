@@ -1,8 +1,13 @@
 # UX Spec: 奇遇UI面板 (Encounter UI Panel)
 
-> **Status**: Approved (UX Review Complete — 2026-05-08)
+> **Status**: 已更新 (2026-05-29, 适配视觉小说模式)
 > **Author**: 用户 + ux-designer
-> **Last Updated**: 2026-05-08
+> **Last Updated**: 2026-05-29
+
+> **⚠️ 架构变更 (2026-05-29)**
+> 奇遇UI已增加场景插图叠加层 (半透明 TextureRect 覆盖在 ColorRect 背景上)。
+> 30 条奇遇通过 ENCOUNTER_ILLUSTRATION_MAP 映射到 15 张插图。
+> 实际实现: `src/scripts/ui/encounter_ui_script.gd`
 > **Journey Phase(s)**: 大地图探索、战斗胜利后、休息/存档时
 > **Template**: UX Spec
 

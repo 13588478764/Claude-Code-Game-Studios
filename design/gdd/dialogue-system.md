@@ -1,10 +1,17 @@
 # 对话系统 (Dialogue System)
 
-> **Status**: In Design
+> **Status**: 实现中 (视觉小说模式)
 > **Author**: 系统设计师 + AI助手
-> **Last Updated**: 2026-05-02
+> **Last Updated**: 2026-05-29
 > **Implements Pillar**: 自由探索与发现、仙缘驱动的成长
-> **Creative Director Review (CD-GDD-ALIGN)**: Pending
+
+> **⚠️ 架构变更 (2026-05-29)**
+> 对话展示层改为**全屏视觉小说模式**：
+> - 全屏对话背景图（按当前区域自动加载）
+> - 左侧玩家立绘 + 右侧 NPC 立绘（说话人高亮，非说话人压暗）
+> - 底部对话框（PanelContainer + 说话人名称 + 文本 + 最多4个选项按钮）
+> - 后端不变: DialogueManager/DialogueData/DialogueNode 信号流全部保持
+> - 实际实现: `src/scripts/ui/dialogue_box_script.gd` + `dialogue_box.tscn`
 
 ## Overview
 
