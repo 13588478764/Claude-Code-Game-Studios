@@ -421,11 +421,19 @@ func _on_down_triggered_global(participant) -> void:
 	_game_events.enemy_status_changed.emit(_node_to_enemy_id(participant), "down")
 
 
-## 击倒状态全局广播 — 离开 down 状态
-## 用空字符串 "" 表示"无特殊状态" (UI down_indicator/break_indicator 均关闭)。
-## TODO(beta): break 状态接入后, 改为 "break" / "" 二态切换。
+## 击倒状态恢复 — down 结束后检查是否进入 break (架势归零)
 func _on_down_cleared_global(participant) -> void:
-	_game_events.enemy_status_changed.emit(_node_to_enemy_id(participant), "")
+	var enemy_id := _node_to_enemy_id(participant)
+	# 查找对应 BattleUnit 检查架势值
+	var is_broken := false
+	for unit in battle_units:
+		if _unit_id(unit) == enemy_id and unit.stance <= 0:
+			is_broken = true
+			break
+	if is_broken:
+		_game_events.enemy_status_changed.emit(enemy_id, "break")
+	else:
+		_game_events.enemy_status_changed.emit(enemy_id, "")
 
 ## 行动队列变更广播 — 把 BattleUnit 数组转成 HUD 期待的字典格式
 func _emit_action_queue_updated() -> void:

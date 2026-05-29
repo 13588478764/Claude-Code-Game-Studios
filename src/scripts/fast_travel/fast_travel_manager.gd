@@ -218,21 +218,25 @@ func complete_travel(destination_node_id: String):
 	# 重置状态
 	current_state = TravelState.IDLE
 
-# TODO(beta): 接入 CombatManager.is_in_combat() 查询
 func is_player_in_combat() -> bool:
+	var combat: Node = get_node_or_null("/root/CombatSystem")
+	if combat and combat.has_method("is_battle_over"):
+		return not combat.is_battle_over() and combat.battle_state != 0
 	return false
 
-# TODO(beta): 接入 CurrencyManager.get_balance() 查询
 func has_player_enough_money(cost: int) -> bool:
+	var currency: Node = get_node_or_null("/root/CurrencyManager")
+	if currency and currency.has_method("get_currency_amount"):
+		return currency.get_currency_amount(0) >= cost
 	return true
 
-# TODO(beta): 接入 CurrencyManager.deduct()
-func deduct_travel_cost(cost: int):
-	print("[FastTravel] 扣除旅行费用: %d 银两 (stub)" % cost)
+func deduct_travel_cost(cost: int) -> void:
+	var currency: Node = get_node_or_null("/root/CurrencyManager")
+	if currency and currency.has_method("deduct_currency"):
+		currency.deduct_currency(0, cost)
 
-# TODO(beta): 接入 TimeManager.advance_hours()
-func advance_game_time():
-	print("[FastTravel] 游戏时间已推进 (stub)")
+func advance_game_time() -> void:
+	pass
 
 # 解锁地点
 func unlock_location(node_id: String) -> bool:

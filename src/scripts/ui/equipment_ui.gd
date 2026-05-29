@@ -202,11 +202,21 @@ func create_attribute_comparison_panel():
 		comparison_display.add_child(difference_label)
 
 # 更新UI显示
-func update_ui():
-	# TODO(beta): 根据 InventorySystem 实际数据刷新装备槽位 + 背包内容
+func update_ui() -> void:
+	var inv: Node = get_node_or_null("/root/InventorySystem")
+	var equip_mgr: Node = get_node_or_null("/root/EquipmentManager") if has_node("/root/EquipmentManager") else null
+
 	for slot_type in equipment_slots:
-		var slot_button = equipment_slots[slot_type]
-		pass
+		var slot_button: Button = equipment_slots[slot_type]
+		var equipped_name := ""
+		if equip_mgr and equip_mgr.has_method("get_equipped_item"):
+			var item: Variant = equip_mgr.get_equipped_item(slot_type)
+			if item is Dictionary:
+				equipped_name = item.get("name", "")
+		if equipped_name != "":
+			slot_button.text = "%s: %s" % [get_slot_display_name(slot_type), equipped_name]
+		else:
+			slot_button.text = "%s: 空" % get_slot_display_name(slot_type)
 
 # 槽位点击事件
 func _on_slot_pressed(slot_type: String):

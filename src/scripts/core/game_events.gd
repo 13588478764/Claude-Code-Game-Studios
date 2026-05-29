@@ -99,7 +99,7 @@ signal player_realm_changed(new_realm: String, old_realm: String)
 
 ## 主角可用属性点变化
 ## @param available: 可用属性点数量
-signal player_attribute_points_changed(available: int)
+signal player_attribute_points_changed(available: int)  # vBeta 预留 — 当前无 emit/connect
 
 # ============================================================================
 # PARTY SIGNALS (P0级 - 队友状态)
@@ -137,13 +137,13 @@ signal combat_turn_changed(turn_number: int)
 signal combat_action_queue_updated(queue: Array)
 
 ## 连击值变化
-signal combat_combo_changed(count: int, multiplier: float)
+signal combat_combo_changed(count: int, multiplier: float)  # vBeta 预留 — 当前无 emit/connect
 
 ## 连携槽变化
-signal combat_link_gauge_changed(current: int, max_value: int)
+signal combat_link_gauge_changed(current: int, max_value: int)  # vBeta 预留 — 当前无 emit/connect
 
 ## 战斗模式变化(用于特殊战斗阶段,如Boss第二阶段)
-signal combat_mode_changed(mode: String)
+signal combat_mode_changed(mode: String)  # vBeta 预留 — 当前无 emit/connect
 
 # ============================================================================
 # ENEMY SIGNALS (P1级 - 敌人信息)
@@ -153,7 +153,7 @@ signal combat_mode_changed(mode: String)
 signal enemy_selected(enemy: Dictionary)
 
 ## 取消选中敌人
-signal enemy_deselected()
+signal enemy_deselected()  # vBeta 预留 — 当前无 emit/connect
 
 ## 敌人生命值变化
 signal enemy_hp_changed(enemy_id: String, current: int, max_value: int)
@@ -162,10 +162,10 @@ signal enemy_hp_changed(enemy_id: String, current: int, max_value: int)
 signal enemy_weakness_revealed(enemy_id: String, element: String)
 
 ## 敌人Down状态变化
-signal enemy_down_state_changed(enemy_id: String, is_down: bool)
+signal enemy_down_state_changed(enemy_id: String, is_down: bool)  # vBeta 预留 — 当前无 emit/connect
 
 ## 敌人Break状态变化
-signal enemy_break_state_changed(enemy_id: String, is_broken: bool)
+signal enemy_break_state_changed(enemy_id: String, is_broken: bool)  # vBeta 预留 — 当前无 emit/connect
 
 ## 敌人通用状态变化（如 "down" / "break" / "" 等字符串状态标识）
 ## 用于 enemy_info_panel 等需要"状态字符串"风格订阅的组件；
@@ -178,38 +178,38 @@ signal enemy_status_changed(enemy_id: String, status: String)
 # ============================================================================
 
 ## Buff添加
-signal buff_added(target_id: String, buff: Dictionary)
+signal buff_added(target_id: String, buff: Dictionary)  # vBeta 预留 — 当前无 emit/connect
 
 ## Buff移除
-signal buff_removed(target_id: String, buff_id: String)
+signal buff_removed(target_id: String, buff_id: String)  # vBeta 预留 — 当前无 emit/connect
 
 ## Buff更新(持续时间或层数变化)
-signal buff_updated(target_id: String, buff_id: String, remaining_turns: int)
+signal buff_updated(target_id: String, buff_id: String, remaining_turns: int)  # vBeta 预留 — 当前无 emit/connect
 
 ## Debuff添加
-signal debuff_added(target_id: String, debuff: Dictionary)
+signal debuff_added(target_id: String, debuff: Dictionary)  # vBeta 预留 — 当前无 emit/connect
 
 ## Debuff移除
-signal debuff_removed(target_id: String, debuff_id: String)
+signal debuff_removed(target_id: String, debuff_id: String)  # vBeta 预留 — 当前无 emit/connect
 
 ## Debuff更新(持续时间或层数变化)
-signal debuff_updated(target_id: String, debuff_id: String, remaining_turns: int)
+signal debuff_updated(target_id: String, debuff_id: String, remaining_turns: int)  # vBeta 预留 — 当前无 emit/connect
 
 # ============================================================================
 # QUEST SIGNALS (P3级 - 任务系统)
 # ============================================================================
 
 ## 任务开始
-signal quest_started(quest: Dictionary)
+signal quest_started(quest: Dictionary)  # vBeta 预留 — 当前无 emit/connect
 
 ## 任务更新
-signal quest_updated(quest_id: String, progress: Dictionary)
+signal quest_updated(quest_id: String, progress: Dictionary)  # vBeta 预留 — 当前无 emit/connect
 
 ## 任务完成
 signal quest_completed(quest_id: String, rewards: Dictionary)
 
 ## 任务失败
-signal quest_failed(quest_id: String, reason: String)
+signal quest_failed(quest_id: String, reason: String)  # vBeta 预留 — 当前无 emit/connect
 
 ## 任务目标更新
 signal quest_objective_updated(quest_id: String, objective_id: String, progress: int, total: int)
@@ -219,26 +219,26 @@ signal quest_objective_updated(quest_id: String, objective_id: String, progress:
 # ============================================================================
 
 ## 玩家位置变化
-signal nav_position_changed(position: Vector2)
+signal nav_position_changed(position: Vector2)  # vBeta 预留 — 当前无 emit/connect
 
 ## 进入新区域
 signal nav_area_entered(area_name: String, area_level: int)
 
 ## 离开区域
-signal nav_area_exited(area_name: String)
+signal nav_area_exited(area_name: String)  # vBeta 预留 — 当前无 emit/connect
 
 ## 发现兴趣点(POI)
-signal nav_poi_discovered(poi_id: String, poi_name: String, position: Vector2)
+signal nav_poi_discovered(poi_id: String, poi_name: String, position: Vector2)  # vBeta 预留 — 当前无 emit/connect
 
 ## 奇遇触发
-signal nav_encounter_triggered(encounter_type: String)
+signal nav_encounter_triggered(encounter_type: String)  # vBeta 预留 — 当前无 emit/connect
 
 # ============================================================================
 # ITEM SIGNALS (P2-P3级 - 物品系统)
 # ============================================================================
 
 ## 获得物品
-signal item_obtained(item_id: String, quantity: int)
+signal item_obtained(item_id: String, quantity: int)  # vBeta 预留 — 当前无 emit/connect
 
 ## 使用物品
 signal item_used(item_id: String, quantity: int)
@@ -250,29 +250,29 @@ signal item_equipped(item_id: String, slot: String)
 signal item_unequipped(item_id: String, slot: String)
 
 ## 物品数量变化（通用，快捷栏/背包等均可监听）
-signal item_quantity_changed(item_id: String, new_quantity: int)
+signal item_quantity_changed(item_id: String, new_quantity: int)  # vBeta 预留 — 当前无 emit/connect
 
 ## 快捷栏变化
-signal item_hotbar_changed(slot: int, item_id: String, quantity: int)
+signal item_hotbar_changed(slot: int, item_id: String, quantity: int)  # vBeta 预留 — 当前无 emit/connect
 
 # ============================================================================
 # SKILL SIGNALS (P2-P3级 - 技能系统)
 # ============================================================================
 
 ## 技能解锁
-signal skill_unlocked(skill_id: String, skill_name: String)
+signal skill_unlocked(skill_id: String, skill_name: String)  # vBeta 预留 — 当前无 emit/connect
 
 ## 技能冷却开始
-signal skill_cooldown_started(skill_id: String, cooldown_turns: int)
+signal skill_cooldown_started(skill_id: String, cooldown_turns: int)  # vBeta 预留 — 当前无 emit/connect
 
 ## 技能冷却更新
-signal skill_cooldown_updated(skill_id: String, remaining_turns: int)
+signal skill_cooldown_updated(skill_id: String, remaining_turns: int)  # vBeta 预留 — 当前无 emit/connect
 
 ## 技能冷却结束
-signal skill_cooldown_finished(skill_id: String)
+signal skill_cooldown_finished(skill_id: String)  # vBeta 预留 — 当前无 emit/connect
 
 ## 可用技能点变化
-signal skill_points_changed(available: int)
+signal skill_points_changed(available: int)  # vBeta 预留 — 当前无 emit/connect
 
 # ============================================================================
 # SYSTEM SIGNALS (P4级 - 系统功能)
@@ -291,10 +291,10 @@ signal system_mode_changed(mode: String)
 signal system_save_completed()
 
 ## 保存失败
-signal system_save_failed(error: String)
+signal system_save_failed(error: String)  # vBeta 预留 — 当前无 emit/connect
 
 ## 成就解锁
-signal system_achievement_unlocked(achievement_id: String, achievement_name: String)
+signal system_achievement_unlocked(achievement_id: String, achievement_name: String)  # vBeta 预留 — 当前无 emit/connect
 
 
 func _ready() -> void:

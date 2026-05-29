@@ -251,11 +251,15 @@ func level_up() -> void:
 	print("角色升级到 %d 级" % level)
 
 func check_realm_breakthrough() -> void:
-	"""检查是否达到境界突破条件"""
+	"""检查是否达到境界突破条件，自动执行突破并通知"""
 	var current_realm: Dictionary = get_current_realm()
 	if level == current_realm["level_range"][1]:
-		# TODO(beta): 触发突破界面, 当前自动突破用于测试
-		print("达到 %s 期圆满，准备突破" % current_realm["name"])
+		var old_name: String = current_realm["name"]
+		breakthrough_realm()
+		var new_name: String = get_current_realm()["name"]
+		if GameEvents and GameEvents.has_signal("system_notification"):
+			var msg := "境界突破！%s → %s" % [old_name, new_name]
+			GameEvents.system_notification.emit(msg, "success", 5.0)
 
 func breakthrough_realm() -> void:
 	"""境界突破"""
