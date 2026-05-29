@@ -225,7 +225,7 @@ func _create_skill_list_ui() -> void:
 	_skill_list_box.name = "SkillListBox"
 	_skill_list_box.visible = false
 	_skill_list_box.set("theme_override_constants/separation", 6)
-	var vbox = $PanelContainer/VBox
+	var vbox: VBoxContainer = $PanelContainer/VBox
 	vbox.add_child(_skill_list_box)
 	vbox.move_child(_skill_list_box, _action_box.get_index() + 1)
 
@@ -243,12 +243,12 @@ func _populate_skill_list() -> void:
 	var skills_found := false
 	if _martial_arts_system:
 		for i in range(_martial_arts_system.equipped_martial_arts.size()):
-			var ma = _martial_arts_system.equipped_martial_arts[i]
+			var ma: Variant = _martial_arts_system.equipped_martial_arts[i]
 			if ma == null:
 				continue
 			skills_found = true
 
-			var player_unit = _combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
+			var player_unit: Variant = _combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
 			var has_energy := true
 			if player_unit:
 				has_energy = player_unit.current_internal_energy >= int(ma.cost_mana)
@@ -346,7 +346,7 @@ func _find_enemy_target() -> int:
 	if _combat_system == null:
 		return -1
 
-	var units = _combat_system.battle_units
+	var units: Array = _combat_system.battle_units
 	var half: int = ceili(units.size() / 2.0)
 
 	for i in range(half, units.size()):
@@ -371,12 +371,12 @@ func _refresh_hp_display() -> void:
 	if _combat_system == null or _combat_system.battle_units.is_empty():
 		return
 
-	var units = _combat_system.battle_units
+	var units: Array = _combat_system.battle_units
 	var half: int = ceili(units.size() / 2.0)
 
 	# 玩家 HP + 内力
 	if units.size() > 0:
-		var player_unit = units[0]
+		var player_unit: Variant = units[0]
 		_player_hp_bar.max_value = player_unit.max_hp
 		_player_hp_bar.value = player_unit.current_hp
 		_player_hp_label.text = "%d / %d" % [player_unit.current_hp, player_unit.max_hp]
@@ -387,7 +387,7 @@ func _refresh_hp_display() -> void:
 
 	# 敌人 HP
 	if units.size() > half:
-		var enemy_unit = units[half]
+		var enemy_unit: Variant = units[half]
 		_enemy_hp_bar.max_value = enemy_unit.max_hp
 		_enemy_hp_bar.value = enemy_unit.current_hp
 		_enemy_hp_label.text = "%d / %d" % [enemy_unit.current_hp, enemy_unit.max_hp]
