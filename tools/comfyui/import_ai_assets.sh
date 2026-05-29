@@ -164,6 +164,15 @@ process_category "button_textures_512"   "frames"          "按钮纹理 (512×5
 # 区域战斗背景（1024x1024）— 第六批 W24
 process_category "battle_bg_final"       "backgrounds"     "区域战斗背景 (1024×1024)"
 
+# 区域背景时段变体（1024x1024）— 第七批 W25
+process_category "region_bg_variants_final" "backgrounds"  "区域背景时段变体 (黄昏/夜晚)"
+
+# NPC 表情变体（512x512）— 第七批 W26
+process_category "npc_emotions_512"      "portraits"       "NPC 表情变体 (开心/生气)"
+
+# 境界突破插图（512x512）— 第七批 W27
+process_category "breakthrough_512"      "breakthrough_scenes" "境界突破插图 (10境界)"
+
 # 边框装饰
 process_category "wuxia_frame_256"       "frames"          "边框装饰 (256×256)"
 
@@ -185,6 +194,9 @@ process_category "npc_secondary_1024"    "_masters/npc_secondary_1024" "🗄 102
 process_category "encounter_scenes_1024" "_masters/encounter_scenes_1024" "🗄 1024 奇遇场景母版备份"
 process_category "button_textures_1024"  "_masters/button_textures_1024" "🗄 1024 按钮纹理母版备份"
 process_category "battle_bg_1024"        "_masters/battle_bg_1024" "🗄 1024 战斗背景母版备份"
+process_category "region_bg_variants_1024" "_masters/region_bg_variants_1024" "🗄 1024 区域背景变体母版备份"
+process_category "npc_emotions_1024"     "_masters/npc_emotions_1024" "🗄 1024 NPC表情变体母版备份"
+process_category "breakthrough_1024"     "_masters/breakthrough_1024" "🗄 1024 境界突破插图母版备份"
 
 # ===== 收尾 =====
 echo ""
