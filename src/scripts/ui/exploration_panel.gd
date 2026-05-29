@@ -23,6 +23,11 @@ extends CanvasLayer
 
 var _game_loop: Node = null
 
+## 时段系统: 每 5 次探索推进一个时段
+var _explore_count: int = 0
+enum TimeOfDay { DAY, DUSK, NIGHT }
+var _current_time: TimeOfDay = TimeOfDay.DAY
+
 ## 核心NPC列表（RelationshipManager._npc_database 降级后备）
 var NPC_FALLBACK: Array = []
 
@@ -473,6 +478,7 @@ func _on_explore_pressed() -> void:
 		return
 	log_label.text = "探索中..."
 	_game_loop.do_explore_action()
+	_advance_time()
 
 
 func _on_region_selected(index: int) -> void:
@@ -551,16 +557,40 @@ func _refresh_display() -> void:
 		log_label.text = "%s\n%s" % [hint, current_log]
 
 
-## 根据当前区域加载背景图
+## 根据当前区域和时段加载背景图
 func _load_region_background(region: Dictionary) -> void:
 	if scene_background == null:
 		return
 	var bg_name: String = region.get("bg", "")
 	if bg_name.is_empty():
 		return
+
+	# 尝试加载时段变体
+	var suffix := ""
+	match _current_time:
+		TimeOfDay.DUSK: suffix = "_dusk"
+		TimeOfDay.NIGHT: suffix = "_night"
+
+	if not suffix.is_empty():
+		var variant_path := "res://assets/ui/backgrounds/%s%s.png" % [bg_name, suffix]
+		if ResourceLoader.exists(variant_path):
+			scene_background.texture = load(variant_path) as Texture2D
+			return
+
 	var bg_path := "res://assets/ui/backgrounds/%s.png" % bg_name
 	if ResourceLoader.exists(bg_path):
 		scene_background.texture = load(bg_path) as Texture2D
+
+
+## 推进时段 (每5次探索切换)
+func _advance_time() -> void:
+	_explore_count += 1
+	if _explore_count % 5 == 0:
+		match _current_time:
+			TimeOfDay.DAY: _current_time = TimeOfDay.DUSK
+			TimeOfDay.DUSK: _current_time = TimeOfDay.NIGHT
+			TimeOfDay.NIGHT: _current_time = TimeOfDay.DAY
+		_load_region_background(_game_loop.current_region)
 
 
 # ============================================================================

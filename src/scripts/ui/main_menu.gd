@@ -41,6 +41,8 @@ func _ready() -> void:
 	for btn in buttons:
 		btn.modulate = Color(1, 1, 1, 0)
 
+	_apply_button_backgrounds()
+
 	_logo_title.modulate = Color(1, 1, 1, 0)
 	_logo_subtitle.modulate = Color(1, 1, 1, 0)
 
@@ -410,3 +412,31 @@ func _load_credits_panel() -> void:
 		get_tree().root.add_child(_credits_panel)
 	else:
 		push_warning("无法加载制作人员面板场景")
+
+
+func _apply_button_backgrounds() -> void:
+	var menu_tex_path := "res://assets/ui/frames/btn_main_menu_a_cropped.png"
+	var std_tex_path := "res://assets/ui/frames/btn_standard_a_cropped.png"
+
+	if ResourceLoader.exists(menu_tex_path):
+		_add_btn_bg(_new_game_btn, load(menu_tex_path) as Texture2D)
+
+	if ResourceLoader.exists(std_tex_path):
+		var tex: Texture2D = load(std_tex_path) as Texture2D
+		_add_btn_bg(_continue_btn, tex)
+		_add_btn_bg(_settings_btn, tex)
+		_add_btn_bg(_credits_btn, tex)
+		_add_btn_bg(_quit_btn, tex)
+
+
+func _add_btn_bg(btn: Button, tex: Texture2D) -> void:
+	btn.clip_contents = true
+	var bg := TextureRect.new()
+	bg.texture = tex
+	bg.anchors_preset = Control.PRESET_FULL_RECT
+	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bg.modulate = Color(1, 1, 1, 0.7)
+	btn.add_child(bg)
+	btn.move_child(bg, 0)
