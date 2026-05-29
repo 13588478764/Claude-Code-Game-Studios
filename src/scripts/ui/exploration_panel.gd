@@ -383,7 +383,6 @@ func _try_trigger_side_quest(npc_id: String, npc_name: String) -> bool:
 	if available.is_empty():
 		return false
 
-	# 触发第一个可用支线
 	var quest_id: String = available[0]
 	var dialogue_id: String = NPC_SIDE_QUEST_DIALOGUE.get(quest_id, "")
 	if dialogue_id.is_empty():
@@ -391,7 +390,33 @@ func _try_trigger_side_quest(npc_id: String, npc_name: String) -> bool:
 
 	dialogue_mgr.start_dialogue(dialogue_id)
 	log_label.text = "[color=cyan]支线任务：与%s的故事[/color]" % npc_name
+
+	# 支线完成后给奖励
+	if not dialogue_mgr.dialogue_ended.is_connected(_on_side_quest_ended):
+		dialogue_mgr.dialogue_ended.connect(_on_side_quest_ended.bind(npc_name), CONNECT_ONE_SHOT)
 	return true
+
+
+func _on_side_quest_ended(_dialogue_id: String, npc_name: String) -> void:
+	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
+	var currency: Node = get_node_or_null("/root/CurrencyManager")
+
+	# 支线奖励 = 相当于 5 场战斗的经验 + 关系值提升
+	var player_level: int = 1
+	if char_sys:
+		player_level = char_sys.level
+	var exp_reward: int = player_level * 50 * 5
+	var silver_reward: int = player_level * 20 * 3
+
+	if char_sys and char_sys.has_method("add_experience"):
+		char_sys.add_experience(exp_reward)
+	if currency and currency.has_method("add_currency"):
+		currency.add_currency(0, silver_reward)
+
+	if log_label:
+		log_label.text = "[color=cyan]支线完成！获得 %d 经验, %d 银两[/color]" % [exp_reward, silver_reward]
+	if GameEvents and GameEvents.has_signal("system_notification"):
+		GameEvents.system_notification.emit("支线完成！+%d 经验 +%d 银两" % [exp_reward, silver_reward], "success", 4.0)
 
 
 ## 尝试通过 NPC 交谈触发主线事件
@@ -698,6 +723,34 @@ func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> vo
 	if act_mgr:
 		act_mgr.complete_event(event_id)
 	_story_triggered_this_session = false
+	_grant_story_reward(event_id)
+
+
+## 主线完成奖励 (经验 + 银两, 按事件等级缩放)
+func _grant_story_reward(event_id: String) -> void:
+	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
+	var currency: Node = get_node_or_null("/root/CurrencyManager")
+
+	# 找到这个事件的等级要求来计算奖励
+	var event_level: int = 1
+	for event in MAIN_STORY_EVENTS:
+		if event.event_id == event_id:
+			event_level = event.get("required_level", 1)
+			break
+
+	# 主线奖励 = 相当于 10 场同等级战斗的经验 + 5 场战斗的银两
+	var exp_reward: int = event_level * 50 * 10
+	var silver_reward: int = event_level * 20 * 5
+
+	if char_sys and char_sys.has_method("add_experience"):
+		char_sys.add_experience(exp_reward)
+	if currency and currency.has_method("add_currency"):
+		currency.add_currency(0, silver_reward)
+
+	if log_label:
+		log_label.text = "[color=gold]主线完成！获得 %d 经验, %d 银两[/color]" % [exp_reward, silver_reward]
+	if GameEvents and GameEvents.has_signal("system_notification"):
+		GameEvents.system_notification.emit("主线完成！+%d 经验 +%d 银两" % [exp_reward, silver_reward], "success", 4.0)
 
 
 ## 获取当前主线任务提示 (BBCode 格式)

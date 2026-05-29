@@ -26,8 +26,13 @@ enum GameState {
 const REGIONS: Array[Dictionary] = [
 	{"id": "start_village", "name": "新手村·青石镇", "level": 1, "region_id": 0, "encounter_rate": 0.4, "bg": "bg_town_street"},
 	{"id": "bandit_fortress", "name": "黑风寨", "level": 5, "region_id": 1, "encounter_rate": 0.6, "bg": "bg_evil_camp"},
-	{"id": "qingyun_mountain", "name": "青云山", "level": 10, "region_id": 2, "encounter_rate": 0.5, "bg": "bg_sect_hall"},
-	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 3, "encounter_rate": 0.35, "bg": "bg_mystic_forest"},
+	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 2, "encounter_rate": 0.35, "bg": "bg_mystic_forest"},
+	{"id": "qingyun_mountain", "name": "青云山", "level": 10, "region_id": 3, "encounter_rate": 0.5, "bg": "bg_sect_hall"},
+	{"id": "ancient_tomb", "name": "上古墓穴", "level": 20, "region_id": 4, "encounter_rate": 0.7, "bg": "bg_ancient_tomb"},
+	{"id": "demon_domain", "name": "万魔域", "level": 35, "region_id": 5, "encounter_rate": 0.8, "bg": "bg_evil_camp"},
+	{"id": "immortal_palace", "name": "仙人遗府", "level": 50, "region_id": 6, "encounter_rate": 0.6, "bg": "bg_immortal_palace"},
+	{"id": "heavenly_peak", "name": "天剑峰", "level": 65, "region_id": 7, "encounter_rate": 0.5, "bg": "bg_sect_hall"},
+	{"id": "void_realm", "name": "虚空裂境", "level": 80, "region_id": 8, "encounter_rate": 0.9, "bg": "bg_ancient_tomb"},
 ]
 
 # 敌人模板：按区域定义基础数据
@@ -48,12 +53,32 @@ const ENEMY_TEMPLATES: Dictionary = {
 		{"id": "enemy_water_serpent", "name": "水贼", "base_hp": 100, "base_attack": 15, "speed": 10, "type": 0},
 		{"id": "enemy_ghost_cultivator", "name": "邪修弟子", "base_hp": 180, "base_attack": 20, "speed": 11, "type": 1},
 	],
+	"ancient_tomb": [
+		{"id": "enemy_puppet_cultivator", "name": "傀儡修士", "base_hp": 300, "base_attack": 35, "speed": 8, "type": 1},
+		{"id": "enemy_ghost_cultivator", "name": "怨灵", "base_hp": 250, "base_attack": 40, "speed": 12, "type": 1},
+	],
+	"demon_domain": [
+		{"id": "enemy_evil_elder", "name": "魔道长老", "base_hp": 500, "base_attack": 55, "speed": 10, "type": 2},
+		{"id": "enemy_fox_spirit", "name": "妖狐", "base_hp": 400, "base_attack": 45, "speed": 14, "type": 1},
+	],
+	"immortal_palace": [
+		{"id": "enemy_elemental_guardian", "name": "仙府守卫", "base_hp": 800, "base_attack": 70, "speed": 9, "type": 2},
+		{"id": "enemy_puppet_cultivator", "name": "上古傀儡", "base_hp": 650, "base_attack": 60, "speed": 7, "type": 1},
+	],
+	"heavenly_peak": [
+		{"id": "enemy_boss_tianjie_zhenjun", "name": "天劫真君", "base_hp": 1200, "base_attack": 90, "speed": 11, "type": 2},
+		{"id": "enemy_thunder_beast_king", "name": "雷兽王", "base_hp": 1000, "base_attack": 80, "speed": 13, "type": 2},
+	],
+	"void_realm": [
+		{"id": "enemy_boss_demon_god", "name": "魔神残影", "base_hp": 2000, "base_attack": 120, "speed": 12, "type": 2},
+		{"id": "enemy_boss_heart_demon", "name": "心魔化身", "base_hp": 1500, "base_attack": 100, "speed": 15, "type": 2},
+	],
 }
 
 # 奖励配置
 const BASE_EXP_PER_ENEMY: int = 50
 const BASE_SILVER_PER_ENEMY: int = 20
-const REGION_REWARD_MULTIPLIER: Array[float] = [1.0, 1.5, 2.5, 2.0]
+const REGION_REWARD_MULTIPLIER: Array[float] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0]
 
 ## 战斗掉落物品表（按区域）
 const BATTLE_DROP_TABLE: Dictionary = {
@@ -185,8 +210,9 @@ func do_explore_action() -> Dictionary:
 	if encounter_result.get("triggered", false):
 		return encounter_result
 
-	# 普通探索奖励
-	var explore_exp := randi_range(5, 15)
+	# 普通探索奖励 (随区域等级缩放)
+	var region_level: int = current_region.get("level", 1)
+	var explore_exp := randi_range(5, 15) * region_level
 	if _character_system:
 		_character_system.add_experience(explore_exp)
 
@@ -490,8 +516,10 @@ func _calculate_rewards() -> Dictionary:
 	if current_region.region_id < REGION_REWARD_MULTIPLIER.size():
 		region_mult = REGION_REWARD_MULTIPLIER[current_region.region_id]
 
-	var exp_reward := int(BASE_EXP_PER_ENEMY * _current_battle_enemy_count * region_mult)
-	var silver_reward := int(BASE_SILVER_PER_ENEMY * _current_battle_enemy_count * region_mult)
+	# 战斗经验随区域等级缩放: base * 区域等级 * 区域系数
+	var region_level: int = current_region.get("level", 1)
+	var exp_reward := int(BASE_EXP_PER_ENEMY * region_level * region_mult * _current_battle_enemy_count)
+	var silver_reward := int(BASE_SILVER_PER_ENEMY * region_level * region_mult * _current_battle_enemy_count)
 
 	# 物品掉落计算
 	var drops: Array = []
