@@ -303,7 +303,7 @@ func _load_encounter_illustration(encounter_id: String) -> void:
 	if _scene_illustration == null:
 		return
 
-	var illustration_name := ENCOUNTER_ILLUSTRATION_MAP.get(encounter_id, "")
+	var illustration_name: String = ENCOUNTER_ILLUSTRATION_MAP.get(encounter_id, "")
 	if illustration_name.is_empty():
 		_scene_illustration.visible = false
 		return

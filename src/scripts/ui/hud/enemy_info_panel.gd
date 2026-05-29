@@ -271,7 +271,7 @@ func _create_enemy_portrait() -> void:
 	_enemy_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_enemy_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_enemy_portrait.visible = false
-	var parent = enemy_name_label.get_parent()
+	var parent: Node = enemy_name_label.get_parent()
 	if parent:
 		parent.add_child(_enemy_portrait)
 		parent.move_child(_enemy_portrait, 0)
