@@ -184,13 +184,13 @@ func _refresh_inventory() -> void:
 
 	for i in range(_displayed_items.size()):
 		var item = _displayed_items[i]
-		var display_name = item.get("name", item.get("id", "???"))
-		var qty = item.get("quantity", 1)
+		var display_name: String = item.get("name", item.get("id", "???"))
+		var qty: int = item.get("quantity", 1)
 		if qty > 1:
 			display_name += " x%d" % qty
 
-		var tier = item.get("tier", "common")
-		var tier_color = TIER_COLORS.get(tier, Color.WHITE)
+		var tier: String = item.get("tier", "common")
+		var tier_color: Color = TIER_COLORS.get(tier, Color.WHITE)
 
 		var icon_tex: Texture2D = _build_item_icon(item.get("icon", ""), tier)
 
@@ -222,8 +222,8 @@ func _filter_items(items: Array[Dictionary]) -> Array[Dictionary]:
 
 	var filtered: Array[Dictionary] = []
 	for item in items:
-		var item_type = item.get("type", "")
-		var filter_category = TYPE_FILTER_MAP.get(item_type, "material")
+		var item_type: String = item.get("type", "")
+		var filter_category: String = TYPE_FILTER_MAP.get(item_type, "material")
 		if filter_category == _current_filter:
 			filtered.append(item)
 	return filtered
@@ -259,8 +259,8 @@ func _on_item_selected(index: int) -> void:
 
 ## 显示物品详情
 func _show_item_detail(item: Dictionary) -> void:
-	var tier = item.get("tier", "common")
-	var tier_color = TIER_COLORS.get(tier, Color.WHITE)
+	var tier: String = item.get("tier", "common")
+	var tier_color: Color = TIER_COLORS.get(tier, Color.WHITE)
 	var tier_name = _get_tier_name(tier)
 
 	_item_name_label.text = item.get("name", "")
@@ -269,7 +269,7 @@ func _show_item_detail(item: Dictionary) -> void:
 	var desc = "[color=%s][%s][/color]\n" % [tier_color.to_html(), tier_name]
 	desc += "%s\n\n" % item.get("description", "")
 
-	var qty = item.get("quantity", 1)
+	var qty: int = item.get("quantity", 1)
 	if qty > 1:
 		desc += "[b]数量:[/b] %d\n" % qty
 	if item.has("slot") and item.slot != "inventory":
@@ -309,7 +309,7 @@ func _show_item_detail(item: Dictionary) -> void:
 	_item_desc_label.text = desc
 
 	# 按钮可见性
-	var item_type = item.get("type", "")
+	var item_type: String = item.get("type", "")
 	_use_btn.visible = (item_type == "consumable")
 	_equip_btn.visible = (item_type in ["weapon", "armor", "accessory"])
 	_sell_btn.visible = true
@@ -333,7 +333,7 @@ func _on_use_item() -> void:
 		return
 
 	var item = _displayed_items[_selected_item_index]
-	var item_id = item.get("id", "")
+	var item_id: String = item.get("id", "")
 
 	var inv = get_node_or_null("/root/InventorySystem")
 	if inv and inv.use_item(item_id):
@@ -347,8 +347,8 @@ func _on_equip_item() -> void:
 		return
 
 	var item = _displayed_items[_selected_item_index]
-	var item_id = item.get("id", "")
-	var slot = item.get("slot", "")
+	var item_id: String = item.get("id", "")
+	var slot: String = item.get("slot", "")
 
 	var inv = get_node_or_null("/root/InventorySystem")
 	if inv and inv.equip_item(item_id, slot):
@@ -362,8 +362,8 @@ func _on_sell_item() -> void:
 		return
 
 	var item = _displayed_items[_selected_item_index]
-	var item_id = item.get("id", "")
-	var price = item.get("value_gold", 0)
+	var item_id: String = item.get("id", "")
+	var price: int = item.get("value_gold", 0)
 
 	_show_confirm_dialog(
 		"确认出售",
@@ -384,7 +384,7 @@ func _on_dismantle_item() -> void:
 		return
 
 	var item = _displayed_items[_selected_item_index]
-	var item_id = item.get("id", "")
+	var item_id: String = item.get("id", "")
 	var materials: Dictionary = _get_dismantle_materials(item.get("tier", "common"))
 
 	_show_confirm_dialog(

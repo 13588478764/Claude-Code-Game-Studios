@@ -97,7 +97,7 @@ func show_encounter(encounter_data: Dictionary) -> void:
 	
 	# 根据奇遇类型设置背景颜色
 	if background_texture:
-		var encounter_type = encounter_data.get("type", "default")
+		var encounter_type: String = encounter_data.get("type", "default")
 		match encounter_type:
 			"cave":
 				background_texture.color = Color(0.2, 0.2, 0.3, 1.0)  # 山洞 - 深蓝
@@ -112,7 +112,7 @@ func show_encounter(encounter_data: Dictionary) -> void:
 	_load_encounter_illustration(encounter_data.get("encounter_id", ""))
 
 	# 显示福缘图标（如果福缘>60）
-	var player_luck = encounter_data.get("player_luck", 0)
+	var player_luck: int = encounter_data.get("player_luck", 0)
 	if lucky_star_icon:
 		lucky_star_icon.visible = player_luck > 60
 	

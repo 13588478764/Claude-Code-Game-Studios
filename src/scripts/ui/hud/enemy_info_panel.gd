@@ -160,8 +160,8 @@ func _update_name_display() -> void:
 		_update_no_target_display()
 		return
 	
-	var name_text = _current_enemy_data.get("name", "未知敌人")
-	var level = _current_enemy_data.get("level", 1)
+	var name_text: String = _current_enemy_data.get("name", "未知敌人")
+	var level: int = _current_enemy_data.get("level", 1)
 	
 	enemy_name_label.text = name_text
 	enemy_level_label.text = "Lv.%d" % level
@@ -179,8 +179,8 @@ func _update_hp_display() -> void:
 	if _current_enemy_id.is_empty():
 		return
 	
-	var current_hp = _current_enemy_data.get("current_hp", 0)
-	var max_hp = _current_enemy_data.get("max_hp", 1)
+	var current_hp: int = _current_enemy_data.get("current_hp", 0)
+	var max_hp: int = _current_enemy_data.get("max_hp", 1)
 	
 	# 更新进度条
 	hp_bar.max_value = float(max_hp)
@@ -200,8 +200,8 @@ func _update_weakness_display() -> void:
 	
 	_weakness_icons[_current_enemy_id] = []
 	
-	var weaknesses = _current_enemy_data.get("weaknesses", [])
-	var discovered_weaknesses = _current_enemy_data.get("discovered_weaknesses", [])
+	var weaknesses: Array = _current_enemy_data.get("weaknesses", [])
+	var discovered_weaknesses: Array = _current_enemy_data.get("discovered_weaknesses", [])
 	
 	# 创建五行弱点图标 (金/木/水/火/土)
 	for element in weaknesses:
@@ -226,8 +226,8 @@ func _update_status_display() -> void:
 		boss_border.visible = false
 		return
 	
-	var status = _current_enemy_data.get("status", "")
-	var is_boss = _current_enemy_data.get("is_boss", false)
+	var status: String = _current_enemy_data.get("status", "")
+	var is_boss: bool = _current_enemy_data.get("is_boss", false)
 	
 	# 显示Down状态标识
 	down_indicator.visible = (status == "down")
