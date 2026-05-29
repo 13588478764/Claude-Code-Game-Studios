@@ -3,6 +3,10 @@
 [ext_resource type="Texture2D" path="res://assets/ui/frames/button_standard.png" id="btn_std"]
 [ext_resource type="Texture2D" path="res://assets/ui/frames/button_close.png" id="btn_close"]
 [ext_resource type="Texture2D" path="res://assets/ui/frames/button_main_menu.png" id="btn_menu"]
+[ext_resource type="Texture2D" path="res://assets/ui/frames/progress_bar_bg.png" id="pb_bg"]
+[ext_resource type="Texture2D" path="res://assets/ui/frames/progress_bar_fill.png" id="pb_fill"]
+[ext_resource type="Texture2D" path="res://assets/ui/frames/frame_character_panel.png" id="frame_panel"]
+[ext_resource type="Texture2D" path="res://assets/ui/frames/scrollbar_handle.png" id="scrollbar_handle"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_normal"]
 texture = ExtResource("btn_std")
@@ -73,6 +77,46 @@ content_margin_top = 16.0
 content_margin_right = 48.0
 content_margin_bottom = 16.0
 modulate_color = Color(0.8, 0.75, 0.6, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pb_bg"]
+texture = ExtResource("pb_bg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pb_fill"]
+texture = ExtResource("pb_fill")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_panel"]
+texture = ExtResource("frame_panel")
+texture_margin_left = 24.0
+texture_margin_top = 24.0
+texture_margin_right = 24.0
+texture_margin_bottom = 24.0
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_scrollbar"]
+texture = ExtResource("scrollbar_handle")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ioqn"]
 content_margin_left = 24.0
@@ -597,8 +641,8 @@ CheckButton/colors/font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 CheckButton/colors/font_hover_color = Color(1, 0.84313726, 0, 1)
 CheckButton/colors/font_pressed_color = Color(0.18039216, 0.54509807, 0.34117648, 1)
 CheckButton/font_sizes/font_size = 18
-HScrollBar/styles/grabber = SubResource("StyleBoxFlat_axncs")
-HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_4fp8c")
+HScrollBar/styles/grabber = SubResource("StyleBoxTexture_scrollbar")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxTexture_scrollbar")
 HScrollBar/styles/scroll = SubResource("StyleBoxFlat_0f6i3")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_y0ixg")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_etupa")
@@ -647,8 +691,10 @@ MainMenuButton/styles/focus = SubResource("StyleBoxFlat_078gm")
 MainMenuButton/styles/hover = SubResource("StyleBoxTexture_btn_menu_hover")
 MainMenuButton/styles/normal = SubResource("StyleBoxTexture_btn_menu_normal")
 MainMenuButton/styles/pressed = SubResource("StyleBoxTexture_btn_menu_pressed")
-Panel/styles/panel = SubResource("StyleBoxFlat_nv6t3")
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_eff20")
+Panel/styles/panel = SubResource("StyleBoxTexture_panel")
+PanelContainer/styles/panel = SubResource("StyleBoxTexture_panel")
+ProgressBar/styles/background = SubResource("StyleBoxTexture_pb_bg")
+ProgressBar/styles/fill = SubResource("StyleBoxTexture_pb_fill")
 PauseMenuButton/base_type = &"Button"
 PauseMenuButton/colors/font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 PauseMenuButton/colors/font_disabled_color = Color(0.5, 0.5, 0.5, 0.5)
@@ -676,6 +722,6 @@ TabContainer/font_sizes/font_size = 18
 TabContainer/styles/panel = SubResource("StyleBoxFlat_cqecq")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_s00gw")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_b8tcx")
-VScrollBar/styles/grabber = SubResource("StyleBoxFlat_ybveh")
+VScrollBar/styles/grabber = SubResource("StyleBoxTexture_scrollbar")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_34rx8")
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_87qap")

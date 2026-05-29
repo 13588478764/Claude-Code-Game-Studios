@@ -49,6 +49,18 @@ const TIER_COLORS: Dictionary = {
 	"legendary": Color(1.0, 0.8, 0.0),
 }
 
+## 品阶边框路径
+const TIER_FRAME_PATHS: Dictionary = {
+	"common": "res://assets/ui/frames/frame_rarity_common.png",
+	"uncommon": "res://assets/ui/frames/frame_rarity_fine.png",
+	"rare": "res://assets/ui/frames/frame_rarity_fine.png",
+	"epic": "res://assets/ui/frames/frame_rarity_epic.png",
+	"legendary": "res://assets/ui/frames/frame_rarity_legendary.png",
+}
+
+## 品阶边框纹理缓存
+var _tier_frame_cache: Dictionary = {}
+
 ## 物品类型映射（items.json type → 过滤分类）
 const TYPE_FILTER_MAP: Dictionary = {
 	"weapon": "equipment",
@@ -180,10 +192,7 @@ func _refresh_inventory() -> void:
 		var tier = item.get("tier", "common")
 		var tier_color = TIER_COLORS.get(tier, Color.WHITE)
 
-		var icon_tex: Texture2D = null
-		var icon_path = item.get("icon", "")
-		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
-			icon_tex = load(icon_path) as Texture2D
+		var icon_tex: Texture2D = _build_item_icon(item.get("icon", ""), tier)
 
 		_item_list.add_item(display_name, icon_tex)
 		_item_list.set_item_custom_fg_color(i, tier_color)
@@ -516,3 +525,39 @@ func _load_reduce_motion_setting() -> bool:
 	if json == null:
 		return false
 	return json.get("reduce_motion", false)
+
+
+## 构建带品阶边框的物品图标
+func _build_item_icon(icon_path: String, tier: String) -> Texture2D:
+	var icon_tex: Texture2D = null
+	if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
+		icon_tex = load(icon_path) as Texture2D
+
+	var frame_path: String = TIER_FRAME_PATHS.get(tier, "")
+	if frame_path.is_empty() or not ResourceLoader.exists(frame_path):
+		return icon_tex
+
+	var frame_tex: Texture2D = _get_cached_frame(frame_path)
+	if icon_tex == null:
+		return frame_tex
+
+	# 合成: 物品图标 + 品阶边框叠加
+	var size := 64
+	var result := Image.create(size, size, false, Image.FORMAT_RGBA8)
+	var icon_img := icon_tex.get_image()
+	icon_img.resize(size, size, Image.INTERPOLATE_LANCZOS)
+	result.blit_rect(icon_img, Rect2i(0, 0, size, size), Vector2i.ZERO)
+
+	var frame_img := frame_tex.get_image()
+	frame_img.resize(size, size, Image.INTERPOLATE_LANCZOS)
+	result.blend_rect(frame_img, Rect2i(0, 0, size, size), Vector2i.ZERO)
+
+	return ImageTexture.create_from_image(result)
+
+
+func _get_cached_frame(path: String) -> Texture2D:
+	if _tier_frame_cache.has(path):
+		return _tier_frame_cache[path]
+	var tex: Texture2D = load(path) as Texture2D
+	_tier_frame_cache[path] = tex
+	return tex
