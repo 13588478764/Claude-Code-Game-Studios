@@ -269,10 +269,22 @@ func _build_region_buttons() -> void:
 	for child in region_list.get_children():
 		child.queue_free()
 
+	var player_level: int = 1
+	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
+	if char_sys:
+		player_level = char_sys.level
+
 	for i in range(_game_loop.REGIONS.size()):
 		var region: Dictionary = _game_loop.REGIONS[i]
 		var btn := Button.new()
-		btn.text = "%s (Lv.%d)" % [region.name, region.level]
+		var region_level: int = region.get("level", 1)
+		var locked: bool = player_level < region_level
+		if locked:
+			btn.text = "%s (Lv.%d 🔒)" % [region.name, region_level]
+			btn.disabled = true
+			btn.tooltip_text = "需要等级 %d 解锁" % region_level
+		else:
+			btn.text = "%s (Lv.%d)" % [region.name, region_level]
 		btn.custom_minimum_size = Vector2(200, 36)
 		var idx := i
 		btn.pressed.connect(func(): _on_region_selected(idx))
@@ -407,6 +419,7 @@ func _refresh_display() -> void:
 	var region: Dictionary = _game_loop.current_region
 	region_name_label.text = "%s · Lv.%d" % [region.get("name", "未知区域"), region.get("level", 1)]
 	_load_region_background(region)
+	_build_region_buttons()
 
 	var summary: Dictionary = _game_loop.get_player_summary()
 	player_level_label.text = "等级: %d" % summary.get("level", 1)
@@ -549,14 +562,14 @@ func _close_tutorial() -> void:
 # 主线推进
 # ============================================================================
 
-## 主线事件序列 (按顺序触发, 每个是一个对话 ID)
+## 主线事件序列 (按顺序触发, 需满足 required_level 才能推进)
 const MAIN_STORY_EVENTS: Array[Dictionary] = [
-	{"event_id": "act1_event1_opening", "dialogue_id": "act1_event1_opening", "hint": "与村中长老交谈了解情况"},
-	{"event_id": "act1_event2_cultivation", "dialogue_id": "act1_event2_cultivation", "hint": "开始修炼之路"},
-	{"event_id": "act1_event3_crisis", "dialogue_id": "act1_event3_crisis", "hint": "调查青云镇异变"},
-	{"event_id": "act1_event4_boss", "dialogue_id": "act1_event4_boss", "hint": "面对青云镇危机"},
-	{"event_id": "act1_event5_ruins", "dialogue_id": "act1_event5_ruins", "hint": "探索古遗迹"},
-	{"event_id": "act1_event6_resolution", "dialogue_id": "act1_event6_resolution", "hint": "解决青云镇危机"},
+	{"event_id": "act1_event1_opening", "dialogue_id": "act1_event1_opening", "hint": "与村中长老交谈了解情况", "required_level": 1},
+	{"event_id": "act1_event2_cultivation", "dialogue_id": "act1_event2_cultivation", "hint": "开始修炼之路", "required_level": 3},
+	{"event_id": "act1_event3_crisis", "dialogue_id": "act1_event3_crisis", "hint": "调查青云镇异变", "required_level": 5},
+	{"event_id": "act1_event4_boss", "dialogue_id": "act1_event4_boss", "hint": "面对青云镇危机", "required_level": 8},
+	{"event_id": "act1_event5_ruins", "dialogue_id": "act1_event5_ruins", "hint": "探索古遗迹", "required_level": 12},
+	{"event_id": "act1_event6_resolution", "dialogue_id": "act1_event6_resolution", "hint": "解决青云镇危机", "required_level": 15},
 ]
 
 var _story_triggered_this_session: bool = false
@@ -570,30 +583,35 @@ func _try_advance_main_story() -> void:
 
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
+	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	if act_mgr == null or dialogue_mgr == null:
 		return
 
-	# 找到当前幕次中第一个未完成的事件
+	var player_level: int = 1
+	if char_sys:
+		player_level = char_sys.level
+
 	for event in MAIN_STORY_EVENTS:
 		var event_id: String = event.event_id
 		if act_mgr.is_event_completed(event_id):
 			continue
 
-		# 触发这个事件的对话
+		# 等级不够 → 不触发，任务提示会显示需要的等级
+		var required: int = event.get("required_level", 1)
+		if player_level < required:
+			return
+
 		_story_triggered_this_session = true
 		var dialogue_id: String = event.dialogue_id
 		act_mgr.trigger_event(act_mgr.current_act, event_id)
 
-		# 延迟一帧启动对话，确保 UI 完全就位
 		await get_tree().process_frame
 		dialogue_mgr.start_dialogue(dialogue_id)
 
-		# 对话结束后标记事件完成
 		if not dialogue_mgr.dialogue_ended.is_connected(_on_main_story_dialogue_ended):
 			dialogue_mgr.dialogue_ended.connect(_on_main_story_dialogue_ended.bind(event_id), CONNECT_ONE_SHOT)
 		return
 
-	# 所有事件都完成了 → 当前幕次完成提示
 	_story_triggered_this_session = true
 
 
@@ -607,9 +625,17 @@ func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> vo
 ## 获取当前主线任务提示
 func get_current_story_hint() -> String:
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
+	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	if act_mgr == null:
 		return ""
+	var player_level: int = 1
+	if char_sys:
+		player_level = char_sys.level
+
 	for event in MAIN_STORY_EVENTS:
 		if not act_mgr.is_event_completed(event.event_id):
+			var required: int = event.get("required_level", 1)
+			if player_level < required:
+				return "%s (需要等级 %d, 当前 %d)" % [event.hint, required, player_level]
 			return event.hint
 	return "主线完成，自由探索"
