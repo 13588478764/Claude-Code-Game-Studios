@@ -39,7 +39,7 @@
 | s7-14 | 性能基线建立 (/perf-profile) | Performance Analyst | 1 | PENDING | 60 FPS / 16.6 ms 预算; 主菜单/探索/战斗三场景的帧时基线落档 |
 | s7-15 | 修复 29 个失败测试 → 95%+ 通过率 | QA Tester | 2 | DONE | 467/469 (99.6%), 2 pending = headless FPS 测试跳过 |
 | s7-16 | 中期/难度曲线专项 Playtest | QA Lead | 1.5 | PENDING | 30 ~ 60 级段位的 1-2 场 Playtest 记录, 涵盖战斗节奏与升级曲线 |
-| s7-17 | game-concept.md 补 Fun Hypothesis 章节 | Game Designer | 0.5 | PENDING | 显式定义"乐趣假设"段落, 含验证手段 |
+| s7-17 | game-concept.md 补 Fun Hypothesis 章节 | Game Designer | 0.5 | DONE | 4 个乐趣假设 (选择命运/探索奖励/境界突破/武学策略) + 验证方式 |
 
 **Should Have Total**: 5 days
 

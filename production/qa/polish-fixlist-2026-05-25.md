@@ -152,7 +152,9 @@ index.md 已完整列出 44 个 epic (97 行), 3 个 polish epic 目录已存在
 
 所有 stub 注释已标准化为 `TODO(beta):` 格式 (10 个存活 TODO)。dialogue_data.gd 条件已有真实实现 (见 #7)。
 
-### 21. 30+ 预留信号定义了从未 emit 也从未 connect
+### 21. 30+ 预留信号定义了从未 emit 也从未 connect ✅ 2026-05-29
+
+30 个死信号行内标注 `# vBeta 预留 — 当前无 emit/connect`，不删除以保留 Beta 阶段接入接口。
 
 party / buff / debuff / quest / nav / item / skill 分类信号 — 不构成 bug 但误导后人, Beta 前应清理或加注释 "// 预留, 待 vX.Y 接入"。
 
