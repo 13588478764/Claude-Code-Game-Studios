@@ -5,108 +5,109 @@
 [node name="DialogueBox" type="Control"]
 script = ExtResource("1_dialogue")
 layout_mode = 3
-anchors_preset = -1
-anchor_left = 0.1
-anchor_top = 0.65
-anchor_right = 0.9
-anchor_bottom = 0.95
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 visible = false
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="DialogueBG" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.06, 0.06, 0.12, 0.92)
+expand_mode = 1
+stretch_mode = 6
+modulate = Color(0.7, 0.7, 0.7, 1)
 
-
-[node name="Border" type="ColorRect" parent="."]
+[node name="LeftPortrait" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color(1.0, 0.843, 0.0, 0.8)
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.15
+anchor_right = 0.28
+anchor_bottom = 0.68
+expand_mode = 1
+stretch_mode = 5
+visible = false
 
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="RightPortrait" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme_override_constants/separation = 12
-custom_minimum_size = Vector2(0, 0)
+anchors_preset = -1
+anchor_left = 0.72
+anchor_top = 0.15
+anchor_right = 0.98
+anchor_bottom = 0.68
+expand_mode = 1
+stretch_mode = 5
+visible = false
 
-[node name="SpeakerPanel" type="Panel" parent="VBoxContainer"]
+[node name="DialoguePanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.72
+anchor_right = 0.95
+anchor_bottom = 0.97
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialoguePanel"]
 layout_mode = 2
-size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 32)
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/SpeakerPanel"]
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="SpeakerIcon" type="TextureRect" parent="VBoxContainer/SpeakerPanel/HBoxContainer"]
-custom_minimum_size = Vector2(28, 28)
-expand_mode = 1
-stretch_mode = 3
-
-[node name="SpeakerName" type="Label" parent="VBoxContainer/SpeakerPanel/HBoxContainer"]
+[node name="SpeakerPanel" type="HBoxContainer" parent="DialoguePanel/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 18
+theme_override_constants/separation = 12
+
+[node name="SpeakerName" type="Label" parent="DialoguePanel/VBoxContainer/SpeakerPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
 text = "NPC名称"
 
-[node name="DialogueText" type="RichTextLabel" parent="VBoxContainer"]
+[node name="DialogueText" type="RichTextLabel" parent="DialoguePanel/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 1
+size_flags_vertical = 3
 bbcode_enabled = true
 autowrap_mode = 3
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 60)
 scroll_active = false
+theme_override_font_sizes/font_size = 18
 text = "对话内容..."
 
-[node name="ChoicesContainer" type="VBoxContainer" parent="VBoxContainer"]
+[node name="ChoicesContainer" type="VBoxContainer" parent="DialoguePanel/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 6
+theme_override_constants/separation = 4
 
-[node name="Choice1" type="Button" parent="VBoxContainer/ChoicesContainer"]
+[node name="Choice1" type="Button" parent="DialoguePanel/VBoxContainer/ChoicesContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "选择1"
 visible = false
 
-[node name="Choice2" type="Button" parent="VBoxContainer/ChoicesContainer"]
+[node name="Choice2" type="Button" parent="DialoguePanel/VBoxContainer/ChoicesContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "选择2"
 visible = false
 
-[node name="Choice3" type="Button" parent="VBoxContainer/ChoicesContainer"]
+[node name="Choice3" type="Button" parent="DialoguePanel/VBoxContainer/ChoicesContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "选择3"
 visible = false
 
-[node name="Choice4" type="Button" parent="VBoxContainer/ChoicesContainer"]
+[node name="Choice4" type="Button" parent="DialoguePanel/VBoxContainer/ChoicesContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "选择4"
 visible = false
 
-[node name="BottomBar" type="HBoxContainer" parent="VBoxContainer"]
+[node name="BottomBar" type="HBoxContainer" parent="DialoguePanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="ContinueHint" type="Label" parent="VBoxContainer/BottomBar"]
+[node name="ContinueHint" type="Label" parent="DialoguePanel/VBoxContainer/BottomBar"]
 layout_mode = 2
 size_flags_horizontal = 3
 visible = false
-text = "[按空格继续]"
+text = "[点击继续]"
 self_modulate = Color(1, 1, 1, 0.5)
 
-[node name="CloseButton" type="Button" parent="VBoxContainer/BottomBar"]
+[node name="CloseButton" type="Button" parent="DialoguePanel/VBoxContainer/BottomBar"]
 layout_mode = 2
 custom_minimum_size = Vector2(80, 0)
 text = "跳过"

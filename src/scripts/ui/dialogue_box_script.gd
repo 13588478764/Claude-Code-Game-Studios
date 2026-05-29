@@ -1,5 +1,5 @@
-## 对话UI脚本
-## 处理对话显示、选择按钮和玩家输入
+## 对话UI脚本 — 视觉小说模式
+## 全屏背景 + 左右立绘 + 底部对话框
 extends Control
 
 ## 信号
@@ -7,14 +7,14 @@ signal dialogue_closed
 signal player_choice_selected(choice_index: int)
 
 ## 节点引用
-@onready var _speaker_name: Label = $VBoxContainer/SpeakerPanel/HBoxContainer/SpeakerName
-@onready var _dialogue_text: RichTextLabel = $VBoxContainer/DialogueText
-@onready var _choices_container: VBoxContainer = $VBoxContainer/ChoicesContainer
-@onready var _continue_hint: Label = $VBoxContainer/BottomBar/ContinueHint
-@onready var _close_button: Button = $VBoxContainer/BottomBar/CloseButton
-
-## 说话人头像 (运行时创建)
-var _speaker_portrait: TextureRect = null
+@onready var _dialogue_bg: TextureRect = $DialogueBG
+@onready var _left_portrait: TextureRect = $LeftPortrait
+@onready var _right_portrait: TextureRect = $RightPortrait
+@onready var _speaker_name: Label = $DialoguePanel/VBoxContainer/SpeakerPanel/SpeakerName
+@onready var _dialogue_text: RichTextLabel = $DialoguePanel/VBoxContainer/DialogueText
+@onready var _choices_container: VBoxContainer = $DialoguePanel/VBoxContainer/ChoicesContainer
+@onready var _continue_hint: Label = $DialoguePanel/VBoxContainer/BottomBar/ContinueHint
+@onready var _close_button: Button = $DialoguePanel/VBoxContainer/BottomBar/CloseButton
 
 ## 选择按钮缓存
 var _choice_buttons: Array[Button] = []
@@ -29,123 +29,152 @@ var _current_choices: Array = []
 var _waiting_for_input: bool = false
 var _has_choices: bool = false
 
-func _ready() -> void:
-	_create_speaker_portrait()
+## 当前对话的双方 ID
+var _current_npc_id: String = ""
 
-	# 缓存选择按钮
+
+func _ready() -> void:
 	_choice_buttons.assign([
-		$VBoxContainer/ChoicesContainer/Choice1,
-		$VBoxContainer/ChoicesContainer/Choice2,
-		$VBoxContainer/ChoicesContainer/Choice3,
-		$VBoxContainer/ChoicesContainer/Choice4
+		$DialoguePanel/VBoxContainer/ChoicesContainer/Choice1,
+		$DialoguePanel/VBoxContainer/ChoicesContainer/Choice2,
+		$DialoguePanel/VBoxContainer/ChoicesContainer/Choice3,
+		$DialoguePanel/VBoxContainer/ChoicesContainer/Choice4
 	])
 
-	# 隐藏所有选择按钮
 	_hide_all_choices()
 
-	# 连接按钮信号
 	for i in range(_choice_buttons.size()):
 		_choice_buttons[i].pressed.connect(_on_choice_pressed.bind(i))
 
-	# 隐藏继续提示
 	_continue_hint.visible = false
-
-	# 连接关闭按钮
 	_close_button.pressed.connect(_on_close_pressed)
 
-
-	# 自动连接DialogueManager
-	var dialogue_manager = get_node_or_null("/root/DialogueManager")
+	var dialogue_manager: Node = get_node_or_null("/root/DialogueManager")
 	if dialogue_manager != null:
 		set_dialogue_manager(dialogue_manager)
-		print("[DialogueBox] Connected to DialogueManager")
-	else:
-		push_warning("[DialogueBox] DialogueManager not found - dialogue UI will not function")
 
-## 设置对话管理器
+
 func set_dialogue_manager(manager: Node) -> void:
 	_dialogue_manager = manager
-	
 	if _dialogue_manager != null:
-		# 连接信号
 		if not _dialogue_manager.node_displayed.is_connected(_on_node_displayed):
 			_dialogue_manager.node_displayed.connect(_on_node_displayed)
 		if not _dialogue_manager.dialogue_ended.is_connected(_on_dialogue_ended):
 			_dialogue_manager.dialogue_ended.connect(_on_dialogue_ended)
 
-## 显示对话面板
+
 func show_dialogue() -> void:
 	visible = true
+	_load_dialogue_bg()
 	grab_focus()
 
-## 隐藏对话面板
+
 func hide_dialogue() -> void:
 	visible = false
 	_waiting_for_input = false
 	_has_choices = false
+	_left_portrait.visible = false
+	_right_portrait.visible = false
 
-## 更新说话者名称和头像
+
 func _update_speaker(speaker_id: String) -> void:
-	var speaker_name := _get_display_name(speaker_id)
-	_speaker_name.text = speaker_name
-	_load_speaker_portrait(speaker_id)
+	_speaker_name.text = _get_display_name(speaker_id)
+	_update_portraits(speaker_id)
 
-## 更新对话文本
+
+func _update_portraits(speaker_id: String) -> void:
+	if speaker_id == "system" or speaker_id == "narrator" or speaker_id.is_empty():
+		_left_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+		_right_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+		return
+
+	# 玩家立绘始终在左侧
+	_load_portrait(_left_portrait, "protagonist_male")
+	_left_portrait.visible = true
+
+	if speaker_id == "player":
+		_left_portrait.modulate = Color.WHITE
+		_right_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+	else:
+		# NPC 在右侧
+		_current_npc_id = speaker_id
+		_load_portrait(_right_portrait, speaker_id)
+		_right_portrait.visible = true
+		_left_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+		_right_portrait.modulate = Color.WHITE
+
+
+func _load_portrait(target: TextureRect, char_id: String) -> void:
+	var path := "res://assets/ui/portraits/portrait_%s.png" % char_id
+	if ResourceLoader.exists(path):
+		target.texture = load(path) as Texture2D
+		target.visible = true
+	else:
+		target.visible = false
+
+
+func _load_dialogue_bg() -> void:
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
+	if game_loop == null:
+		return
+	var region_id: String = game_loop.current_region.get("id", "")
+	var bg_path := "res://assets/ui/backgrounds/bg_%s.png" % region_id
+	if ResourceLoader.exists(bg_path):
+		_dialogue_bg.texture = load(bg_path) as Texture2D
+	else:
+		# 回退到通用背景
+		var fallback := "res://assets/ui/backgrounds/bg_qingyun_sect.png"
+		if ResourceLoader.exists(fallback):
+			_dialogue_bg.texture = load(fallback) as Texture2D
+
+
 func _update_text(text: String) -> void:
 	_dialogue_text.text = text
 
-## 显示选择按钮
+
 func _show_choices(choices: Array) -> void:
 	_hide_all_choices()
 	_has_choices = true
 	_current_choices = choices
 	_continue_hint.visible = false
-	
+
 	var count := mini(choices.size(), _choice_buttons.size())
 	for i in range(count):
 		var choice = choices[i]
 		_choice_buttons[i].text = choice.text if choice.text != "" else "选择"
 		_choice_buttons[i].visible = true
-
-		# 显示道心提示（如果有）
 		var dao_heart_hint: int = choice.dao_heart_hint
 		if dao_heart_hint != 0:
 			var hint_text := " (+)" if dao_heart_hint > 0 else " (-)"
 			_choice_buttons[i].text += hint_text
 
-## 隐藏所有选择按钮
+
 func _hide_all_choices() -> void:
 	for btn in _choice_buttons:
 		btn.visible = false
 	_current_choices.clear()
 	_has_choices = false
 
-## 显示继续提示
+
 func _show_continue_hint() -> void:
 	_continue_hint.visible = true
 	_waiting_for_input = true
 
-## 获取显示名称
+
 func _get_display_name(speaker_id: String) -> String:
 	match speaker_id:
-		"yunzhonghe":
-			return "云中鹤"
-		"tiewushuang":
-			return "铁无双"
-		"liuruyan":
-			return "柳如烟"
-		"murongxue":
-			return "慕容雪"
-		"xiaohanye":
-			return "萧寒夜"
-		"player":
-			return "我"
-		"system":
-			return ""
-		_:
-			return speaker_id.capitalize()
+		"yunzhonghe": return "云中鹤"
+		"tiewushuang": return "铁无双"
+		"liuruyan": return "柳如烟"
+		"murongxue": return "慕容雪"
+		"xiaohanye": return "萧寒夜"
+		"xuanjizhenren": return "玄机真人"
+		"xuewuhen": return "血无痕"
+		"player": return "我"
+		"system", "narrator": return ""
+		_: return speaker_id.capitalize()
 
-## 处理节点显示
+
 func _on_node_displayed(node: DialogueData.DialogueNode) -> void:
 	if not visible:
 		show_dialogue()
@@ -161,21 +190,20 @@ func _on_node_displayed(node: DialogueData.DialogueNode) -> void:
 		_show_continue_hint()
 		_waiting_for_input = true
 
-## 对话结束
+
 func _on_dialogue_ended(_dialogue_id: String) -> void:
 	hide_dialogue()
 	dialogue_closed.emit()
 
-## 玩家选择按钮
+
 func _on_choice_pressed(index: int) -> void:
 	if index >= 0 and index < _current_choices.size():
 		player_choice_selected.emit(index)
-		
 		if _dialogue_manager != null:
 			_dialogue_manager.select_choice(index)
-		
 		_hide_all_choices()
 		_waiting_for_input = false
+
 
 func _on_close_pressed() -> void:
 	if _dialogue_manager != null:
@@ -198,50 +226,15 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event()
 
 
-func _create_speaker_portrait() -> void:
-	_speaker_portrait = TextureRect.new()
-	_speaker_portrait.name = "SpeakerPortrait"
-	_speaker_portrait.custom_minimum_size = Vector2(128, 128)
-	_speaker_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_speaker_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_speaker_portrait.visible = false
-	var hbox = $VBoxContainer/SpeakerPanel/HBoxContainer
-	hbox.add_child(_speaker_portrait)
-	hbox.move_child(_speaker_portrait, 0)
-
-
-func _load_speaker_portrait(speaker_id: String) -> void:
-	if _speaker_portrait == null:
-		return
-
-	if speaker_id == "system" or speaker_id == "narrator":
-		_speaker_portrait.visible = false
-		return
-
-	var portrait_id := speaker_id
-	if speaker_id == "player":
-		portrait_id = "protagonist_male"
-
-	var path := "res://assets/ui/portraits/portrait_%s.png" % portrait_id
-	if ResourceLoader.exists(path):
-		_speaker_portrait.texture = load(path) as Texture2D
-		_speaker_portrait.visible = true
-	else:
-		_speaker_portrait.visible = false
-
-
 func _input(event: InputEvent) -> void:
 	if not visible:
 		return
-	
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
-			# ESC键关闭对话
 			if _dialogue_manager != null:
 				_dialogue_manager.end_dialogue()
 			get_viewport().set_input_as_handled()
 			return
-		
 		if event.keycode == KEY_SPACE or event.keycode == KEY_ENTER:
 			if _has_choices:
 				return
