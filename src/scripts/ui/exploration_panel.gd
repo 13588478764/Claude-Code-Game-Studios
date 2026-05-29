@@ -91,6 +91,7 @@ func _initialize() -> void:
 	_build_region_buttons()
 	_build_npc_buttons()
 	_refresh_display()
+	_check_first_time_tutorial()
 
 # ============================================================================
 # 面板初始化
@@ -387,13 +388,11 @@ func _on_encounter_ui_visibility_changed(encounter_ui: Control) -> void:
 
 
 func _on_game_state_changed(new_state: int) -> void:
-	# 0=MENU, 1=EXPLORING, 2=IN_COMBAT, 3=COMBAT_RESULT
-	print("[ExplorationPanel] 收到状态变化: %d, 当前visible=%s" % [new_state, str(visible)])
 	match new_state:
 		1:  # EXPLORING
 			visible = true
-			print("[ExplorationPanel] 设置 visible=true, 实际=%s, layer=%d" % [str(visible), layer])
 			_refresh_display()
+			_try_advance_main_story()
 		_:
 			visible = false
 
@@ -415,6 +414,13 @@ func _refresh_display() -> void:
 	player_realm_label.text = "境界: %s" % summary.get("realm", "炼气")
 	player_silver_label.text = "银两: %d" % summary.get("silver", 0)
 
+	# 任务提示
+	var hint := get_current_story_hint()
+	if hint != "" and log_label:
+		var current_text: String = log_label.text
+		if not current_text.begins_with("[color"):
+			log_label.text = "[color=gold]当前目标: %s[/color]\n%s" % [hint, current_text]
+
 
 ## 根据当前区域加载背景图
 func _load_region_background(region: Dictionary) -> void:
@@ -426,3 +432,184 @@ func _load_region_background(region: Dictionary) -> void:
 	var bg_path := "res://assets/ui/backgrounds/%s.png" % bg_name
 	if ResourceLoader.exists(bg_path):
 		scene_background.texture = load(bg_path) as Texture2D
+
+
+# ============================================================================
+# 新手引导
+# ============================================================================
+
+const TUTORIAL_SAVE_KEY := "tutorial_completed"
+
+var _tutorial_steps: Array[String] = [
+	"欢迎来到修真界！\n\n你是一名初入修真之路的年轻修士，目标是通过探索、战斗和奇遇不断提升境界。",
+	"左侧面板列出了附近的修士。\n点击他们的名字可以交谈，获取情报或触发剧情。",
+	"右侧面板可以选择前往不同区域。\n不同区域有不同等级的敌人和独特的奇遇。",
+	"点击「探索此区域」按钮开始冒险。\n每次探索可能遭遇战斗、触发仙缘奇遇或获得经验。",
+	"快捷键提示:\n  I=背包  E=装备  C=角色  M=地图  J=任务  ESC=暂停\n\n祝你修真之路顺利！",
+]
+var _tutorial_step: int = 0
+var _tutorial_overlay: Control = null
+
+
+func _check_first_time_tutorial() -> void:
+	if _has_completed_tutorial():
+		return
+	await get_tree().create_timer(0.5).timeout
+	_show_tutorial_step()
+
+
+func _has_completed_tutorial() -> bool:
+	var save_path := "user://tutorial_state.save"
+	if FileAccess.file_exists(save_path):
+		var file := FileAccess.open(save_path, FileAccess.READ)
+		if file:
+			var content := file.get_as_text()
+			file.close()
+			return content.strip_edges() == "done"
+	return false
+
+
+func _mark_tutorial_completed() -> void:
+	var file := FileAccess.open("user://tutorial_state.save", FileAccess.WRITE)
+	if file:
+		file.store_string("done")
+		file.close()
+
+
+func _show_tutorial_step() -> void:
+	if _tutorial_step >= _tutorial_steps.size():
+		_close_tutorial()
+		return
+
+	if _tutorial_overlay == null:
+		_tutorial_overlay = Control.new()
+		_tutorial_overlay.name = "TutorialOverlay"
+		_tutorial_overlay.anchors_preset = Control.PRESET_FULL_RECT
+		_tutorial_overlay.z_index = 500
+		var root: Control = $Root
+		root.add_child(_tutorial_overlay)
+
+		var bg := ColorRect.new()
+		bg.anchors_preset = Control.PRESET_FULL_RECT
+		bg.color = Color(0, 0, 0, 0.6)
+		bg.name = "BG"
+		_tutorial_overlay.add_child(bg)
+
+		var panel := PanelContainer.new()
+		panel.name = "Panel"
+		panel.anchors_preset = Control.PRESET_CENTER
+		panel.offset_left = -300
+		panel.offset_top = -120
+		panel.offset_right = 300
+		panel.offset_bottom = 120
+		_tutorial_overlay.add_child(panel)
+
+		var vbox := VBoxContainer.new()
+		vbox.name = "VBox"
+		vbox.add_theme_constant_override("separation", 16)
+		panel.add_child(vbox)
+
+		var label := Label.new()
+		label.name = "StepLabel"
+		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		label.add_theme_font_size_override("font_size", 20)
+		vbox.add_child(label)
+
+		var btn := Button.new()
+		btn.name = "NextBtn"
+		btn.custom_minimum_size = Vector2(120, 40)
+		btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		btn.pressed.connect(_on_tutorial_next)
+		vbox.add_child(btn)
+
+	var label: Label = _tutorial_overlay.get_node("Panel/VBox/StepLabel")
+	var btn: Button = _tutorial_overlay.get_node("Panel/VBox/NextBtn")
+	label.text = _tutorial_steps[_tutorial_step]
+
+	if _tutorial_step < _tutorial_steps.size() - 1:
+		btn.text = "下一步 (%d/%d)" % [_tutorial_step + 1, _tutorial_steps.size()]
+	else:
+		btn.text = "开始修炼！"
+
+
+func _on_tutorial_next() -> void:
+	_tutorial_step += 1
+	_show_tutorial_step()
+
+
+func _close_tutorial() -> void:
+	if _tutorial_overlay:
+		_tutorial_overlay.queue_free()
+		_tutorial_overlay = null
+	_mark_tutorial_completed()
+	_try_advance_main_story()
+
+
+# ============================================================================
+# 主线推进
+# ============================================================================
+
+## 主线事件序列 (按顺序触发, 每个是一个对话 ID)
+const MAIN_STORY_EVENTS: Array[Dictionary] = [
+	{"event_id": "act1_event1_opening", "dialogue_id": "act1_event1_opening", "hint": "与村中长老交谈了解情况"},
+	{"event_id": "act1_event2_cultivation", "dialogue_id": "act1_event2_cultivation", "hint": "开始修炼之路"},
+	{"event_id": "act1_event3_crisis", "dialogue_id": "act1_event3_crisis", "hint": "调查青云镇异变"},
+	{"event_id": "act1_event4_boss", "dialogue_id": "act1_event4_boss", "hint": "面对青云镇危机"},
+	{"event_id": "act1_event5_ruins", "dialogue_id": "act1_event5_ruins", "hint": "探索古遗迹"},
+	{"event_id": "act1_event6_resolution", "dialogue_id": "act1_event6_resolution", "hint": "解决青云镇危机"},
+]
+
+var _story_triggered_this_session: bool = false
+
+
+func _try_advance_main_story() -> void:
+	if _story_triggered_this_session:
+		return
+	if _tutorial_overlay != null:
+		return
+
+	var act_mgr: Node = get_node_or_null("/root/ActManager")
+	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
+	if act_mgr == null or dialogue_mgr == null:
+		return
+
+	# 找到当前幕次中第一个未完成的事件
+	for event in MAIN_STORY_EVENTS:
+		var event_id: String = event.event_id
+		if act_mgr.is_event_completed(event_id):
+			continue
+
+		# 触发这个事件的对话
+		_story_triggered_this_session = true
+		var dialogue_id: String = event.dialogue_id
+		act_mgr.trigger_event(act_mgr.current_act, event_id)
+
+		# 延迟一帧启动对话，确保 UI 完全就位
+		await get_tree().process_frame
+		dialogue_mgr.start_dialogue(dialogue_id)
+
+		# 对话结束后标记事件完成
+		if not dialogue_mgr.dialogue_ended.is_connected(_on_main_story_dialogue_ended):
+			dialogue_mgr.dialogue_ended.connect(_on_main_story_dialogue_ended.bind(event_id), CONNECT_ONE_SHOT)
+		return
+
+	# 所有事件都完成了 → 当前幕次完成提示
+	_story_triggered_this_session = true
+
+
+func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> void:
+	var act_mgr: Node = get_node_or_null("/root/ActManager")
+	if act_mgr:
+		act_mgr.complete_event(event_id)
+	_story_triggered_this_session = false
+
+
+## 获取当前主线任务提示
+func get_current_story_hint() -> String:
+	var act_mgr: Node = get_node_or_null("/root/ActManager")
+	if act_mgr == null:
+		return ""
+	for event in MAIN_STORY_EVENTS:
+		if not act_mgr.is_event_completed(event.event_id):
+			return event.hint
+	return "主线完成，自由探索"
