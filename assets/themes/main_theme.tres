@@ -1,122 +1,4 @@
-[gd_resource type="Theme" load_steps=4 format=3 uid="uid://xk4mt5eqkqmw"]
-
-[ext_resource type="Texture2D" path="res://assets/ui/frames/button_standard.png" id="btn_std"]
-[ext_resource type="Texture2D" path="res://assets/ui/frames/button_close.png" id="btn_close"]
-[ext_resource type="Texture2D" path="res://assets/ui/frames/button_main_menu.png" id="btn_menu"]
-[ext_resource type="Texture2D" path="res://assets/ui/frames/progress_bar_bg.png" id="pb_bg"]
-[ext_resource type="Texture2D" path="res://assets/ui/frames/progress_bar_fill.png" id="pb_fill"]
-[ext_resource type="Texture2D" path="res://assets/ui/frames/frame_character_panel.png" id="frame_panel"]
-[ext_resource type="Texture2D" path="res://assets/ui/frames/scrollbar_handle.png" id="scrollbar_handle"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_normal"]
-texture = ExtResource("btn_std")
-texture_margin_left = 32.0
-texture_margin_top = 32.0
-texture_margin_right = 32.0
-texture_margin_bottom = 32.0
-content_margin_left = 24.0
-content_margin_top = 12.0
-content_margin_right = 24.0
-content_margin_bottom = 12.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_hover"]
-texture = ExtResource("btn_std")
-texture_margin_left = 32.0
-texture_margin_top = 32.0
-texture_margin_right = 32.0
-texture_margin_bottom = 32.0
-content_margin_left = 24.0
-content_margin_top = 12.0
-content_margin_right = 24.0
-content_margin_bottom = 12.0
-modulate_color = Color(1.2, 1.1, 0.9, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_pressed"]
-texture = ExtResource("btn_std")
-texture_margin_left = 32.0
-texture_margin_top = 32.0
-texture_margin_right = 32.0
-texture_margin_bottom = 32.0
-content_margin_left = 24.0
-content_margin_top = 12.0
-content_margin_right = 24.0
-content_margin_bottom = 12.0
-modulate_color = Color(0.8, 0.75, 0.6, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_menu_normal"]
-texture = ExtResource("btn_menu")
-texture_margin_left = 48.0
-texture_margin_top = 32.0
-texture_margin_right = 48.0
-texture_margin_bottom = 32.0
-content_margin_left = 48.0
-content_margin_top = 16.0
-content_margin_right = 48.0
-content_margin_bottom = 16.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_menu_hover"]
-texture = ExtResource("btn_menu")
-texture_margin_left = 48.0
-texture_margin_top = 32.0
-texture_margin_right = 48.0
-texture_margin_bottom = 32.0
-content_margin_left = 48.0
-content_margin_top = 16.0
-content_margin_right = 48.0
-content_margin_bottom = 16.0
-modulate_color = Color(1.2, 1.1, 0.9, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_menu_pressed"]
-texture = ExtResource("btn_menu")
-texture_margin_left = 48.0
-texture_margin_top = 32.0
-texture_margin_right = 48.0
-texture_margin_bottom = 32.0
-content_margin_left = 48.0
-content_margin_top = 16.0
-content_margin_right = 48.0
-content_margin_bottom = 16.0
-modulate_color = Color(0.8, 0.75, 0.6, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pb_bg"]
-texture = ExtResource("pb_bg")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-content_margin_left = 2.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_pb_fill"]
-texture = ExtResource("pb_fill")
-texture_margin_left = 6.0
-texture_margin_top = 6.0
-texture_margin_right = 6.0
-texture_margin_bottom = 6.0
-content_margin_left = 2.0
-content_margin_top = 2.0
-content_margin_right = 2.0
-content_margin_bottom = 2.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_panel"]
-texture = ExtResource("frame_panel")
-texture_margin_left = 24.0
-texture_margin_top = 24.0
-texture_margin_right = 24.0
-texture_margin_bottom = 24.0
-content_margin_left = 16.0
-content_margin_top = 12.0
-content_margin_right = 16.0
-content_margin_bottom = 12.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_scrollbar"]
-texture = ExtResource("scrollbar_handle")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
+[gd_resource type="Theme" format=3 uid="uid://xk4mt5eqkqmw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ioqn"]
 content_margin_left = 24.0
@@ -631,9 +513,9 @@ Button/colors/font_pressed_color = Color(1, 0.92, 0.5, 1)
 Button/font_sizes/font_size = 20
 Button/styles/disabled = SubResource("StyleBoxFlat_6ioqn")
 Button/styles/focus = SubResource("StyleBoxFlat_3f3va")
-Button/styles/hover = SubResource("StyleBoxTexture_btn_hover")
-Button/styles/normal = SubResource("StyleBoxTexture_btn_normal")
-Button/styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+Button/styles/hover = SubResource("StyleBoxFlat_lxams")
+Button/styles/normal = SubResource("StyleBoxFlat_vhku8")
+Button/styles/pressed = SubResource("StyleBoxFlat_gvtt4")
 CheckBox/colors/font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 CheckBox/colors/font_hover_color = Color(1, 0.84313726, 0, 1)
 CheckBox/font_sizes/font_size = 18
@@ -641,8 +523,8 @@ CheckButton/colors/font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 CheckButton/colors/font_hover_color = Color(1, 0.84313726, 0, 1)
 CheckButton/colors/font_pressed_color = Color(0.18039216, 0.54509807, 0.34117648, 1)
 CheckButton/font_sizes/font_size = 18
-HScrollBar/styles/grabber = SubResource("StyleBoxTexture_scrollbar")
-HScrollBar/styles/grabber_highlight = SubResource("StyleBoxTexture_scrollbar")
+HScrollBar/styles/grabber = SubResource("StyleBoxFlat_axncs")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_4fp8c")
 HScrollBar/styles/scroll = SubResource("StyleBoxFlat_0f6i3")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_y0ixg")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_etupa")
@@ -688,13 +570,11 @@ MainMenuButton/colors/font_pressed_color = Color(1, 0.92, 0.5, 1)
 MainMenuButton/font_sizes/font_size = 24
 MainMenuButton/styles/disabled = SubResource("StyleBoxFlat_doivh")
 MainMenuButton/styles/focus = SubResource("StyleBoxFlat_078gm")
-MainMenuButton/styles/hover = SubResource("StyleBoxTexture_btn_menu_hover")
-MainMenuButton/styles/normal = SubResource("StyleBoxTexture_btn_menu_normal")
-MainMenuButton/styles/pressed = SubResource("StyleBoxTexture_btn_menu_pressed")
-Panel/styles/panel = SubResource("StyleBoxTexture_panel")
-PanelContainer/styles/panel = SubResource("StyleBoxTexture_panel")
-ProgressBar/styles/background = SubResource("StyleBoxTexture_pb_bg")
-ProgressBar/styles/fill = SubResource("StyleBoxTexture_pb_fill")
+MainMenuButton/styles/hover = SubResource("StyleBoxFlat_jungl")
+MainMenuButton/styles/normal = SubResource("StyleBoxFlat_7cwyu")
+MainMenuButton/styles/pressed = SubResource("StyleBoxFlat_1wn1r")
+Panel/styles/panel = SubResource("StyleBoxFlat_nv6t3")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_eff20")
 PauseMenuButton/base_type = &"Button"
 PauseMenuButton/colors/font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 PauseMenuButton/colors/font_disabled_color = Color(0.5, 0.5, 0.5, 0.5)
@@ -703,18 +583,18 @@ PauseMenuButton/colors/font_hover_color = Color(1, 0.84313726, 0, 1)
 PauseMenuButton/colors/font_pressed_color = Color(1, 0.92, 0.5, 1)
 PauseMenuButton/font_sizes/font_size = 20
 PauseMenuButton/styles/focus = SubResource("StyleBoxFlat_gaobj")
-PauseMenuButton/styles/hover = SubResource("StyleBoxTexture_btn_hover")
-PauseMenuButton/styles/normal = SubResource("StyleBoxTexture_btn_normal")
-PauseMenuButton/styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+PauseMenuButton/styles/hover = SubResource("StyleBoxFlat_w0lbt")
+PauseMenuButton/styles/normal = SubResource("StyleBoxFlat_hd7qi")
+PauseMenuButton/styles/pressed = SubResource("StyleBoxFlat_cn8il")
 PrimaryButton/base_type = &"Button"
 PrimaryButton/colors/font_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 PrimaryButton/colors/font_focus_color = Color(1, 0.84313726, 0, 1)
 PrimaryButton/colors/font_hover_color = Color(1, 0.84313726, 0, 1)
 PrimaryButton/font_sizes/font_size = 20
 PrimaryButton/styles/focus = SubResource("StyleBoxFlat_jqgtl")
-PrimaryButton/styles/hover = SubResource("StyleBoxTexture_btn_hover")
-PrimaryButton/styles/normal = SubResource("StyleBoxTexture_btn_normal")
-PrimaryButton/styles/pressed = SubResource("StyleBoxTexture_btn_pressed")
+PrimaryButton/styles/hover = SubResource("StyleBoxFlat_bjvl4")
+PrimaryButton/styles/normal = SubResource("StyleBoxFlat_600w1")
+PrimaryButton/styles/pressed = SubResource("StyleBoxFlat_67t17")
 TabContainer/colors/font_hovered_color = Color(0.9607843, 0.9607843, 0.8627451, 1)
 TabContainer/colors/font_selected_color = Color(1, 0.84313726, 0, 1)
 TabContainer/colors/font_unselected_color = Color(0.86, 0.86, 0.78, 0.6)
@@ -722,6 +602,6 @@ TabContainer/font_sizes/font_size = 18
 TabContainer/styles/panel = SubResource("StyleBoxFlat_cqecq")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_s00gw")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_b8tcx")
-VScrollBar/styles/grabber = SubResource("StyleBoxTexture_scrollbar")
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_ybveh")
 VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_34rx8")
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_87qap")
