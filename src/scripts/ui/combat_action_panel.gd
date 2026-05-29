@@ -454,7 +454,13 @@ func _load_battle_visuals() -> void:
 	# 背景: 用当前区域的背景图
 	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
 	if game_loop and _battle_bg:
-		var bg_name: String = game_loop.current_region.get("bg", "bg_battle_plains")
+		# 优先用战斗专用背景, 回退到区域背景
+		var bg_name := "bg_battle_plains"
+		var battle_bg_path := "res://assets/ui/backgrounds/bg_battle_plains.png"
+		if ResourceLoader.exists(battle_bg_path):
+			bg_name = "bg_battle_plains"
+		else:
+			bg_name = game_loop.current_region.get("bg", "bg_battle_plains")
 		var bg_path := "res://assets/ui/backgrounds/%s.png" % bg_name
 		if ResourceLoader.exists(bg_path):
 			_battle_bg.texture = load(bg_path) as Texture2D
