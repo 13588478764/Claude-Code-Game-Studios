@@ -93,6 +93,9 @@ func _initialize() -> void:
 	_refresh_display()
 	_check_first_time_tutorial()
 
+	if GameEvents:
+		GameEvents.player_realm_changed.connect(_on_realm_breakthrough)
+
 # ============================================================================
 # 面板初始化
 # ============================================================================
@@ -801,3 +804,77 @@ func get_current_story_hint() -> String:
 				return "[color=gray]%s (需要等级 %d, 当前 %d) 🔒[/color]" % [event.hint, required, player_level]
 			return "[color=gold]%s ← 与附近修士交谈触发[/color]" % event.hint
 	return "[color=green]主线完成，自由探索修真界[/color]"
+
+
+# ============================================================================
+# 境界突破插图
+# ============================================================================
+
+const REALM_BREAKTHROUGH_IMAGES: Dictionary = {
+	"筑基": "breakthrough_zhuji",
+	"金丹": "breakthrough_jindan",
+	"元婴": "breakthrough_yuanying",
+	"化神": "breakthrough_huashen",
+	"返虚": "breakthrough_fanxu",
+	"合道": "breakthrough_hedao",
+	"大乘": "breakthrough_dasheng",
+	"渡劫": "breakthrough_dujie",
+	"真仙": "breakthrough_zhenxian",
+}
+
+
+func _on_realm_breakthrough(new_realm: String, _old_realm: String) -> void:
+	var image_name: String = REALM_BREAKTHROUGH_IMAGES.get(new_realm, "")
+	if image_name.is_empty():
+		return
+
+	var img_path := "res://assets/ui/breakthrough_scenes/%s.png" % image_name
+	if not ResourceLoader.exists(img_path):
+		return
+
+	_show_breakthrough_splash(img_path, new_realm)
+
+
+func _show_breakthrough_splash(img_path: String, realm_name: String) -> void:
+	var overlay := Control.new()
+	overlay.name = "BreakthroughSplash"
+	overlay.anchors_preset = Control.PRESET_FULL_RECT
+	overlay.z_index = 600
+
+	var bg := ColorRect.new()
+	bg.anchors_preset = Control.PRESET_FULL_RECT
+	bg.color = Color(0, 0, 0, 0.8)
+	overlay.add_child(bg)
+
+	var img := TextureRect.new()
+	img.anchors_preset = Control.PRESET_CENTER
+	img.offset_left = -256
+	img.offset_top = -256
+	img.offset_right = 256
+	img.offset_bottom = 256
+	img.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	img.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	img.texture = load(img_path) as Texture2D
+	overlay.add_child(img)
+
+	var label := Label.new()
+	label.text = "境界突破！踏入 %s 期" % realm_name
+	label.add_theme_font_size_override("font_size", 36)
+	label.add_theme_color_override("font_color", Color(1.0, 0.84, 0.0))
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.anchors_preset = Control.PRESET_CENTER_BOTTOM
+	label.offset_top = 260
+	label.offset_left = -200
+	label.offset_right = 200
+	overlay.add_child(label)
+
+	var root: Control = $Root
+	root.add_child(overlay)
+
+	# 动画: 淡入 → 停留3秒 → 淡出
+	overlay.modulate = Color(1, 1, 1, 0)
+	var tween := create_tween()
+	tween.tween_property(overlay, "modulate:a", 1.0, 0.5)
+	tween.tween_interval(3.0)
+	tween.tween_property(overlay, "modulate:a", 0.0, 0.5)
+	tween.tween_callback(overlay.queue_free)

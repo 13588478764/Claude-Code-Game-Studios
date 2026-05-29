@@ -435,6 +435,19 @@ func _update_log() -> void:
 		_log_label.text = "\n".join(_log_lines)
 
 
+## 区域 → 战斗背景映射
+const BATTLE_BG_MAP: Dictionary = {
+	"start_village": "bg_battle_village",
+	"bandit_fortress": "bg_battle_fortress",
+	"jiangnan_water": "bg_battle_watertown",
+	"qingyun_mountain": "bg_battle_mountain",
+	"ancient_tomb": "bg_battle_plains",
+	"demon_domain": "bg_battle_fortress",
+	"immortal_palace": "bg_battle_mountaintop",
+	"heavenly_peak": "bg_battle_mountaintop",
+	"void_realm": "bg_battle_plains",
+}
+
 ## 武器类型 → 默认技能图标映射
 const WEAPON_TYPE_ICON: Dictionary = {
 	"Sword": "res://assets/ui/skill_icons/skill_icon_cold_light_sword.png",
@@ -458,16 +471,11 @@ func _load_skill_icon(martial_art_id: String, weapon_type: String) -> Texture2D:
 
 ## 加载战斗场景视觉元素（背景 + 双方立绘）
 func _load_battle_visuals() -> void:
-	# 背景: 用当前区域的背景图
+	# 背景: 按区域选择对应战斗背景
 	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
 	if game_loop and _battle_bg:
-		# 优先用战斗专用背景, 回退到区域背景
-		var bg_name := "bg_battle_plains"
-		var battle_bg_path := "res://assets/ui/backgrounds/bg_battle_plains.png"
-		if ResourceLoader.exists(battle_bg_path):
-			bg_name = "bg_battle_plains"
-		else:
-			bg_name = game_loop.current_region.get("bg", "bg_battle_plains")
+		var region_id: String = game_loop.current_region.get("id", "")
+		var bg_name: String = BATTLE_BG_MAP.get(region_id, "bg_battle_plains")
 		var bg_path := "res://assets/ui/backgrounds/%s.png" % bg_name
 		if ResourceLoader.exists(bg_path):
 			_battle_bg.texture = load(bg_path) as Texture2D

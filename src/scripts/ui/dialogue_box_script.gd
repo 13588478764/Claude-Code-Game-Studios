@@ -104,7 +104,15 @@ func _update_portraits(speaker_id: String) -> void:
 		_right_portrait.modulate = Color.WHITE
 
 
-func _load_portrait(target: TextureRect, char_id: String) -> void:
+func _load_portrait(target: TextureRect, char_id: String, emotion: String = "") -> void:
+	# 优先加载表情变体
+	if not emotion.is_empty():
+		var emo_path := "res://assets/ui/portraits/portrait_%s_%s.png" % [char_id, emotion]
+		if ResourceLoader.exists(emo_path):
+			target.texture = load(emo_path) as Texture2D
+			target.visible = true
+			return
+
 	var path := "res://assets/ui/portraits/portrait_%s.png" % char_id
 	if ResourceLoader.exists(path):
 		target.texture = load(path) as Texture2D
@@ -173,7 +181,8 @@ func _get_display_name(speaker_id: String) -> String:
 func _on_node_displayed(node: DialogueData.DialogueNode) -> void:
 	if not visible:
 		show_dialogue()
-	_update_speaker(node.speaker)
+	var emotion := _infer_emotion(node.text)
+	_update_speaker_with_emotion(node.speaker, emotion)
 	_update_text(node.text)
 
 	var choices = node.get_available_choices()
@@ -236,3 +245,35 @@ func _input(event: InputEvent) -> void:
 			if _waiting_for_input:
 				_advance()
 				get_viewport().set_input_as_handled()
+
+
+## 根据对话文本推断情绪 (简单关键词匹配)
+func _infer_emotion(text: String) -> String:
+	if text.contains("哈哈") or text.contains("太好了") or text.contains("高兴") or text.contains("开心") or text.contains("恭喜") or text.contains("好极"):
+		return "happy"
+	if text.contains("可恶") or text.contains("混蛋") or text.contains("该死") or text.contains("怒") or text.contains("岂有此理") or text.contains("放肆"):
+		return "angry"
+	return ""
+
+
+## 带情绪的立绘更新
+func _update_speaker_with_emotion(speaker_id: String, emotion: String) -> void:
+	_speaker_name.text = _get_display_name(speaker_id)
+
+	if speaker_id == "system" or speaker_id == "narrator" or speaker_id.is_empty():
+		_left_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+		_right_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+		return
+
+	_load_portrait(_left_portrait, "protagonist_male")
+	_left_portrait.visible = true
+
+	if speaker_id == "player":
+		_left_portrait.modulate = Color.WHITE
+		_right_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+	else:
+		_current_npc_id = speaker_id
+		_load_portrait(_right_portrait, speaker_id, emotion)
+		_right_portrait.visible = true
+		_left_portrait.modulate = Color(0.4, 0.4, 0.4, 1)
+		_right_portrait.modulate = Color.WHITE
