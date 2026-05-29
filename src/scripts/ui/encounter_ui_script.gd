@@ -13,6 +13,9 @@ class_name EncounterUiScript
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var background_texture: ColorRect = $CenterContainer/EncounterCard/BackgroundTexture
 
+## 场景插图 (运行时创建, 叠加在 ColorRect 上)
+var _scene_illustration: TextureRect = null
+
 # 信号
 signal encounter_accepted
 signal encounter_declined
@@ -31,6 +34,7 @@ var encounter_data_loader: Node = null
 func _ready() -> void:
 	print("[EncounterUI] Initialized")
 	hide()
+	_create_scene_illustration()
 	
 	# 获取系统引用
 	character_system = get_node_or_null("/root/CharacterSystem")
@@ -104,6 +108,9 @@ func show_encounter(encounter_data: Dictionary) -> void:
 			_:
 				background_texture.color = Color(0.2, 0.2, 0.2, 1.0)  # 默认 - 深灰
 	
+	# 加载奇遇场景插图
+	_load_encounter_illustration(encounter_data.get("encounter_id", ""))
+
 	# 显示福缘图标（如果福缘>60）
 	var player_luck = encounter_data.get("player_luck", 0)
 	if lucky_star_icon:
@@ -243,6 +250,71 @@ func _on_reward_granted(reward_type: String, amount: int) -> void:
 # ============================================================================
 # 公共方法 - 用于外部触发奇遇
 # ============================================================================
+
+func _create_scene_illustration() -> void:
+	if background_texture == null:
+		return
+	_scene_illustration = TextureRect.new()
+	_scene_illustration.name = "SceneIllustration"
+	_scene_illustration.anchors_preset = Control.PRESET_FULL_RECT
+	_scene_illustration.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_scene_illustration.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_scene_illustration.modulate = Color(1, 1, 1, 0.6)
+	_scene_illustration.visible = false
+	background_texture.add_sibling(_scene_illustration)
+
+
+## 奇遇 ID → 插图文件名映射
+const ENCOUNTER_ILLUSTRATION_MAP: Dictionary = {
+	"encounter_01_inheritance": "encounter_ancient_stele",
+	"encounter_02_hidden_cave": "encounter_hidden_cave",
+	"encounter_03_dao_trial": "encounter_dao_trial",
+	"encounter_04_hermit": "encounter_hermit_hut",
+	"encounter_05_conflict": "encounter_cultivation_clash",
+	"encounter_06_memory": "encounter_ancient_stele",
+	"encounter_07_spirit_herb": "encounter_spirit_herb",
+	"encounter_08_spirit_beast": "encounter_spirit_beast",
+	"encounter_09_alchemy": "encounter_alchemy_furnace",
+	"encounter_10_merchant": "encounter_mystery_merchant",
+	"encounter_11_bottleneck": "encounter_dao_trial",
+	"encounter_12_sword_tomb": "encounter_sword_tomb",
+	"encounter_13_illusion": "encounter_illusion_maze",
+	"encounter_14_spirit_vein": "encounter_spirit_vein",
+	"encounter_15_demon": "encounter_demon_ambush",
+	"encounter_16_immortal_cave": "encounter_immortal_cave",
+	"encounter_17_pill_competition": "encounter_alchemy_furnace",
+	"encounter_18_battlefield": "encounter_cultivation_clash",
+	"encounter_19_spirit_pet": "encounter_spirit_beast",
+	"encounter_20_invitation": "encounter_mystery_merchant",
+	"encounter_21_secret_realm": "encounter_hidden_cave",
+	"encounter_22_inner_demon": "encounter_illusion_maze",
+	"encounter_23_treasure": "encounter_immortal_cave",
+	"encounter_24_lucky_merchant": "encounter_mystery_merchant",
+	"encounter_25_phenomenon": "encounter_heavenly_phenomenon",
+	"encounter_26_clash": "encounter_cultivation_clash",
+	"encounter_27_herb_garden": "encounter_spirit_herb",
+	"encounter_28_sword_master": "encounter_sword_tomb",
+	"encounter_29_dao_illusion": "encounter_dao_trial",
+	"encounter_30_tournament": "encounter_cultivation_clash",
+}
+
+
+func _load_encounter_illustration(encounter_id: String) -> void:
+	if _scene_illustration == null:
+		return
+
+	var illustration_name := ENCOUNTER_ILLUSTRATION_MAP.get(encounter_id, "")
+	if illustration_name.is_empty():
+		_scene_illustration.visible = false
+		return
+
+	var path := "res://assets/ui/encounter_scenes/%s.png" % illustration_name
+	if ResourceLoader.exists(path):
+		_scene_illustration.texture = load(path) as Texture2D
+		_scene_illustration.visible = true
+	else:
+		_scene_illustration.visible = false
+
 
 func trigger_random_encounter() -> void:
 	"""触发随机奇遇（用于测试）"""

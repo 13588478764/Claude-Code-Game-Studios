@@ -103,14 +103,18 @@ func _apply_hp_update() -> void:
 		hp_bar.modulate = Color.GREEN
 
 func _load_portrait(member_id: String) -> void:
-	## 加载队友头像
+	## 加载队友头像（优先 60×60 专用头像，回退到全身立绘缩放）
 	var portrait_path = "res://assets/ui/party_portraits/party_member_%s.png" % member_id
-	
 	if ResourceLoader.exists(portrait_path):
 		portrait.texture = load(portrait_path)
-	else:
-		push_warning("Missing party portrait: %s" % portrait_path)
-		portrait.texture = _create_default_portrait(member_id)
+		return
+
+	var fallback_path = "res://assets/ui/portraits/portrait_%s.png" % member_id
+	if ResourceLoader.exists(fallback_path):
+		portrait.texture = load(fallback_path)
+		return
+
+	portrait.texture = _create_default_portrait(member_id)
 
 func _create_default_portrait(member_id: String) -> Texture2D:
 	## 创建默认占位符头像

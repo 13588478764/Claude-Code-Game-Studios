@@ -13,6 +13,9 @@ signal player_choice_selected(choice_index: int)
 @onready var _continue_hint: Label = $VBoxContainer/BottomBar/ContinueHint
 @onready var _close_button: Button = $VBoxContainer/BottomBar/CloseButton
 
+## 说话人头像 (运行时创建)
+var _speaker_portrait: TextureRect = null
+
 ## 选择按钮缓存
 var _choice_buttons: Array[Button] = []
 
@@ -29,6 +32,7 @@ var _has_choices: bool = false
 func _ready() -> void:
 	# 设置对话框纹理边框
 	_apply_dialogue_frame()
+	_create_speaker_portrait()
 
 	# 缓存选择按钮
 	_choice_buttons.assign([
@@ -105,10 +109,11 @@ func hide_dialogue() -> void:
 	_waiting_for_input = false
 	_has_choices = false
 
-## 更新说话者名称
+## 更新说话者名称和头像
 func _update_speaker(speaker_id: String) -> void:
 	var speaker_name := _get_display_name(speaker_id)
 	_speaker_name.text = speaker_name
+	_load_speaker_portrait(speaker_id)
 
 ## 更新对话文本
 func _update_text(text: String) -> void:
@@ -216,6 +221,38 @@ func _gui_input(event: InputEvent) -> void:
 		if _waiting_for_input:
 			_advance()
 			accept_event()
+
+
+func _create_speaker_portrait() -> void:
+	_speaker_portrait = TextureRect.new()
+	_speaker_portrait.name = "SpeakerPortrait"
+	_speaker_portrait.custom_minimum_size = Vector2(64, 64)
+	_speaker_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_speaker_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_speaker_portrait.visible = false
+	var hbox = $VBoxContainer/SpeakerPanel/HBoxContainer
+	hbox.add_child(_speaker_portrait)
+	hbox.move_child(_speaker_portrait, 0)
+
+
+func _load_speaker_portrait(speaker_id: String) -> void:
+	if _speaker_portrait == null:
+		return
+
+	if speaker_id == "system" or speaker_id == "narrator":
+		_speaker_portrait.visible = false
+		return
+
+	var portrait_id := speaker_id
+	if speaker_id == "player":
+		portrait_id = "protagonist_male"
+
+	var path := "res://assets/ui/portraits/portrait_%s.png" % portrait_id
+	if ResourceLoader.exists(path):
+		_speaker_portrait.texture = load(path) as Texture2D
+		_speaker_portrait.visible = true
+	else:
+		_speaker_portrait.visible = false
 
 
 func _input(event: InputEvent) -> void:

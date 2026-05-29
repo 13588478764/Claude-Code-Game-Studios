@@ -16,6 +16,9 @@ class_name EnemyInfoPanel
 @onready var no_target_label: Label = %NoTargetLabel
 @onready var fade_animation: AnimationPlayer = %FadeAnimation
 
+## 敌人头像 (运行时创建)
+var _enemy_portrait: TextureRect = null
+
 # 脏标记 (ADR-002: 避免不必要的更新)
 var _dirty_name: bool = false
 var _dirty_hp: bool = false
@@ -45,6 +48,9 @@ func _ready() -> void:
 		_connect_game_events_safely()
 		return
 	
+	# 创建敌人头像
+	_create_enemy_portrait()
+
 	# 初始化UI状态
 	_update_no_target_display()
 	
@@ -108,6 +114,9 @@ func _on_enemy_selected(enemy_data: Dictionary) -> void:
 	# 播放淡入淡出过渡动画 (AC-8: 0.2秒淡入淡出)
 	_play_fade_transition()
 	
+	# 加载敌人立绘
+	_load_enemy_portrait(_current_enemy_id)
+
 	# 标记所有内容为脏，需要更新
 	_dirty_name = true
 	_dirty_hp = true
@@ -251,3 +260,30 @@ func _play_fade_transition() -> void:
 	
 	# 淡入新内容
 	tween.tween_property(self, "modulate:a", 1.0, FADE_DURATION / 2.0)
+
+
+func _create_enemy_portrait() -> void:
+	if enemy_name_label == null:
+		return
+	_enemy_portrait = TextureRect.new()
+	_enemy_portrait.name = "EnemyPortrait"
+	_enemy_portrait.custom_minimum_size = Vector2(48, 48)
+	_enemy_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_enemy_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_enemy_portrait.visible = false
+	var parent = enemy_name_label.get_parent()
+	if parent:
+		parent.add_child(_enemy_portrait)
+		parent.move_child(_enemy_portrait, 0)
+
+
+func _load_enemy_portrait(enemy_id: String) -> void:
+	if _enemy_portrait == null:
+		return
+
+	var path := "res://assets/ui/enemy_portraits/%s.png" % enemy_id
+	if ResourceLoader.exists(path):
+		_enemy_portrait.texture = load(path) as Texture2D
+		_enemy_portrait.visible = true
+	else:
+		_enemy_portrait.visible = false
