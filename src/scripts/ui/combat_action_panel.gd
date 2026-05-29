@@ -6,22 +6,24 @@ extends CanvasLayer
 
 signal combat_panel_closed
 
-@onready var _panel: PanelContainer = $PanelContainer
-@onready var _title_label: Label = $PanelContainer/VBox/TitleLabel
-@onready var _player_hp_bar: ProgressBar = $PanelContainer/VBox/StatusBox/PlayerHPBar
-@onready var _player_hp_label: Label = $PanelContainer/VBox/StatusBox/PlayerHPLabel
-@onready var _player_mp_bar: ProgressBar = $PanelContainer/VBox/StatusBox/PlayerMPBar
-@onready var _player_mp_label: Label = $PanelContainer/VBox/StatusBox/PlayerMPLabel
-@onready var _enemy_hp_bar: ProgressBar = $PanelContainer/VBox/StatusBox/EnemyHPBar
-@onready var _enemy_hp_label: Label = $PanelContainer/VBox/StatusBox/EnemyHPLabel
-@onready var _enemy_name_label: Label = $PanelContainer/VBox/StatusBox/EnemyNameLabel
-@onready var _log_label: RichTextLabel = $PanelContainer/VBox/LogBox/LogLabel
-@onready var _action_box: HBoxContainer = $PanelContainer/VBox/ActionBox
-@onready var _attack_btn: Button = $PanelContainer/VBox/ActionBox/AttackButton
-@onready var _defend_btn: Button = $PanelContainer/VBox/ActionBox/DefendButton
-@onready var _skill_btn: Button = $PanelContainer/VBox/ActionBox/SkillButton
-@onready var _flee_btn: Button = $PanelContainer/VBox/ActionBox/FleeButton
-@onready var _wait_label: Label = $PanelContainer/VBox/WaitLabel
+@onready var _battle_bg: TextureRect = $Root/BattleBG
+@onready var _player_sprite: TextureRect = $Root/PlayerSprite
+@onready var _enemy_sprite: TextureRect = $Root/EnemySprite
+@onready var _title_label: Label = $Root/TopBar/TopHBox/PlayerInfo/TitleLabel
+@onready var _player_hp_bar: ProgressBar = $Root/TopBar/TopHBox/PlayerInfo/PlayerHPBar
+@onready var _player_hp_label: Label = $Root/TopBar/TopHBox/PlayerInfo/PlayerHPLabel
+@onready var _player_mp_bar: ProgressBar = $Root/TopBar/TopHBox/PlayerInfo/PlayerMPBar
+@onready var _player_mp_label: Label = $Root/TopBar/TopHBox/PlayerInfo/PlayerMPLabel
+@onready var _enemy_hp_bar: ProgressBar = $Root/TopBar/TopHBox/EnemyInfo/EnemyHPBar
+@onready var _enemy_hp_label: Label = $Root/TopBar/TopHBox/EnemyInfo/EnemyHPLabel
+@onready var _enemy_name_label: Label = $Root/TopBar/TopHBox/EnemyInfo/EnemyNameLabel
+@onready var _log_label: RichTextLabel = $Root/BottomPanel/BottomVBox/LogLabel
+@onready var _action_box: HBoxContainer = $Root/BottomPanel/BottomVBox/ActionBox
+@onready var _attack_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/AttackButton
+@onready var _defend_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/DefendButton
+@onready var _skill_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/SkillButton
+@onready var _flee_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/FleeButton
+@onready var _wait_label: Label = $Root/BottomPanel/BottomVBox/WaitLabel
 
 var _combat_system: Node = null
 var _game_loop: Node = null
@@ -82,6 +84,7 @@ func _on_combat_started() -> void:
 		_skill_list_box.visible = false
 	_wait_label.text = "战斗开始..."
 	_wait_label.visible = true
+	_load_battle_visuals()
 	_refresh_hp_display()
 
 
@@ -128,24 +131,29 @@ func _on_action_executed(result: Dictionary) -> void:
 	match action_type:
 		"attack":
 			var dmg: int = result.get("damage_dealt", 0)
-			var hp_left: int = result.get("target_hp_left", 0)
 			if _player_turn:
 				_add_log_line("你发起攻击，造成 %d 点伤害" % dmg)
+				_play_attack_anim(_player_sprite, _enemy_sprite)
 			else:
 				_add_log_line("敌人攻击你，造成 %d 点伤害" % dmg)
+				_play_attack_anim(_enemy_sprite, _player_sprite)
 		"defend":
 			var stance_pct: int = result.get("stance_reduction_pct", 0)
 			if _player_turn:
 				_add_log_line("你进入防御姿态 (减伤 %d%%)" % stance_pct)
+				_play_defend_anim(_player_sprite)
 			else:
 				_add_log_line("敌人进入防御姿态 (减伤 %d%%)" % stance_pct)
+				_play_defend_anim(_enemy_sprite)
 		"skill":
 			var skill_name: String = result.get("skill_name", "未知技能")
 			var skill_dmg: int = result.get("damage_dealt", 0)
 			if _player_turn:
 				_add_log_line("你使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
+				_play_attack_anim(_player_sprite, _enemy_sprite)
 			else:
 				_add_log_line("敌人使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
+				_play_attack_anim(_enemy_sprite, _player_sprite)
 			var synergy_name: String = result.get("synergy_name", "")
 			if synergy_name != "":
 				var multiplier: float = result.get("damage_multiplier", 1.0)
@@ -225,9 +233,9 @@ func _create_skill_list_ui() -> void:
 	_skill_list_box.name = "SkillListBox"
 	_skill_list_box.visible = false
 	_skill_list_box.set("theme_override_constants/separation", 6)
-	var vbox: VBoxContainer = $PanelContainer/VBox
-	vbox.add_child(_skill_list_box)
-	vbox.move_child(_skill_list_box, _action_box.get_index() + 1)
+	var bottom_vbox: VBoxContainer = $Root/BottomPanel/BottomVBox
+	bottom_vbox.add_child(_skill_list_box)
+	bottom_vbox.move_child(_skill_list_box, _action_box.get_index() + 1)
 
 
 ## 填充技能列表（从 MartialArtsSystem 读取已装备武学）
@@ -439,3 +447,63 @@ func _load_skill_icon(martial_art_id: String, weapon_type: String) -> Texture2D:
 		return load(fallback) as Texture2D
 
 	return null
+
+
+## 加载战斗场景视觉元素（背景 + 双方立绘）
+func _load_battle_visuals() -> void:
+	# 背景: 用当前区域的背景图
+	var game_loop: Node = get_node_or_null("/root/GameLoopManager")
+	if game_loop and _battle_bg:
+		var bg_name: String = game_loop.current_region.get("bg", "bg_battle_plains")
+		var bg_path := "res://assets/ui/backgrounds/%s.png" % bg_name
+		if ResourceLoader.exists(bg_path):
+			_battle_bg.texture = load(bg_path) as Texture2D
+
+	# 玩家立绘
+	if _player_sprite:
+		var player_path := "res://assets/ui/portraits/portrait_protagonist_male.png"
+		if ResourceLoader.exists(player_path):
+			_player_sprite.texture = load(player_path) as Texture2D
+
+	# 敌人立绘
+	if _enemy_sprite and _combat_system and not _combat_system.battle_units.is_empty():
+		var half: int = ceili(_combat_system.battle_units.size() / 2.0)
+		if _combat_system.battle_units.size() > half:
+			var enemy_unit: Variant = _combat_system.battle_units[half]
+			var enemy_id := ""
+			if enemy_unit.unit_node is Dictionary:
+				enemy_id = str(enemy_unit.unit_node.get("id", ""))
+			if not enemy_id.is_empty():
+				var enemy_path := "res://assets/ui/enemy_portraits/%s.png" % enemy_id
+				if ResourceLoader.exists(enemy_path):
+					_enemy_sprite.texture = load(enemy_path) as Texture2D
+
+
+## 攻击动画: 攻击方前冲 → 目标闪烁 → 弹回
+func _play_attack_anim(attacker: TextureRect, target: TextureRect) -> void:
+	if attacker == null or target == null:
+		return
+	var orig_x := attacker.position.x
+	var direction := 1.0 if attacker == _player_sprite else -1.0
+	var tween := create_tween()
+	tween.tween_property(attacker, "position:x", orig_x + 80.0 * direction, 0.12)
+	tween.tween_callback(_flash_sprite.bind(target))
+	tween.tween_property(attacker, "position:x", orig_x, 0.12)
+
+
+## 防御动画: 闪烁蓝色
+func _play_defend_anim(defender: TextureRect) -> void:
+	if defender == null:
+		return
+	var tween := create_tween()
+	tween.tween_property(defender, "modulate", Color(0.5, 0.5, 1.0, 1.0), 0.1)
+	tween.tween_property(defender, "modulate", Color.WHITE, 0.15)
+
+
+## 被击闪烁: 白色闪烁
+func _flash_sprite(sprite: TextureRect) -> void:
+	if sprite == null:
+		return
+	var tween := create_tween()
+	tween.tween_property(sprite, "modulate", Color(2.0, 0.5, 0.5, 1.0), 0.06)
+	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
