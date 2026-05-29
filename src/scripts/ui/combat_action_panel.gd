@@ -434,7 +434,7 @@ func _load_skill_icon(martial_art_id: String, weapon_type: String) -> Texture2D:
 	if ResourceLoader.exists(path):
 		return load(path) as Texture2D
 
-	var fallback := WEAPON_TYPE_ICON.get(weapon_type, "")
+	var fallback: String = WEAPON_TYPE_ICON.get(weapon_type, "")
 	if not fallback.is_empty() and ResourceLoader.exists(fallback):
 		return load(fallback) as Texture2D
 
