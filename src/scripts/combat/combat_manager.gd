@@ -341,6 +341,10 @@ func _connect_global_signals() -> void:
 
 func _on_battle_started_global() -> void:
 	_game_events.combat_started.emit()
+	# 战斗开始时自动选中第一个敌人，让 HUD 显示敌人信息和头像
+	var half: int = ceili(battle_units.size() / 2.0)
+	if battle_units.size() > half:
+		_game_events.enemy_selected.emit(_build_enemy_snapshot(battle_units[half]))
 
 func _on_battle_ended_global(result: Dictionary) -> void:
 	_game_events.combat_ended.emit(result.get("victory", false), result)

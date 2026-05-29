@@ -262,81 +262,81 @@ size_flags_vertical = 4
 columns = 4
 
 [node name="Talent1" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1909622737]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "1"
 
 [node name="Talent2" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=873358178]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "2"
 
 [node name="Talent3" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=248683124]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "3"
 
 [node name="Talent4" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=745792751]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "4"
 
 [node name="Talent5" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1150498693]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "5"
 
 [node name="Talent6" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=84860565]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "6"
 
 [node name="Talent7" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=472430493]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "7"
 
 [node name="Talent8" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=535398777]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "8"
 
 [node name="Talent9" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1675911918]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "9"
 
 [node name="Talent10" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1233028149]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "10"
 
 [node name="Talent11" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1419731260]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "11"
 
 [node name="Talent12" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=758225583]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "12"
 
 [node name="Talent13" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=779336579]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "13"
 
 [node name="Talent14" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1302443518]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "14"
 
 [node name="Talent15" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=947043690]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "15"
 
 [node name="Talent16" type="Button" parent="TabContainer/天赋网格/MarginContainer/VBoxContainer/TalentGrid" unique_id=1309104954]
-custom_minimum_size = Vector2(80, 80)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 text = "16"
