@@ -190,7 +190,10 @@ party / buff / debuff / quest / nav / item / skill 分类信号 — 不构成 bu
 **修复方向**: 将 ItemList 改为 GridContainer + 自定义 ItemSlot.tscn (TextureRect 边框 + TextureRect 图标 + Label 数量)，根据 tier 加载对应品阶边框。
 **工作量**: 4-6h (含 .tscn 布局 + 脚本适配)
 
-### 25. 进度条/按钮纹理 (progress_bar_*.png, button_*.png) 未接入 Theme
+### 25. 进度条/按钮纹理 (progress_bar_*.png, button_*.png) 未接入 Theme ✅ 2026-05-30
+
+按钮纹理: 裁剪为 512×128 横条 + clip_contents TextureRect 接入主菜单。
+进度条纹理: AI生成PNG不适合NinePatch (ADR-008), 保持 StyleBoxFlat。
 
 **现状**: `progress_bar_bg.png` / `progress_bar_fill.png` / `button_standard.png` / `button_close.png` / `button_main_menu.png` 存在但 UI 用 Godot 默认 StyleBox。
 **修复方向**: 创建 `assets/ui/theme/game_theme.tres` (Godot Theme 资源), 在 ProgressBar / Button 的 StyleBox 中设置这些纹理, 项目根场景统一引用。

@@ -18,8 +18,8 @@
 |----|------|-------|-----------|--------|---------------------|
 | s8-01 | 性能基线建立 | Performance Analyst | 1 | PENDING | 主菜单/探索/战斗三场景 FPS 基准落档, 确认 60FPS 达标或标记优化项 |
 | s8-02 | UI 布局统一调整 | UI Programmer | 3 | PENDING | 探索/对话/战斗/角色/背包面板在 1920×1080 下布局合理, 截图验证 |
-| s8-03 | 第六七批 AI 资源回流+接入 | Asset Pipeline | 1 | PENDING | W23-W27 共 40 张回流+代码接入 (按钮纹理/战斗背景/时段变体/表情/突破) |
-| s8-04 | 战斗背景按区域切换 | Gameplay Programmer | 0.5 | PENDING | 4 区域各使用对应战斗背景 (village/fortress/mountain/water) |
+| s8-03 | 第六七批 AI 资源回流+接入 | Asset Pipeline | 1 | DONE | 40 张全部回流+接入 (f4a9392+36eff97) |
+| s8-04 | 战斗背景按区域切换 | Gameplay Programmer | 0.5 | DONE | BATTLE_BG_MAP 9区域映射 (bb39a03) |
 
 **Must Have Total**: 5.5 days
 
@@ -27,8 +27,8 @@
 
 | ID | Task | Owner | Est. Days | Status | Acceptance Criteria |
 |----|------|-------|-----------|--------|---------------------|
-| s8-05 | NPC 表情变体接入对话系统 | UI Programmer | 1 | PENDING | 对话中根据对话节点 emotion 字段切换立绘变体 |
-| s8-06 | 境界突破插图接入 | UI Programmer | 0.5 | PENDING | 突破时全屏显示对应境界的突破插图 2 秒 |
+| s8-05 | NPC 表情变体接入对话系统 | UI Programmer | 1 | DONE | 文本关键词推断→切换 happy/angry 立绘 (f4a9392) |
+| s8-06 | 境界突破插图接入 | UI Programmer | 0.5 | DONE | player_realm_changed→全屏插图3秒 (f4a9392) |
 | s8-07 | Beta Playtest 第一场 (新玩家) | QA Lead | 1.5 | PENDING | 全新玩家从开场到第一次境界突破的完整体验记录 |
 | s8-08 | 队伍头像生成 (ImageMagick) | Asset Pipeline | 0.5 | PENDING | 12 张 60×60 头像生成到 party_portraits/ |
 
@@ -38,7 +38,7 @@
 
 | ID | Task | Owner | Est. Days | Status | Acceptance Criteria |
 |----|------|-------|-----------|--------|---------------------|
-| s8-09 | 按钮纹理横向裁剪+接入 | UI Programmer | 1 | PENDING | crop_buttons.sh 执行, 主菜单按钮使用新纹理 |
+| s8-09 | 按钮纹理横向裁剪+接入 | UI Programmer | 1 | DONE | PIL裁剪512→128 + clip_contents接入 (36eff97) |
 | s8-10 | 音效系统初步接入 | Audio | 1 | PENDING | 至少 3 个音效 (按钮点击/战斗攻击/境界突破) 有声音 |
 | s8-11 | 伤害数字+抖动动画验证调优 | UI Programmer | 0.5 | PENDING | 战斗中伤害数字清晰可见, 抖动感觉舒适 |
 

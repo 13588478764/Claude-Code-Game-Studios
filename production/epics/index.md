@@ -53,14 +53,14 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 | attribute-point-allocation-system | 属性点分配系统 | design/gdd/attribute-point-allocation-system.md | Done | DONE |
 | skill-tree-learning-path-system | 技能树/学习路径系统 | design/gdd/skill-tree-learning-path-system.md | Done | DONE |
 | equipment-system | 装备系统 | design/gdd/equipment-system.md | Done (9 槽已统一) | DONE |
-| equipment-slot-system | 装备槽位系统 | design/gdd/equipment-slot-system.md | Done | POLISH |
+| equipment-slot-system | 装备槽位系统 | design/gdd/equipment-slot-system.md | Done (9槽32件+属性接入战斗) | DONE |
 | equipment-attribute-calculation | 装备属性计算 | design/gdd/equipment-attribute-calculation.md | Done | DONE |
 
 ## Feature Layer — Content & Reward
 
 | Epic | System | GDD | Stories | Status |
 |------|--------|-----|---------|--------|
-| encounter-system | 奇遇系统 | design/gdd/encounter-system.md | Done (内容待补齐) | POLISH |
+| encounter-system | 奇遇系统 | design/gdd/encounter-system.md | Done (30条奇遇+插图) | DONE |
 | encounter-condition-check-system | 奇遇条件检查 | design/gdd/encounter-condition-check-system.md | Done | DONE |
 | encounter-history-record-system | 奇遇历史记录 | design/gdd/encounter-history-record-system.md | Done | DONE |
 | quest-system | 任务系统 | design/gdd/quest-system.md | Done | DONE |
@@ -75,15 +75,15 @@ Total Epics: 44 (41 实施 + 3 polish 阶段新增)
 | dialogue-system | 对话系统 | design/gdd/dialogue-system.md | Done (条件判定已实现) | DONE |
 | character-relationship-system | 角色关系系统 | design/gdd/character-relationship-system.md | Done | DONE |
 | combat-ui | 战斗 UI | design/gdd/combat-ui.md | Done | DONE |
-| equipment-ui | 装备 UI | design/gdd/equipment-ui.md | Done (1 stub) | POLISH |
+| equipment-ui | 装备 UI | design/gdd/equipment-ui.md | Done (武学管理W键+商店) | DONE |
 
 ## Polish Phase Epics (2026-05-15+ 新增)
 
 | Epic | System | GDD | Stories | Status |
 |------|--------|-----|---------|--------|
-| ai-asset-pipeline | AI 美术批量出图管线 (ComfyUI + FLUX) | production/epics/ai-asset-pipeline/EPIC.md | 1-3 批 ~193 张入库; 第 4 批 43 张挂机中 | IN PROGRESS |
-| theme-system | Godot 主题系统 (main_theme.tres + 生成器) | production/epics/theme-system/EPIC.md | Theme 已就位; 全 UI 普及中 | IN PROGRESS |
-| narrative-act2-3 | 第二三幕剧情大纲 + 数据填充 | design/narrative/act-2-outline.md + act-3-outline.md | 大纲 DONE; 数据填充 PENDING | IN PROGRESS |
+| ai-asset-pipeline | AI 美术批量出图管线 (ComfyUI + FLUX) | production/epics/ai-asset-pipeline/EPIC.md | 7批472张全部入库+接入代码 | DONE |
+| theme-system | Godot 主题系统 (main_theme.tres + 生成器) | production/epics/theme-system/EPIC.md | Theme+按钮纹理+时段变体全部接入 | DONE |
+| narrative-act2-3 | 第二三幕剧情大纲 + 数据填充 | design/narrative/act-2-outline.md + act-3-outline.md | 28主线+30奇遇+5支线全部串联 | DONE |
 
 ---
 
