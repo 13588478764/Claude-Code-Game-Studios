@@ -431,12 +431,25 @@ func _apply_button_backgrounds() -> void:
 
 func _add_btn_bg(btn: Button, tex: Texture2D) -> void:
 	btn.clip_contents = true
+
+	# 让按钮自身的 StyleBox 背景透明，露出下面的纹理
+	var transparent := StyleBoxFlat.new()
+	transparent.bg_color = Color(0, 0, 0, 0)
+	btn.add_theme_stylebox_override("normal", transparent)
+
+	var hover := StyleBoxFlat.new()
+	hover.bg_color = Color(1, 1, 1, 0.15)
+	btn.add_theme_stylebox_override("hover", hover)
+
+	var pressed := StyleBoxFlat.new()
+	pressed.bg_color = Color(0, 0, 0, 0.2)
+	btn.add_theme_stylebox_override("pressed", pressed)
+
 	var bg := TextureRect.new()
 	bg.texture = tex
 	bg.anchors_preset = Control.PRESET_FULL_RECT
 	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	bg.modulate = Color(1, 1, 1, 0.7)
 	btn.add_child(bg)
 	btn.move_child(bg, 0)
