@@ -149,6 +149,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(100, 44)
 text = "技能"
 
+[node name="ItemButton" type="Button" parent="Root/BottomPanel/BottomVBox/ActionBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 44)
+text = "物品"
+
 [node name="FleeButton" type="Button" parent="Root/BottomPanel/BottomVBox/ActionBox"]
 layout_mode = 2
 custom_minimum_size = Vector2(100, 44)

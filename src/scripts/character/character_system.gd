@@ -468,9 +468,9 @@ func get_talent_effects() -> Dictionary:
 	return total_effects
 
 func get_final_attributes() -> CharacterAttributes:
-	"""获取最终属性（包含境界加成和天赋效果）"""
+	"""获取最终属性（包含境界加成 + 天赋效果 + 装备加成）"""
 	var final_attrs: CharacterAttributes = CharacterAttributes.new()
-	
+
 	# 基础属性 + 境界加成
 	final_attrs.strength = int(attributes.strength * realm_bonus)
 	final_attrs.agility = int(attributes.agility * realm_bonus)
@@ -478,7 +478,7 @@ func get_final_attributes() -> CharacterAttributes:
 	final_attrs.intelligence = int(attributes.intelligence * realm_bonus)
 	final_attrs.willpower = int(attributes.willpower * realm_bonus)
 	final_attrs.luck = int(attributes.luck * realm_bonus)
-	
+
 	# 应用天赋效果
 	var talent_effects: Dictionary = get_talent_effects()
 	if talent_effects.has("strength"):
@@ -494,7 +494,47 @@ func get_final_attributes() -> CharacterAttributes:
 	if talent_effects.has("luck"):
 		final_attrs.luck += int(talent_effects["luck"])
 
+	# 应用装备加成
+	var equip_bonus: Dictionary = _get_equipment_attribute_bonus()
+	final_attrs.strength += equip_bonus.get("strength", 0)
+	final_attrs.agility += equip_bonus.get("agility", 0)
+	final_attrs.constitution += equip_bonus.get("constitution", 0)
+	final_attrs.intelligence += equip_bonus.get("intelligence", 0)
+	final_attrs.willpower += equip_bonus.get("willpower", 0)
+	final_attrs.luck += equip_bonus.get("luck", 0)
+
 	return final_attrs
+
+
+## 从 EquipmentManager 获取已装备物品的总属性加成
+func _get_equipment_attribute_bonus() -> Dictionary:
+	var bonus := {"strength": 0, "agility": 0, "constitution": 0, "intelligence": 0, "willpower": 0, "luck": 0}
+	var equip_mgr: Node = get_node_or_null("/root/EquipmentManager") if is_inside_tree() else null
+	if equip_mgr == null:
+		return bonus
+
+	if not equip_mgr.has_method("get_equipment_by_slot"):
+		return bonus
+
+	var slots := ["weapon_main", "weapon_offhand", "head", "body", "hands", "feet", "necklace", "ring_1", "ring_2"]
+	for slot in slots:
+		var item: Variant = equip_mgr.get_equipment_by_slot(slot)
+		if item == null:
+			continue
+		# EquipmentInfo 或 Dictionary
+		var attrs: Dictionary = {}
+		if item is Dictionary:
+			attrs = item.get("attributes", {})
+		elif item.get("attributes") != null:
+			attrs = item.attributes if item.attributes is Dictionary else {}
+
+		# 属性分 base/combat 两层
+		var base: Dictionary = attrs.get("base", {})
+		for key in base:
+			if bonus.has(key):
+				bonus[key] += int(base[key])
+
+	return bonus
 
 func get_combat_stats() -> Dictionary:
 	"""获取战斗属性（包含天赋效果）"""

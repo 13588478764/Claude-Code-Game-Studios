@@ -22,6 +22,7 @@ signal combat_panel_closed
 @onready var _attack_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/AttackButton
 @onready var _defend_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/DefendButton
 @onready var _skill_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/SkillButton
+@onready var _item_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/ItemButton
 @onready var _flee_btn: Button = $Root/BottomPanel/BottomVBox/ActionBox/FleeButton
 @onready var _wait_label: Label = $Root/BottomPanel/BottomVBox/WaitLabel
 
@@ -29,6 +30,9 @@ var _combat_system: Node = null
 var _game_loop: Node = null
 var _game_events: Node = null
 var _martial_arts_system: Node = null
+
+## 连携按钮 (运行时创建, 满槽时显示)
+var _link_btn: Button = null
 
 ## 技能选择列表容器（运行时创建）
 var _skill_list_box: VBoxContainer = null
@@ -70,7 +74,17 @@ func _initialize() -> void:
 	_attack_btn.pressed.connect(_on_attack_pressed)
 	_defend_btn.pressed.connect(_on_defend_pressed)
 	_skill_btn.pressed.connect(_on_skill_pressed)
+	_item_btn.pressed.connect(_on_item_pressed)
 	_flee_btn.pressed.connect(_on_flee_pressed)
+
+	# 创建连携按钮
+	_link_btn = Button.new()
+	_link_btn.text = "连携!"
+	_link_btn.custom_minimum_size = Vector2(100, 44)
+	_link_btn.visible = false
+	_link_btn.pressed.connect(_on_link_pressed)
+	_link_btn.add_theme_color_override("font_color", Color(1.0, 0.84, 0.0))
+	_action_box.add_child(_link_btn)
 
 	_set_actions_visible(false)
 
@@ -115,6 +129,7 @@ func _on_turn_started(unit) -> void:
 		_attack_btn.grab_focus()
 		_add_log_line("— 轮到你行动 —")
 		_show_turn_banner("你的回合", Color(0.2, 0.8, 1.0))
+		_update_link_button()
 
 		if _game_loop and _game_loop._auto_battle_timer:
 			_game_loop._auto_battle_timer.stop()
@@ -220,6 +235,31 @@ func _on_defend_pressed() -> void:
 
 	_player_turn = false
 	_schedule_next_auto_turn()
+
+
+## 物品按钮 — 使用回春丹恢复HP
+func _on_item_pressed() -> void:
+	if not _player_turn or _combat_system == null:
+		return
+
+	var inv: Node = get_node_or_null("/root/InventorySystem")
+	if inv == null:
+		_add_log_line("背包不可用")
+		return
+
+	if inv.has_item("health_pill"):
+		inv.use_item("health_pill")
+		# 恢复30%HP
+		var player_unit: Variant = _combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
+		if player_unit:
+			var heal_amount: int = int(player_unit.max_hp * 0.3)
+			player_unit.current_hp = min(player_unit.max_hp, player_unit.current_hp + heal_amount)
+			_add_log_line("[color=green]使用回春丹，恢复 %d HP[/color]" % heal_amount)
+			_refresh_hp_display()
+		_player_turn = false
+		_schedule_next_auto_turn()
+	else:
+		_add_log_line("[color=red]没有可用的回春丹[/color]")
 
 
 ## 技能按钮 — 打开已装备武学列表
@@ -607,3 +647,51 @@ func _show_turn_banner(text: String, color: Color) -> void:
 	tween.tween_interval(0.6)
 	tween.tween_property(banner, "modulate:a", 0.0, 0.3)
 	tween.tween_callback(banner.queue_free)
+
+
+## 连携槽检查 — 满槽时显示按钮
+func _update_link_button() -> void:
+	if _link_btn == null or _combat_system == null:
+		return
+	if _combat_system.battle_units.is_empty():
+		_link_btn.visible = false
+		return
+	var player_unit: Variant = _combat_system.battle_units[0]
+	var link_gauge: int = player_unit.link_gauge if player_unit.get("link_gauge") != null else 0
+	var max_link: int = _combat_system.max_link_gauge if _combat_system.get("max_link_gauge") != null else 100
+	_link_btn.visible = link_gauge >= max_link
+	if _link_btn.visible:
+		_link_btn.text = "连携! (%d/%d)" % [link_gauge, max_link]
+
+
+## 连携按钮点击 — 释放连携技 (全体伤害 ×2)
+func _on_link_pressed() -> void:
+	if not _player_turn or _combat_system == null:
+		return
+
+	var target_idx := _find_enemy_target()
+	if target_idx < 0:
+		return
+
+	_set_actions_visible(false)
+	_link_btn.visible = false
+
+	# 连携技: 全力一击, 消耗满连携槽
+	var player_unit: Variant = _combat_system.battle_units[0]
+	if player_unit.get("link_gauge") != null:
+		player_unit.link_gauge = 0
+
+	_combat_system.execute_action({
+		"type": "use_skill",
+		"name": "连携·合击",
+		"target_index": target_idx,
+		"power": 200,
+		"internal_energy_cost": 0.0,
+		"tags": [],
+		"damage_multiplier_override": 2.0,
+	})
+
+	_add_log_line("[color=gold]✨ 连携技·合击！伤害翻倍！[/color]")
+	_play_attack_anim(_player_sprite, _enemy_sprite)
+	_player_turn = false
+	_schedule_next_auto_turn()

@@ -247,6 +247,7 @@ func select_region(region_index: int) -> void:
 		return
 	current_region = REGIONS[region_index]
 	print("[GameLoopManager] 切换区域: %s" % current_region.name)
+	_auto_save()
 
 
 ## 执行一次探索行动
@@ -298,6 +299,13 @@ func get_player_summary() -> Dictionary:
 ## 从结算回到探索
 func return_to_exploration() -> void:
 	_set_state(GameState.EXPLORING)
+	_auto_save()
+
+
+func _auto_save() -> void:
+	var save_sys: Node = get_node_or_null("/root/SaveSystem")
+	if save_sys and save_sys.has_method("save_to_slot"):
+		save_sys.save_to_slot(1)
 
 # ============================================================================
 # 非战斗奇遇
@@ -390,21 +398,33 @@ func _build_player_battle_data() -> Dictionary:
 	if _character_system == null:
 		return {"name": "玩家", "hp": 100, "max_hp": 100, "speed": 10, "attributes": {}}
 
-	var attrs = _character_system.attributes
-	var combat_stats := {}
-	if _character_system.has_method("get_combat_stats"):
-		combat_stats = _character_system.get_combat_stats()
+	# 使用 get_final_attributes (含境界+天赋+装备加成)
+	var final_attrs = _character_system.get_final_attributes()
+	var combat_stats: Dictionary = _character_system.get_combat_stats()
 
-	var max_hp: int = attrs.constitution * 10
-	var total_attrs: Dictionary = attrs.get_total()
-	total_attrs["force"] = total_attrs.get("strength", 10)
+	var max_hp: int = combat_stats.get("max_health", final_attrs.constitution * 10)
+	var max_energy: int = combat_stats.get("internal_energy_max", final_attrs.intelligence * 5)
+	var total_attrs: Dictionary = {
+		"force": final_attrs.strength,
+		"strength": final_attrs.strength,
+		"agility": final_attrs.agility,
+		"constitution": final_attrs.constitution,
+		"intelligence": final_attrs.intelligence,
+		"willpower": final_attrs.willpower,
+		"luck": final_attrs.luck,
+		"critical_rate": combat_stats.get("critical_rate", 0.05),
+		"critical_damage": 50.0,
+		"physical_attack": combat_stats.get("physical_attack", final_attrs.strength * 2),
+		"defense": combat_stats.get("defense", final_attrs.constitution),
+		"evasion": combat_stats.get("evasion", 0.0),
+	}
 	return {
 		"name": "玩家",
 		"hp": max_hp,
 		"max_hp": max_hp,
-		"speed": attrs.agility,
-		"internal_energy": attrs.intelligence * 5,
-		"max_internal_energy": attrs.intelligence * 5,
+		"speed": final_attrs.agility,
+		"internal_energy": max_energy,
+		"max_internal_energy": max_energy,
 		"stance": 100,
 		"combo_value": 0,
 		"link_gauge": 0,
@@ -546,7 +566,14 @@ func _on_combat_ended(victory: bool, result: Dictionary) -> void:
 		reward_data["used_martial_arts"] = result.get("used_martial_arts", [])
 		_distribute_rewards(reward_data)
 	else:
-		reward_data = {"victory": false, "exp": 0, "silver": 0}
+		# 失败惩罚: 扣除 10% 银两
+		var penalty_silver: int = 0
+		if _currency_manager and not fled:
+			var current_silver: int = _currency_manager.get_currency_amount(0)
+			penalty_silver = int(current_silver * 0.1)
+			if penalty_silver > 0:
+				_currency_manager.deduct_currency(0, penalty_silver)
+		reward_data = {"victory": false, "exp": 0, "silver": -penalty_silver}
 
 	reward_data["victory"] = victory
 	reward_data["fled"] = fled

@@ -54,6 +54,7 @@ func _ready() -> void:
 		KEY_ESCAPE: "pause",
 		KEY_I: "inventory",
 		KEY_E: "equipment",
+		KEY_W: "martial_arts",
 		KEY_M: "world_map",
 		KEY_F1: "help",
 		KEY_C: "character",
@@ -222,6 +223,9 @@ func _open_panel(panel_key: String) -> void:
 			panel.open_panel()
 		"character":
 			panel.visible = true
+		"martial_arts":
+			_show_martial_arts_panel()
+			return
 
 
 func _close_active_panel() -> void:
@@ -325,6 +329,13 @@ func _build_npc_buttons() -> void:
 
 	for npc in npc_list:
 		_npc_container.add_child(_make_npc_row(npc.id, npc.name, npc.sect))
+
+	# 商人入口
+	var shop_btn := Button.new()
+	shop_btn.text = "行脚商人 (购买装备/丹药)"
+	shop_btn.custom_minimum_size = Vector2(200, 36)
+	shop_btn.pressed.connect(_show_shop_panel)
+	_npc_container.add_child(shop_btn)
 
 
 ## 构建单个 NPC 行：小头像 + 交谈按钮
@@ -908,3 +919,263 @@ func _show_breakthrough_splash(img_path: String, realm_name: String) -> void:
 	tween.tween_interval(3.0)
 	tween.tween_property(overlay, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(overlay.queue_free)
+
+
+# ============================================================================
+# 武学装备管理 (W键)
+# ============================================================================
+
+func _show_martial_arts_panel() -> void:
+	var ma_sys: Node = get_node_or_null("/root/MartialArtsSystem")
+	if ma_sys == null:
+		return
+
+	_active_panel_key = "martial_arts"
+	visible = false
+
+	var overlay := Control.new()
+	overlay.name = "MartialArtsPanel"
+	overlay.anchors_preset = Control.PRESET_FULL_RECT
+	overlay.z_index = 400
+	var root: Control = $Root
+	root.add_child(overlay)
+
+	var bg := ColorRect.new()
+	bg.anchors_preset = Control.PRESET_FULL_RECT
+	bg.color = Color(0, 0, 0, 0.7)
+	overlay.add_child(bg)
+
+	var panel := PanelContainer.new()
+	panel.anchors_preset = Control.PRESET_CENTER
+	panel.offset_left = -350
+	panel.offset_top = -250
+	panel.offset_right = 350
+	panel.offset_bottom = 250
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 10)
+	panel.add_child(vbox)
+
+	var title := Label.new()
+	title.text = "武学管理 (4个装备槽位)"
+	title.add_theme_font_size_override("font_size", 24)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+
+	# 显示 4 个装备槽
+	for i in range(4):
+		var hbox := HBoxContainer.new()
+		hbox.add_theme_constant_override("separation", 12)
+		vbox.add_child(hbox)
+
+		var slot_label := Label.new()
+		var equipped: Variant = ma_sys.equipped_martial_arts[i] if i < ma_sys.equipped_martial_arts.size() else null
+		if equipped != null:
+			slot_label.text = "槽位%d: %s [%s]" % [i + 1, equipped.name, equipped.grade]
+		else:
+			slot_label.text = "槽位%d: (空)" % (i + 1)
+		slot_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hbox.add_child(slot_label)
+
+		# 装备按钮 — 从已学武学中选择
+		var equip_btn := Button.new()
+		equip_btn.text = "更换"
+		equip_btn.custom_minimum_size = Vector2(80, 32)
+		equip_btn.pressed.connect(_on_ma_slot_change.bind(i, overlay))
+		hbox.add_child(equip_btn)
+
+	vbox.add_child(HSeparator.new())
+
+	# 已学武学列表
+	var learned_label := Label.new()
+	learned_label.text = "已学会的武学 (%d个):" % ma_sys.player_martial_arts.size()
+	vbox.add_child(learned_label)
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.custom_minimum_size = Vector2(0, 100)
+	vbox.add_child(scroll)
+
+	var list := VBoxContainer.new()
+	scroll.add_child(list)
+
+	for ma_id in ma_sys.player_martial_arts:
+		var ma: Variant = ma_sys.player_martial_arts[ma_id]
+		var item_label := Label.new()
+		item_label.text = "  %s [%s] - 威力:%d 内力:%d" % [ma.name, ma.grade, int(ma.base_damage), int(ma.cost_mana)]
+		list.add_child(item_label)
+
+	# 关闭按钮
+	var close_btn := Button.new()
+	close_btn.text = "关闭 (W)"
+	close_btn.custom_minimum_size = Vector2(120, 40)
+	close_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	close_btn.pressed.connect(func():
+		overlay.queue_free()
+		_on_panel_closed()
+	)
+	vbox.add_child(close_btn)
+
+	overlay.visible = true
+
+
+# ============================================================================
+# 商店系统
+# ============================================================================
+
+const SHOP_ITEMS_BY_TIER: Dictionary = {
+	"common": ["health_pill", "common_sword", "body_cloth_robe", "feet_straw_sandals", "hands_cloth_gloves", "neck_hemp_necklace"],
+	"rare": ["health_pill", "qi_gathering_pill", "rare_sword", "body_iron_armor", "feet_cloud_boots", "offhand_iron_shield", "hands_iron_gauntlets", "neck_jade_pendant"],
+	"epic": ["health_pill", "breakthrough_pill", "epic_sword", "body_cloud_robe", "feet_lingbo_boots", "offhand_xuanwu_shield", "hands_dragon_gloves", "neck_spirit_necklace"],
+}
+
+
+func _get_shop_tier() -> String:
+	var region_level: int = _game_loop.current_region.get("level", 1) if _game_loop else 1
+	if region_level >= 30:
+		return "epic"
+	elif region_level >= 10:
+		return "rare"
+	return "common"
+
+
+func _show_shop_panel() -> void:
+	_active_panel_key = "shop"
+	visible = false
+
+	var overlay := Control.new()
+	overlay.name = "ShopPanel"
+	overlay.anchors_preset = Control.PRESET_FULL_RECT
+	overlay.z_index = 400
+	var root: Control = $Root
+	root.add_child(overlay)
+
+	var bg := ColorRect.new()
+	bg.anchors_preset = Control.PRESET_FULL_RECT
+	bg.color = Color(0, 0, 0, 0.7)
+	overlay.add_child(bg)
+
+	var panel := PanelContainer.new()
+	panel.anchors_preset = Control.PRESET_CENTER
+	panel.offset_left = -300
+	panel.offset_top = -250
+	panel.offset_right = 300
+	panel.offset_bottom = 250
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 8)
+	panel.add_child(vbox)
+
+	var currency: Node = get_node_or_null("/root/CurrencyManager")
+	var current_silver: int = 0
+	if currency and currency.has_method("get_currency_amount"):
+		current_silver = currency.get_currency_amount(0)
+
+	var title := Label.new()
+	title.text = "行脚商人 | 银两: %d" % current_silver
+	title.add_theme_font_size_override("font_size", 22)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+	vbox.add_child(HSeparator.new())
+
+	var tier: String = _get_shop_tier()
+	var shop_items: Array = SHOP_ITEMS_BY_TIER.get(tier, [])
+	var items_data: Dictionary = _load_items_data()
+
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox.add_child(scroll)
+
+	var list := VBoxContainer.new()
+	list.add_theme_constant_override("separation", 6)
+	scroll.add_child(list)
+
+	for item_id in shop_items:
+		var item: Dictionary = items_data.get(item_id, {})
+		if item.is_empty():
+			continue
+		var price: int = item.get("value_gold", 10) * 2  # 商店售价 = 基础价 × 2
+		var hbox := HBoxContainer.new()
+		hbox.add_theme_constant_override("separation", 8)
+		list.add_child(hbox)
+
+		var name_label := Label.new()
+		name_label.text = "%s (%d 银两)" % [item.get("name", item_id), price]
+		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		hbox.add_child(name_label)
+
+		var buy_btn := Button.new()
+		buy_btn.text = "购买"
+		buy_btn.custom_minimum_size = Vector2(80, 32)
+		buy_btn.disabled = current_silver < price
+		if current_silver < price:
+			buy_btn.tooltip_text = "银两不足"
+		buy_btn.pressed.connect(_on_shop_buy.bind(item_id, price, overlay))
+		hbox.add_child(buy_btn)
+
+	var close_btn := Button.new()
+	close_btn.text = "离开商店"
+	close_btn.custom_minimum_size = Vector2(120, 40)
+	close_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	close_btn.pressed.connect(func():
+		overlay.queue_free()
+		_on_panel_closed()
+	)
+	vbox.add_child(close_btn)
+
+
+func _on_shop_buy(item_id: String, price: int, overlay: Control) -> void:
+	var currency: Node = get_node_or_null("/root/CurrencyManager")
+	var inv: Node = get_node_or_null("/root/InventorySystem")
+	if currency == null or inv == null:
+		return
+
+	if currency.get_currency_amount(0) < price:
+		return
+
+	currency.deduct_currency(0, price)
+	inv.add_item(item_id, 1)
+
+	if GameEvents and GameEvents.has_signal("system_notification"):
+		GameEvents.system_notification.emit("购买成功！", "success", 2.0)
+
+	# 刷新商店面板
+	overlay.queue_free()
+	_show_shop_panel()
+
+
+func _load_items_data() -> Dictionary:
+	var path := "res://src/data/items.json"
+	if not FileAccess.file_exists(path):
+		return {}
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return {}
+	var json := JSON.new()
+	if json.parse(file.get_as_text()) != OK:
+		file.close()
+		return {}
+	file.close()
+	return json.data if json.data is Dictionary else {}
+
+
+func _on_ma_slot_change(slot_index: int, overlay: Control) -> void:
+	var ma_sys: Node = get_node_or_null("/root/MartialArtsSystem")
+	if ma_sys == null:
+		return
+
+	# 简单轮换: 从 player_martial_arts 中选下一个未装备的
+	var equipped_ids: Array = []
+	for ma in ma_sys.equipped_martial_arts:
+		if ma != null:
+			equipped_ids.append(ma.id)
+
+	for ma_id in ma_sys.player_martial_arts:
+		if ma_id not in equipped_ids:
+			ma_sys.equip_martial_art(ma_id, slot_index)
+			# 刷新面板
+			overlay.queue_free()
+			_show_martial_arts_panel()
+			return
