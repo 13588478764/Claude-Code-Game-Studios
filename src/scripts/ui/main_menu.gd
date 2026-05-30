@@ -41,8 +41,6 @@ func _ready() -> void:
 	for btn in buttons:
 		btn.modulate = Color(1, 1, 1, 0)
 
-	_apply_button_backgrounds()
-
 	_logo_title.modulate = Color(1, 1, 1, 0)
 	_logo_subtitle.modulate = Color(1, 1, 1, 0)
 

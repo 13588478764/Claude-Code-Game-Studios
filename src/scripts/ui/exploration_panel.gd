@@ -720,38 +720,39 @@ func _close_tutorial() -> void:
 # ============================================================================
 
 ## 主线事件序列 (三幕28事件, 覆盖 Lv1-90, 需满足 required_level 才能推进)
+## dialogue_id 必须与 data/dialogues/*.json 中的 "id" 字段一致
 const MAIN_STORY_EVENTS: Array[Dictionary] = [
 	# === Act 1: 青云镇危机 (Lv1-15, 炼气→筑基) ===
-	{"event_id": "act1_event1_opening", "dialogue_id": "act1_event1_opening", "hint": "与村中长老交谈了解情况", "required_level": 1},
-	{"event_id": "act1_event2_cultivation", "dialogue_id": "act1_event2_cultivation", "hint": "开始修炼之路", "required_level": 3},
-	{"event_id": "act1_event3_crisis", "dialogue_id": "act1_event3_crisis", "hint": "调查青云镇异变", "required_level": 5},
-	{"event_id": "act1_event4_boss", "dialogue_id": "act1_event4_boss", "hint": "面对青云镇危机", "required_level": 8},
-	{"event_id": "act1_event5_ruins", "dialogue_id": "act1_event5_ruins", "hint": "探索古遗迹", "required_level": 12},
-	{"event_id": "act1_event6_resolution", "dialogue_id": "act1_event6_resolution", "hint": "解决青云镇危机", "required_level": 15},
+	{"event_id": "act1_event1_opening", "dialogue_id": "ACT1_OPENING_001", "hint": "与村中长老交谈了解情况", "required_level": 1},
+	{"event_id": "act1_event2_cultivation", "dialogue_id": "ACT2_CULTIVATION_001", "hint": "开始修炼之路", "required_level": 3},
+	{"event_id": "act1_event3_crisis", "dialogue_id": "ACT3_CRISIS_001", "hint": "调查青云镇异变", "required_level": 5},
+	{"event_id": "act1_event4_boss", "dialogue_id": "ACT4_BOSS_001", "hint": "面对青云镇危机", "required_level": 8},
+	{"event_id": "act1_event5_ruins", "dialogue_id": "ACT5_RUINS_001", "hint": "探索古遗迹", "required_level": 12},
+	{"event_id": "act1_event6_resolution", "dialogue_id": "ACT6_RESOLUTION_001", "hint": "解决青云镇危机", "required_level": 15},
 	# === Act 2: 九州风云 (Lv16-50, 筑基→化神) ===
-	{"event_id": "act2_event1_return", "dialogue_id": "act2_event1_return", "hint": "重返修真界", "required_level": 16},
-	{"event_id": "act2_event2_sect_gathering", "dialogue_id": "act2_event2_sect_gathering", "hint": "参加宗门大会", "required_level": 20},
-	{"event_id": "act2_event3_first_trial", "dialogue_id": "act2_event3_first_trial", "hint": "完成第一次试炼", "required_level": 23},
-	{"event_id": "act2_event4_demonic_invasion", "dialogue_id": "act2_event4_demonic_invasion", "hint": "抵御魔道入侵", "required_level": 27},
-	{"event_id": "act2_event5_secret_realm", "dialogue_id": "act2_event5_secret_realm", "hint": "探索秘境", "required_level": 30},
-	{"event_id": "act2_event6_dao_heart_choice", "dialogue_id": "act2_event6_dao_heart_choice", "hint": "道心抉择", "required_level": 33},
-	{"event_id": "act2_event7_murongxue_memory", "dialogue_id": "act2_event7_murongxue_memory", "hint": "慕容雪的记忆", "required_level": 36},
-	{"event_id": "act2_event8_battlefield", "dialogue_id": "act2_event8_battlefield", "hint": "九州战场", "required_level": 40},
-	{"event_id": "act2_event9_yunzhonghe_sacrifice", "dialogue_id": "act2_event9_yunzhonghe_sacrifice", "hint": "云中鹤的牺牲", "required_level": 44},
-	{"event_id": "act2_event10_foundation_breakthrough", "dialogue_id": "act2_event10_foundation_breakthrough", "hint": "突破化神期", "required_level": 47},
-	{"event_id": "act2_event11_act2_finale", "dialogue_id": "act2_event11_act2_finale", "hint": "第二幕终章", "required_level": 50},
+	{"event_id": "act2_event1_return", "dialogue_id": "ACT2_EVENT1_RETURN", "hint": "重返修真界", "required_level": 16},
+	{"event_id": "act2_event2_sect_gathering", "dialogue_id": "ACT2_EVENT2_SECT_GATHERING", "hint": "参加宗门大会", "required_level": 20},
+	{"event_id": "act2_event3_first_trial", "dialogue_id": "ACT2_EVENT3_FIRST_TRIAL", "hint": "完成第一次试炼", "required_level": 23},
+	{"event_id": "act2_event4_demonic_invasion", "dialogue_id": "ACT2_EVENT4_DEMONIC_INVASION", "hint": "抵御魔道入侵", "required_level": 27},
+	{"event_id": "act2_event5_secret_realm", "dialogue_id": "ACT2_EVENT5_SECRET_REALM", "hint": "探索秘境", "required_level": 30},
+	{"event_id": "act2_event6_dao_heart_choice", "dialogue_id": "ACT2_EVENT6_DAO_HEART_CHOICE", "hint": "道心抉择", "required_level": 33},
+	{"event_id": "act2_event7_murongxue_memory", "dialogue_id": "ACT2_EVENT7_MURONGXUE_MEMORY", "hint": "慕容雪的记忆", "required_level": 36},
+	{"event_id": "act2_event8_battlefield", "dialogue_id": "ACT2_EVENT8_BATTLEFIELD", "hint": "九州战场", "required_level": 40},
+	{"event_id": "act2_event9_yunzhonghe_sacrifice", "dialogue_id": "ACT2_EVENT9_SACRIFICE", "hint": "云中鹤的牺牲", "required_level": 44},
+	{"event_id": "act2_event10_foundation_breakthrough", "dialogue_id": "ACT2_EVENT10_BREAKTHROUGH", "hint": "突破化神期", "required_level": 47},
+	{"event_id": "act2_event11_act2_finale", "dialogue_id": "ACT2_EVENT11_FINALE", "hint": "第二幕终章", "required_level": 50},
 	# === Act 3: 九州之门 (Lv51-90, 返虚→渡劫) ===
-	{"event_id": "act3_event1_new_journey", "dialogue_id": "act3_event1_new_journey", "hint": "踏上新征途", "required_level": 51},
-	{"event_id": "act3_event2_faction_trial", "dialogue_id": "act3_event2_faction_trial", "hint": "阵营试炼", "required_level": 55},
-	{"event_id": "act3_event3_seal_tremor", "dialogue_id": "act3_event3_seal_tremor", "hint": "封印震动", "required_level": 58},
-	{"event_id": "act3_event4_murongxue_appears", "dialogue_id": "act3_event4_murongxue_appears", "hint": "慕容雪现身", "required_level": 62},
-	{"event_id": "act3_event5_ancient_battlefield", "dialogue_id": "act3_event5_ancient_battlefield", "hint": "上古战场", "required_level": 66},
-	{"event_id": "act3_event6_xiaohanye_truth", "dialogue_id": "act3_event6_xiaohanye_truth", "hint": "萧寒夜的真相", "required_level": 70},
-	{"event_id": "act3_event7_sword_bone_awakening", "dialogue_id": "act3_event7_sword_bone_awakening", "hint": "剑骨觉醒", "required_level": 75},
-	{"event_id": "act3_event8_gate_opens", "dialogue_id": "act3_event8_gate_opens", "hint": "九州之门开启", "required_level": 80},
-	{"event_id": "act3_event9_final_eve", "dialogue_id": "act3_event9_final_eve", "hint": "最终决战前夜", "required_level": 85},
-	{"event_id": "act3_event10_final_battle", "dialogue_id": "act3_event10_final_battle", "hint": "最终决战", "required_level": 88},
-	{"event_id": "act3_event11_ending", "dialogue_id": "act3_event11_ending", "hint": "结局", "required_level": 90},
+	{"event_id": "act3_event1_new_journey", "dialogue_id": "ACT3_EVENT1_JOURNEY", "hint": "踏上新征途", "required_level": 51},
+	{"event_id": "act3_event2_faction_trial", "dialogue_id": "ACT3_EVENT2_TRIAL", "hint": "阵营试炼", "required_level": 55},
+	{"event_id": "act3_event3_seal_tremor", "dialogue_id": "ACT3_EVENT3_SEAL", "hint": "封印震动", "required_level": 58},
+	{"event_id": "act3_event4_murongxue_appears", "dialogue_id": "ACT3_EVENT4_MURONGXUE", "hint": "慕容雪现身", "required_level": 62},
+	{"event_id": "act3_event5_ancient_battlefield", "dialogue_id": "ACT3_EVENT5_BATTLEFIELD", "hint": "上古战场", "required_level": 66},
+	{"event_id": "act3_event6_xiaohanye_truth", "dialogue_id": "ACT3_EVENT6_XIAOHANYE", "hint": "萧寒夜的真相", "required_level": 70},
+	{"event_id": "act3_event7_sword_bone_awakening", "dialogue_id": "ACT3_EVENT7_SWORD_BONE", "hint": "剑骨觉醒", "required_level": 75},
+	{"event_id": "act3_event8_gate_opens", "dialogue_id": "ACT3_EVENT8_GATE", "hint": "九州之门开启", "required_level": 80},
+	{"event_id": "act3_event9_final_eve", "dialogue_id": "ACT3_EVENT9_FINAL_EVE", "hint": "最终决战前夜", "required_level": 85},
+	{"event_id": "act3_event10_final_battle", "dialogue_id": "ACT3_EVENT10_FINAL_BATTLE", "hint": "最终决战", "required_level": 88},
+	{"event_id": "act3_event11_ending", "dialogue_id": "ACT3_EVENT11_ENDING", "hint": "结局", "required_level": 90},
 ]
 
 var _story_triggered_this_session: bool = false
@@ -811,14 +812,7 @@ func _grant_story_reward(event_id: String) -> void:
 	var item_id: String = STORY_ITEM_REWARDS.get(event_id, "")
 	if not item_id.is_empty() and inv and inv.has_method("add_item"):
 		inv.add_item(item_id, 1)
-		var items_data: Dictionary = {}
-		if ResourceLoader.exists("res://src/data/items.json"):
-			var file := FileAccess.open("res://src/data/items.json", FileAccess.READ)
-			if file:
-				var json := JSON.new()
-				if json.parse(file.get_as_text()) == OK:
-					items_data = json.data
-				file.close()
+		var items_data: Dictionary = _load_items_data()
 		var item_name: String = items_data.get(item_id, {}).get("name", item_id)
 		reward_text += " +[%s]" % item_name
 
