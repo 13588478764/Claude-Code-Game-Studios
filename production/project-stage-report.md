@@ -1,9 +1,9 @@
 # 项目阶段分析报告
 
-**日期**: 2026-05-28
-**阶段**: **Polish**
-**阶段置信度**: PASS — `production/stage.txt` 标记为 Polish, Production→Polish 门检已通过
-**上次更新**: 2026-05-23 → 本次 (第 5 天增量更新)
+**日期**: 2026-05-30
+**阶段**: **Polish** (接近 Beta 门检)
+**阶段置信度**: PASS — `production/stage.txt` 标记为 Polish
+**上次更新**: 2026-05-28 → 本次 (2天增量, 含14项系统修复+资源回流)
 
 ---
 
@@ -17,7 +17,7 @@
 | **架构** | 75% | 12 个 ADR; 缺架构总览索引文档 |
 | **生产管理** | 90% | 7 sprints, 3 milestones, 44 epics, 3 playtests, risk-register, polish-fixlist |
 | **测试** | 80% | 152 个测试文件, ~31,075 行; unit/integration/smoke/performance 四层覆盖 |
-| **代码健康** | 95% | 10 个 TODO(beta), 0 个 FIXME; polish-fixlist 27 项中 21 项已关闭 |
+| **代码健康** | 98% | 3 个 TODO(beta), 0 个 FIXME; polish-fixlist 23/27 关闭; 14项系统断裂修复 |
 
 ---
 

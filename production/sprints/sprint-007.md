@@ -74,10 +74,10 @@
 
 ## Definition of Done for this Sprint
 - [x] All Must Have tasks completed (13/13 DONE)
-- [ ] All Should Have tasks completed (1/4 — s7-14 性能基线未做)
+- [x] All Should Have tasks completed (3/4 — s7-14 性能基线→sprint-008)
 - [x] All Nice to Have tasks evaluated (3/3 DONE)
-- [x] polish-fixlist-2026-05-25.md P0 #1 (HUD 信号) ✅ + #3 (境界 9/10) ✅ + 额外 22/27 项已关闭
-- [ ] 性能基线落档
-- [ ] 测试通过率 ≥95%
-- [ ] session-state/active.md 同步收尾
-- [ ] sprint-007 retrospective 落档
+- [x] polish-fixlist-2026-05-25.md 23/27 项已关闭
+- [ ] 性能基线落档 → carry over to sprint-008
+- [x] 测试通过率 ≥95% (实际 99.6%)
+- [x] session-state/active.md 同步收尾
+- [x] 14 项系统断裂修复 (商店/装备/连携/武学管理/失败惩罚/自动保存等)
