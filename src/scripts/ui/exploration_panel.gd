@@ -411,13 +411,14 @@ func _try_trigger_side_quest(npc_id: String, npc_name: String) -> bool:
 	dialogue_mgr.start_dialogue(dialogue_id)
 	log_label.text = "[color=cyan]支线任务：与%s的故事[/color]" % npc_name
 
-	# 支线完成后给奖励
-	if not dialogue_mgr.dialogue_ended.is_connected(_on_side_quest_ended):
+	if not _dialogue_reward_pending:
+		_dialogue_reward_pending = true
 		dialogue_mgr.dialogue_ended.connect(_on_side_quest_ended.bind(npc_name), CONNECT_ONE_SHOT)
 	return true
 
 
 func _on_side_quest_ended(_dialogue_id: String, npc_name: String) -> void:
+	_dialogue_reward_pending = false
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	var currency: Node = get_node_or_null("/root/CurrencyManager")
 
@@ -469,7 +470,8 @@ func _try_trigger_story_via_npc(npc_id: String, npc_name: String) -> bool:
 	act_mgr.trigger_event(act_mgr.current_act, event_id)
 	dialogue_mgr.start_dialogue(dialogue_id)
 
-	if not dialogue_mgr.dialogue_ended.is_connected(_on_main_story_dialogue_ended):
+	if not _dialogue_reward_pending:
+		_dialogue_reward_pending = true
 		dialogue_mgr.dialogue_ended.connect(_on_main_story_dialogue_ended.bind(event_id), CONNECT_ONE_SHOT)
 	return true
 
@@ -757,6 +759,7 @@ const MAIN_STORY_EVENTS: Array[Dictionary] = [
 ]
 
 var _story_triggered_this_session: bool = false
+var _dialogue_reward_pending: bool = false
 
 
 ## 主线不再自动触发，改为玩家主动与 NPC 交谈时检查
@@ -765,6 +768,7 @@ func _try_advance_main_story() -> void:
 
 
 func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> void:
+	_dialogue_reward_pending = false
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	if act_mgr:
 		act_mgr.complete_event(event_id)

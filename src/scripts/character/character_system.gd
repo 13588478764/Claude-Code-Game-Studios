@@ -403,7 +403,7 @@ func reset_attributes() -> bool:
 func consume_wash_marrow_pill() -> bool:
 	"""消耗洗髓丹"""
 	# 与物品系统集成
-	var item_manager: Node = get_node_or_null("/root/MainGame/ItemManager")
+	var item_manager: Node = get_node_or_null("/root/InventorySystem")
 	if item_manager:
 		return item_manager.remove_item(item_manager.ITEM_WASH_MARROW_PILL, 1)
 	else:

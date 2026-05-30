@@ -183,7 +183,7 @@ class BattleUnit:
 		elif node_or_data is Dictionary:
 			unit_node = node_or_data
 			# 如果传入的是数据字典，从中提取属性
-			initiative = initiative if init_attrs.has("speed") else node_or_data.get("speed", 10)
+			initiative = node_or_data.get("speed", 10)
 			current_hp = node_or_data.get("hp", 100)
 			max_hp = node_or_data.get("max_hp", 100)
 			current_internal_energy = node_or_data.get("internal_energy", 50)

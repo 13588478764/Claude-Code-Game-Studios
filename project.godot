@@ -42,14 +42,15 @@ InventorySystem="*res://src/scripts/item_system_bridge.gd"
 SaveSystem="*res://src/scripts/save/save_system.gd"
 MartialArtsSystem="*res://src/scripts/combat/martial_arts_system.gd"
 EncounterDataLoader="*res://src/scripts/encounter/encounter_data_loader.gd"
-
-[gui]
-
-theme/custom="res://assets/themes/main_theme.tres"
+EquipmentManager="*res://src/scripts/equipment/equipment_manager.gd"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg")
+
+[gui]
+
+theme/custom="res://assets/themes/main_theme.tres"
 
 [gut]
 
