@@ -383,12 +383,13 @@ func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
 
 
 ## NPC 支线对话 ID 映射
+## 支线任务 quest_id → 对话 JSON 中的实际 id 字段
 const NPC_SIDE_QUEST_DIALOGUE: Dictionary = {
-	"yunzhonghe_sword_path": "side_quests/yunzhonghe_sword_heart_path",
-	"tiewushuang_beggars": "side_quests/tiewushuang_brotherhood",
-	"liuruyan_righteous": "side_quests/liuruyan_righteous_path",
-	"murongxue_past_life": "side_quests/murongxue_past_life",
-	"xiaohanye_demonic": "side_quests/xiaohanye_demonic_path",
+	"yunzhonghe_sword_path": "YUN_QUEST_LINE",
+	"tiewushuang_beggars": "TIE_QUEST_LINE",
+	"liuruyan_righteous": "LIU_QUEST_LINE",
+	"murongxue_past_life": "MU_QUEST_LINE",
+	"xiaohanye_demonic": "XIAO_QUEST_LINE",
 }
 
 
@@ -931,8 +932,7 @@ func _show_martial_arts_panel() -> void:
 	overlay.name = "MartialArtsPanel"
 	overlay.anchors_preset = Control.PRESET_FULL_RECT
 	overlay.z_index = 400
-	var root: Control = $Root
-	root.add_child(overlay)
+	get_tree().root.add_child(overlay)
 
 	var bg := ColorRect.new()
 	bg.anchors_preset = Control.PRESET_FULL_RECT
@@ -1042,8 +1042,7 @@ func _show_shop_panel() -> void:
 	overlay.name = "ShopPanel"
 	overlay.anchors_preset = Control.PRESET_FULL_RECT
 	overlay.z_index = 400
-	var root: Control = $Root
-	root.add_child(overlay)
+	get_tree().root.add_child(overlay)
 
 	var bg := ColorRect.new()
 	bg.anchors_preset = Control.PRESET_FULL_RECT
