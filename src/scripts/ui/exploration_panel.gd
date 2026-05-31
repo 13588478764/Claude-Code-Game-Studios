@@ -442,6 +442,10 @@ func _on_side_quest_ended(_dialogue_id: String, npc_name: String) -> void:
 
 ## 尝试通过 NPC 交谈触发主线事件
 func _try_trigger_story_via_npc(npc_id: String, npc_name: String) -> bool:
+	# 刚完成一个主线事件后需要冷却(做一次探索才能接下一个)
+	if _story_cooldown:
+		return false
+
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
@@ -490,6 +494,7 @@ func _get_next_story_event(act_mgr: Node) -> Dictionary:
 func _on_explore_pressed() -> void:
 	if _game_loop == null:
 		return
+	_story_cooldown = false
 	log_label.text = "探索中..."
 	_game_loop.do_explore_action()
 	_advance_time()
@@ -760,6 +765,7 @@ const MAIN_STORY_EVENTS: Array[Dictionary] = [
 
 var _story_triggered_this_session: bool = false
 var _dialogue_reward_pending: bool = false
+var _story_cooldown: bool = false
 
 
 ## 主线不再自动触发，改为玩家主动与 NPC 交谈时检查
@@ -769,6 +775,7 @@ func _try_advance_main_story() -> void:
 
 func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> void:
 	_dialogue_reward_pending = false
+	_story_cooldown = true
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	if act_mgr:
 		act_mgr.complete_event(event_id)
@@ -803,8 +810,13 @@ func _grant_story_reward(event_id: String) -> void:
 			event_level = event.get("required_level", 1)
 			break
 
-	var exp_reward: int = event_level * 50 * 10
-	var silver_reward: int = event_level * 20 * 5
+	# 主线奖励 = 该等级升一级所需经验的 50% (不会一次跳级)
+	var char_sys_ref: Node = get_node_or_null("/root/CharacterSystem")
+	var exp_to_next: int = 100
+	if char_sys_ref and char_sys_ref.has_method("get_exp_required_for_level"):
+		exp_to_next = char_sys_ref.get_exp_required_for_level(event_level + 1)
+	var exp_reward: int = int(exp_to_next * 0.5)
+	var silver_reward: int = event_level * 20
 
 	if char_sys and char_sys.has_method("add_experience"):
 		char_sys.add_experience(exp_reward)
