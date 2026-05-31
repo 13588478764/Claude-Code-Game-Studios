@@ -509,7 +509,7 @@ func get_final_attributes() -> CharacterAttributes:
 ## 从 EquipmentManager 获取已装备物品的总属性加成
 func _get_equipment_attribute_bonus() -> Dictionary:
 	var bonus := {"strength": 0, "agility": 0, "constitution": 0, "intelligence": 0, "willpower": 0, "luck": 0}
-	var equip_mgr: Node = get_node_or_null("/root/EquipmentManager") if is_inside_tree() else null
+	var equip_mgr: Node = get_node_or_null("/root/EquipmentMgr") if is_inside_tree() else null
 	if equip_mgr == null:
 		return bonus
 

@@ -204,7 +204,7 @@ func create_attribute_comparison_panel():
 # 更新UI显示
 func update_ui() -> void:
 	var inv: Node = get_node_or_null("/root/InventorySystem")
-	var equip_mgr: Node = get_node_or_null("/root/EquipmentManager") if has_node("/root/EquipmentManager") else null
+	var equip_mgr: Node = get_node_or_null("/root/EquipmentMgr") if has_node("/root/EquipmentMgr") else null
 
 	for slot_type in equipment_slots:
 		var slot_button: Button = equipment_slots[slot_type]

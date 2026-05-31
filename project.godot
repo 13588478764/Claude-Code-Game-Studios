@@ -42,7 +42,7 @@ InventorySystem="*res://src/scripts/item_system_bridge.gd"
 SaveSystem="*res://src/scripts/save/save_system.gd"
 MartialArtsSystem="*res://src/scripts/combat/martial_arts_system.gd"
 EncounterDataLoader="*res://src/scripts/encounter/encounter_data_loader.gd"
-EquipmentManager="*res://src/scripts/equipment/equipment_manager.gd"
+EquipmentMgr="*res://src/scripts/equipment/equipment_manager.gd"
 
 [editor_plugins]
 
