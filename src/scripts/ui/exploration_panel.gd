@@ -379,8 +379,19 @@ func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
 		return
 
 	var success: bool = dialogue_mgr.start_dialogue_with_npc(npc_id)
-	if not success:
+	if success:
+		# 每次与 NPC 完成日常对话后增加少量好感度 (+2)
+		if not dialogue_mgr.dialogue_ended.is_connected(_on_npc_chat_ended):
+			dialogue_mgr.dialogue_ended.connect(_on_npc_chat_ended.bind(npc_id, npc_name), CONNECT_ONE_SHOT)
+	else:
 		log_label.text = "（%s没有什么特别想说的）" % npc_name
+
+
+func _on_npc_chat_ended(_dialogue_id: String, npc_id: String, npc_name: String) -> void:
+	var rel_mgr: Node = get_node_or_null("/root/RelationshipManager")
+	if rel_mgr and rel_mgr.has_method("modify_relationship"):
+		rel_mgr.modify_relationship(npc_id, 2, "日常交谈")
+		log_label.text = "%s 对你的好感度提升了 (+2)" % npc_name
 
 
 ## NPC 支线对话 ID 映射
