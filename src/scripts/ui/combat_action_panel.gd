@@ -237,29 +237,107 @@ func _on_defend_pressed() -> void:
 	_schedule_next_auto_turn()
 
 
-## 物品按钮 — 使用回春丹恢复HP
+## 物品按钮 — 打开物品选择列表
 func _on_item_pressed() -> void:
 	if not _player_turn or _combat_system == null:
 		return
+	_populate_item_list()
+	_action_box.visible = false
+	_wait_label.visible = false
+	_skill_list_box.visible = false
+
+
+## 物品选择列表容器 (运行时创建)
+var _item_list_box: VBoxContainer = null
+
+
+func _create_item_list_ui() -> void:
+	_item_list_box = VBoxContainer.new()
+	_item_list_box.name = "ItemListBox"
+	_item_list_box.visible = false
+	_item_list_box.set("theme_override_constants/separation", 6)
+	var bottom_vbox: VBoxContainer = $Root/BottomPanel/BottomVBox
+	bottom_vbox.add_child(_item_list_box)
+
+
+## 战斗可用消耗品
+const BATTLE_CONSUMABLES: Array = [
+	{"id": "health_pill", "name": "回春丹", "effect": "恢复30%HP", "type": "heal_hp", "value": 0.3},
+	{"id": "qi_gathering_pill", "name": "聚气丹", "effect": "恢复30%内力", "type": "heal_mp", "value": 0.3},
+]
+
+
+func _populate_item_list() -> void:
+	if _item_list_box == null:
+		_create_item_list_ui()
+
+	for child in _item_list_box.get_children():
+		child.queue_free()
+
+	var title := Label.new()
+	title.text = "— 选择物品 (不消耗回合) —"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_item_list_box.add_child(title)
 
 	var inv: Node = get_node_or_null("/root/InventorySystem")
-	if inv == null:
-		_add_log_line("背包不可用")
+	var has_items := false
+
+	if inv:
+		for item in BATTLE_CONSUMABLES:
+			var item_id: String = item.id
+			if not inv.has_item(item_id):
+				continue
+			has_items = true
+			var btn := Button.new()
+			btn.text = "%s (%s)" % [item.name, item.effect]
+			btn.custom_minimum_size = Vector2(200, 36)
+			btn.pressed.connect(_on_use_battle_item.bind(item))
+			_item_list_box.add_child(btn)
+
+	if not has_items:
+		var empty := Label.new()
+		empty.text = "没有可用的消耗品"
+		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_item_list_box.add_child(empty)
+
+	var back_btn := Button.new()
+	back_btn.text = "返回"
+	back_btn.custom_minimum_size = Vector2(80, 36)
+	back_btn.pressed.connect(_on_item_back_pressed)
+	_item_list_box.add_child(back_btn)
+
+	_item_list_box.visible = true
+
+
+func _on_use_battle_item(item: Dictionary) -> void:
+	var inv: Node = get_node_or_null("/root/InventorySystem")
+	if inv == null or not inv.has_item(item.id):
 		return
 
-	if inv.has_item("health_pill"):
-		inv.use_item("health_pill")
-		# 恢复30%HP
-		var player_unit: Variant = _combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
-		if player_unit:
-			var heal_amount: int = int(player_unit.max_hp * 0.3)
-			player_unit.current_hp = min(player_unit.max_hp, player_unit.current_hp + heal_amount)
-			_add_log_line("[color=green]使用回春丹，恢复 %d HP[/color]" % heal_amount)
-			_refresh_hp_display()
-		_player_turn = false
-		_schedule_next_auto_turn()
-	else:
-		_add_log_line("[color=red]没有可用的回春丹[/color]")
+	inv.use_item(item.id)
+	var player_unit: Variant = _combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
+	if player_unit == null:
+		return
+
+	match item.type:
+		"heal_hp":
+			var heal: int = int(player_unit.max_hp * item.value)
+			player_unit.current_hp = min(player_unit.max_hp, player_unit.current_hp + heal)
+			_add_log_line("[color=green]使用%s，恢复 %d HP[/color]" % [item.name, heal])
+		"heal_mp":
+			var heal: int = int(player_unit.max_internal_energy * item.value)
+			player_unit.current_internal_energy = min(player_unit.max_internal_energy, player_unit.current_internal_energy + heal)
+			_add_log_line("[color=cyan]使用%s，恢复 %d 内力[/color]" % [item.name, heal])
+
+	_refresh_hp_display()
+	# 使用物品不消耗回合，返回操作按钮
+	_item_list_box.visible = false
+	_action_box.visible = true
+
+
+func _on_item_back_pressed() -> void:
+	_item_list_box.visible = false
+	_action_box.visible = true
 
 
 ## 技能按钮 — 打开已装备武学列表
