@@ -395,46 +395,130 @@ func _on_npc_chat_ended(_dialogue_id: String, npc_id: String, npc_name: String) 
 
 
 ## NPC 支线对话 ID 映射
-## 支线任务配置: quest_id → {dialogue_id, require_kills, require_item, reward_exp_mult, reward_item}
+## 支线任务配置 — 每个NPC 3条线 (初期/中期/后期) + 好感度奖励
+## require_kills / require_item / require_realm 为前置条件
+## relationship_reward: 完成后额外增加的好感度
 const SIDE_QUEST_CONFIG: Dictionary = {
+	# === 云中鹤 (剑修, 3条) ===
 	"yunzhonghe_sword_path": {
-		"dialogue_id": "YUN_QUEST_LINE",
-		"npc_name": "云中鹤",
+		"dialogue_id": "YUN_QUEST_LINE", "npc_id": "yunzhonghe", "npc_name": "云中鹤",
 		"hint": "击败5个敌人后帮云中鹤寻找剑心",
-		"reward_hint": "经验+古剑术残篇",
-		"require_kills": 5,
-		"reward_item": "ancient_sword_technique_fragment",
+		"reward_hint": "经验+古剑术残篇+好感度10", "require_kills": 5,
+		"reward_item": "ancient_sword_technique_fragment", "relationship_reward": 10,
 	},
-	"tiewushuang_beggars": {
-		"dialogue_id": "TIE_QUEST_LINE",
-		"npc_name": "铁无双",
-		"hint": "与铁无双把酒言欢",
-		"reward_hint": "经验+回春丹",
-		"reward_item": "health_pill",
+	"yunzhonghe_sword_trial": {
+		"dialogue_id": "YUN_QUEST_LINE", "npc_id": "yunzhonghe", "npc_name": "云中鹤",
+		"hint": "获取精钢剑后与云中鹤切磋剑道",
+		"reward_hint": "经验+铁甲+好感度15", "require_item": "rare_sword",
+		"reward_item": "body_iron_armor", "relationship_reward": 15,
 	},
+	"yunzhonghe_sword_master": {
+		"dialogue_id": "YUN_QUEST_LINE", "npc_id": "yunzhonghe", "npc_name": "云中鹤",
+		"hint": "击败50个敌人后助云中鹤突破剑道瓶颈",
+		"reward_hint": "经验+功法卷轴+好感度20", "require_kills": 50,
+		"reward_item": "ancient_technique_scroll", "relationship_reward": 20,
+	},
+	# === 柳如烟 (正道, 3条) ===
 	"liuruyan_righteous": {
-		"dialogue_id": "LIU_QUEST_LINE",
-		"npc_name": "柳如烟",
-		"hint": "获取精钢剑后助柳如烟行侠",
-		"reward_hint": "经验+武学残卷",
-		"require_item": "rare_sword",
-		"reward_item": "ancient_martial_art_fragment",
+		"dialogue_id": "LIU_QUEST_LINE", "npc_id": "liuruyan", "npc_name": "柳如烟",
+		"hint": "获取铁剑后助柳如烟行侠仗义",
+		"reward_hint": "经验+武学残卷+好感度10", "require_item": "common_sword",
+		"reward_item": "ancient_martial_art_fragment", "relationship_reward": 10,
 	},
+	"liuruyan_rescue": {
+		"dialogue_id": "LIU_QUEST_LINE", "npc_id": "liuruyan", "npc_name": "柳如烟",
+		"hint": "击败15个敌人后救出被困百姓",
+		"reward_hint": "经验+踏云靴+好感度15", "require_kills": 15,
+		"reward_item": "feet_cloud_boots", "relationship_reward": 15,
+	},
+	"liuruyan_justice": {
+		"dialogue_id": "LIU_QUEST_LINE", "npc_id": "liuruyan", "npc_name": "柳如烟",
+		"hint": "突破筑基期后与柳如烟联手除恶",
+		"reward_hint": "经验+龙爪手套+好感度20", "require_realm": 1,
+		"reward_item": "hands_dragon_gloves", "relationship_reward": 20,
+	},
+	# === 铁无双 (豪侠, 3条) ===
+	"tiewushuang_beggars": {
+		"dialogue_id": "TIE_QUEST_LINE", "npc_id": "tiewushuang", "npc_name": "铁无双",
+		"hint": "与铁无双把酒言欢",
+		"reward_hint": "经验+回春丹+好感度10",
+		"reward_item": "health_pill", "relationship_reward": 10,
+	},
+	"tiewushuang_brotherhood": {
+		"dialogue_id": "TIE_QUEST_LINE", "npc_id": "tiewushuang", "npc_name": "铁无双",
+		"hint": "击败10个敌人后与铁无双共闯黑风寨",
+		"reward_hint": "经验+铁护手+好感度15", "require_kills": 10,
+		"reward_item": "hands_iron_gauntlets", "relationship_reward": 15,
+	},
+	"tiewushuang_oath": {
+		"dialogue_id": "TIE_QUEST_LINE", "npc_id": "tiewushuang", "npc_name": "铁无双",
+		"hint": "获取铁盔后与铁无双结义",
+		"reward_hint": "经验+铁盾+好感度20", "require_item": "rare_helmet",
+		"reward_item": "offhand_iron_shield", "relationship_reward": 20,
+	},
+	# === 慕容雪 (冰冷, 3条) ===
 	"murongxue_past_life": {
-		"dialogue_id": "MU_QUEST_LINE",
-		"npc_name": "慕容雪",
+		"dialogue_id": "MU_QUEST_LINE", "npc_id": "murongxue", "npc_name": "慕容雪",
 		"hint": "击败8个敌人后探索前世之谜",
-		"reward_hint": "经验+火焰戒指",
-		"require_kills": 8,
-		"reward_item": "epic_ring",
+		"reward_hint": "经验+火焰戒指+好感度10", "require_kills": 8,
+		"reward_item": "epic_ring", "relationship_reward": 10,
 	},
+	"murongxue_memory": {
+		"dialogue_id": "MU_QUEST_LINE", "npc_id": "murongxue", "npc_name": "慕容雪",
+		"hint": "获取翡翠坠后帮慕容雪找回记忆碎片",
+		"reward_hint": "经验+灵气项链+好感度15", "require_item": "neck_jade_pendant",
+		"reward_item": "neck_spirit_necklace", "relationship_reward": 15,
+	},
+	"murongxue_truth": {
+		"dialogue_id": "MU_QUEST_LINE", "npc_id": "murongxue", "npc_name": "慕容雪",
+		"hint": "突破金丹期后揭开慕容雪的身世真相",
+		"reward_hint": "经验+流云袍+好感度20", "require_realm": 2,
+		"reward_item": "body_cloud_robe", "relationship_reward": 20,
+	},
+	# === 萧寒夜 (魔道, 3条) ===
 	"xiaohanye_demonic": {
-		"dialogue_id": "XIAO_QUEST_LINE",
-		"npc_name": "萧寒夜",
-		"hint": "击败6个敌人后追随魔道之路",
-		"reward_hint": "经验+功法卷轴",
-		"require_kills": 6,
-		"reward_item": "ancient_technique_scroll",
+		"dialogue_id": "XIAO_QUEST_LINE", "npc_id": "xiaohanye", "npc_name": "萧寒夜",
+		"hint": "击败6个敌人后追随萧寒夜体验魔道",
+		"reward_hint": "经验+功法卷轴+好感度10", "require_kills": 6,
+		"reward_item": "ancient_technique_scroll", "relationship_reward": 10,
+	},
+	"xiaohanye_dark_path": {
+		"dialogue_id": "XIAO_QUEST_LINE", "npc_id": "xiaohanye", "npc_name": "萧寒夜",
+		"hint": "击败20个敌人后与萧寒夜探索禁地",
+		"reward_hint": "经验+铜戒+好感度15", "require_kills": 20,
+		"reward_item": "common_ring", "relationship_reward": 15,
+	},
+	"xiaohanye_redemption": {
+		"dialogue_id": "XIAO_QUEST_LINE", "npc_id": "xiaohanye", "npc_name": "萧寒夜",
+		"hint": "突破筑基期后助萧寒夜走出心魔",
+		"reward_hint": "经验+武学残卷+好感度20", "require_realm": 1,
+		"reward_item": "ancient_martial_art_fragment", "relationship_reward": 20,
+	},
+	# === 玄机真人 (导师, 2条) ===
+	"xuanjizhenren_guidance": {
+		"dialogue_id": "npc_xuanjizhenren", "npc_id": "xuanjizhenren", "npc_name": "玄机真人",
+		"hint": "向玄机真人请教修炼之道",
+		"reward_hint": "经验+回春丹×3+好感度10",
+		"reward_item": "health_pill", "relationship_reward": 10,
+	},
+	"xuanjizhenren_test": {
+		"dialogue_id": "npc_xuanjizhenren", "npc_id": "xuanjizhenren", "npc_name": "玄机真人",
+		"hint": "击败30个敌人通过玄机真人的考验",
+		"reward_hint": "经验+筑基丹+好感度20", "require_kills": 30,
+		"reward_item": "breakthrough_pill", "relationship_reward": 20,
+	},
+	# === 血无痕 (亦正亦邪, 2条) ===
+	"xuewuhen_deal": {
+		"dialogue_id": "npc_xuewuhen", "npc_id": "xuewuhen", "npc_name": "血无痕",
+		"hint": "击败12个敌人后与血无痕做一笔交易",
+		"reward_hint": "经验+银戒+好感度10", "require_kills": 12,
+		"reward_item": "rare_ring", "relationship_reward": 10,
+	},
+	"xuewuhen_secret": {
+		"dialogue_id": "npc_xuewuhen", "npc_id": "xuewuhen", "npc_name": "血无痕",
+		"hint": "获取青冥剑后探听血无痕的秘密",
+		"reward_hint": "经验+洗髓丹+好感度20", "require_item": "epic_sword",
+		"reward_item": "wash_marrow_pill", "relationship_reward": 20,
 	},
 }
 
@@ -533,6 +617,15 @@ func _on_side_quest_ended(_dialogue_id: String, quest_id: String) -> void:
 		var items_data: Dictionary = _load_items_data()
 		var item_name: String = items_data.get(reward_item, {}).get("name", reward_item)
 		reward_text += " +[%s]" % item_name
+
+	# 好感度奖励
+	var rel_reward: int = config.get("relationship_reward", 0)
+	var npc_id: String = config.get("npc_id", "")
+	if rel_reward > 0 and not npc_id.is_empty():
+		var rel_mgr: Node = get_node_or_null("/root/RelationshipManager")
+		if rel_mgr and rel_mgr.has_method("modify_relationship"):
+			rel_mgr.modify_relationship(npc_id, rel_reward, "支线任务完成")
+		reward_text += " +好感度%d" % rel_reward
 
 	if log_label:
 		log_label.text = "[color=cyan]支线完成！%s[/color]" % reward_text

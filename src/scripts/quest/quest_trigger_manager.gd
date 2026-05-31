@@ -255,22 +255,40 @@ func _on_realm_breakthrough(new_realm: String, realm_bonus: float, realm_index: 
 
 ## 注册所有核心NPC个人线触发条件
 func register_all_npc_questlines():
-	# 云中鹤 — 剑心之路（关系值30，炼气中期）
-	register_quest_trigger("yunzhonghe_sword_path", "yunzhonghe", 30, REALM_REQUIREMENTS.qi_condensation_mid, [])
-	
-	# 铁无双 — 丐帮兄弟（关系值20，炼气初期）
-	register_quest_trigger("tiewushuang_beggars", "tiewushuang", 20, REALM_REQUIREMENTS.qi_condensation_early, [])
-	
-	# 柳如烟 — 正道少侠（关系值25，炼气后期）
-	register_quest_trigger("liuruyan_righteous", "liuruyan", 25, REALM_REQUIREMENTS.qi_condensation_late, [])
-	
-	# 慕容雪 — 前世之谜（关系值30，炼气后期）
-	register_quest_trigger("murongxue_past_life", "murongxue", 30, REALM_REQUIREMENTS.qi_condensation_late, [])
-	
-	# 萧寒夜 — 魔道之路（关系值20，炼气后期）
-	register_quest_trigger("xiaohanye_demonic", "xiaohanye", 20, REALM_REQUIREMENTS.qi_condensation_late, [])
-	
-	print("[QuestTriggerManager] 已注册 5 个核心NPC个人线触发条件")
+	# === 云中鹤 (3条, 好感度递增解锁) ===
+	register_quest_trigger("yunzhonghe_sword_path", "yunzhonghe", 10, REALM_REQUIREMENTS.qi_condensation_early, [])
+	register_quest_trigger("yunzhonghe_sword_trial", "yunzhonghe", 25, REALM_REQUIREMENTS.qi_condensation_mid, [])
+	register_quest_trigger("yunzhonghe_sword_master", "yunzhonghe", 45, REALM_REQUIREMENTS.qi_condensation_late, [])
+
+	# === 柳如烟 (3条) ===
+	register_quest_trigger("liuruyan_righteous", "liuruyan", 10, REALM_REQUIREMENTS.qi_condensation_early, [])
+	register_quest_trigger("liuruyan_rescue", "liuruyan", 25, REALM_REQUIREMENTS.qi_condensation_mid, [])
+	register_quest_trigger("liuruyan_justice", "liuruyan", 45, REALM_REQUIREMENTS.qi_condensation_late, [])
+
+	# === 铁无双 (3条) ===
+	register_quest_trigger("tiewushuang_beggars", "tiewushuang", 5, REALM_REQUIREMENTS.qi_condensation_early, [])
+	register_quest_trigger("tiewushuang_brotherhood", "tiewushuang", 20, REALM_REQUIREMENTS.qi_condensation_mid, [])
+	register_quest_trigger("tiewushuang_oath", "tiewushuang", 40, REALM_REQUIREMENTS.qi_condensation_late, [])
+
+	# === 慕容雪 (3条) ===
+	register_quest_trigger("murongxue_past_life", "murongxue", 15, REALM_REQUIREMENTS.qi_condensation_mid, [])
+	register_quest_trigger("murongxue_memory", "murongxue", 30, REALM_REQUIREMENTS.qi_condensation_late, [])
+	register_quest_trigger("murongxue_truth", "murongxue", 50, REALM_REQUIREMENTS.foundation_establishment_early, [])
+
+	# === 萧寒夜 (3条) ===
+	register_quest_trigger("xiaohanye_demonic", "xiaohanye", 10, REALM_REQUIREMENTS.qi_condensation_early, [])
+	register_quest_trigger("xiaohanye_dark_path", "xiaohanye", 25, REALM_REQUIREMENTS.qi_condensation_late, [])
+	register_quest_trigger("xiaohanye_redemption", "xiaohanye", 45, REALM_REQUIREMENTS.foundation_establishment_early, [])
+
+	# === 玄机真人 (2条) ===
+	register_quest_trigger("xuanjizhenren_guidance", "xuanjizhenren", 5, REALM_REQUIREMENTS.qi_condensation_early, [])
+	register_quest_trigger("xuanjizhenren_test", "xuanjizhenren", 30, REALM_REQUIREMENTS.qi_condensation_late, [])
+
+	# === 血无痕 (2条) ===
+	register_quest_trigger("xuewuhen_deal", "xuewuhen", 15, REALM_REQUIREMENTS.qi_condensation_mid, [])
+	register_quest_trigger("xuewuhen_secret", "xuewuhen", 35, REALM_REQUIREMENTS.foundation_establishment_early, [])
+
+	print("[QuestTriggerManager] 已注册 19 个NPC支线触发条件")
 
 # ============================================================================
 # 工具函数
