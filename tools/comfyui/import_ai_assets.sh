@@ -173,6 +173,15 @@ process_category "npc_emotions_512"      "portraits"       "NPC 表情变体 (�
 # 境界突破插图（512x512）— 第七批 W27
 process_category "breakthrough_512"      "breakthrough_scenes" "境界突破插图 (10境界)"
 
+# 新区域探索背景（1024x1024）— 第八批 W28
+process_category "new_region_bg_final"   "backgrounds"     "新区域探索背景 (古墓/魔域/天剑/虚空/江南)"
+
+# 新区域战斗背景（1024x1024）— 第八批 W29
+process_category "new_battle_bg_final"   "backgrounds"     "新区域战斗背景"
+
+# 新装备图标（128x128）— 第八批 W30
+process_category "new_equip_icons_128"   "item_icons"      "新装备图标 (副手/身体/手/脚/项链)"
+
 # 边框装饰
 process_category "wuxia_frame_256"       "frames"          "边框装饰 (256×256)"
 
@@ -197,6 +206,9 @@ process_category "battle_bg_1024"        "_masters/battle_bg_1024" "🗄 1024 �
 process_category "region_bg_variants_1024" "_masters/region_bg_variants_1024" "🗄 1024 区域背景变体母版备份"
 process_category "npc_emotions_1024"     "_masters/npc_emotions_1024" "🗄 1024 NPC表情变体母版备份"
 process_category "breakthrough_1024"     "_masters/breakthrough_1024" "🗄 1024 境界突破插图母版备份"
+process_category "new_region_bg_1024"    "_masters/new_region_bg_1024" "🗄 1024 新区域背景母版备份"
+process_category "new_battle_bg_1024"    "_masters/new_battle_bg_1024" "🗄 1024 新战斗背景母版备份"
+process_category "new_equip_icons_1024"  "_masters/new_equip_icons_1024" "🗄 1024 新装备图标母版备份"
 
 # ===== 收尾 =====
 echo ""

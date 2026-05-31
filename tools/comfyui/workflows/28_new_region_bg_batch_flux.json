@@ -1,0 +1,2274 @@
+{
+  "last_node_id": 56,
+  "last_link_id": 61,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        50,
+        50
+      ],
+      "size": [
+        350,
+        90
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "flux1-dev.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "DualCLIPLoader",
+      "pos": [
+        50,
+        170
+      ],
+      "size": [
+        350,
+        130
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "t5xxl_fp16.safetensors",
+        "clip_l.safetensors",
+        "flux",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        50,
+        330
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ae.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [
+        50,
+        420
+      ],
+      "size": [
+        350,
+        110
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            17,
+            18,
+            19,
+            20,
+            21
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1024x1024 (共享 Latent)",
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [
+        50,
+        560
+      ],
+      "size": [
+        350,
+        100
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            22,
+            23,
+            24,
+            25,
+            26
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "共享负面提示词 (FLUX 留空)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        ""
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
+    },
+    {
+      "id": 6,
+      "type": "BRIA_RMBG_ModelLoader_Zho",
+      "pos": [
+        50,
+        700
+      ],
+      "size": [
+        350,
+        60
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "BRMODEL",
+          "links": [
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "BRIA 抠图模型 (共享)",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_ModelLoader_Zho"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 7,
+      "type": "Note",
+      "pos": [
+        50,
+        800
+      ],
+      "size": [
+        350,
+        1000
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "title": "W28 · 新区域探索背景 (5张)",
+      "properties": {},
+      "widgets_values": [
+        "5个新区域: 古墓/魔域/天剑峰/虚空/江南\n共 5 张"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 10,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        50
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            32
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. bg_ancient_tomb - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "wide panoramic landscape, ancient underground tomb with stone corridors, glowing runes on walls, eerie green mist, scattered bones and jade artifacts, Song Dynasty Chinese shanshui ink wash painting style, misty atmosphere, no characters, cinematic composition, cultivation immortal xianxia world, no text, high quality, 8k"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 11,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        50
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 32
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 22
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            33
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. bg_ancient_tomb - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        50
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 33
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            34
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 13,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        50
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 27
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            35,
+            36
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "1. bg_ancient_tomb - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 14,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 35
+        }
+      ],
+      "outputs": [],
+      "title": "1. bg_ancient_tomb - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_1024/bg_ancient_tomb"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        50
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            37
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "1. bg_ancient_tomb - 缩放 1024",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        1024,
+        1024,
+        "disabled"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        50
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 37
+        }
+      ],
+      "outputs": [],
+      "title": "1. bg_ancient_tomb - 1024 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_final/bg_ancient_tomb"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        540
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            38
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. bg_demon_domain - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "wide panoramic landscape, demonic wasteland with twisted black trees, blood red sky, dark energy pillars, ruined demonic temples, Song Dynasty Chinese shanshui ink wash painting style, misty atmosphere, no characters, cinematic composition, cultivation immortal xianxia world, no text, high quality, 8k"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 21,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        540
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 38
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 23
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            39
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. bg_demon_domain - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 22,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        540
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 39
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            40
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 23,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        540
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 28
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 40
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            41,
+            42
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "2. bg_demon_domain - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 24,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 41
+        }
+      ],
+      "outputs": [],
+      "title": "2. bg_demon_domain - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_1024/bg_demon_domain"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        540
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 42
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            43
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "2. bg_demon_domain - 缩放 1024",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        1024,
+        1024,
+        "disabled"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        540
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 43
+        }
+      ],
+      "outputs": [],
+      "title": "2. bg_demon_domain - 1024 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_final/bg_demon_domain"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1030
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            44
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. bg_heavenly_peak - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "wide panoramic landscape, celestial mountain peak above clouds, sword-shaped stone pillars, golden sunlight, ancient sword sect temple, Song Dynasty Chinese shanshui ink wash painting style, misty atmosphere, no characters, cinematic composition, cultivation immortal xianxia world, no text, high quality, 8k"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 31,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1030
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 44
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 24
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            45
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. bg_heavenly_peak - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 32,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1030
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 45
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 14
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            46
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 33,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1030
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 24,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 29
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 46
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            47,
+            48
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "3. bg_heavenly_peak - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 34,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 25,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 47
+        }
+      ],
+      "outputs": [],
+      "title": "3. bg_heavenly_peak - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_1024/bg_heavenly_peak"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1030
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 26,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 48
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            49
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "3. bg_heavenly_peak - 缩放 1024",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        1024,
+        1024,
+        "disabled"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1030
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 27,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 49
+        }
+      ],
+      "outputs": [],
+      "title": "3. bg_heavenly_peak - 1024 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_final/bg_heavenly_peak"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        1520
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 28,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 9
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            50
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. bg_void_realm - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "wide panoramic landscape, fractured void dimension, floating rock islands, purple spatial rifts, stars visible through cracks in reality, Song Dynasty Chinese shanshui ink wash painting style, misty atmosphere, no characters, cinematic composition, cultivation immortal xianxia world, no text, high quality, 8k"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 41,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        1520
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 29,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 50
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 25
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            51
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. bg_void_realm - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 42,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        1520
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 30,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 51
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 15
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            52
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 43,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        1520
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 31,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 30
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 52
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            53,
+            54
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "4. bg_void_realm - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 44,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 32,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 53
+        }
+      ],
+      "outputs": [],
+      "title": "4. bg_void_realm - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_1024/bg_void_realm"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        1520
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 33,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 54
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            55
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "4. bg_void_realm - 缩放 1024",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        1024,
+        1024,
+        "disabled"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        1520
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 34,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 55
+        }
+      ],
+      "outputs": [],
+      "title": "4. bg_void_realm - 1024 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_final/bg_void_realm"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "CLIPTextEncode",
+      "pos": [
+        450,
+        2010
+      ],
+      "size": [
+        600,
+        320
+      ],
+      "flags": {},
+      "order": 35,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            56
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. bg_jiangnan_water - 正面",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "wide panoramic landscape, jiangnan water town with stone bridges, willow trees, traditional boats, morning mist over calm canal, Song Dynasty Chinese shanshui ink wash painting style, misty atmosphere, no characters, cinematic composition, cultivation immortal xianxia world, no text, high quality, 8k"
+      ],
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 51,
+      "type": "KSampler",
+      "pos": [
+        1080,
+        2010
+      ],
+      "size": [
+        320,
+        460
+      ],
+      "flags": {},
+      "order": 36,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 56
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 26
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 21
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            57
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. bg_jiangnan_water - KSampler",
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        88888888,
+        "fixed",
+        25,
+        1.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 52,
+      "type": "VAEDecode",
+      "pos": [
+        1430,
+        2010
+      ],
+      "size": [
+        220,
+        60
+      ],
+      "flags": {},
+      "order": 37,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 57
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            58
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
+    },
+    {
+      "id": 53,
+      "type": "BRIA_RMBG_Zho",
+      "pos": [
+        1680,
+        2010
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "flags": {},
+      "order": 38,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "rmbgmodel",
+          "type": "BRMODEL",
+          "link": 31
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 58
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            59,
+            60
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "5. bg_jiangnan_water - BRIA 抠图",
+      "properties": {
+        "Node name for S&R": "BRIA_RMBG_Zho"
+      }
+    },
+    {
+      "id": 54,
+      "type": "SaveImage",
+      "pos": [
+        2030,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 39,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 59
+        }
+      ],
+      "outputs": [],
+      "title": "5. bg_jiangnan_water - 1024 母版",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_1024/bg_jiangnan_water"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "ImageScale",
+      "pos": [
+        2440,
+        2010
+      ],
+      "size": [
+        320,
+        130
+      ],
+      "flags": {},
+      "order": 40,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 60
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            61
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "5. bg_jiangnan_water - 缩放 1024",
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        1024,
+        1024,
+        "disabled"
+      ]
+    },
+    {
+      "id": 56,
+      "type": "SaveImage",
+      "pos": [
+        2790,
+        2010
+      ],
+      "size": [
+        380,
+        240
+      ],
+      "flags": {},
+      "order": 41,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 61
+        }
+      ],
+      "outputs": [],
+      "title": "5. bg_jiangnan_water - 1024 游戏图标",
+      "properties": {},
+      "widgets_values": [
+        "new_region_bg_final/bg_jiangnan_water"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      11,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      1,
+      0,
+      21,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      1,
+      0,
+      31,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      1,
+      0,
+      41,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      1,
+      0,
+      51,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      2,
+      0,
+      10,
+      0,
+      "CLIP"
+    ],
+    [
+      7,
+      2,
+      0,
+      20,
+      0,
+      "CLIP"
+    ],
+    [
+      8,
+      2,
+      0,
+      30,
+      0,
+      "CLIP"
+    ],
+    [
+      9,
+      2,
+      0,
+      40,
+      0,
+      "CLIP"
+    ],
+    [
+      10,
+      2,
+      0,
+      50,
+      0,
+      "CLIP"
+    ],
+    [
+      11,
+      2,
+      0,
+      5,
+      0,
+      "CLIP"
+    ],
+    [
+      12,
+      3,
+      0,
+      12,
+      1,
+      "VAE"
+    ],
+    [
+      13,
+      3,
+      0,
+      22,
+      1,
+      "VAE"
+    ],
+    [
+      14,
+      3,
+      0,
+      32,
+      1,
+      "VAE"
+    ],
+    [
+      15,
+      3,
+      0,
+      42,
+      1,
+      "VAE"
+    ],
+    [
+      16,
+      3,
+      0,
+      52,
+      1,
+      "VAE"
+    ],
+    [
+      17,
+      4,
+      0,
+      11,
+      3,
+      "LATENT"
+    ],
+    [
+      18,
+      4,
+      0,
+      21,
+      3,
+      "LATENT"
+    ],
+    [
+      19,
+      4,
+      0,
+      31,
+      3,
+      "LATENT"
+    ],
+    [
+      20,
+      4,
+      0,
+      41,
+      3,
+      "LATENT"
+    ],
+    [
+      21,
+      4,
+      0,
+      51,
+      3,
+      "LATENT"
+    ],
+    [
+      22,
+      5,
+      0,
+      11,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      23,
+      5,
+      0,
+      21,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      24,
+      5,
+      0,
+      31,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      25,
+      5,
+      0,
+      41,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      26,
+      5,
+      0,
+      51,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      27,
+      6,
+      0,
+      13,
+      0,
+      "BRMODEL"
+    ],
+    [
+      28,
+      6,
+      0,
+      23,
+      0,
+      "BRMODEL"
+    ],
+    [
+      29,
+      6,
+      0,
+      33,
+      0,
+      "BRMODEL"
+    ],
+    [
+      30,
+      6,
+      0,
+      43,
+      0,
+      "BRMODEL"
+    ],
+    [
+      31,
+      6,
+      0,
+      53,
+      0,
+      "BRMODEL"
+    ],
+    [
+      32,
+      10,
+      0,
+      11,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      33,
+      11,
+      0,
+      12,
+      0,
+      "LATENT"
+    ],
+    [
+      34,
+      12,
+      0,
+      13,
+      1,
+      "IMAGE"
+    ],
+    [
+      35,
+      13,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      36,
+      13,
+      0,
+      15,
+      0,
+      "IMAGE"
+    ],
+    [
+      37,
+      15,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      38,
+      20,
+      0,
+      21,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      39,
+      21,
+      0,
+      22,
+      0,
+      "LATENT"
+    ],
+    [
+      40,
+      22,
+      0,
+      23,
+      1,
+      "IMAGE"
+    ],
+    [
+      41,
+      23,
+      0,
+      24,
+      0,
+      "IMAGE"
+    ],
+    [
+      42,
+      23,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      43,
+      25,
+      0,
+      26,
+      0,
+      "IMAGE"
+    ],
+    [
+      44,
+      30,
+      0,
+      31,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      45,
+      31,
+      0,
+      32,
+      0,
+      "LATENT"
+    ],
+    [
+      46,
+      32,
+      0,
+      33,
+      1,
+      "IMAGE"
+    ],
+    [
+      47,
+      33,
+      0,
+      34,
+      0,
+      "IMAGE"
+    ],
+    [
+      48,
+      33,
+      0,
+      35,
+      0,
+      "IMAGE"
+    ],
+    [
+      49,
+      35,
+      0,
+      36,
+      0,
+      "IMAGE"
+    ],
+    [
+      50,
+      40,
+      0,
+      41,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      51,
+      41,
+      0,
+      42,
+      0,
+      "LATENT"
+    ],
+    [
+      52,
+      42,
+      0,
+      43,
+      1,
+      "IMAGE"
+    ],
+    [
+      53,
+      43,
+      0,
+      44,
+      0,
+      "IMAGE"
+    ],
+    [
+      54,
+      43,
+      0,
+      45,
+      0,
+      "IMAGE"
+    ],
+    [
+      55,
+      45,
+      0,
+      46,
+      0,
+      "IMAGE"
+    ],
+    [
+      56,
+      50,
+      0,
+      51,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      57,
+      51,
+      0,
+      52,
+      0,
+      "LATENT"
+    ],
+    [
+      58,
+      52,
+      0,
+      53,
+      1,
+      "IMAGE"
+    ],
+    [
+      59,
+      53,
+      0,
+      54,
+      0,
+      "IMAGE"
+    ],
+    [
+      60,
+      53,
+      0,
+      55,
+      0,
+      "IMAGE"
+    ],
+    [
+      61,
+      55,
+      0,
+      56,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "title": "共享模型 + Latent + 负面 + BRIA",
+      "bounding": [
+        40,
+        30,
+        380,
+        760
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "说明 Note",
+      "bounding": [
+        40,
+        790,
+        380,
+        1020
+      ],
+      "color": "#a04060",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "1. bg_ancient_tomb 链",
+      "bounding": [
+        440,
+        30,
+        2750,
+        490
+      ],
+      "color": "#2a3a2a",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "2. bg_demon_domain 链",
+      "bounding": [
+        440,
+        520,
+        2750,
+        490
+      ],
+      "color": "#4a1a1a",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "3. bg_heavenly_peak 链",
+      "bounding": [
+        440,
+        1010,
+        2750,
+        490
+      ],
+      "color": "#6080b0",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "4. bg_void_realm 链",
+      "bounding": [
+        440,
+        1500,
+        2750,
+        490
+      ],
+      "color": "#2a1a4a",
+      "font_size": 24,
+      "flags": {}
+    },
+    {
+      "title": "5. bg_jiangnan_water 链",
+      "bounding": [
+        440,
+        1990,
+        2750,
+        490
+      ],
+      "color": "#4a7a6a",
+      "font_size": 24,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
