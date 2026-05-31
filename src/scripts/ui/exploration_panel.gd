@@ -384,14 +384,47 @@ func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
 
 
 ## NPC 支线对话 ID 映射
-## 支线任务 quest_id → 对话 JSON 中的实际 id 字段
-const NPC_SIDE_QUEST_DIALOGUE: Dictionary = {
-	"yunzhonghe_sword_path": "YUN_QUEST_LINE",
-	"tiewushuang_beggars": "TIE_QUEST_LINE",
-	"liuruyan_righteous": "LIU_QUEST_LINE",
-	"murongxue_past_life": "MU_QUEST_LINE",
-	"xiaohanye_demonic": "XIAO_QUEST_LINE",
+## 支线任务配置: quest_id → {dialogue_id, require_kills, require_item, reward_exp_mult, reward_item}
+const SIDE_QUEST_CONFIG: Dictionary = {
+	"yunzhonghe_sword_path": {
+		"dialogue_id": "YUN_QUEST_LINE",
+		"npc_name": "云中鹤",
+		"hint": "帮助云中鹤寻找剑心",
+		"require_kills": 5,
+		"reward_item": "ancient_sword_technique_fragment",
+	},
+	"tiewushuang_beggars": {
+		"dialogue_id": "TIE_QUEST_LINE",
+		"npc_name": "铁无双",
+		"hint": "与铁无双结拜",
+		"require_kills": 3,
+		"reward_item": "health_pill",
+	},
+	"liuruyan_righteous": {
+		"dialogue_id": "LIU_QUEST_LINE",
+		"npc_name": "柳如烟",
+		"hint": "助柳如烟行侠仗义",
+		"require_item": "rare_sword",
+		"reward_item": "ancient_martial_art_fragment",
+	},
+	"murongxue_past_life": {
+		"dialogue_id": "MU_QUEST_LINE",
+		"npc_name": "慕容雪",
+		"hint": "探索慕容雪的前世之谜",
+		"require_kills": 8,
+		"reward_item": "epic_ring",
+	},
+	"xiaohanye_demonic": {
+		"dialogue_id": "XIAO_QUEST_LINE",
+		"npc_name": "萧寒夜",
+		"hint": "追随萧寒夜的魔道之路",
+		"require_kills": 6,
+		"reward_item": "ancient_technique_scroll",
+	},
 }
+
+## 已完成的支线 quest_id 集合
+var _completed_side_quests: Array[String] = []
 
 
 func _try_trigger_side_quest(npc_id: String, npc_name: String) -> bool:
@@ -404,41 +437,92 @@ func _try_trigger_side_quest(npc_id: String, npc_name: String) -> bool:
 	if available.is_empty():
 		return false
 
-	var quest_id: String = available[0]
-	var dialogue_id: String = NPC_SIDE_QUEST_DIALOGUE.get(quest_id, "")
+	# 找第一个未完成的支线
+	var quest_id := ""
+	for qid in available:
+		if qid not in _completed_side_quests:
+			quest_id = qid
+			break
+	if quest_id.is_empty():
+		return false
+
+	var config: Dictionary = SIDE_QUEST_CONFIG.get(quest_id, {})
+	if config.is_empty():
+		return false
+
+	# 检查支线前置条件
+	var block := _check_side_quest_conditions(config)
+	if not block.is_empty():
+		log_label.text = "[color=yellow]%s：「%s」[/color]" % [npc_name, block]
+		return true
+
+	var dialogue_id: String = config.get("dialogue_id", "")
 	if dialogue_id.is_empty():
 		return false
 
 	dialogue_mgr.start_dialogue(dialogue_id)
-	log_label.text = "[color=cyan]支线任务：与%s的故事[/color]" % npc_name
+	log_label.text = "[color=cyan]支线任务：%s[/color]" % config.get("hint", "与%s的故事" % npc_name)
 
 	if not _dialogue_reward_pending:
 		_dialogue_reward_pending = true
-		dialogue_mgr.dialogue_ended.connect(_on_side_quest_ended.bind(npc_name), CONNECT_ONE_SHOT)
+		dialogue_mgr.dialogue_ended.connect(_on_side_quest_ended.bind(quest_id), CONNECT_ONE_SHOT)
 	return true
 
 
-func _on_side_quest_ended(_dialogue_id: String, npc_name: String) -> void:
+func _check_side_quest_conditions(config: Dictionary) -> String:
+	var require_kills: int = config.get("require_kills", 0)
+	if require_kills > 0 and _total_kills < require_kills:
+		return "你还需要更多历练（击败敌人 %d/%d）" % [_total_kills, require_kills]
+
+	var require_item: String = config.get("require_item", "")
+	if not require_item.is_empty():
+		var inv: Node = get_node_or_null("/root/InventorySystem")
+		if inv == null or not inv.has_item(require_item):
+			var items_data: Dictionary = _load_items_data()
+			var item_name: String = items_data.get(require_item, {}).get("name", require_item)
+			return "你需要获得「%s」" % item_name
+
+	return ""
+
+
+func _on_side_quest_ended(_dialogue_id: String, quest_id: String) -> void:
 	_dialogue_reward_pending = false
+
+	# 标记支线已完成 (防止重复领取)
+	if quest_id not in _completed_side_quests:
+		_completed_side_quests.append(quest_id)
+	else:
+		return
+
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	var currency: Node = get_node_or_null("/root/CurrencyManager")
+	var inv: Node = get_node_or_null("/root/InventorySystem")
 
-	# 支线奖励 = 相当于 5 场战斗的经验 + 关系值提升
-	var player_level: int = 1
-	if char_sys:
-		player_level = char_sys.level
-	var exp_reward: int = player_level * 50 * 5
-	var silver_reward: int = player_level * 20 * 3
+	# 经验: 升级所需的 30%
+	var exp_reward: int = 100
+	if char_sys and char_sys.has_method("get_exp_required_for_level"):
+		exp_reward = int(char_sys.get_exp_required_for_level(char_sys.level + 1) * 0.3)
+	var silver_reward: int = 50
 
 	if char_sys and char_sys.has_method("add_experience"):
 		char_sys.add_experience(exp_reward)
 	if currency and currency.has_method("add_currency"):
 		currency.add_currency(0, silver_reward)
 
+	# 道具奖励
+	var config: Dictionary = SIDE_QUEST_CONFIG.get(quest_id, {})
+	var reward_item: String = config.get("reward_item", "")
+	var reward_text := "+%d 经验 +%d 银两" % [exp_reward, silver_reward]
+	if not reward_item.is_empty() and inv and inv.has_method("add_item"):
+		inv.add_item(reward_item, 1)
+		var items_data: Dictionary = _load_items_data()
+		var item_name: String = items_data.get(reward_item, {}).get("name", reward_item)
+		reward_text += " +[%s]" % item_name
+
 	if log_label:
-		log_label.text = "[color=cyan]支线完成！获得 %d 经验, %d 银两[/color]" % [exp_reward, silver_reward]
+		log_label.text = "[color=cyan]支线完成！%s[/color]" % reward_text
 	if GameEvents and GameEvents.has_signal("system_notification"):
-		GameEvents.system_notification.emit("支线完成！+%d 经验 +%d 银两" % [exp_reward, silver_reward], "success", 4.0)
+		GameEvents.system_notification.emit("支线完成！%s" % reward_text, "success", 4.0)
 
 
 ## 尝试通过 NPC 交谈触发主线事件
