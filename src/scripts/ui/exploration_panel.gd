@@ -101,6 +101,7 @@ func _initialize() -> void:
 
 	if GameEvents:
 		GameEvents.player_realm_changed.connect(_on_realm_breakthrough)
+		GameEvents.combat_ended.connect(_on_combat_ended_for_kills)
 
 # ============================================================================
 # 面板初始化
@@ -442,33 +443,23 @@ func _on_side_quest_ended(_dialogue_id: String, npc_name: String) -> void:
 
 ## 尝试通过 NPC 交谈触发主线事件
 func _try_trigger_story_via_npc(npc_id: String, npc_name: String) -> bool:
-	# 刚完成一个主线事件后需要冷却(做一次探索才能接下一个)
-	if _story_cooldown:
-		return false
-
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	var dialogue_mgr: Node = get_node_or_null("/root/DialogueManager")
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	if act_mgr == null or dialogue_mgr == null:
 		return false
 
-	var player_level: int = 1
-	if char_sys:
-		player_level = char_sys.level
-
-	# 找当前未完成的主线事件
 	var next_event: Dictionary = _get_next_story_event(act_mgr)
 	if next_event.is_empty():
 		return false
 
-	var required: int = next_event.get("required_level", 1)
-
-	# 等级不够 → 给提示，不触发
-	if player_level < required:
-		log_label.text = "[color=red]%s：「你实力尚浅，还需历练... 」（需要等级 %d）[/color]" % [npc_name, required]
+	# 检查所有前置条件
+	var block_reason: String = _check_story_conditions(next_event, char_sys)
+	if not block_reason.is_empty():
+		log_label.text = "[color=red]%s：「%s」[/color]" % [npc_name, block_reason]
 		return true
 
-	# 等级够了 → 触发主线对话
+	# 全部条件满足 → 触发主线对话
 	var event_id: String = next_event.event_id
 	var dialogue_id: String = next_event.dialogue_id
 	act_mgr.trigger_event(act_mgr.current_act, event_id)
@@ -494,7 +485,6 @@ func _get_next_story_event(act_mgr: Node) -> Dictionary:
 func _on_explore_pressed() -> void:
 	if _game_loop == null:
 		return
-	_story_cooldown = false
 	log_label.text = "探索中..."
 	_game_loop.do_explore_action()
 	_advance_time()
@@ -727,45 +717,47 @@ func _close_tutorial() -> void:
 # 主线推进
 # ============================================================================
 
-## 主线事件序列 (三幕28事件, 覆盖 Lv1-90, 需满足 required_level 才能推进)
+## 主线事件序列 (三幕28事件, 覆盖 Lv1-90)
+## 每个事件有多种前置条件: required_level + require_kills + require_item + require_realm
+## 全部满足才能触发, hint 显示当前最优先的未满足条件
 ## dialogue_id 必须与 data/dialogues/*.json 中的 "id" 字段一致
 const MAIN_STORY_EVENTS: Array[Dictionary] = [
 	# === Act 1: 青云镇危机 (Lv1-15, 炼气→筑基) ===
 	{"event_id": "act1_event1_opening", "dialogue_id": "ACT1_OPENING_001", "hint": "与村中长老交谈了解情况", "required_level": 1},
-	{"event_id": "act1_event2_cultivation", "dialogue_id": "ACT2_CULTIVATION_001", "hint": "开始修炼之路", "required_level": 3},
-	{"event_id": "act1_event3_crisis", "dialogue_id": "ACT3_CRISIS_001", "hint": "调查青云镇异变", "required_level": 5},
-	{"event_id": "act1_event4_boss", "dialogue_id": "ACT4_BOSS_001", "hint": "面对青云镇危机", "required_level": 8},
-	{"event_id": "act1_event5_ruins", "dialogue_id": "ACT5_RUINS_001", "hint": "探索古遗迹", "required_level": 12},
-	{"event_id": "act1_event6_resolution", "dialogue_id": "ACT6_RESOLUTION_001", "hint": "解决青云镇危机", "required_level": 15},
+	{"event_id": "act1_event2_cultivation", "dialogue_id": "ACT2_CULTIVATION_001", "hint": "击败3只野狼后回来汇报", "required_level": 2, "require_kills": 3},
+	{"event_id": "act1_event3_crisis", "dialogue_id": "ACT3_CRISIS_001", "hint": "获取一把铁剑再来", "required_level": 5, "require_item": "common_sword"},
+	{"event_id": "act1_event4_boss", "dialogue_id": "ACT4_BOSS_001", "hint": "面对青云镇危机", "required_level": 8, "require_kills": 10},
+	{"event_id": "act1_event5_ruins", "dialogue_id": "ACT5_RUINS_001", "hint": "突破筑基期后探索古遗迹", "required_level": 12, "require_realm": 1},
+	{"event_id": "act1_event6_resolution", "dialogue_id": "ACT6_RESOLUTION_001", "hint": "解决青云镇危机", "required_level": 15, "require_kills": 20},
 	# === Act 2: 九州风云 (Lv16-50, 筑基→化神) ===
 	{"event_id": "act2_event1_return", "dialogue_id": "ACT2_EVENT1_RETURN", "hint": "重返修真界", "required_level": 16},
-	{"event_id": "act2_event2_sect_gathering", "dialogue_id": "ACT2_EVENT2_SECT_GATHERING", "hint": "参加宗门大会", "required_level": 20},
-	{"event_id": "act2_event3_first_trial", "dialogue_id": "ACT2_EVENT3_FIRST_TRIAL", "hint": "完成第一次试炼", "required_level": 23},
-	{"event_id": "act2_event4_demonic_invasion", "dialogue_id": "ACT2_EVENT4_DEMONIC_INVASION", "hint": "抵御魔道入侵", "required_level": 27},
-	{"event_id": "act2_event5_secret_realm", "dialogue_id": "ACT2_EVENT5_SECRET_REALM", "hint": "探索秘境", "required_level": 30},
+	{"event_id": "act2_event2_sect_gathering", "dialogue_id": "ACT2_EVENT2_SECT_GATHERING", "hint": "击败30个敌人后参加宗门大会", "required_level": 20, "require_kills": 30},
+	{"event_id": "act2_event3_first_trial", "dialogue_id": "ACT2_EVENT3_FIRST_TRIAL", "hint": "获取稀有武器再挑战试炼", "required_level": 23, "require_item": "rare_sword"},
+	{"event_id": "act2_event4_demonic_invasion", "dialogue_id": "ACT2_EVENT4_DEMONIC_INVASION", "hint": "突破金丹期抵御魔道入侵", "required_level": 27, "require_realm": 2},
+	{"event_id": "act2_event5_secret_realm", "dialogue_id": "ACT2_EVENT5_SECRET_REALM", "hint": "击败50个敌人后探索秘境", "required_level": 30, "require_kills": 50},
 	{"event_id": "act2_event6_dao_heart_choice", "dialogue_id": "ACT2_EVENT6_DAO_HEART_CHOICE", "hint": "道心抉择", "required_level": 33},
-	{"event_id": "act2_event7_murongxue_memory", "dialogue_id": "ACT2_EVENT7_MURONGXUE_MEMORY", "hint": "慕容雪的记忆", "required_level": 36},
-	{"event_id": "act2_event8_battlefield", "dialogue_id": "ACT2_EVENT8_BATTLEFIELD", "hint": "九州战场", "required_level": 40},
-	{"event_id": "act2_event9_yunzhonghe_sacrifice", "dialogue_id": "ACT2_EVENT9_SACRIFICE", "hint": "云中鹤的牺牲", "required_level": 44},
-	{"event_id": "act2_event10_foundation_breakthrough", "dialogue_id": "ACT2_EVENT10_BREAKTHROUGH", "hint": "突破化神期", "required_level": 47},
-	{"event_id": "act2_event11_act2_finale", "dialogue_id": "ACT2_EVENT11_FINALE", "hint": "第二幕终章", "required_level": 50},
+	{"event_id": "act2_event7_murongxue_memory", "dialogue_id": "ACT2_EVENT7_MURONGXUE_MEMORY", "hint": "突破元婴期找回记忆", "required_level": 36, "require_realm": 3},
+	{"event_id": "act2_event8_battlefield", "dialogue_id": "ACT2_EVENT8_BATTLEFIELD", "hint": "击败80个敌人前往九州战场", "required_level": 40, "require_kills": 80},
+	{"event_id": "act2_event9_yunzhonghe_sacrifice", "dialogue_id": "ACT2_EVENT9_SACRIFICE", "hint": "云中鹤的牺牲", "required_level": 44, "require_item": "epic_sword"},
+	{"event_id": "act2_event10_foundation_breakthrough", "dialogue_id": "ACT2_EVENT10_BREAKTHROUGH", "hint": "突破化神期", "required_level": 47, "require_realm": 4},
+	{"event_id": "act2_event11_act2_finale", "dialogue_id": "ACT2_EVENT11_FINALE", "hint": "击败100个敌人完成第二幕", "required_level": 50, "require_kills": 100},
 	# === Act 3: 九州之门 (Lv51-90, 返虚→渡劫) ===
-	{"event_id": "act3_event1_new_journey", "dialogue_id": "ACT3_EVENT1_JOURNEY", "hint": "踏上新征途", "required_level": 51},
-	{"event_id": "act3_event2_faction_trial", "dialogue_id": "ACT3_EVENT2_TRIAL", "hint": "阵营试炼", "required_level": 55},
+	{"event_id": "act3_event1_new_journey", "dialogue_id": "ACT3_EVENT1_JOURNEY", "hint": "突破返虚期踏上新征途", "required_level": 51, "require_realm": 5},
+	{"event_id": "act3_event2_faction_trial", "dialogue_id": "ACT3_EVENT2_TRIAL", "hint": "击败120个敌人通过阵营试炼", "required_level": 55, "require_kills": 120},
 	{"event_id": "act3_event3_seal_tremor", "dialogue_id": "ACT3_EVENT3_SEAL", "hint": "封印震动", "required_level": 58},
-	{"event_id": "act3_event4_murongxue_appears", "dialogue_id": "ACT3_EVENT4_MURONGXUE", "hint": "慕容雪现身", "required_level": 62},
-	{"event_id": "act3_event5_ancient_battlefield", "dialogue_id": "ACT3_EVENT5_BATTLEFIELD", "hint": "上古战场", "required_level": 66},
-	{"event_id": "act3_event6_xiaohanye_truth", "dialogue_id": "ACT3_EVENT6_XIAOHANYE", "hint": "萧寒夜的真相", "required_level": 70},
-	{"event_id": "act3_event7_sword_bone_awakening", "dialogue_id": "ACT3_EVENT7_SWORD_BONE", "hint": "剑骨觉醒", "required_level": 75},
-	{"event_id": "act3_event8_gate_opens", "dialogue_id": "ACT3_EVENT8_GATE", "hint": "九州之门开启", "required_level": 80},
-	{"event_id": "act3_event9_final_eve", "dialogue_id": "ACT3_EVENT9_FINAL_EVE", "hint": "最终决战前夜", "required_level": 85},
-	{"event_id": "act3_event10_final_battle", "dialogue_id": "ACT3_EVENT10_FINAL_BATTLE", "hint": "最终决战", "required_level": 88},
+	{"event_id": "act3_event4_murongxue_appears", "dialogue_id": "ACT3_EVENT4_MURONGXUE", "hint": "突破合道期见慕容雪", "required_level": 62, "require_realm": 6},
+	{"event_id": "act3_event5_ancient_battlefield", "dialogue_id": "ACT3_EVENT5_BATTLEFIELD", "hint": "获取传说武器闯上古战场", "required_level": 66, "require_item": "legendary_sword"},
+	{"event_id": "act3_event6_xiaohanye_truth", "dialogue_id": "ACT3_EVENT6_XIAOHANYE", "hint": "击败150个敌人揭开真相", "required_level": 70, "require_kills": 150},
+	{"event_id": "act3_event7_sword_bone_awakening", "dialogue_id": "ACT3_EVENT7_SWORD_BONE", "hint": "突破大乘期觉醒剑骨", "required_level": 75, "require_realm": 7},
+	{"event_id": "act3_event8_gate_opens", "dialogue_id": "ACT3_EVENT8_GATE", "hint": "击败200个敌人开启九州之门", "required_level": 80, "require_kills": 200},
+	{"event_id": "act3_event9_final_eve", "dialogue_id": "ACT3_EVENT9_FINAL_EVE", "hint": "突破渡劫期准备最终决战", "required_level": 85, "require_realm": 8},
+	{"event_id": "act3_event10_final_battle", "dialogue_id": "ACT3_EVENT10_FINAL_BATTLE", "hint": "击败250个敌人进入最终决战", "required_level": 88, "require_kills": 250},
 	{"event_id": "act3_event11_ending", "dialogue_id": "ACT3_EVENT11_ENDING", "hint": "结局", "required_level": 90},
 ]
 
 var _story_triggered_this_session: bool = false
 var _dialogue_reward_pending: bool = false
-var _story_cooldown: bool = false
+var _total_kills: int = 0
 
 
 ## 主线不再自动触发，改为玩家主动与 NPC 交谈时检查
@@ -775,7 +767,6 @@ func _try_advance_main_story() -> void:
 
 func _on_main_story_dialogue_ended(_dialogue_id: String, event_id: String) -> void:
 	_dialogue_reward_pending = false
-	_story_cooldown = true
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	if act_mgr:
 		act_mgr.complete_event(event_id)
@@ -839,23 +830,57 @@ func _grant_story_reward(event_id: String) -> void:
 		GameEvents.system_notification.emit("主线完成！%s" % reward_text, "success", 4.0)
 
 
+## 检查主线事件前置条件, 返回空字符串表示全部满足, 否则返回阻塞原因
+func _check_story_conditions(event: Dictionary, char_sys: Node) -> String:
+	var player_level: int = 1
+	if char_sys:
+		player_level = char_sys.level
+
+	var required_level: int = event.get("required_level", 1)
+	if player_level < required_level:
+		return "你实力尚浅，需要达到等级 %d（当前 %d）" % [required_level, player_level]
+
+	var require_kills: int = event.get("require_kills", 0)
+	if require_kills > 0 and _total_kills < require_kills:
+		return "你还需要历练，击败更多敌人（%d/%d）" % [_total_kills, require_kills]
+
+	var require_item: String = event.get("require_item", "")
+	if not require_item.is_empty():
+		var inv: Node = get_node_or_null("/root/InventorySystem")
+		if inv == null or not inv.has_item(require_item):
+			var items_data: Dictionary = _load_items_data()
+			var item_name: String = items_data.get(require_item, {}).get("name", require_item)
+			return "你需要获得「%s」" % item_name
+
+	var require_realm: int = event.get("require_realm", 0)
+	if require_realm > 0 and char_sys:
+		if char_sys.realm_index < require_realm:
+			var realm_name: String = char_sys.REALMS[require_realm]["name"] if require_realm < char_sys.REALMS.size() else "更高境界"
+			return "你需要突破到「%s」期" % realm_name
+
+	return ""
+
+
 ## 获取当前主线任务提示 (BBCode 格式)
 func get_current_story_hint() -> String:
 	var act_mgr: Node = get_node_or_null("/root/ActManager")
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	if act_mgr == null:
 		return ""
-	var player_level: int = 1
-	if char_sys:
-		player_level = char_sys.level
 
 	for event in MAIN_STORY_EVENTS:
 		if not act_mgr.is_event_completed(event.event_id):
-			var required: int = event.get("required_level", 1)
-			if player_level < required:
-				return "[color=gray]%s (需要等级 %d, 当前 %d) 🔒[/color]" % [event.hint, required, player_level]
+			var block: String = _check_story_conditions(event, char_sys)
+			if not block.is_empty():
+				return "[color=gray]%s — %s 🔒[/color]" % [event.hint, block]
 			return "[color=gold]%s ← 与附近修士交谈触发[/color]" % event.hint
 	return "[color=green]主线完成，自由探索修真界[/color]"
+
+
+## 战斗结束计数
+func _on_combat_ended_for_kills(victory: bool, _result: Dictionary) -> void:
+	if victory:
+		_total_kills += 1
 
 
 # ============================================================================
