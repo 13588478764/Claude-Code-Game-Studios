@@ -232,8 +232,8 @@ func has_player_enough_money(cost: int) -> bool:
 
 func deduct_travel_cost(cost: int) -> void:
 	var currency: Node = get_node_or_null("/root/CurrencyManager")
-	if currency and currency.has_method("deduct_currency"):
-		currency.deduct_currency(0, cost)
+	if currency and currency.has_method("spend_currency"):
+		currency.spend_currency(0, cost)
 
 func advance_game_time() -> void:
 	pass

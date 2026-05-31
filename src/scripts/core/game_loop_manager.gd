@@ -572,7 +572,7 @@ func _on_combat_ended(victory: bool, result: Dictionary) -> void:
 			var current_silver: int = _currency_manager.get_currency_amount(0)
 			penalty_silver = int(current_silver * 0.1)
 			if penalty_silver > 0:
-				_currency_manager.deduct_currency(0, penalty_silver)
+				_currency_manager.spend_currency(0, penalty_silver)
 		reward_data = {"victory": false, "exp": 0, "silver": -penalty_silver}
 
 	reward_data["victory"] = victory

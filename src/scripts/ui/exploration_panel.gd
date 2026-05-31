@@ -1132,7 +1132,7 @@ func _on_shop_buy(item_id: String, price: int, overlay: Control) -> void:
 	if currency.get_currency_amount(0) < price:
 		return
 
-	currency.deduct_currency(0, price)
+	currency.spend_currency(0, price)
 	inv.add_item(item_id, 1)
 
 	if GameEvents and GameEvents.has_signal("system_notification"):
