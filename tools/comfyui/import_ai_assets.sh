@@ -182,6 +182,12 @@ process_category "new_battle_bg_final"   "backgrounds"     "新区域战斗背�
 # 新装备图标（128x128）— 第八批 W30
 process_category "new_equip_icons_128"   "item_icons"      "新装备图标 (副手/身体/手/脚/项链)"
 
+# 功法卷轴图标（128x128）— 第九批 W31
+process_category "scroll_icons_128"      "item_icons"      "功法卷轴图标 (替换占位)"
+
+# 新区域时段变体（1024x1024）— 第九批 W32
+process_category "new_region_time_final" "backgrounds"     "新区域时段变体 (5区域×黄昏/夜晚)"
+
 # 边框装饰
 process_category "wuxia_frame_256"       "frames"          "边框装饰 (256×256)"
 
