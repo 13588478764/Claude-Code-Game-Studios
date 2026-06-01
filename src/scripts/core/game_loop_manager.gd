@@ -26,13 +26,13 @@ enum GameState {
 const REGIONS: Array[Dictionary] = [
 	{"id": "start_village", "name": "新手村·青石镇", "level": 1, "region_id": 0, "encounter_rate": 0.4, "bg": "bg_town_street"},
 	{"id": "bandit_fortress", "name": "黑风寨", "level": 5, "region_id": 1, "encounter_rate": 0.6, "bg": "bg_evil_camp"},
-	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 2, "encounter_rate": 0.35, "bg": "bg_mystic_forest"},
+	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 2, "encounter_rate": 0.35, "bg": "bg_jiangnan_water"},
 	{"id": "qingyun_mountain", "name": "青云山", "level": 10, "region_id": 3, "encounter_rate": 0.5, "bg": "bg_sect_hall"},
 	{"id": "ancient_tomb", "name": "上古墓穴", "level": 20, "region_id": 4, "encounter_rate": 0.7, "bg": "bg_ancient_tomb"},
-	{"id": "demon_domain", "name": "万魔域", "level": 35, "region_id": 5, "encounter_rate": 0.8, "bg": "bg_evil_camp"},
+	{"id": "demon_domain", "name": "万魔域", "level": 35, "region_id": 5, "encounter_rate": 0.8, "bg": "bg_demon_domain"},
 	{"id": "immortal_palace", "name": "仙人遗府", "level": 50, "region_id": 6, "encounter_rate": 0.6, "bg": "bg_immortal_palace"},
-	{"id": "heavenly_peak", "name": "天剑峰", "level": 65, "region_id": 7, "encounter_rate": 0.5, "bg": "bg_sect_hall"},
-	{"id": "void_realm", "name": "虚空裂境", "level": 80, "region_id": 8, "encounter_rate": 0.9, "bg": "bg_ancient_tomb"},
+	{"id": "heavenly_peak", "name": "天剑峰", "level": 65, "region_id": 7, "encounter_rate": 0.5, "bg": "bg_heavenly_peak"},
+	{"id": "void_realm", "name": "虚空裂境", "level": 80, "region_id": 8, "encounter_rate": 0.9, "bg": "bg_void_realm"},
 ]
 
 # 敌人模板：按区域定义基础数据

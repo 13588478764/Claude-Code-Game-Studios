@@ -1280,7 +1280,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_shield_wood.png"
   },
   "offhand_iron_shield": {
     "name": "铁盾",
@@ -1300,7 +1300,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_shield_iron.png"
   },
   "offhand_xuanwu_shield": {
     "name": "玄武盾",
@@ -1324,7 +1324,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_shield_xuanwu.png"
   },
   "offhand_divine_mirror": {
     "name": "照妖镜",
@@ -1351,7 +1351,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_mirror_divine.png"
   },
   "body_cloth_robe": {
     "name": "布衣",
@@ -1371,7 +1371,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_robe_cloth.png"
   },
   "body_iron_armor": {
     "name": "铁甲",
@@ -1391,7 +1391,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_armor_iron.png"
   },
   "body_cloud_robe": {
     "name": "流云袍",
@@ -1416,7 +1416,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_robe_cloud.png"
   },
   "body_celestial_armor": {
     "name": "天蚕宝甲",
@@ -1442,7 +1442,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_armor_celestial.png"
   },
   "hands_cloth_gloves": {
     "name": "布手套",
@@ -1462,7 +1462,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_gloves_cloth.png"
   },
   "hands_iron_gauntlets": {
     "name": "铁护手",
@@ -1483,7 +1483,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_gauntlets_iron.png"
   },
   "hands_dragon_gloves": {
     "name": "龙爪手套",
@@ -1507,7 +1507,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_gloves_dragon.png"
   },
   "hands_void_gauntlets": {
     "name": "虚空护手",
@@ -1533,7 +1533,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_gauntlets_void.png"
   },
   "feet_straw_sandals": {
     "name": "草鞋",
@@ -1553,7 +1553,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_sandals_straw.png"
   },
   "feet_cloud_boots": {
     "name": "踏云靴",
@@ -1576,7 +1576,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_boots_cloud.png"
   },
   "feet_lingbo_boots": {
     "name": "凌波微步靴",
@@ -1599,7 +1599,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_boots_lingbo.png"
   },
   "feet_wind_treader": {
     "name": "御风靴",
@@ -1624,7 +1624,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_boots_wind.png"
   },
   "neck_hemp_necklace": {
     "name": "麻绳",
@@ -1644,7 +1644,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_necklace_hemp.png"
   },
   "neck_jade_pendant": {
     "name": "翡翠坠",
@@ -1665,7 +1665,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_pendant_jade.png"
   },
   "neck_spirit_necklace": {
     "name": "灵气项链",
@@ -1689,7 +1689,7 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_necklace_spirit.png"
   },
   "neck_dragon_pendant": {
     "name": "龙骨吊坠",
@@ -1716,6 +1716,6 @@
     "required_realm": 0,
     "durability": 100,
     "weight": 1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_pendant_dragon.png"
   }
 }

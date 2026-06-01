@@ -559,11 +559,11 @@ const BATTLE_BG_MAP: Dictionary = {
 	"bandit_fortress": "bg_battle_fortress",
 	"jiangnan_water": "bg_battle_watertown",
 	"qingyun_mountain": "bg_battle_mountain",
-	"ancient_tomb": "bg_battle_plains",
-	"demon_domain": "bg_battle_fortress",
-	"immortal_palace": "bg_battle_mountaintop",
-	"heavenly_peak": "bg_battle_mountaintop",
-	"void_realm": "bg_battle_plains",
+	"ancient_tomb": "bg_battle_tomb",
+	"demon_domain": "bg_battle_demon",
+	"immortal_palace": "bg_battle_immortal",
+	"heavenly_peak": "bg_battle_heavenly",
+	"void_realm": "bg_battle_void",
 }
 
 ## 武器类型 → 默认技能图标映射
