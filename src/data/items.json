@@ -668,7 +668,7 @@
       "type": "exp_boost",
       "value": 40
     },
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_martial_fragment.png"
   },
   "ancient_technique_scroll": {
     "id": "ancient_technique_scroll",
@@ -687,7 +687,7 @@
       "type": "exp_boost",
       "value": 60
     },
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_technique_scroll.png"
   },
   "ancient_xuan_technique_scroll": {
     "id": "ancient_xuan_technique_scroll",
@@ -706,7 +706,7 @@
       "type": "exp_boost",
       "value": 100
     },
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_xuan_technique.png"
   },
   "ancient_technique_complete": {
     "id": "ancient_technique_complete",
@@ -744,7 +744,7 @@
       "type": "exp_boost",
       "value": 50
     },
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_righteous_technique.png"
   },
   "demonic_technique": {
     "id": "demonic_technique",
@@ -763,7 +763,7 @@
       "type": "exp_boost",
       "value": 50
     },
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_demonic_technique.png"
   },
   "taixu_sword_basic": {
     "id": "taixu_sword_basic",
@@ -782,7 +782,7 @@
       "type": "exp_boost",
       "value": 80
     },
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_taixu_sword.png"
   },
   "taixu_sword_complete": {
     "id": "taixu_sword_complete",
@@ -820,7 +820,7 @@
       "type": "exp_boost",
       "value": 35
     },
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_sword_fragment.png"
   },
   "ancient_sword_fragment": {
     "id": "ancient_sword_fragment",
@@ -1155,7 +1155,7 @@
     "max_stack": 10,
     "value_gold": 300,
     "weight": 0.1,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_sword_manual_gift.png"
   },
   "jade_pendant": {
     "id": "jade_pendant",
@@ -1215,7 +1215,7 @@
     "max_stack": 10,
     "value_gold": 120,
     "weight": 0.2,
-    "icon": "res://assets/ui/item_icons/item_scroll.png"
+    "icon": "res://assets/ui/item_icons/item_calligraphy_gift.png"
   },
   "wine": {
     "id": "wine",
