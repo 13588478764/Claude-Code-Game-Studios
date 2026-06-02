@@ -185,6 +185,13 @@ process_category "new_equip_icons_128"   "item_icons"      "新装备图标 (副
 # 功法卷轴图标（128x128）— 第九批 W31
 process_category "scroll_icons_128"      "item_icons"      "功法卷轴图标 (替换占位)"
 
+# 奇遇插图补齐（512x512）— 第十批 W33
+process_category "encounter_scenes2_512" "encounter_scenes" "奇遇插图第二批 (16-30号)"
+
+# 武学技能图标（128x128）— 第十批 W34/W35
+process_category "skill_icons2_128"      "skill_icons"     "武学图标 (少林/武当/丐帮/天剑)"
+process_category "skill_icons3_128"      "skill_icons"     "武学图标 (逍遥/明教/魔教/唐门/五毒)"
+
 # 新区域时段变体（1024x1024）— 第九批 W32
 process_category "new_region_time_final" "backgrounds"     "新区域时段变体 (5区域×黄昏/夜晚)"
 
