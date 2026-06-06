@@ -48,6 +48,8 @@ const MAX_LOG_LINES: int = 8
 func _ready() -> void:
 	layer = 120
 	visible = false
+	if has_node("/root/SafeAreaManager"):
+		get_node("/root/SafeAreaManager").apply_to_control($Root)
 	call_deferred("_initialize")
 
 

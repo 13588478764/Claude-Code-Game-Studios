@@ -37,6 +37,8 @@ var _transitioning: bool = false
 
 
 func _ready() -> void:
+	if has_node("/root/SafeAreaManager"):
+		get_node("/root/SafeAreaManager").apply_to_control(self)
 	var buttons: Array = [_new_game_btn, _continue_btn, _settings_btn, _credits_btn, _quit_btn]
 	for btn in buttons:
 		btn.modulate = Color(1, 1, 1, 0)

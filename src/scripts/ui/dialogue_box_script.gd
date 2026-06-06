@@ -34,6 +34,8 @@ var _current_npc_id: String = ""
 
 
 func _ready() -> void:
+	if has_node("/root/SafeAreaManager"):
+		get_node("/root/SafeAreaManager").apply_to_control(self)
 	_choice_buttons.assign([
 		$DialoguePanel/VBoxContainer/ChoicesContainer/Choice1,
 		$DialoguePanel/VBoxContainer/ChoicesContainer/Choice2,

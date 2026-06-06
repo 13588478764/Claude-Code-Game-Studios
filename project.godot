@@ -43,6 +43,19 @@ SaveSystem="*res://src/scripts/save/save_system.gd"
 MartialArtsSystem="*res://src/scripts/combat/martial_arts_system.gd"
 EncounterDataLoader="*res://src/scripts/encounter/encounter_data_loader.gd"
 EquipmentMgr="*res://src/scripts/equipment/equipment_manager.gd"
+SafeAreaManager="*res://src/scripts/ui/safe_area_container.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation="landscape"
+
+[input]
+
+touch_emulate_mouse=true
 
 [editor_plugins]
 
@@ -51,6 +64,10 @@ enabled=PackedStringArray("res://addons/gut/plugin.cfg")
 [gui]
 
 theme/custom="res://assets/themes/main_theme.tres"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=2
 
 [gut]
 

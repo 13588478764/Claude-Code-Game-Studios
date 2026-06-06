@@ -21,6 +21,8 @@ var _game_loop: Node = null
 
 func _ready() -> void:
 	layer = 150
+	if has_node("/root/SafeAreaManager"):
+		get_node("/root/SafeAreaManager").apply_to_control($Root)
 	call_deferred("_initialize")
 
 

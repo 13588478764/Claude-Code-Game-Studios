@@ -50,6 +50,9 @@ var _active_panel_key: String = ""
 
 func _ready() -> void:
 	layer = 100
+	# iOS 安全区适配
+	if has_node("/root/SafeAreaManager"):
+		get_node("/root/SafeAreaManager").apply_to_control($Root)
 	HOTKEY_MAP = {
 		KEY_ESCAPE: "pause",
 		KEY_I: "inventory",

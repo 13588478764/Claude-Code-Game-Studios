@@ -15,12 +15,12 @@
 <!-- Written by /setup-engine. Read by /ux-design, /ux-review, /test-setup, /team-ui, and /dev-story -->
 <!-- to scope interaction specs, test helpers, and implementation to the correct input methods. -->
 
-- **Target Platforms**: Steam (PC)
-- **Input Methods**: Keyboard/Mouse, Gamepad
-- **Primary Input**: Keyboard/Mouse
+- **Target Platforms**: Steam (PC), iOS (iPhone/iPad)
+- **Input Methods**: Keyboard/Mouse, Gamepad, Touch (iOS)
+- **Primary Input**: Keyboard/Mouse (PC), Touch (iOS)
 - **Gamepad Support**: Partial (recommended)
-- **Touch Support**: None
-- **Platform Notes**: Steam PC发行。UI需适配常见PC分辨率（1920x1080, 2560x1440, 3840x2160）。集成Steam SDK（成就、云存档、社区）。
+- **Touch Support**: Full (iOS, touch_emulate_mouse)
+- **Platform Notes**: Steam PC + iOS双平台。UI需适配PC分辨率（1920x1080~3840x2160）和iOS安全区（刘海/灵动岛）。视觉小说模式天然适配触摸屏。
 
 ## Naming Conventions
 
