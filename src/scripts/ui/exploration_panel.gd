@@ -71,6 +71,7 @@ func _ready() -> void:
 		{"id": "xiaohanye", "name": "萧寒夜", "sect": "万魔宗"},
 		{"id": "xuewuhen", "name": "血无痕", "sect": "血刹教"},
 		{"id": "murongxue", "name": "慕容雪", "sect": "无门无派"},
+		{"id": "tiewushuang", "name": "铁无双", "sect": "铸剑大师"},
 	]
 	call_deferred("_initialize")
 
@@ -105,6 +106,12 @@ func _initialize() -> void:
 	if GameEvents:
 		GameEvents.player_realm_changed.connect(_on_realm_breakthrough)
 		GameEvents.combat_ended.connect(_on_combat_ended_for_kills)
+
+	# 恢复存档中的持久化状态
+	var save_sys = get_node_or_null("/root/SaveSystem")
+	if save_sys and save_sys._pending_exploration_state.size() > 0:
+		restore_persistent_state(save_sys._pending_exploration_state)
+		save_sys._pending_exploration_state.clear()
 
 # ============================================================================
 # 面板初始化
@@ -1461,7 +1468,29 @@ func _on_ma_slot_change(slot_index: int, overlay: Control) -> void:
 	for ma_id in ma_sys.player_martial_arts:
 		if ma_id not in equipped_ids:
 			ma_sys.equip_martial_art(ma_id, slot_index)
-			# 刷新面板
 			overlay.queue_free()
 			_show_martial_arts_panel()
 			return
+
+
+# ============================================================================
+# 持久化接口（供 SaveSystem 调用）
+# ============================================================================
+
+func get_persistent_state() -> Dictionary:
+	return {
+		"total_kills": _total_kills,
+		"completed_side_quests": _completed_side_quests.duplicate(),
+		"current_time": _current_time as int,
+		"explore_count": _explore_count,
+	}
+
+
+func restore_persistent_state(state: Dictionary) -> void:
+	_total_kills = int(state.get("total_kills", 0))
+	var saved_quests: Array = state.get("completed_side_quests", [])
+	_completed_side_quests.clear()
+	for qid in saved_quests:
+		_completed_side_quests.append(str(qid))
+	_current_time = state.get("current_time", 0) as TimeOfDay
+	_explore_count = int(state.get("explore_count", 0))

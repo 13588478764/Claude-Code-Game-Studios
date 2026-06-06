@@ -251,15 +251,15 @@ func level_up() -> void:
 	print("角色升级到 %d 级" % level)
 
 func check_realm_breakthrough() -> void:
-	"""检查是否达到境界突破条件，自动执行突破并通知"""
 	var current_realm: Dictionary = get_current_realm()
-	if level == current_realm["level_range"][1]:
+	while realm_index < 9 and level >= current_realm["level_range"][1]:
 		var old_name: String = current_realm["name"]
 		breakthrough_realm()
 		var new_name: String = get_current_realm()["name"]
 		if GameEvents and GameEvents.has_signal("system_notification"):
 			var msg := "境界突破！%s → %s" % [old_name, new_name]
 			GameEvents.system_notification.emit(msg, "success", 5.0)
+		current_realm = get_current_realm()
 
 func breakthrough_realm() -> void:
 	"""境界突破"""
@@ -405,7 +405,7 @@ func consume_wash_marrow_pill() -> bool:
 	# 与物品系统集成
 	var item_manager: Node = get_node_or_null("/root/InventorySystem")
 	if item_manager:
-		return item_manager.remove_item(item_manager.ITEM_WASH_MARROW_PILL, 1)
+		return item_manager.remove_item("wash_marrow_pill", 1)
 	else:
 		# 如果没有物品管理器，返回false（在实际游戏中不应该发生）
 		push_warning("物品管理器未找到，无法消耗洗髓丹")
@@ -506,34 +506,46 @@ func get_final_attributes() -> CharacterAttributes:
 	return final_attrs
 
 
-## 从 EquipmentManager 获取已装备物品的总属性加成
+## 从 InventorySystem 获取已装备物品的总属性加成（base 层六维属性）
 func _get_equipment_attribute_bonus() -> Dictionary:
 	var bonus := {"strength": 0, "agility": 0, "constitution": 0, "intelligence": 0, "willpower": 0, "luck": 0}
-	var equip_mgr: Node = get_node_or_null("/root/EquipmentMgr") if is_inside_tree() else null
-	if equip_mgr == null:
+	var inv: Node = get_node_or_null("/root/InventorySystem") if is_inside_tree() else null
+	if inv == null or not inv.has_method("get_equipped_items_data"):
 		return bonus
 
-	if not equip_mgr.has_method("get_equipment_by_slot"):
-		return bonus
-
-	var slots := ["weapon_main", "weapon_offhand", "head", "body", "hands", "feet", "necklace", "ring_1", "ring_2"]
-	for slot in slots:
-		var item: Variant = equip_mgr.get_equipment_by_slot(slot)
-		if item == null:
+	var equipped: Dictionary = inv.get_equipped_items_data()
+	for slot_id in equipped:
+		var item_data: Variant = equipped[slot_id]
+		if item_data == null or not (item_data is Dictionary):
 			continue
-		# EquipmentInfo 或 Dictionary
-		var attrs: Dictionary = {}
-		if item is Dictionary:
-			attrs = item.get("attributes", {})
-		elif item.get("attributes") != null:
-			attrs = item.attributes if item.attributes is Dictionary else {}
-
-		# 属性分 base/combat 两层
+		var attrs: Dictionary = item_data.get("attributes", {})
 		var base: Dictionary = attrs.get("base", {})
 		for key in base:
 			if bonus.has(key):
 				bonus[key] += int(base[key])
+	return bonus
 
+
+## 从 InventorySystem 获取已装备物品的 combat 层战斗属性加成
+func _get_equipment_combat_bonus() -> Dictionary:
+	var bonus := {"attack": 0, "defense": 0, "critical_rate": 0.0, "dodge_rate": 0.0, "speed": 0}
+	var inv: Node = get_node_or_null("/root/InventorySystem") if is_inside_tree() else null
+	if inv == null or not inv.has_method("get_equipped_items_data"):
+		return bonus
+
+	var equipped: Dictionary = inv.get_equipped_items_data()
+	for slot_id in equipped:
+		var item_data: Variant = equipped[slot_id]
+		if item_data == null or not (item_data is Dictionary):
+			continue
+		var attrs: Dictionary = item_data.get("attributes", {})
+		var combat: Dictionary = attrs.get("combat", {})
+		for key in combat:
+			if bonus.has(key):
+				if key in ["critical_rate", "dodge_rate"]:
+					bonus[key] += float(combat[key])
+				else:
+					bonus[key] += int(combat[key])
 	return bonus
 
 func get_combat_stats() -> Dictionary:
@@ -573,6 +585,13 @@ func get_combat_stats() -> Dictionary:
 		combat_stats["internal_energy_regen"] += talent_effects["internal_energy_regen"]
 	if talent_effects.has("drop_rate_bonus"):
 		combat_stats["drop_rate_bonus"] += talent_effects["drop_rate_bonus"]
+
+	# 叠加装备 combat 层属性（attack/defense/critical_rate 等）
+	var equip_combat: Dictionary = _get_equipment_combat_bonus()
+	combat_stats["physical_attack"] += equip_combat.get("attack", 0)
+	combat_stats["defense"] += equip_combat.get("defense", 0)
+	combat_stats["critical_rate"] += equip_combat.get("critical_rate", 0.0)
+	combat_stats["evasion"] += equip_combat.get("dodge_rate", 0.0)
 
 	return combat_stats
 

@@ -14,6 +14,8 @@ const SAVE_FILE_PATTERN: String = "save_slot_%d.json"
 const MAX_SLOTS: int = 3
 const LOG_PREFIX: String = "[SaveSystem]"
 
+var _pending_exploration_state: Dictionary = {}
+
 
 func _ready() -> void:
 	DirAccess.make_dir_recursive_absolute(SAVE_DIR)
@@ -26,10 +28,14 @@ func save_to_slot(slot: int = 1) -> bool:
 		return false
 
 	var save_data: Dictionary = _collect_save_data()
+	var character_node = get_node_or_null("/root/CharacterSystem")
+	var game_loop_node = get_node_or_null("/root/GameLoopManager")
 	save_data["metadata"] = {
 		"slot": slot,
 		"timestamp": Time.get_datetime_string_from_system(),
 		"version": "0.3.0",
+		"realm": character_node.get_current_realm()["name"] if character_node else "",
+		"region": game_loop_node.current_region.get("name", "") if game_loop_node and game_loop_node.current_region.size() > 0 else "",
 	}
 
 	var save_path = SAVE_DIR + (SAVE_FILE_PATTERN % slot)
@@ -184,6 +190,32 @@ func _collect_save_data() -> Dictionary:
 	if rel_events and rel_events.has_method("save_data"):
 		data["relationship_events"] = rel_events.save_data()
 
+	# 主线进度 (ActManager)
+	var act_mgr = get_node_or_null("/root/ActManager")
+	if act_mgr and act_mgr.has_method("save_data"):
+		data["act_manager"] = act_mgr.save_data()
+
+	# 天赋网格
+	var char_sys = get_node_or_null("/root/CharacterSystem")
+	if char_sys and char_sys.talent_grid.size() > 0:
+		var talent_save: Array = []
+		for row in char_sys.talent_grid:
+			var row_data: Array = []
+			for cell in row:
+				row_data.append({"unlocked": cell.get("unlocked", false), "effect": cell.get("effect", {})})
+			talent_save.append(row_data)
+		data["talent_grid"] = talent_save
+
+	# 探索面板持久化状态（击杀计数/已完成支线/时段）
+	var exploration_panels = get_tree().get_nodes_in_group("exploration_panel")
+	if exploration_panels.size() == 0:
+		for child in get_tree().root.get_children():
+			if child.has_method("get_persistent_state"):
+				exploration_panels.append(child)
+				break
+	if exploration_panels.size() > 0 and exploration_panels[0].has_method("get_persistent_state"):
+		data["exploration_state"] = exploration_panels[0].get_persistent_state()
+
 	return data
 
 
@@ -288,3 +320,22 @@ func _restore_save_data(data: Dictionary) -> void:
 	var rel_events = get_node_or_null("/root/RelationshipEventSystem")
 	if rel_events and rel_events.has_method("load_data") and data.has("relationship_events"):
 		rel_events.load_data(data.relationship_events)
+
+	# 主线进度 (ActManager)
+	var act_mgr = get_node_or_null("/root/ActManager")
+	if act_mgr and act_mgr.has_method("load_data") and data.has("act_manager"):
+		act_mgr.load_data(data.act_manager)
+
+	# 天赋网格
+	var char_sys = get_node_or_null("/root/CharacterSystem")
+	if char_sys and data.has("talent_grid"):
+		var saved_grid: Array = data.talent_grid
+		for row_idx in range(mini(saved_grid.size(), char_sys.talent_grid.size())):
+			var row: Array = saved_grid[row_idx]
+			for col_idx in range(mini(row.size(), char_sys.talent_grid[row_idx].size())):
+				char_sys.talent_grid[row_idx][col_idx]["unlocked"] = row[col_idx].get("unlocked", false)
+				char_sys.talent_grid[row_idx][col_idx]["effect"] = row[col_idx].get("effect", {})
+
+	# 探索面板持久化状态
+	if data.has("exploration_state"):
+		_pending_exploration_state = data.exploration_state

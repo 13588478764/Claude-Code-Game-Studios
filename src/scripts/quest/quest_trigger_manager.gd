@@ -89,10 +89,9 @@ func _ready():
 		if _character_system.has_signal("realm_breakthrough"):
 			_character_system.realm_breakthrough.connect(_on_realm_breakthrough)
 	
-	# 连接战斗系统信号
-	if _combat_system:
-		if _combat_system.has_signal("combat_ended"):
-			_combat_system.combat_ended.connect(_on_combat_ended)
+	# 连接全局战斗结束信号
+	if GameEvents and GameEvents.has_signal("combat_ended"):
+		GameEvents.combat_ended.connect(_on_combat_ended)
 	
 	# 连接奇遇系统信号
 	if _encounter_system:
@@ -411,15 +410,13 @@ func check_encounter_completed(encounter_id: String) -> void:
 # ============================================================================
 
 ## 战斗结束回调
-func _on_combat_ended(victory: bool, enemies: Array = []):
+func _on_combat_ended(victory: bool, rewards: Dictionary = {}):
 	if not victory:
 		return
-	
-	# 检查击杀敌人进度
-	for enemy_data in enemies:
-		var enemy_id = enemy_data.get("id", "")
-		if not enemy_id.is_empty():
-			check_enemy_killed(enemy_id)
+
+	var enemy_id: String = rewards.get("enemy_id", "")
+	if not enemy_id.is_empty():
+		check_enemy_killed(enemy_id)
 
 ## 奇遇完成回调
 func _on_encounter_completed(encounter_id: String, rewards: Dictionary):

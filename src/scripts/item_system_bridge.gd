@@ -134,16 +134,17 @@ func _apply_consumable_effect(item_id: String, effect: Dictionary) -> void:
 				char_sys.add_experience(value)
 				print("%s 使用 %s：获得 %d 经验" % [LOG_PREFIX, item_id, value])
 		"breakthrough":
-			if char_sys and char_sys.has_method("try_realm_breakthrough"):
-				var success: bool = char_sys.try_realm_breakthrough()
-				if success:
+			if char_sys and char_sys.has_method("breakthrough_realm"):
+				var old_realm: int = char_sys.realm_index
+				char_sys.breakthrough_realm()
+				if char_sys.realm_index > old_realm:
 					print("%s 使用 %s：境界突破成功！" % [LOG_PREFIX, item_id])
 				else:
-					print("%s 使用 %s：境界突破失败，条件不足" % [LOG_PREFIX, item_id])
+					print("%s 使用 %s：已达最高境界" % [LOG_PREFIX, item_id])
 					add_item(item_id, 1)
 		"reset_attributes":
-			if char_sys and char_sys.has_method("reset_attribute_points"):
-				char_sys.reset_attribute_points()
+			if char_sys and char_sys.has_method("reset_attributes"):
+				char_sys.reset_attributes()
 				print("%s 使用 %s：属性点已重置" % [LOG_PREFIX, item_id])
 		"random":
 			var rand_value: int = randi_range(int(value * 0.5), int(value * 1.5))

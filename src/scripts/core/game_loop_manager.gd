@@ -206,6 +206,8 @@ var _dialogue_manager: Node = null
 
 ## 当前战斗的敌人数量（用于奖励计算）
 var _current_battle_enemy_count: int = 0
+## 当前战斗的敌人模板 ID
+var _current_battle_enemy_id: String = ""
 
 ## 自动战斗定时器
 var _auto_battle_timer: Timer = null
@@ -410,6 +412,7 @@ func _start_random_battle() -> void:
 	var enemy_data := _build_enemy_battle_data(template)
 
 	_current_battle_enemy_count = 1
+	_current_battle_enemy_id = template.get("id", "")
 
 	battle_log_updated.emit("⚔️ 遭遇 %s！战斗开始！" % template.name)
 
@@ -530,12 +533,13 @@ func _on_auto_battle_tick() -> void:
 	if _combat_system.is_battle_over():
 		return
 
-	# 敌人 AI: 先检查技能, 再普通攻击
-	var enemy_action := _decide_enemy_action(current_unit)
-	_combat_system.execute_action(enemy_action)
-	battle_log_updated.emit("回合行动完成")
+	# 检查是否有可攻击目标
+	var target_index := _find_attack_target(current_unit)
+	if target_index >= 0:
+		var enemy_action := _decide_enemy_action(current_unit)
+		_combat_system.execute_action(enemy_action)
+		battle_log_updated.emit("回合行动完成")
 	else:
-		# 没有可攻击目标，结束战斗
 		_combat_system.end_battle()
 		return
 
@@ -589,6 +593,7 @@ func _on_combat_ended(victory: bool, result: Dictionary) -> void:
 
 	reward_data["victory"] = victory
 	reward_data["fled"] = fled
+	reward_data["enemy_id"] = _current_battle_enemy_id
 	reward_data["battle_log"] = result.get("battle_log", [])
 
 	_set_state(GameState.COMBAT_RESULT)

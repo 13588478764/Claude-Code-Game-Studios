@@ -1,0 +1,65 @@
+{
+  "id": "npc_tiewushuang",
+  "title": "铁无双对话",
+  "description": "铸剑大师铁无双的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "tiewushuang",
+    "npc_name": "铁无双",
+    "location": "铁匠铺"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "tiewushuang",
+      "text": "哟，少侠来了。想打造什么兵器？",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_forge",
+          "text": "请教铸剑之道",
+          "next_node": "forge_teaching",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "tiewushuang",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_chat",
+          "text": "随便聊聊",
+          "next_node": "casual_chat"
+        },
+        {
+          "id": "choice_leave",
+          "text": "告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "forge_teaching",
+      "speaker": "tiewushuang",
+      "text": "铸剑之道，在于心与火的交融。好的剑师，能听到金属在火中歌唱。你若有心学，我可以教你一些基础锻造法门。",
+      "emotion": "happy",
+      "next_node": "farewell"
+    },
+    {
+      "id": "casual_chat",
+      "speaker": "tiewushuang",
+      "text": "这些年见过不少名剑。最让我念念不忘的，还是当年为青云门铸造的那把青冥剑。可惜后来剑随人走，不知去了何方。",
+      "emotion": "neutral",
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "tiewushuang",
+      "text": "有空再来，我这铁匠铺随时欢迎你。",
+      "emotion": "neutral",
+      "is_end": true
+    }
+  ]
+}

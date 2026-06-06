@@ -236,9 +236,9 @@ func _start_new_game() -> void:
 
 	# 尝试播放开场对话
 	var dialogue: Node = get_node_or_null("/root/DialogueManager")
-	if dialogue and dialogue.has_dialogue("intro_yunzhonghe"):
+	if dialogue and dialogue.has_dialogue("yunzhonghe_first_meeting"):
 		dialogue.dialogue_ended.connect(_on_intro_dialogue_ended, CONNECT_ONE_SHOT)
-		dialogue.start_dialogue("intro_yunzhonghe")
+		dialogue.start_dialogue("yunzhonghe_first_meeting")
 	else:
 		_enter_exploration()
 
