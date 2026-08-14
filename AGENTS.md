@@ -24,7 +24,9 @@ This file provides guidance to the AI agent when working with code in this repos
 ## 测试
 
 - 框架：GUT（`addons/gut`）。测试放 `tests/`（unit/integration/smoke/manual），不放 `src/`。
-- 运行：`godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/unit -ginclude_subdirs -glog=1`（集成测试换成 `-gdir=tests/integration`）。必须带 `-ginclude_subdirs`，否则只跑顶层脚本、漏掉各子系统目录。
+- 运行（两套文件命名并存，需跑两遍才完整）：前缀命名 `test_*.gd` 用
+  `godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/unit -ginclude_subdirs -glog=1`；
+  后缀命名 `*_test.gd`（大多数测试）加 `-gprefix= -gsuffix=_test.gd`。集成测试把 `-gdir` 换成 `tests/integration`。缺任一参数都会漏跑大量测试。
 - 命名：文件 `[system]_[feature]_test.gd`；函数 `test_[scenario]_[expected]`。
 - 格式化/lint：`~/.qoder/gdtools/bin/gdformat <file>` / `gdlint <file>`（编辑后的 .gd 会被 hook 自动格式化；勿批量重排存量代码，会产生大量无关 diff）。
 - 逻辑/集成类改动必须有通过的自动化测试；UI 改动用截图验证。测试必须确定性、互相独立、自建自清状态。

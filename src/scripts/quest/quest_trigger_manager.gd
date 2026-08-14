@@ -61,16 +61,17 @@ var quest_progress_conditions: Dictionary = {}
 
 # 境界索引与名称对应
 const REALM_REQUIREMENTS = {
-	"qi_condensation_early": 0,    # 炼气初期
-	"qi_condensation_mid": 1,      # 炼气中期
-	"qi_condensation_late": 2,     # 炼气后期
+	"qi_condensation_early": 0,  # 炼气初期
+	"qi_condensation_mid": 1,  # 炼气中期
+	"qi_condensation_late": 2,  # 炼气后期
 	"foundation_establishment_early": 3,  # 筑基初期
-	"foundation_establishment_mid": 4,    # 筑基中期
-	"foundation_establishment_late": 5,   # 筑基后期
-	"golden_core_early": 6,        # 金丹初期
-	"golden_core_mid": 7,          # 金丹中期
-	"golden_core_late": 8,         # 金丹后期
+	"foundation_establishment_mid": 4,  # 筑基中期
+	"foundation_establishment_late": 5,  # 筑基后期
+	"golden_core_early": 6,  # 金丹初期
+	"golden_core_mid": 7,  # 金丹中期
+	"golden_core_late": 8,  # 金丹后期
 }
+
 
 func _ready():
 	# 获取系统引用
@@ -79,40 +80,45 @@ func _ready():
 	_character_system = get_node_or_null("/root/CharacterSystem")
 	_combat_system = get_node_or_null("/root/CombatSystem")
 	_encounter_system = get_node_or_null("/root/EncounterSystem")
-	
+
 	# 连接关系值变化信号
 	if _relationship_manager:
 		_relationship_manager.relationship_changed.connect(_on_relationship_changed)
-	
+
 	# 连接境界突破信号
 	if _character_system:
 		if _character_system.has_signal("realm_breakthrough"):
 			_character_system.realm_breakthrough.connect(_on_realm_breakthrough)
-	
+
 	# 连接全局战斗结束信号
 	if GameEvents and GameEvents.has_signal("combat_ended"):
 		GameEvents.combat_ended.connect(_on_combat_ended)
-	
+
 	# 连接奇遇系统信号
 	if _encounter_system:
 		if _encounter_system.has_signal("encounter_completed"):
 			_encounter_system.encounter_completed.connect(_on_encounter_completed)
-	
+
 	# 连接任务进度更新信号
 	if _quest_manager:
 		if _quest_manager.has_signal("quest_objective_updated"):
 			_quest_manager.quest_objective_updated.connect(_on_quest_objective_updated)
 		if _quest_manager.has_signal("quest_completed"):
 			_quest_manager.quest_completed.connect(_on_quest_completed)
-	
+
 	# 自动注册NPC个人线
 	register_all_npc_questlines()
 
+	# 将任务定义注册进 QuestSystem，使任务日志可见且状态流转可用
+	_register_quest_definitions()
+
 	print("[QuestTriggerManager] 任务触发管理器已初始化")
+
 
 # ============================================================================
 # 注册任务触发条件
 # ============================================================================
+
 
 ## 注册NPC个人线触发条件
 ## quest_id: 任务唯一ID
@@ -120,11 +126,17 @@ func _ready():
 ## relationship_threshold: 关系值要求（-100 到 100）
 ## realm_requirement: 境界要求索引（见 REALM_REQUIREMENTS）
 ## prerequisites: 前置任务ID列表
-func register_quest_trigger(quest_id: String, npc_id: String, relationship_threshold: int = 0, realm_requirement: int = 0, prerequisites: Array = []) -> bool:
+func register_quest_trigger(
+	quest_id: String,
+	npc_id: String,
+	relationship_threshold: int = 0,
+	realm_requirement: int = 0,
+	prerequisites: Array = []
+) -> bool:
 	if quest_trigger_conditions.has(quest_id):
 		print("[QuestTriggerManager] 触发条件已存在: ", quest_id)
 		return false
-	
+
 	quest_trigger_conditions[quest_id] = {
 		"quest_id": quest_id,
 		"npc_id": npc_id,
@@ -132,24 +144,26 @@ func register_quest_trigger(quest_id: String, npc_id: String, relationship_thres
 		"realm_requirement": realm_requirement,
 		"prerequisites": prerequisites
 	}
-	
+
 	# 检查当前是否已满足条件
 	_check_and_unlock(quest_id)
-	
+
 	return true
+
 
 # ============================================================================
 # 条件检查
 # ============================================================================
 
+
 ## 检查单个任务的解锁条件并尝试解锁
 func _check_and_unlock(quest_id: String) -> bool:
 	if not quest_trigger_conditions.has(quest_id):
 		return false
-	
+
 	var condition = quest_trigger_conditions[quest_id]
 	var missing = _check_conditions(condition)
-	
+
 	if missing.is_empty():
 		# 条件全部满足，解锁任务
 		_unlock_quest(quest_id, condition.npc_id)
@@ -159,40 +173,41 @@ func _check_and_unlock(quest_id: String) -> bool:
 		quest_locked.emit(quest_id, condition.npc_id, missing)
 		return false
 
+
 ## 检查指定条件是否满足
 ## 返回：满足的缺失条件列表
 func _check_conditions(condition: Dictionary) -> Array:
 	var missing = []
-	
+
 	# 检查关系值
 	if condition.has("relationship_threshold"):
 		var threshold = condition.relationship_threshold
 		if _relationship_manager:
 			var current_rel = _relationship_manager.get_relationship_value(condition.npc_id)
 			if current_rel < threshold:
-				missing.append({
-					"type": "relationship",
-					"npc_id": condition.npc_id,
-					"required": threshold,
-					"current": current_rel
-				})
+				missing.append(
+					{
+						"type": "relationship",
+						"npc_id": condition.npc_id,
+						"required": threshold,
+						"current": current_rel
+					}
+				)
 		else:
 			missing.append({"type": "relationship_manager_not_found"})
-	
+
 	# 检查境界
 	if condition.has("realm_requirement"):
 		var required_realm = condition.realm_requirement
 		if _character_system:
 			var current_realm = _character_system.realm_index
 			if current_realm < required_realm:
-				missing.append({
-					"type": "realm",
-					"required": required_realm,
-					"current": current_realm
-				})
+				missing.append(
+					{"type": "realm", "required": required_realm, "current": current_realm}
+				)
 		else:
 			missing.append({"type": "character_system_not_found"})
-	
+
 	# 检查前置任务
 	if condition.has("prerequisites") and condition.prerequisites.size() > 0:
 		var completed = []
@@ -200,32 +215,32 @@ func _check_conditions(condition: Dictionary) -> Array:
 			completed = _quest_manager.player_completed_quests
 		else:
 			missing.append({"type": "quest_manager_not_found"})
-		
+
 		for prereq in condition.prerequisites:
 			if not (prereq in completed):
-				missing.append({
-					"type": "prerequisite_quest",
-					"quest_id": prereq
-				})
-	
+				missing.append({"type": "prerequisite_quest", "quest_id": prereq})
+
 	return missing
+
 
 ## 解锁任务
 func _unlock_quest(quest_id: String, npc_id: String):
 	if not _quest_manager:
 		push_warning("[QuestTriggerManager] QuestManager 未找到，无法解锁任务")
 		return
-	
+
 	# 将任务状态设为 AVAILABLE
 	_quest_manager.update_quest_status(quest_id, QuestManager.QuestStatus.AVAILABLE)
-	
+
 	# 发出信号
 	quest_unlocked.emit(quest_id, npc_id)
 	print("[QuestTriggerManager] 任务已解锁: %s (NPC: %s)" % [quest_id, npc_id])
 
+
 # ============================================================================
 # 信号回调
 # ============================================================================
+
 
 ## 关系值变化回调
 func _on_relationship_changed(npc_id: String, old_value: int, new_value: int):
@@ -234,11 +249,17 @@ func _on_relationship_changed(npc_id: String, old_value: int, new_value: int):
 		var condition = quest_trigger_conditions[quest_id]
 		if condition.npc_id == npc_id:
 			# 检查是否达到阈值
-			if condition.relationship_threshold > 0 and new_value >= condition.relationship_threshold:
+			if (
+				condition.relationship_threshold > 0
+				and new_value >= condition.relationship_threshold
+			):
 				# 检查是否刚跨过阈值
 				if old_value < condition.relationship_threshold:
-					relationship_threshold_reached.emit(npc_id, condition.relationship_threshold, quest_id)
+					relationship_threshold_reached.emit(
+						npc_id, condition.relationship_threshold, quest_id
+					)
 					_check_and_unlock(quest_id)
+
 
 ## 境界突破回调
 func _on_realm_breakthrough(new_realm: String, realm_bonus: float, realm_index: int):
@@ -248,50 +269,164 @@ func _on_realm_breakthrough(new_realm: String, realm_bonus: float, realm_index: 
 		if condition.has("realm_requirement") and realm_index >= condition.realm_requirement:
 			_check_and_unlock(quest_id)
 
+
 # ============================================================================
 # 批量注册（用于初始化NPC个人线）
 # ============================================================================
 
+
 ## 注册所有核心NPC个人线触发条件
 func register_all_npc_questlines():
 	# === 云中鹤 (3条, 好感度递增解锁) ===
-	register_quest_trigger("yunzhonghe_sword_path", "yunzhonghe", 10, REALM_REQUIREMENTS.qi_condensation_early, [])
-	register_quest_trigger("yunzhonghe_sword_trial", "yunzhonghe", 25, REALM_REQUIREMENTS.qi_condensation_mid, [])
-	register_quest_trigger("yunzhonghe_sword_master", "yunzhonghe", 45, REALM_REQUIREMENTS.qi_condensation_late, [])
+	register_quest_trigger(
+		"yunzhonghe_sword_path", "yunzhonghe", 10, REALM_REQUIREMENTS.qi_condensation_early, []
+	)
+	register_quest_trigger(
+		"yunzhonghe_sword_trial", "yunzhonghe", 25, REALM_REQUIREMENTS.qi_condensation_mid, []
+	)
+	register_quest_trigger(
+		"yunzhonghe_sword_master", "yunzhonghe", 45, REALM_REQUIREMENTS.qi_condensation_late, []
+	)
 
 	# === 柳如烟 (3条) ===
-	register_quest_trigger("liuruyan_righteous", "liuruyan", 10, REALM_REQUIREMENTS.qi_condensation_early, [])
-	register_quest_trigger("liuruyan_rescue", "liuruyan", 25, REALM_REQUIREMENTS.qi_condensation_mid, [])
-	register_quest_trigger("liuruyan_justice", "liuruyan", 45, REALM_REQUIREMENTS.qi_condensation_late, [])
+	register_quest_trigger(
+		"liuruyan_righteous", "liuruyan", 10, REALM_REQUIREMENTS.qi_condensation_early, []
+	)
+	register_quest_trigger(
+		"liuruyan_rescue", "liuruyan", 25, REALM_REQUIREMENTS.qi_condensation_mid, []
+	)
+	register_quest_trigger(
+		"liuruyan_justice", "liuruyan", 45, REALM_REQUIREMENTS.qi_condensation_late, []
+	)
 
 	# === 铁无双 (3条) ===
-	register_quest_trigger("tiewushuang_beggars", "tiewushuang", 5, REALM_REQUIREMENTS.qi_condensation_early, [])
-	register_quest_trigger("tiewushuang_brotherhood", "tiewushuang", 20, REALM_REQUIREMENTS.qi_condensation_mid, [])
-	register_quest_trigger("tiewushuang_oath", "tiewushuang", 40, REALM_REQUIREMENTS.qi_condensation_late, [])
+	register_quest_trigger(
+		"tiewushuang_beggars", "tiewushuang", 5, REALM_REQUIREMENTS.qi_condensation_early, []
+	)
+	register_quest_trigger(
+		"tiewushuang_brotherhood", "tiewushuang", 20, REALM_REQUIREMENTS.qi_condensation_mid, []
+	)
+	register_quest_trigger(
+		"tiewushuang_oath", "tiewushuang", 40, REALM_REQUIREMENTS.qi_condensation_late, []
+	)
 
 	# === 慕容雪 (3条) ===
-	register_quest_trigger("murongxue_past_life", "murongxue", 15, REALM_REQUIREMENTS.qi_condensation_mid, [])
-	register_quest_trigger("murongxue_memory", "murongxue", 30, REALM_REQUIREMENTS.qi_condensation_late, [])
-	register_quest_trigger("murongxue_truth", "murongxue", 50, REALM_REQUIREMENTS.foundation_establishment_early, [])
+	register_quest_trigger(
+		"murongxue_past_life", "murongxue", 15, REALM_REQUIREMENTS.qi_condensation_mid, []
+	)
+	register_quest_trigger(
+		"murongxue_memory", "murongxue", 30, REALM_REQUIREMENTS.qi_condensation_late, []
+	)
+	register_quest_trigger(
+		"murongxue_truth", "murongxue", 50, REALM_REQUIREMENTS.foundation_establishment_early, []
+	)
 
 	# === 萧寒夜 (3条) ===
-	register_quest_trigger("xiaohanye_demonic", "xiaohanye", 10, REALM_REQUIREMENTS.qi_condensation_early, [])
-	register_quest_trigger("xiaohanye_dark_path", "xiaohanye", 25, REALM_REQUIREMENTS.qi_condensation_late, [])
-	register_quest_trigger("xiaohanye_redemption", "xiaohanye", 45, REALM_REQUIREMENTS.foundation_establishment_early, [])
+	register_quest_trigger(
+		"xiaohanye_demonic", "xiaohanye", 10, REALM_REQUIREMENTS.qi_condensation_early, []
+	)
+	register_quest_trigger(
+		"xiaohanye_dark_path", "xiaohanye", 25, REALM_REQUIREMENTS.qi_condensation_late, []
+	)
+	register_quest_trigger(
+		"xiaohanye_redemption",
+		"xiaohanye",
+		45,
+		REALM_REQUIREMENTS.foundation_establishment_early,
+		[]
+	)
 
 	# === 玄机真人 (2条) ===
-	register_quest_trigger("xuanjizhenren_guidance", "xuanjizhenren", 5, REALM_REQUIREMENTS.qi_condensation_early, [])
-	register_quest_trigger("xuanjizhenren_test", "xuanjizhenren", 30, REALM_REQUIREMENTS.qi_condensation_late, [])
+	register_quest_trigger(
+		"xuanjizhenren_guidance", "xuanjizhenren", 5, REALM_REQUIREMENTS.qi_condensation_early, []
+	)
+	register_quest_trigger(
+		"xuanjizhenren_test", "xuanjizhenren", 30, REALM_REQUIREMENTS.qi_condensation_late, []
+	)
 
 	# === 血无痕 (2条) ===
-	register_quest_trigger("xuewuhen_deal", "xuewuhen", 15, REALM_REQUIREMENTS.qi_condensation_mid, [])
-	register_quest_trigger("xuewuhen_secret", "xuewuhen", 35, REALM_REQUIREMENTS.foundation_establishment_early, [])
+	register_quest_trigger(
+		"xuewuhen_deal", "xuewuhen", 15, REALM_REQUIREMENTS.qi_condensation_mid, []
+	)
+	register_quest_trigger(
+		"xuewuhen_secret", "xuewuhen", 35, REALM_REQUIREMENTS.foundation_establishment_early, []
+	)
 
 	print("[QuestTriggerManager] 已注册 19 个NPC支线触发条件")
+
+
+# ============================================================================
+# 任务定义注册（供 QuestSystem 任务日志展示与状态流转）
+# ============================================================================
+
+## 支线任务标题（quest_id -> 中文标题）
+const QUEST_TITLES = {
+	"yunzhonghe_sword_path": "剑道之路",
+	"yunzhonghe_sword_trial": "剑道试炼",
+	"yunzhonghe_sword_master": "剑道宗师",
+	"liuruyan_righteous": "侠义之心",
+	"liuruyan_rescue": "仗义救人",
+	"liuruyan_justice": "联手除恶",
+	"tiewushuang_beggars": "把酒言欢",
+	"tiewushuang_brotherhood": "共闯黑风寨",
+	"tiewushuang_oath": "结义之盟",
+	"murongxue_past_life": "前世之谜",
+	"murongxue_memory": "记忆碎片",
+	"murongxue_truth": "身世真相",
+	"xiaohanye_demonic": "魔道初窥",
+	"xiaohanye_dark_path": "禁地探秘",
+	"xiaohanye_redemption": "心魔救赎",
+	"xuanjizhenren_guidance": "修炼问道",
+	"xuanjizhenren_test": "真人考验",
+	"xuewuhen_deal": "秘密交易",
+	"xuewuhen_secret": "血无痕的秘密",
+}
+
+
+## 将所有支线任务定义注册进 QuestManager（QuestSystem autoload）
+func _register_quest_definitions():
+	if _quest_manager == null or not _quest_manager.has_method("register_quest"):
+		push_warning("[QuestTriggerManager] QuestManager 不可用，跳过任务定义注册")
+		return
+
+	var registered := 0
+	for quest_id in quest_trigger_conditions:
+		var condition = quest_trigger_conditions[quest_id]
+		var title: String = QUEST_TITLES.get(quest_id, quest_id)
+		var npc_name: String = _get_npc_display_name(condition.npc_id)
+		if _quest_manager.register_quest(
+			quest_id,
+			"%s·%s" % [npc_name, title],
+			title,
+			QuestManager.QuestType.SIDE,
+			condition.npc_id
+		):
+			registered += 1
+
+	print("[QuestTriggerManager] 已注册 %d 个任务定义到 QuestSystem" % registered)
+
+
+## NPC显示名（npc_id -> 中文名）
+const NPC_NAMES = {
+	"yunzhonghe": "云中鹤",
+	"liuruyan": "柳如烟",
+	"tiewushuang": "铁无双",
+	"murongxue": "慕容雪",
+	"xiaohanye": "萧寒夜",
+	"xuanjizhenren": "玄机真人",
+	"xuewuhen": "血无痕",
+}
+
+
+## 获取NPC显示名
+func _get_npc_display_name(npc_id: String) -> String:
+	return NPC_NAMES.get(npc_id, npc_id)
+
 
 # ============================================================================
 # 工具函数
 # ============================================================================
+
 
 ## 获取指定NPC的所有可触发任务
 func get_available_quests_for_npc(npc_id: String) -> Array:
@@ -302,11 +437,13 @@ func get_available_quests_for_npc(npc_id: String) -> Array:
 			available.append(quest_id)
 	return available
 
+
 ## 检查指定任务是否已解锁
 func is_quest_trigger_ready(quest_id: String) -> bool:
 	if not quest_trigger_conditions.has(quest_id):
 		return false
 	return _check_conditions(quest_trigger_conditions[quest_id]).is_empty()
+
 
 ## 获取任务缺失条件详情
 func get_quest_missing_conditions(quest_id: String) -> Array:
@@ -314,9 +451,11 @@ func get_quest_missing_conditions(quest_id: String) -> Array:
 		return [{"type": "quest_not_registered"}]
 	return _check_conditions(quest_trigger_conditions[quest_id])
 
+
 # ============================================================================
 # 任务进度跟踪（收集物品、击杀敌人、完成奇遇等）
 # ============================================================================
+
 
 ## 注册任务进度条件
 ## progress_type: "collect_item", "kill_enemy", "complete_encounter", "explore_location"
@@ -324,11 +463,17 @@ func get_quest_missing_conditions(quest_id: String) -> Array:
 ## target_count: 需要的数量
 ## quest_id: 关联任务ID
 ## npc_id: 关联NPC ID（用于解锁后关联）
-func register_progress_condition(quest_id: String, progress_type: String, target_id: String, target_count: int, npc_id: String = "") -> bool:
+func register_progress_condition(
+	quest_id: String,
+	progress_type: String,
+	target_id: String,
+	target_count: int,
+	npc_id: String = ""
+) -> bool:
 	if quest_progress_conditions.has(quest_id):
 		push_warning("[QuestTriggerManager] 进度条件已存在: ", quest_id)
 		return false
-	
+
 	quest_progress_conditions[quest_id] = {
 		"quest_id": quest_id,
 		"progress_type": progress_type,
@@ -337,26 +482,27 @@ func register_progress_condition(quest_id: String, progress_type: String, target
 		"current_count": 0,
 		"npc_id": npc_id
 	}
-	
+
 	# 初始化进度
 	quest_progress[quest_id] = 0
-	
+
 	# 检查当前是否已满足条件
 	_check_progress_and_unlock(quest_id)
-	
-	print("[QuestTriggerManager] 已注册进度条件: %s (%s, %d/%d)" % [
-		quest_id, progress_type, 0, target_count
-	])
+
+	print(
+		"[QuestTriggerManager] 已注册进度条件: %s (%s, %d/%d)" % [quest_id, progress_type, 0, target_count]
+	)
 	return true
+
 
 ## 检查进度并尝试解锁
 func _check_progress_and_unlock(quest_id: String) -> bool:
 	if not quest_progress_conditions.has(quest_id):
 		return false
-	
+
 	var condition = quest_progress_conditions[quest_id]
 	var current = quest_progress.get(quest_id, 0)
-	
+
 	if current >= condition.target_count:
 		# 进度完成，检查其他条件
 		if quest_trigger_conditions.has(quest_id):
@@ -365,24 +511,26 @@ func _check_progress_and_unlock(quest_id: String) -> bool:
 			# 没有触发条件，直接发出进度完成信号
 			quest_progress_completed.emit(quest_id, condition.npc_id)
 			return true
-	
+
 	return false
+
 
 ## 更新进度（通用）
 func update_progress(quest_id: String, amount: int = 1) -> bool:
 	if not quest_progress_conditions.has(quest_id):
 		return false
-	
+
 	quest_progress[quest_id] = quest_progress.get(quest_id, 0) + amount
 	var current = quest_progress[quest_id]
 	var max_val = quest_progress_conditions[quest_id].target_count
-	
+
 	# 发出进度更新信号
 	quest_progress_updated.emit(quest_id, current, max_val)
-	
+
 	print("[QuestTriggerManager] 进度更新: %s %d/%d" % [quest_id, current, max_val])
-	
+
 	return _check_progress_and_unlock(quest_id)
+
 
 ## 检查物品是否在背包中并更新收集进度
 func check_item_collected(item_id: String, count: int = 1) -> void:
@@ -391,12 +539,14 @@ func check_item_collected(item_id: String, count: int = 1) -> void:
 		if condition.progress_type == "collect_item" and condition.target_id == item_id:
 			update_progress(quest_id, count)
 
+
 ## 检查敌人击杀并更新击杀进度
 func check_enemy_killed(enemy_id: String, count: int = 1) -> void:
 	for quest_id in quest_progress_conditions:
 		var condition = quest_progress_conditions[quest_id]
 		if condition.progress_type == "kill_enemy" and condition.target_id == enemy_id:
 			update_progress(quest_id, count)
+
 
 ## 检查奇遇是否完成并更新进度
 func check_encounter_completed(encounter_id: String) -> void:
@@ -405,9 +555,11 @@ func check_encounter_completed(encounter_id: String) -> void:
 		if condition.progress_type == "complete_encounter" and condition.target_id == encounter_id:
 			update_progress(quest_id, 1)
 
+
 # ============================================================================
 # 进度相关信号回调
 # ============================================================================
+
 
 ## 战斗结束回调
 func _on_combat_ended(victory: bool, rewards: Dictionary = {}):
@@ -418,17 +570,22 @@ func _on_combat_ended(victory: bool, rewards: Dictionary = {}):
 	if not enemy_id.is_empty():
 		check_enemy_killed(enemy_id)
 
+
 ## 奇遇完成回调
 func _on_encounter_completed(encounter_id: String, rewards: Dictionary):
 	check_encounter_completed(encounter_id)
 
+
 ## 任务目标更新回调
-func _on_quest_objective_updated(quest_id: String, objective_index: int, current_value: int, target_value: int):
+func _on_quest_objective_updated(
+	quest_id: String, objective_index: int, current_value: int, target_value: int
+):
 	if quest_progress_conditions.has(quest_id):
 		quest_progress[quest_id] = current_value
 		var condition = quest_progress_conditions[quest_id]
 		quest_progress_updated.emit(quest_id, current_value, target_value)
 		_check_progress_and_unlock(quest_id)
+
 
 ## 任务完成回调
 func _on_quest_completed(quest_id: String):
@@ -437,6 +594,7 @@ func _on_quest_completed(quest_id: String):
 		var condition = quest_trigger_conditions[other_quest_id]
 		if condition.has("prerequisites") and quest_id in condition.prerequisites:
 			_check_and_unlock(other_quest_id)
+
 
 # ============================================================================
 # 新增信号

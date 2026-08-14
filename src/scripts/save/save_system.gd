@@ -35,7 +35,12 @@ func save_to_slot(slot: int = 1) -> bool:
 		"timestamp": Time.get_datetime_string_from_system(),
 		"version": "0.3.0",
 		"realm": character_node.get_current_realm()["name"] if character_node else "",
-		"region": game_loop_node.current_region.get("name", "") if game_loop_node and game_loop_node.current_region.size() > 0 else "",
+		"region":
+		(
+			game_loop_node.current_region.get("name", "")
+			if game_loop_node and game_loop_node.current_region.size() > 0
+			else ""
+		),
 	}
 
 	var save_path = SAVE_DIR + (SAVE_FILE_PATTERN % slot)
@@ -195,6 +200,11 @@ func _collect_save_data() -> Dictionary:
 	if act_mgr and act_mgr.has_method("save_data"):
 		data["act_manager"] = act_mgr.save_data()
 
+	# 任务系统（进行中任务/已完成列表/目标进度）
+	var quest_sys = get_node_or_null("/root/QuestSystem")
+	if quest_sys and quest_sys.has_method("save_quest_data"):
+		data["quest_system"] = quest_sys.save_quest_data()
+
 	# 天赋网格
 	var char_sys = get_node_or_null("/root/CharacterSystem")
 	if char_sys and char_sys.talent_grid.size() > 0:
@@ -202,7 +212,9 @@ func _collect_save_data() -> Dictionary:
 		for row in char_sys.talent_grid:
 			var row_data: Array = []
 			for cell in row:
-				row_data.append({"unlocked": cell.get("unlocked", false), "effect": cell.get("effect", {})})
+				row_data.append(
+					{"unlocked": cell.get("unlocked", false), "effect": cell.get("effect", {})}
+				)
 			talent_save.append(row_data)
 		data["talent_grid"] = talent_save
 
@@ -326,6 +338,11 @@ func _restore_save_data(data: Dictionary) -> void:
 	if act_mgr and act_mgr.has_method("load_data") and data.has("act_manager"):
 		act_mgr.load_data(data.act_manager)
 
+	# 任务系统（进行中任务/已完成列表/目标进度）
+	var quest_sys = get_node_or_null("/root/QuestSystem")
+	if quest_sys and quest_sys.has_method("load_quest_data") and data.has("quest_system"):
+		quest_sys.load_quest_data(data.quest_system)
+
 	# 天赋网格
 	var char_sys = get_node_or_null("/root/CharacterSystem")
 	if char_sys and data.has("talent_grid"):
@@ -333,7 +350,9 @@ func _restore_save_data(data: Dictionary) -> void:
 		for row_idx in range(mini(saved_grid.size(), char_sys.talent_grid.size())):
 			var row: Array = saved_grid[row_idx]
 			for col_idx in range(mini(row.size(), char_sys.talent_grid[row_idx].size())):
-				char_sys.talent_grid[row_idx][col_idx]["unlocked"] = row[col_idx].get("unlocked", false)
+				char_sys.talent_grid[row_idx][col_idx]["unlocked"] = row[col_idx].get(
+					"unlocked", false
+				)
 				char_sys.talent_grid[row_idx][col_idx]["effect"] = row[col_idx].get("effect", {})
 
 	# 探索面板持久化状态

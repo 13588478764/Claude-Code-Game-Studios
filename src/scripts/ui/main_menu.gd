@@ -7,7 +7,9 @@ extends Control
 signal main_menu_loaded(has_save: bool, save_realm: String, save_region_name: String)
 signal main_menu_load_failed(error_reason: String)
 signal main_menu_new_game_selected
-signal main_menu_continue_selected(save_slot_id: int, character_realm: String, character_region: String)
+signal main_menu_continue_selected(
+	save_slot_id: int, character_realm: String, character_region: String
+)
 signal main_menu_settings_opened
 signal main_menu_credits_opened
 signal main_menu_quit_initiated
@@ -185,6 +187,7 @@ func _get_focusable_buttons() -> Array[Button]:
 ## 新游戏流程 (s6-02)
 ## ============================================================================
 
+
 func _on_new_game_pressed() -> void:
 	if _transitioning:
 		return
@@ -225,6 +228,31 @@ func _start_new_game() -> void:
 		martial.player_fragments.clear()
 		for i in range(martial.equipped_martial_arts.size()):
 			martial.equipped_martial_arts[i] = null
+
+	# 重置主线进度（避免上一周目已完成事件带入新档）
+	var act_mgr: Node = get_node_or_null("/root/ActManager")
+	if act_mgr and act_mgr.get("completed_events") != null:
+		act_mgr.completed_events.clear()
+
+	# 重置货币与背包
+	var currency_mgr: Node = get_node_or_null("/root/CurrencyManager")
+	if currency_mgr and currency_mgr.has_method("reset_all_currencies"):
+		currency_mgr.reset_all_currencies()
+	var inventory_sys: Node = get_node_or_null("/root/InventorySystem")
+	if inventory_sys:
+		inventory_sys.inventory.clear()
+		for slot_id in inventory_sys.equipped_slots:
+			inventory_sys.equipped_slots[slot_id] = ""
+
+	# 重置任务系统状态
+	var quest_sys_reset: Node = get_node_or_null("/root/QuestSystem")
+	if quest_sys_reset:
+		quest_sys_reset.active_quests.clear()
+		quest_sys_reset.player_completed_quests.clear()
+		quest_sys_reset.player_inventory.clear()
+		quest_sys_reset.player_level = 1
+		for quest_id in quest_sys_reset.quest_definitions:
+			quest_sys_reset.quest_definitions[quest_id].status = QuestManager.QuestStatus.LOCKED
 
 	# 注册NPC个人线
 	var quest_trigger: Node = get_node_or_null("/root/QuestTriggerManager")
@@ -328,6 +356,7 @@ func _load_game_panels() -> void:
 ## 加载游戏流程 (s6-03)
 ## ============================================================================
 
+
 func _on_continue_pressed() -> void:
 	if not _has_save or _transitioning:
 		return
@@ -371,6 +400,7 @@ func _on_load_failed(_slot: int, error: String) -> void:
 ## ============================================================================
 ## 设置 / 制作人员 / 退出
 ## ============================================================================
+
 
 func _on_settings_pressed() -> void:
 	main_menu_settings_opened.emit()

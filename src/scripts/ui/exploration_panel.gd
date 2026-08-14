@@ -48,6 +48,7 @@ var _active_panel_key: String = ""
 # 生命周期
 # ============================================================================
 
+
 func _ready() -> void:
 	layer = 100
 	# iOS 安全区适配
@@ -90,7 +91,9 @@ func _initialize() -> void:
 
 	var encounter_ui = get_node_or_null("/root/EncounterUI")
 	if encounter_ui:
-		encounter_ui.visibility_changed.connect(_on_encounter_ui_visibility_changed.bind(encounter_ui))
+		encounter_ui.visibility_changed.connect(
+			_on_encounter_ui_visibility_changed.bind(encounter_ui)
+		)
 
 	var dialogue_manager = get_node_or_null("/root/DialogueManager")
 	if dialogue_manager:
@@ -113,9 +116,11 @@ func _initialize() -> void:
 		restore_persistent_state(save_sys._pending_exploration_state)
 		save_sys._pending_exploration_state.clear()
 
+
 # ============================================================================
 # 面板初始化
 # ============================================================================
+
 
 func _init_panels() -> void:
 	var root: Node = get_tree().root
@@ -165,15 +170,17 @@ func _connect_panel_close_signals() -> void:
 
 	var character = _panels.get("character")
 	if character and character is CanvasItem:
-		character.visibility_changed.connect(func():
-			if not character.visible and _active_panel_key == "character":
-				_on_panel_closed()
+		character.visibility_changed.connect(
+			func():
+				if not character.visible and _active_panel_key == "character":
+					_on_panel_closed()
 		)
 
 
 # ============================================================================
 # 快捷键处理
 # ============================================================================
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventKey or not event.pressed:
@@ -285,6 +292,7 @@ func _on_panel_closed() -> void:
 # UI 构建
 # ============================================================================
 
+
 func _build_region_buttons() -> void:
 	if _game_loop == null:
 		return
@@ -313,9 +321,11 @@ func _build_region_buttons() -> void:
 		btn.pressed.connect(func(): _on_region_selected(idx))
 		region_list.add_child(btn)
 
+
 # ============================================================================
 # NPC 交谈 (s6-04)
 # ============================================================================
+
 
 func _build_npc_buttons() -> void:
 	if _npc_container == null:
@@ -330,11 +340,16 @@ func _build_npc_buttons() -> void:
 	if relationship_mgr and relationship_mgr._npc_database.size() > 0:
 		for npc_id in relationship_mgr._npc_database:
 			var npc_data: Dictionary = relationship_mgr._npc_database[npc_id]
-			npc_list.append({
-				"id": npc_data.get("id", npc_id),
-				"name": npc_data.get("name", npc_id),
-				"sect": npc_data.get("sect", ""),
-			})
+			(
+				npc_list
+				. append(
+					{
+						"id": npc_data.get("id", npc_id),
+						"name": npc_data.get("name", npc_id),
+						"sect": npc_data.get("sect", ""),
+					}
+				)
+			)
 	else:
 		npc_list.assign(NPC_FALLBACK)
 
@@ -392,7 +407,9 @@ func _on_npc_talk_pressed(npc_id: String, npc_name: String) -> void:
 	if success:
 		# 每次与 NPC 完成日常对话后增加少量好感度 (+2)
 		if not dialogue_mgr.dialogue_ended.is_connected(_on_npc_chat_ended):
-			dialogue_mgr.dialogue_ended.connect(_on_npc_chat_ended.bind(npc_id, npc_name), CONNECT_ONE_SHOT)
+			dialogue_mgr.dialogue_ended.connect(
+				_on_npc_chat_ended.bind(npc_id, npc_name), CONNECT_ONE_SHOT
+			)
 	else:
 		log_label.text = "（%s没有什么特别想说的）" % npc_name
 
@@ -410,125 +427,218 @@ func _on_npc_chat_ended(_dialogue_id: String, npc_id: String, npc_name: String) 
 ## relationship_reward: 完成后额外增加的好感度
 const SIDE_QUEST_CONFIG: Dictionary = {
 	# === 云中鹤 (剑修, 3条) ===
-	"yunzhonghe_sword_path": {
-		"dialogue_id": "YUN_QUEST_LINE", "npc_id": "yunzhonghe", "npc_name": "云中鹤",
+	"yunzhonghe_sword_path":
+	{
+		"dialogue_id": "YUN_QUEST_LINE",
+		"npc_id": "yunzhonghe",
+		"npc_name": "云中鹤",
 		"hint": "击败5个敌人后帮云中鹤寻找剑心",
-		"reward_hint": "经验+古剑术残篇+好感度10", "require_kills": 5,
-		"reward_item": "ancient_sword_technique_fragment", "relationship_reward": 10,
+		"reward_hint": "经验+古剑术残篇+好感度10",
+		"require_kills": 5,
+		"reward_item": "ancient_sword_technique_fragment",
+		"relationship_reward": 10,
 	},
-	"yunzhonghe_sword_trial": {
-		"dialogue_id": "YUN_QUEST_LINE", "npc_id": "yunzhonghe", "npc_name": "云中鹤",
+	"yunzhonghe_sword_trial":
+	{
+		"dialogue_id": "YUN_QUEST_LINE",
+		"npc_id": "yunzhonghe",
+		"npc_name": "云中鹤",
 		"hint": "获取精钢剑后与云中鹤切磋剑道",
-		"reward_hint": "经验+铁甲+好感度15", "require_item": "rare_sword",
-		"reward_item": "body_iron_armor", "relationship_reward": 15,
+		"reward_hint": "经验+铁甲+好感度15",
+		"require_item": "rare_sword",
+		"reward_item": "body_iron_armor",
+		"relationship_reward": 15,
 	},
-	"yunzhonghe_sword_master": {
-		"dialogue_id": "YUN_QUEST_LINE", "npc_id": "yunzhonghe", "npc_name": "云中鹤",
+	"yunzhonghe_sword_master":
+	{
+		"dialogue_id": "YUN_QUEST_LINE",
+		"npc_id": "yunzhonghe",
+		"npc_name": "云中鹤",
 		"hint": "击败50个敌人后助云中鹤突破剑道瓶颈",
-		"reward_hint": "经验+功法卷轴+好感度20", "require_kills": 50,
-		"reward_item": "ancient_technique_scroll", "relationship_reward": 20,
+		"reward_hint": "经验+功法卷轴+好感度20",
+		"require_kills": 50,
+		"reward_item": "ancient_technique_scroll",
+		"relationship_reward": 20,
 	},
 	# === 柳如烟 (正道, 3条) ===
-	"liuruyan_righteous": {
-		"dialogue_id": "LIU_QUEST_LINE", "npc_id": "liuruyan", "npc_name": "柳如烟",
+	"liuruyan_righteous":
+	{
+		"dialogue_id": "LIU_QUEST_LINE",
+		"npc_id": "liuruyan",
+		"npc_name": "柳如烟",
 		"hint": "获取铁剑后助柳如烟行侠仗义",
-		"reward_hint": "经验+武学残卷+好感度10", "require_item": "common_sword",
-		"reward_item": "ancient_martial_art_fragment", "relationship_reward": 10,
+		"reward_hint": "经验+武学残卷+好感度10",
+		"require_item": "common_sword",
+		"reward_item": "ancient_martial_art_fragment",
+		"relationship_reward": 10,
 	},
-	"liuruyan_rescue": {
-		"dialogue_id": "LIU_QUEST_LINE", "npc_id": "liuruyan", "npc_name": "柳如烟",
+	"liuruyan_rescue":
+	{
+		"dialogue_id": "LIU_QUEST_LINE",
+		"npc_id": "liuruyan",
+		"npc_name": "柳如烟",
 		"hint": "击败15个敌人后救出被困百姓",
-		"reward_hint": "经验+踏云靴+好感度15", "require_kills": 15,
-		"reward_item": "feet_cloud_boots", "relationship_reward": 15,
+		"reward_hint": "经验+踏云靴+好感度15",
+		"require_kills": 15,
+		"reward_item": "feet_cloud_boots",
+		"relationship_reward": 15,
 	},
-	"liuruyan_justice": {
-		"dialogue_id": "LIU_QUEST_LINE", "npc_id": "liuruyan", "npc_name": "柳如烟",
+	"liuruyan_justice":
+	{
+		"dialogue_id": "LIU_QUEST_LINE",
+		"npc_id": "liuruyan",
+		"npc_name": "柳如烟",
 		"hint": "突破筑基期后与柳如烟联手除恶",
-		"reward_hint": "经验+龙爪手套+好感度20", "require_realm": 1,
-		"reward_item": "hands_dragon_gloves", "relationship_reward": 20,
+		"reward_hint": "经验+龙爪手套+好感度20",
+		"require_realm": 1,
+		"reward_item": "hands_dragon_gloves",
+		"relationship_reward": 20,
 	},
 	# === 铁无双 (豪侠, 3条) ===
-	"tiewushuang_beggars": {
-		"dialogue_id": "TIE_QUEST_LINE", "npc_id": "tiewushuang", "npc_name": "铁无双",
+	"tiewushuang_beggars":
+	{
+		"dialogue_id": "TIE_QUEST_LINE",
+		"npc_id": "tiewushuang",
+		"npc_name": "铁无双",
 		"hint": "与铁无双把酒言欢",
 		"reward_hint": "经验+回春丹+好感度10",
-		"reward_item": "health_pill", "relationship_reward": 10,
+		"reward_item": "health_pill",
+		"relationship_reward": 10,
 	},
-	"tiewushuang_brotherhood": {
-		"dialogue_id": "TIE_QUEST_LINE", "npc_id": "tiewushuang", "npc_name": "铁无双",
+	"tiewushuang_brotherhood":
+	{
+		"dialogue_id": "TIE_QUEST_LINE",
+		"npc_id": "tiewushuang",
+		"npc_name": "铁无双",
 		"hint": "击败10个敌人后与铁无双共闯黑风寨",
-		"reward_hint": "经验+铁护手+好感度15", "require_kills": 10,
-		"reward_item": "hands_iron_gauntlets", "relationship_reward": 15,
+		"reward_hint": "经验+铁护手+好感度15",
+		"require_kills": 10,
+		"reward_item": "hands_iron_gauntlets",
+		"relationship_reward": 15,
 	},
-	"tiewushuang_oath": {
-		"dialogue_id": "TIE_QUEST_LINE", "npc_id": "tiewushuang", "npc_name": "铁无双",
+	"tiewushuang_oath":
+	{
+		"dialogue_id": "TIE_QUEST_LINE",
+		"npc_id": "tiewushuang",
+		"npc_name": "铁无双",
 		"hint": "获取铁盔后与铁无双结义",
-		"reward_hint": "经验+铁盾+好感度20", "require_item": "rare_helmet",
-		"reward_item": "offhand_iron_shield", "relationship_reward": 20,
+		"reward_hint": "经验+铁盾+好感度20",
+		"require_item": "rare_helmet",
+		"reward_item": "offhand_iron_shield",
+		"relationship_reward": 20,
 	},
 	# === 慕容雪 (冰冷, 3条) ===
-	"murongxue_past_life": {
-		"dialogue_id": "MU_QUEST_LINE", "npc_id": "murongxue", "npc_name": "慕容雪",
+	"murongxue_past_life":
+	{
+		"dialogue_id": "MU_QUEST_LINE",
+		"npc_id": "murongxue",
+		"npc_name": "慕容雪",
 		"hint": "击败8个敌人后探索前世之谜",
-		"reward_hint": "经验+火焰戒指+好感度10", "require_kills": 8,
-		"reward_item": "epic_ring", "relationship_reward": 10,
+		"reward_hint": "经验+火焰戒指+好感度10",
+		"require_kills": 8,
+		"reward_item": "epic_ring",
+		"relationship_reward": 10,
 	},
-	"murongxue_memory": {
-		"dialogue_id": "MU_QUEST_LINE", "npc_id": "murongxue", "npc_name": "慕容雪",
+	"murongxue_memory":
+	{
+		"dialogue_id": "MU_QUEST_LINE",
+		"npc_id": "murongxue",
+		"npc_name": "慕容雪",
 		"hint": "获取翡翠坠后帮慕容雪找回记忆碎片",
-		"reward_hint": "经验+灵气项链+好感度15", "require_item": "neck_jade_pendant",
-		"reward_item": "neck_spirit_necklace", "relationship_reward": 15,
+		"reward_hint": "经验+灵气项链+好感度15",
+		"require_item": "neck_jade_pendant",
+		"reward_item": "neck_spirit_necklace",
+		"relationship_reward": 15,
 	},
-	"murongxue_truth": {
-		"dialogue_id": "MU_QUEST_LINE", "npc_id": "murongxue", "npc_name": "慕容雪",
+	"murongxue_truth":
+	{
+		"dialogue_id": "MU_QUEST_LINE",
+		"npc_id": "murongxue",
+		"npc_name": "慕容雪",
 		"hint": "突破金丹期后揭开慕容雪的身世真相",
-		"reward_hint": "经验+流云袍+好感度20", "require_realm": 2,
-		"reward_item": "body_cloud_robe", "relationship_reward": 20,
+		"reward_hint": "经验+流云袍+好感度20",
+		"require_realm": 2,
+		"reward_item": "body_cloud_robe",
+		"relationship_reward": 20,
 	},
 	# === 萧寒夜 (魔道, 3条) ===
-	"xiaohanye_demonic": {
-		"dialogue_id": "XIAO_QUEST_LINE", "npc_id": "xiaohanye", "npc_name": "萧寒夜",
+	"xiaohanye_demonic":
+	{
+		"dialogue_id": "XIAO_QUEST_LINE",
+		"npc_id": "xiaohanye",
+		"npc_name": "萧寒夜",
 		"hint": "击败6个敌人后追随萧寒夜体验魔道",
-		"reward_hint": "经验+功法卷轴+好感度10", "require_kills": 6,
-		"reward_item": "ancient_technique_scroll", "relationship_reward": 10,
+		"reward_hint": "经验+功法卷轴+好感度10",
+		"require_kills": 6,
+		"reward_item": "ancient_technique_scroll",
+		"relationship_reward": 10,
 	},
-	"xiaohanye_dark_path": {
-		"dialogue_id": "XIAO_QUEST_LINE", "npc_id": "xiaohanye", "npc_name": "萧寒夜",
+	"xiaohanye_dark_path":
+	{
+		"dialogue_id": "XIAO_QUEST_LINE",
+		"npc_id": "xiaohanye",
+		"npc_name": "萧寒夜",
 		"hint": "击败20个敌人后与萧寒夜探索禁地",
-		"reward_hint": "经验+铜戒+好感度15", "require_kills": 20,
-		"reward_item": "common_ring", "relationship_reward": 15,
+		"reward_hint": "经验+铜戒+好感度15",
+		"require_kills": 20,
+		"reward_item": "common_ring",
+		"relationship_reward": 15,
 	},
-	"xiaohanye_redemption": {
-		"dialogue_id": "XIAO_QUEST_LINE", "npc_id": "xiaohanye", "npc_name": "萧寒夜",
+	"xiaohanye_redemption":
+	{
+		"dialogue_id": "XIAO_QUEST_LINE",
+		"npc_id": "xiaohanye",
+		"npc_name": "萧寒夜",
 		"hint": "突破筑基期后助萧寒夜走出心魔",
-		"reward_hint": "经验+武学残卷+好感度20", "require_realm": 1,
-		"reward_item": "ancient_martial_art_fragment", "relationship_reward": 20,
+		"reward_hint": "经验+武学残卷+好感度20",
+		"require_realm": 1,
+		"reward_item": "ancient_martial_art_fragment",
+		"relationship_reward": 20,
 	},
 	# === 玄机真人 (导师, 2条) ===
-	"xuanjizhenren_guidance": {
-		"dialogue_id": "npc_xuanjizhenren", "npc_id": "xuanjizhenren", "npc_name": "玄机真人",
+	"xuanjizhenren_guidance":
+	{
+		"dialogue_id": "npc_xuanjizhenren",
+		"npc_id": "xuanjizhenren",
+		"npc_name": "玄机真人",
 		"hint": "向玄机真人请教修炼之道",
 		"reward_hint": "经验+回春丹×3+好感度10",
-		"reward_item": "health_pill", "relationship_reward": 10,
+		"reward_item": "health_pill",
+		"relationship_reward": 10,
 	},
-	"xuanjizhenren_test": {
-		"dialogue_id": "npc_xuanjizhenren", "npc_id": "xuanjizhenren", "npc_name": "玄机真人",
+	"xuanjizhenren_test":
+	{
+		"dialogue_id": "npc_xuanjizhenren",
+		"npc_id": "xuanjizhenren",
+		"npc_name": "玄机真人",
 		"hint": "击败30个敌人通过玄机真人的考验",
-		"reward_hint": "经验+筑基丹+好感度20", "require_kills": 30,
-		"reward_item": "breakthrough_pill", "relationship_reward": 20,
+		"reward_hint": "经验+筑基丹+好感度20",
+		"require_kills": 30,
+		"reward_item": "breakthrough_pill",
+		"relationship_reward": 20,
 	},
 	# === 血无痕 (亦正亦邪, 2条) ===
-	"xuewuhen_deal": {
-		"dialogue_id": "npc_xuewuhen", "npc_id": "xuewuhen", "npc_name": "血无痕",
+	"xuewuhen_deal":
+	{
+		"dialogue_id": "npc_xuewuhen",
+		"npc_id": "xuewuhen",
+		"npc_name": "血无痕",
 		"hint": "击败12个敌人后与血无痕做一笔交易",
-		"reward_hint": "经验+银戒+好感度10", "require_kills": 12,
-		"reward_item": "rare_ring", "relationship_reward": 10,
+		"reward_hint": "经验+银戒+好感度10",
+		"require_kills": 12,
+		"reward_item": "rare_ring",
+		"relationship_reward": 10,
 	},
-	"xuewuhen_secret": {
-		"dialogue_id": "npc_xuewuhen", "npc_id": "xuewuhen", "npc_name": "血无痕",
+	"xuewuhen_secret":
+	{
+		"dialogue_id": "npc_xuewuhen",
+		"npc_id": "xuewuhen",
+		"npc_name": "血无痕",
 		"hint": "获取青冥剑后探听血无痕的秘密",
-		"reward_hint": "经验+洗髓丹+好感度20", "require_item": "epic_sword",
-		"reward_item": "wash_marrow_pill", "relationship_reward": 20,
+		"reward_hint": "经验+洗髓丹+好感度20",
+		"require_item": "epic_sword",
+		"reward_item": "wash_marrow_pill",
+		"relationship_reward": 20,
 	},
 }
 
@@ -572,6 +682,11 @@ func _try_trigger_side_quest(npc_id: String, npc_name: String) -> bool:
 	dialogue_mgr.start_dialogue(dialogue_id)
 	log_label.text = "[color=cyan]支线任务：%s[/color]" % config.get("hint", "与%s的故事" % npc_name)
 
+	# 同步任务状态到 QuestSystem（进行中）
+	var quest_sys: Node = get_node_or_null("/root/QuestSystem")
+	if quest_sys:
+		quest_sys.update_quest_status(quest_id, QuestManager.QuestStatus.ACTIVE)
+
 	if not _dialogue_reward_pending:
 		_dialogue_reward_pending = true
 		dialogue_mgr.dialogue_ended.connect(_on_side_quest_ended.bind(quest_id), CONNECT_ONE_SHOT)
@@ -602,6 +717,11 @@ func _on_side_quest_ended(_dialogue_id: String, quest_id: String) -> void:
 		_completed_side_quests.append(quest_id)
 	else:
 		return
+
+	# 同步任务状态到 QuestSystem（已完成）
+	var quest_sys: Node = get_node_or_null("/root/QuestSystem")
+	if quest_sys:
+		quest_sys.update_quest_status(quest_id, QuestManager.QuestStatus.COMPLETED)
 
 	var char_sys: Node = get_node_or_null("/root/CharacterSystem")
 	var currency: Node = get_node_or_null("/root/CurrencyManager")
@@ -669,7 +789,9 @@ func _try_trigger_story_via_npc(npc_id: String, npc_name: String) -> bool:
 
 	if not _dialogue_reward_pending:
 		_dialogue_reward_pending = true
-		dialogue_mgr.dialogue_ended.connect(_on_main_story_dialogue_ended.bind(event_id), CONNECT_ONE_SHOT)
+		dialogue_mgr.dialogue_ended.connect(
+			_on_main_story_dialogue_ended.bind(event_id), CONNECT_ONE_SHOT
+		)
 	return true
 
 
@@ -683,6 +805,7 @@ func _get_next_story_event(act_mgr: Node) -> Dictionary:
 # ============================================================================
 # 事件处理
 # ============================================================================
+
 
 func _on_explore_pressed() -> void:
 	if _game_loop == null:
@@ -735,9 +858,11 @@ func _on_game_state_changed(new_state: int) -> void:
 		_:
 			visible = false
 
+
 # ============================================================================
 # 刷新显示
 # ============================================================================
+
 
 func _refresh_display() -> void:
 	if _game_loop == null:
@@ -779,8 +904,10 @@ func _load_region_background(region: Dictionary) -> void:
 	# 尝试加载时段变体
 	var suffix := ""
 	match _current_time:
-		TimeOfDay.DUSK: suffix = "_dusk"
-		TimeOfDay.NIGHT: suffix = "_night"
+		TimeOfDay.DUSK:
+			suffix = "_dusk"
+		TimeOfDay.NIGHT:
+			suffix = "_night"
 
 	if not suffix.is_empty():
 		var variant_path := "res://assets/ui/backgrounds/%s%s.png" % [bg_name, suffix]
@@ -798,9 +925,12 @@ func _advance_time() -> void:
 	_explore_count += 1
 	if _explore_count % 5 == 0:
 		match _current_time:
-			TimeOfDay.DAY: _current_time = TimeOfDay.DUSK
-			TimeOfDay.DUSK: _current_time = TimeOfDay.NIGHT
-			TimeOfDay.NIGHT: _current_time = TimeOfDay.DAY
+			TimeOfDay.DAY:
+				_current_time = TimeOfDay.DUSK
+			TimeOfDay.DUSK:
+				_current_time = TimeOfDay.NIGHT
+			TimeOfDay.NIGHT:
+				_current_time = TimeOfDay.DAY
 		_load_region_background(_game_loop.current_region)
 
 
@@ -925,92 +1055,227 @@ func _close_tutorial() -> void:
 ## dialogue_id 必须与 data/dialogues/*.json 中的 "id" 字段一致
 const MAIN_STORY_EVENTS: Array[Dictionary] = [
 	# === Act 1: 青云镇危机 (Lv1-15, 炼气→筑基) ===
-	{"event_id": "act1_event1_opening", "dialogue_id": "ACT1_OPENING_001",
-		"hint": "与村中长老交谈", "reward_hint": "经验+银两",
-		"required_level": 1},
-	{"event_id": "act1_event2_cultivation", "dialogue_id": "ACT2_CULTIVATION_001",
-		"hint": "击败3个敌人后回来汇报", "reward_hint": "经验+古剑术残篇",
-		"required_level": 2, "require_kills": 3},
-	{"event_id": "act1_event3_crisis", "dialogue_id": "ACT3_CRISIS_001",
-		"hint": "获取一把铁剑再来调查异变", "reward_hint": "经验+银两",
-		"required_level": 5, "require_item": "common_sword"},
-	{"event_id": "act1_event4_boss", "dialogue_id": "ACT4_BOSS_001",
-		"hint": "击败10个敌人后面对危机", "reward_hint": "经验+精钢剑",
-		"required_level": 8, "require_kills": 10},
-	{"event_id": "act1_event5_ruins", "dialogue_id": "ACT5_RUINS_001",
-		"hint": "突破筑基期后探索古遗迹", "reward_hint": "经验+银两",
-		"required_level": 12, "require_realm": 1},
-	{"event_id": "act1_event6_resolution", "dialogue_id": "ACT6_RESOLUTION_001",
-		"hint": "击败20个敌人后解决危机", "reward_hint": "经验+铁盔",
-		"required_level": 15, "require_kills": 20},
+	{
+		"event_id": "act1_event1_opening",
+		"dialogue_id": "ACT1_OPENING_001",
+		"hint": "与村中长老交谈",
+		"reward_hint": "经验+银两",
+		"required_level": 1
+	},
+	{
+		"event_id": "act1_event2_cultivation",
+		"dialogue_id": "ACT2_CULTIVATION_001",
+		"hint": "击败3个敌人后回来汇报",
+		"reward_hint": "经验+古剑术残篇",
+		"required_level": 2,
+		"require_kills": 3
+	},
+	{
+		"event_id": "act1_event3_crisis",
+		"dialogue_id": "ACT3_CRISIS_001",
+		"hint": "获取一把铁剑再来调查异变",
+		"reward_hint": "经验+银两",
+		"required_level": 5,
+		"require_item": "common_sword"
+	},
+	{
+		"event_id": "act1_event4_boss",
+		"dialogue_id": "ACT4_BOSS_001",
+		"hint": "击败10个敌人后面对危机",
+		"reward_hint": "经验+精钢剑",
+		"required_level": 8,
+		"require_kills": 10
+	},
+	{
+		"event_id": "act1_event5_ruins",
+		"dialogue_id": "ACT5_RUINS_001",
+		"hint": "突破筑基期后探索古遗迹",
+		"reward_hint": "经验+银两",
+		"required_level": 12,
+		"require_realm": 1
+	},
+	{
+		"event_id": "act1_event6_resolution",
+		"dialogue_id": "ACT6_RESOLUTION_001",
+		"hint": "击败20个敌人后解决危机",
+		"reward_hint": "经验+铁盔",
+		"required_level": 15,
+		"require_kills": 20
+	},
 	# === Act 2: 九州风云 (Lv16-50, 筑基→化神) ===
-	{"event_id": "act2_event1_return", "dialogue_id": "ACT2_EVENT1_RETURN",
-		"hint": "与旧友重逢", "reward_hint": "经验+银两",
-		"required_level": 16},
-	{"event_id": "act2_event2_sect_gathering", "dialogue_id": "ACT2_EVENT2_SECT_GATHERING",
-		"hint": "击败30个敌人后参加宗门大会", "reward_hint": "经验+银两",
-		"required_level": 20, "require_kills": 30},
-	{"event_id": "act2_event3_first_trial", "dialogue_id": "ACT2_EVENT3_FIRST_TRIAL",
-		"hint": "获取精钢剑后挑战试炼", "reward_hint": "经验+青冥剑",
-		"required_level": 23, "require_item": "rare_sword"},
-	{"event_id": "act2_event4_demonic_invasion", "dialogue_id": "ACT2_EVENT4_DEMONIC_INVASION",
-		"hint": "突破金丹期抵御魔道入侵", "reward_hint": "经验+银两",
-		"required_level": 27, "require_realm": 2},
-	{"event_id": "act2_event5_secret_realm", "dialogue_id": "ACT2_EVENT5_SECRET_REALM",
-		"hint": "击败50个敌人后探索秘境", "reward_hint": "经验+功法卷轴",
-		"required_level": 30, "require_kills": 50},
-	{"event_id": "act2_event6_dao_heart_choice", "dialogue_id": "ACT2_EVENT6_DAO_HEART_CHOICE",
-		"hint": "在正邪之间做出抉择", "reward_hint": "经验+银两",
-		"required_level": 33},
-	{"event_id": "act2_event7_murongxue_memory", "dialogue_id": "ACT2_EVENT7_MURONGXUE_MEMORY",
-		"hint": "突破元婴期找回记忆", "reward_hint": "经验+银两",
-		"required_level": 36, "require_realm": 3},
-	{"event_id": "act2_event8_battlefield", "dialogue_id": "ACT2_EVENT8_BATTLEFIELD",
-		"hint": "击败80个敌人前往九州战场", "reward_hint": "经验+龙鳞盔",
-		"required_level": 40, "require_kills": 80},
-	{"event_id": "act2_event9_yunzhonghe_sacrifice", "dialogue_id": "ACT2_EVENT9_SACRIFICE",
-		"hint": "获取青冥剑后救援云中鹤", "reward_hint": "经验+银两",
-		"required_level": 44, "require_item": "epic_sword"},
-	{"event_id": "act2_event10_foundation_breakthrough", "dialogue_id": "ACT2_EVENT10_BREAKTHROUGH",
-		"hint": "突破化神期", "reward_hint": "经验+火焰戒指",
-		"required_level": 47, "require_realm": 4},
-	{"event_id": "act2_event11_act2_finale", "dialogue_id": "ACT2_EVENT11_FINALE",
-		"hint": "击败100个敌人完成第二幕", "reward_hint": "经验+银两",
-		"required_level": 50, "require_kills": 100},
+	{
+		"event_id": "act2_event1_return",
+		"dialogue_id": "ACT2_EVENT1_RETURN",
+		"hint": "与旧友重逢",
+		"reward_hint": "经验+银两",
+		"required_level": 16
+	},
+	{
+		"event_id": "act2_event2_sect_gathering",
+		"dialogue_id": "ACT2_EVENT2_SECT_GATHERING",
+		"hint": "击败30个敌人后参加宗门大会",
+		"reward_hint": "经验+银两",
+		"required_level": 20,
+		"require_kills": 30
+	},
+	{
+		"event_id": "act2_event3_first_trial",
+		"dialogue_id": "ACT2_EVENT3_FIRST_TRIAL",
+		"hint": "获取精钢剑后挑战试炼",
+		"reward_hint": "经验+青冥剑",
+		"required_level": 23,
+		"require_item": "rare_sword"
+	},
+	{
+		"event_id": "act2_event4_demonic_invasion",
+		"dialogue_id": "ACT2_EVENT4_DEMONIC_INVASION",
+		"hint": "突破金丹期抵御魔道入侵",
+		"reward_hint": "经验+银两",
+		"required_level": 27,
+		"require_realm": 2
+	},
+	{
+		"event_id": "act2_event5_secret_realm",
+		"dialogue_id": "ACT2_EVENT5_SECRET_REALM",
+		"hint": "击败50个敌人后探索秘境",
+		"reward_hint": "经验+功法卷轴",
+		"required_level": 30,
+		"require_kills": 50
+	},
+	{
+		"event_id": "act2_event6_dao_heart_choice",
+		"dialogue_id": "ACT2_EVENT6_DAO_HEART_CHOICE",
+		"hint": "在正邪之间做出抉择",
+		"reward_hint": "经验+银两",
+		"required_level": 33
+	},
+	{
+		"event_id": "act2_event7_murongxue_memory",
+		"dialogue_id": "ACT2_EVENT7_MURONGXUE_MEMORY",
+		"hint": "突破元婴期找回记忆",
+		"reward_hint": "经验+银两",
+		"required_level": 36,
+		"require_realm": 3
+	},
+	{
+		"event_id": "act2_event8_battlefield",
+		"dialogue_id": "ACT2_EVENT8_BATTLEFIELD",
+		"hint": "击败80个敌人前往九州战场",
+		"reward_hint": "经验+龙鳞盔",
+		"required_level": 40,
+		"require_kills": 80
+	},
+	{
+		"event_id": "act2_event9_yunzhonghe_sacrifice",
+		"dialogue_id": "ACT2_EVENT9_SACRIFICE",
+		"hint": "获取青冥剑后救援云中鹤",
+		"reward_hint": "经验+银两",
+		"required_level": 44,
+		"require_item": "epic_sword"
+	},
+	{
+		"event_id": "act2_event10_foundation_breakthrough",
+		"dialogue_id": "ACT2_EVENT10_BREAKTHROUGH",
+		"hint": "突破化神期",
+		"reward_hint": "经验+火焰戒指",
+		"required_level": 47,
+		"require_realm": 4
+	},
+	{
+		"event_id": "act2_event11_act2_finale",
+		"dialogue_id": "ACT2_EVENT11_FINALE",
+		"hint": "击败100个敌人完成第二幕",
+		"reward_hint": "经验+银两",
+		"required_level": 50,
+		"require_kills": 100
+	},
 	# === Act 3: 九州之门 (Lv51-90, 返虚→渡劫) ===
-	{"event_id": "act3_event1_new_journey", "dialogue_id": "ACT3_EVENT1_JOURNEY",
-		"hint": "突破返虚期踏上新征途", "reward_hint": "经验+银两",
-		"required_level": 51, "require_realm": 5},
-	{"event_id": "act3_event2_faction_trial", "dialogue_id": "ACT3_EVENT2_TRIAL",
-		"hint": "击败120个敌人通过试炼", "reward_hint": "经验+银两",
-		"required_level": 55, "require_kills": 120},
-	{"event_id": "act3_event3_seal_tremor", "dialogue_id": "ACT3_EVENT3_SEAL",
-		"hint": "感应到封印异动", "reward_hint": "经验+银两",
-		"required_level": 58},
-	{"event_id": "act3_event4_murongxue_appears", "dialogue_id": "ACT3_EVENT4_MURONGXUE",
-		"hint": "突破合道期与慕容雪重逢", "reward_hint": "经验+银两",
-		"required_level": 62, "require_realm": 6},
-	{"event_id": "act3_event5_ancient_battlefield", "dialogue_id": "ACT3_EVENT5_BATTLEFIELD",
-		"hint": "获取轩辕剑后闯上古战场", "reward_hint": "经验+完整上古功法",
-		"required_level": 66, "require_item": "legendary_sword"},
-	{"event_id": "act3_event6_xiaohanye_truth", "dialogue_id": "ACT3_EVENT6_XIAOHANYE",
-		"hint": "击败150个敌人揭开真相", "reward_hint": "经验+银两",
-		"required_level": 70, "require_kills": 150},
-	{"event_id": "act3_event7_sword_bone_awakening", "dialogue_id": "ACT3_EVENT7_SWORD_BONE",
-		"hint": "突破大乘期觉醒剑骨", "reward_hint": "经验+银两",
-		"required_level": 75, "require_realm": 7},
-	{"event_id": "act3_event8_gate_opens", "dialogue_id": "ACT3_EVENT8_GATE",
-		"hint": "击败200个敌人开启九州之门", "reward_hint": "经验+五行轮回戒",
-		"required_level": 80, "require_kills": 200},
-	{"event_id": "act3_event9_final_eve", "dialogue_id": "ACT3_EVENT9_FINAL_EVE",
-		"hint": "突破渡劫期准备最终决战", "reward_hint": "经验+银两",
-		"required_level": 85, "require_realm": 8},
-	{"event_id": "act3_event10_final_battle", "dialogue_id": "ACT3_EVENT10_FINAL_BATTLE",
-		"hint": "击败250个敌人后最终决战", "reward_hint": "经验+银两",
-		"required_level": 88, "require_kills": 250},
-	{"event_id": "act3_event11_ending", "dialogue_id": "ACT3_EVENT11_ENDING",
-		"hint": "完成修真之旅", "reward_hint": "通关奖励",
-		"required_level": 90},
+	{
+		"event_id": "act3_event1_new_journey",
+		"dialogue_id": "ACT3_EVENT1_JOURNEY",
+		"hint": "突破返虚期踏上新征途",
+		"reward_hint": "经验+银两",
+		"required_level": 51,
+		"require_realm": 5
+	},
+	{
+		"event_id": "act3_event2_faction_trial",
+		"dialogue_id": "ACT3_EVENT2_TRIAL",
+		"hint": "击败120个敌人通过试炼",
+		"reward_hint": "经验+银两",
+		"required_level": 55,
+		"require_kills": 120
+	},
+	{
+		"event_id": "act3_event3_seal_tremor",
+		"dialogue_id": "ACT3_EVENT3_SEAL",
+		"hint": "感应到封印异动",
+		"reward_hint": "经验+银两",
+		"required_level": 58
+	},
+	{
+		"event_id": "act3_event4_murongxue_appears",
+		"dialogue_id": "ACT3_EVENT4_MURONGXUE",
+		"hint": "突破合道期与慕容雪重逢",
+		"reward_hint": "经验+银两",
+		"required_level": 62,
+		"require_realm": 6
+	},
+	{
+		"event_id": "act3_event5_ancient_battlefield",
+		"dialogue_id": "ACT3_EVENT5_BATTLEFIELD",
+		"hint": "获取轩辕剑后闯上古战场",
+		"reward_hint": "经验+完整上古功法",
+		"required_level": 66,
+		"require_item": "legendary_sword"
+	},
+	{
+		"event_id": "act3_event6_xiaohanye_truth",
+		"dialogue_id": "ACT3_EVENT6_XIAOHANYE",
+		"hint": "击败150个敌人揭开真相",
+		"reward_hint": "经验+银两",
+		"required_level": 70,
+		"require_kills": 150
+	},
+	{
+		"event_id": "act3_event7_sword_bone_awakening",
+		"dialogue_id": "ACT3_EVENT7_SWORD_BONE",
+		"hint": "突破大乘期觉醒剑骨",
+		"reward_hint": "经验+银两",
+		"required_level": 75,
+		"require_realm": 7
+	},
+	{
+		"event_id": "act3_event8_gate_opens",
+		"dialogue_id": "ACT3_EVENT8_GATE",
+		"hint": "击败200个敌人开启九州之门",
+		"reward_hint": "经验+五行轮回戒",
+		"required_level": 80,
+		"require_kills": 200
+	},
+	{
+		"event_id": "act3_event9_final_eve",
+		"dialogue_id": "ACT3_EVENT9_FINAL_EVE",
+		"hint": "突破渡劫期准备最终决战",
+		"reward_hint": "经验+银两",
+		"required_level": 85,
+		"require_realm": 8
+	},
+	{
+		"event_id": "act3_event10_final_battle",
+		"dialogue_id": "ACT3_EVENT10_FINAL_BATTLE",
+		"hint": "击败250个敌人后最终决战",
+		"reward_hint": "经验+银两",
+		"required_level": 88,
+		"require_kills": 250
+	},
+	{
+		"event_id": "act3_event11_ending",
+		"dialogue_id": "ACT3_EVENT11_ENDING",
+		"hint": "完成修真之旅",
+		"reward_hint": "通关奖励",
+		"required_level": 90
+	},
 ]
 
 var _story_triggered_this_session: bool = false
@@ -1113,7 +1378,11 @@ func _check_story_conditions(event: Dictionary, char_sys: Node) -> String:
 	var require_realm: int = event.get("require_realm", 0)
 	if require_realm > 0 and char_sys:
 		if char_sys.realm_index < require_realm:
-			var realm_name: String = char_sys.REALMS[require_realm]["name"] if require_realm < char_sys.REALMS.size() else "更高境界"
+			var realm_name: String = (
+				char_sys.REALMS[require_realm]["name"]
+				if require_realm < char_sys.REALMS.size()
+				else "更高境界"
+			)
 			return "你需要突破到「%s」期" % realm_name
 
 	return ""
@@ -1220,6 +1489,7 @@ func _show_breakthrough_splash(img_path: String, realm_name: String) -> void:
 # 武学装备管理 (W键)
 # ============================================================================
 
+
 func _show_martial_arts_panel() -> void:
 	var ma_sys: Node = get_node_or_null("/root/MartialArtsSystem")
 	if ma_sys == null:
@@ -1264,7 +1534,9 @@ func _show_martial_arts_panel() -> void:
 		vbox.add_child(hbox)
 
 		var slot_label := Label.new()
-		var equipped: Variant = ma_sys.equipped_martial_arts[i] if i < ma_sys.equipped_martial_arts.size() else null
+		var equipped: Variant = (
+			ma_sys.equipped_martial_arts[i] if i < ma_sys.equipped_martial_arts.size() else null
+		)
 		if equipped != null:
 			slot_label.text = "槽位%d: %s [%s]" % [i + 1, equipped.name, equipped.grade]
 		else:
@@ -1297,7 +1569,9 @@ func _show_martial_arts_panel() -> void:
 	for ma_id in ma_sys.player_martial_arts:
 		var ma: Variant = ma_sys.player_martial_arts[ma_id]
 		var item_label := Label.new()
-		item_label.text = "  %s [%s] - 威力:%d 内力:%d" % [ma.name, ma.grade, int(ma.base_damage), int(ma.cost_mana)]
+		item_label.text = (
+			"  %s [%s] - 威力:%d 内力:%d" % [ma.name, ma.grade, int(ma.base_damage), int(ma.cost_mana)]
+		)
 		list.add_child(item_label)
 
 	# 关闭按钮
@@ -1305,9 +1579,10 @@ func _show_martial_arts_panel() -> void:
 	close_btn.text = "关闭 (W)"
 	close_btn.custom_minimum_size = Vector2(120, 40)
 	close_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	close_btn.pressed.connect(func():
-		overlay.queue_free()
-		_on_panel_closed()
+	close_btn.pressed.connect(
+		func():
+			overlay.queue_free()
+			_on_panel_closed()
 	)
 	vbox.add_child(close_btn)
 
@@ -1319,9 +1594,37 @@ func _show_martial_arts_panel() -> void:
 # ============================================================================
 
 const SHOP_ITEMS_BY_TIER: Dictionary = {
-	"common": ["health_pill", "common_sword", "body_cloth_robe", "feet_straw_sandals", "hands_cloth_gloves", "neck_hemp_necklace"],
-	"rare": ["health_pill", "qi_gathering_pill", "rare_sword", "body_iron_armor", "feet_cloud_boots", "offhand_iron_shield", "hands_iron_gauntlets", "neck_jade_pendant"],
-	"epic": ["health_pill", "breakthrough_pill", "epic_sword", "body_cloud_robe", "feet_lingbo_boots", "offhand_xuanwu_shield", "hands_dragon_gloves", "neck_spirit_necklace"],
+	"common":
+	[
+		"health_pill",
+		"common_sword",
+		"body_cloth_robe",
+		"feet_straw_sandals",
+		"hands_cloth_gloves",
+		"neck_hemp_necklace"
+	],
+	"rare":
+	[
+		"health_pill",
+		"qi_gathering_pill",
+		"rare_sword",
+		"body_iron_armor",
+		"feet_cloud_boots",
+		"offhand_iron_shield",
+		"hands_iron_gauntlets",
+		"neck_jade_pendant"
+	],
+	"epic":
+	[
+		"health_pill",
+		"breakthrough_pill",
+		"epic_sword",
+		"body_cloud_robe",
+		"feet_lingbo_boots",
+		"offhand_xuanwu_shield",
+		"hands_dragon_gloves",
+		"neck_spirit_necklace"
+	],
 }
 
 
@@ -1412,9 +1715,10 @@ func _show_shop_panel() -> void:
 	close_btn.text = "离开商店"
 	close_btn.custom_minimum_size = Vector2(120, 40)
 	close_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	close_btn.pressed.connect(func():
-		overlay.queue_free()
-		_on_panel_closed()
+	close_btn.pressed.connect(
+		func():
+			overlay.queue_free()
+			_on_panel_closed()
 	)
 	vbox.add_child(close_btn)
 
@@ -1476,6 +1780,7 @@ func _on_ma_slot_change(slot_index: int, overlay: Control) -> void:
 # ============================================================================
 # 持久化接口（供 SaveSystem 调用）
 # ============================================================================
+
 
 func get_persistent_state() -> Dictionary:
 	return {

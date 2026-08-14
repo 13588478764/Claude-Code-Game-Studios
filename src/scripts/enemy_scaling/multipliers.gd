@@ -13,19 +13,20 @@ class_name EnemyMultipliers
 
 # 区域难度枚举
 enum RegionDifficulty {
-	BEGINNER = 0,      # 新手区 0.8x
-	NORMAL = 1,        # 普通区 1.0x
-	HARD = 2,          # 困难区 1.3x
-	ELITE = 3,         # 精英区 1.6x
-	FINAL = 4          # 终局区 2.0x
+	BEGINNER = 0,  # 新手区 0.8x
+	NORMAL = 1,  # 普通区 1.0x
+	HARD = 2,  # 困难区 1.3x
+	ELITE = 3,  # 精英区 1.6x
+	FINAL = 4,  # 终局区 2.0x
+	NIGHTMARE = 5,  # 魔域 2.4x（万魔域 Lv35）
+	IMMORTAL = 6,  # 仙府 2.8x（仙人遗府 Lv50）
+	CELESTIAL = 7,  # 天界 3.2x（天剑峰 Lv65）
+	VOID = 8  # 虚空 3.6x（虚空裂境 Lv80）
 }
 
 # 敌人类型枚举
-enum EnemyType {
-	NORMAL = 0,        # 普通敌人 1.0x HP/攻击
-	ELITE = 1,         # 精英敌人 2.0x HP/1.5x攻击
-	BOSS = 2           # Boss 4.0x HP/2.0x攻击
-}
+enum EnemyType { NORMAL = 0, ELITE = 1, BOSS = 2 }  # 普通敌人 1.0x HP/攻击  # 精英敌人 2.0x HP/1.5x攻击  # Boss 4.0x HP/2.0x攻击
+
 
 ## 获取区域难度倍率
 ##
@@ -43,6 +44,14 @@ static func get_region_multiplier(region_id: int) -> float:
 			return 1.6
 		RegionDifficulty.FINAL:
 			return 2.0
+		RegionDifficulty.NIGHTMARE:
+			return 2.4
+		RegionDifficulty.IMMORTAL:
+			return 2.8
+		RegionDifficulty.CELESTIAL:
+			return 3.2
+		RegionDifficulty.VOID:
+			return 3.6
 		_:
 			push_warning("Invalid region ID: %d. Using NORMAL (1.0x)" % region_id)
 			return 1.0
@@ -55,26 +64,14 @@ static func get_region_multiplier(region_id: int) -> float:
 static func get_enemy_type_multipliers(enemy_type: int) -> Dictionary:
 	match enemy_type:
 		EnemyType.NORMAL:
-			return {
-				"hp_multiplier": 1.0,
-				"attack_multiplier": 1.0
-			}
+			return {"hp_multiplier": 1.0, "attack_multiplier": 1.0}
 		EnemyType.ELITE:
-			return {
-				"hp_multiplier": 2.0,
-				"attack_multiplier": 1.5
-			}
+			return {"hp_multiplier": 2.0, "attack_multiplier": 1.5}
 		EnemyType.BOSS:
-			return {
-				"hp_multiplier": 4.0,
-				"attack_multiplier": 2.0
-			}
+			return {"hp_multiplier": 4.0, "attack_multiplier": 2.0}
 		_:
 			push_warning("Invalid enemy type: %d. Using NORMAL (1.0x/1.0x)" % enemy_type)
-			return {
-				"hp_multiplier": 1.0,
-				"attack_multiplier": 1.0
-			}
+			return {"hp_multiplier": 1.0, "attack_multiplier": 1.0}
 
 
 ## 获取区域难度名称
@@ -93,6 +90,14 @@ static func get_region_name(region_id: int) -> String:
 			return "精英区"
 		RegionDifficulty.FINAL:
 			return "终局区"
+		RegionDifficulty.NIGHTMARE:
+			return "魔域"
+		RegionDifficulty.IMMORTAL:
+			return "仙府"
+		RegionDifficulty.CELESTIAL:
+			return "天界"
+		RegionDifficulty.VOID:
+			return "虚空"
 		_:
 			return "未知区域"
 
@@ -132,11 +137,20 @@ static func calculate_final_stats(
 ) -> Dictionary:
 	var region_multiplier = get_region_multiplier(region_id)
 	var type_multipliers = get_enemy_type_multipliers(enemy_type)
-	
-	var final_hp = base_hp * level_coefficient * realm_coefficient * region_multiplier * type_multipliers["hp_multiplier"]
-	var final_attack = base_attack * level_coefficient * realm_coefficient * region_multiplier * type_multipliers["attack_multiplier"]
-	
-	return {
-		"final_hp": final_hp,
-		"final_attack": final_attack
-	}
+
+	var final_hp = (
+		base_hp
+		* level_coefficient
+		* realm_coefficient
+		* region_multiplier
+		* type_multipliers["hp_multiplier"]
+	)
+	var final_attack = (
+		base_attack
+		* level_coefficient
+		* realm_coefficient
+		* region_multiplier
+		* type_multipliers["attack_multiplier"]
+	)
+
+	return {"final_hp": final_hp, "final_attack": final_attack}

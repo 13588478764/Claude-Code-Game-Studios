@@ -24,77 +24,446 @@ enum GameState {
 # ============================================================================
 
 const REGIONS: Array[Dictionary] = [
-	{"id": "start_village", "name": "新手村·青石镇", "level": 1, "region_id": 0, "encounter_rate": 0.4, "bg": "bg_town_street"},
-	{"id": "bandit_fortress", "name": "黑风寨", "level": 5, "region_id": 1, "encounter_rate": 0.6, "bg": "bg_evil_camp"},
-	{"id": "jiangnan_water", "name": "江南水乡", "level": 8, "region_id": 2, "encounter_rate": 0.35, "bg": "bg_jiangnan_water"},
-	{"id": "qingyun_mountain", "name": "青云山", "level": 10, "region_id": 3, "encounter_rate": 0.5, "bg": "bg_sect_hall"},
-	{"id": "ancient_tomb", "name": "上古墓穴", "level": 20, "region_id": 4, "encounter_rate": 0.7, "bg": "bg_ancient_tomb"},
-	{"id": "demon_domain", "name": "万魔域", "level": 35, "region_id": 5, "encounter_rate": 0.8, "bg": "bg_demon_domain"},
-	{"id": "immortal_palace", "name": "仙人遗府", "level": 50, "region_id": 6, "encounter_rate": 0.6, "bg": "bg_immortal_palace"},
-	{"id": "heavenly_peak", "name": "天剑峰", "level": 65, "region_id": 7, "encounter_rate": 0.5, "bg": "bg_heavenly_peak"},
-	{"id": "void_realm", "name": "虚空裂境", "level": 80, "region_id": 8, "encounter_rate": 0.9, "bg": "bg_void_realm"},
+	{
+		"id": "start_village",
+		"name": "新手村·青云镇",
+		"level": 1,
+		"region_id": 0,
+		"encounter_rate": 0.4,
+		"bg": "bg_town_street"
+	},
+	{
+		"id": "bandit_fortress",
+		"name": "黑风寨",
+		"level": 5,
+		"region_id": 1,
+		"encounter_rate": 0.6,
+		"bg": "bg_evil_camp"
+	},
+	{
+		"id": "jiangnan_water",
+		"name": "江南水乡",
+		"level": 8,
+		"region_id": 2,
+		"encounter_rate": 0.35,
+		"bg": "bg_jiangnan_water"
+	},
+	{
+		"id": "qingyun_mountain",
+		"name": "青云山",
+		"level": 10,
+		"region_id": 3,
+		"encounter_rate": 0.5,
+		"bg": "bg_sect_hall"
+	},
+	{
+		"id": "ancient_tomb",
+		"name": "上古墓穴",
+		"level": 20,
+		"region_id": 4,
+		"encounter_rate": 0.7,
+		"bg": "bg_ancient_tomb"
+	},
+	{
+		"id": "demon_domain",
+		"name": "万魔域",
+		"level": 35,
+		"region_id": 5,
+		"encounter_rate": 0.8,
+		"bg": "bg_demon_domain"
+	},
+	{
+		"id": "immortal_palace",
+		"name": "仙人遗府",
+		"level": 50,
+		"region_id": 6,
+		"encounter_rate": 0.6,
+		"bg": "bg_immortal_palace"
+	},
+	{
+		"id": "heavenly_peak",
+		"name": "天剑峰",
+		"level": 65,
+		"region_id": 7,
+		"encounter_rate": 0.5,
+		"bg": "bg_heavenly_peak"
+	},
+	{
+		"id": "void_realm",
+		"name": "虚空裂境",
+		"level": 80,
+		"region_id": 8,
+		"encounter_rate": 0.9,
+		"bg": "bg_void_realm"
+	},
 ]
 
 # 敌人模板：按区域定义, type: 0=普通 1=精英 2=Boss
 # skills: heal=回合恢复%HP, poison=每回合毒伤, buff_atk=自身攻击翻倍1回合,
 #         debuff_def=降低玩家防御, enrage=低血量狂暴(攻击×1.5)
 const ENEMY_TEMPLATES: Dictionary = {
-	"start_village": [
-		{"id": "enemy_fire_wolf", "name": "野狼", "base_hp": 60, "base_attack": 8, "speed": 8, "type": 0},
-		{"id": "enemy_bandit_minion", "name": "山贼喽啰", "base_hp": 80, "base_attack": 10, "speed": 7, "type": 0},
-		{"id": "enemy_mountain_ogre", "name": "山中野人", "base_hp": 100, "base_attack": 12, "speed": 5, "type": 0},
-		{"id": "enemy_bandit_minion", "name": "流浪修士", "base_hp": 70, "base_attack": 9, "speed": 9, "type": 0},
+	"start_village":
+	[
+		{
+			"id": "enemy_wild_wolf",
+			"name": "野狼",
+			"base_hp": 60,
+			"base_attack": 8,
+			"speed": 8,
+			"type": 0
+		},
+		{
+			"id": "enemy_bandit_minion",
+			"name": "山贼喽啰",
+			"base_hp": 80,
+			"base_attack": 10,
+			"speed": 7,
+			"type": 0
+		},
+		{
+			"id": "enemy_mountain_wildman",
+			"name": "山中野人",
+			"base_hp": 100,
+			"base_attack": 12,
+			"speed": 5,
+			"type": 0
+		},
+		{
+			"id": "enemy_rogue_cultivator",
+			"name": "流浪修士",
+			"base_hp": 70,
+			"base_attack": 9,
+			"speed": 9,
+			"type": 0
+		},
 	],
-	"bandit_fortress": [
-		{"id": "enemy_evil_disciple", "name": "黑风寨匪徒", "base_hp": 120, "base_attack": 18, "speed": 9, "type": 0},
-		{"id": "enemy_bandit_minion", "name": "黑风寨弓手", "base_hp": 90, "base_attack": 22, "speed": 11, "type": 0},
-		{"id": "enemy_evil_disciple", "name": "黑风寨刺客", "base_hp": 100, "base_attack": 25, "speed": 14, "type": 1, "skills": ["debuff_def"]},
-		{"id": "enemy_evil_elder", "name": "黑风寨头目", "base_hp": 200, "base_attack": 25, "speed": 6, "type": 2, "skills": ["heal", "enrage"]},
+	"bandit_fortress":
+	[
+		{
+			"id": "enemy_bandit_minion",
+			"name": "黑风寨匪徒",
+			"base_hp": 120,
+			"base_attack": 18,
+			"speed": 9,
+			"type": 0
+		},
+		{
+			"id": "enemy_bandit_archer",
+			"name": "黑风寨弓手",
+			"base_hp": 90,
+			"base_attack": 22,
+			"speed": 11,
+			"type": 0
+		},
+		{
+			"id": "enemy_bandit_assassin",
+			"name": "黑风寨刺客",
+			"base_hp": 100,
+			"base_attack": 25,
+			"speed": 14,
+			"type": 1,
+			"skills": ["debuff_def"]
+		},
+		{
+			"id": "enemy_bandit_leader",
+			"name": "黑风寨头目",
+			"base_hp": 200,
+			"base_attack": 25,
+			"speed": 6,
+			"type": 2,
+			"skills": ["heal", "enrage"]
+		},
 	],
-	"jiangnan_water": [
-		{"id": "enemy_water_serpent", "name": "水贼", "base_hp": 100, "base_attack": 15, "speed": 10, "type": 0},
-		{"id": "enemy_water_serpent", "name": "江湖浪人", "base_hp": 110, "base_attack": 17, "speed": 9, "type": 0},
-		{"id": "enemy_fox_spirit", "name": "河妖", "base_hp": 130, "base_attack": 14, "speed": 13, "type": 1, "skills": ["poison"]},
-		{"id": "enemy_ghost_cultivator", "name": "邪修弟子", "base_hp": 180, "base_attack": 20, "speed": 11, "type": 1, "skills": ["debuff_def"]},
+	"jiangnan_water":
+	[
+		{
+			"id": "enemy_water_bandit",
+			"name": "水贼",
+			"base_hp": 100,
+			"base_attack": 15,
+			"speed": 10,
+			"type": 0
+		},
+		{
+			"id": "enemy_wandering_swordsman",
+			"name": "江湖浪人",
+			"base_hp": 110,
+			"base_attack": 17,
+			"speed": 9,
+			"type": 0
+		},
+		{
+			"id": "enemy_river_demon",
+			"name": "河妖",
+			"base_hp": 130,
+			"base_attack": 14,
+			"speed": 13,
+			"type": 1,
+			"skills": ["poison"]
+		},
+		{
+			"id": "enemy_ghost_cultivator",
+			"name": "邪修弟子",
+			"base_hp": 180,
+			"base_attack": 20,
+			"speed": 11,
+			"type": 1,
+			"skills": ["debuff_def"]
+		},
 	],
-	"qingyun_mountain": [
-		{"id": "enemy_fire_wolf", "name": "灵狐", "base_hp": 120, "base_attack": 18, "speed": 14, "type": 0},
-		{"id": "enemy_thunder_beast_king", "name": "妖兽", "base_hp": 150, "base_attack": 22, "speed": 12, "type": 1},
-		{"id": "enemy_mountain_ogre", "name": "山精", "base_hp": 200, "base_attack": 20, "speed": 7, "type": 1, "skills": ["heal"]},
-		{"id": "enemy_elemental_guardian", "name": "护山灵兽", "base_hp": 250, "base_attack": 30, "speed": 8, "type": 2, "skills": ["heal", "buff_atk"]},
+	"qingyun_mountain":
+	[
+		{
+			"id": "enemy_fire_wolf",
+			"name": "灵狐",
+			"base_hp": 120,
+			"base_attack": 18,
+			"speed": 14,
+			"type": 0
+		},
+		{
+			"id": "enemy_demon_beast",
+			"name": "妖兽",
+			"base_hp": 150,
+			"base_attack": 22,
+			"speed": 12,
+			"type": 1
+		},
+		{
+			"id": "enemy_mountain_spirit",
+			"name": "山精",
+			"base_hp": 200,
+			"base_attack": 20,
+			"speed": 7,
+			"type": 1,
+			"skills": ["heal"]
+		},
+		{
+			"id": "enemy_mountain_guardian",
+			"name": "护山灵兽",
+			"base_hp": 250,
+			"base_attack": 30,
+			"speed": 8,
+			"type": 2,
+			"skills": ["heal", "buff_atk"]
+		},
 	],
-	"ancient_tomb": [
-		{"id": "enemy_ghost_cultivator", "name": "游魂", "base_hp": 200, "base_attack": 30, "speed": 13, "type": 0},
-		{"id": "enemy_puppet_cultivator", "name": "傀儡修士", "base_hp": 300, "base_attack": 35, "speed": 8, "type": 1},
-		{"id": "enemy_ghost_cultivator", "name": "怨灵", "base_hp": 250, "base_attack": 40, "speed": 12, "type": 1, "skills": ["poison"]},
-		{"id": "enemy_ghost_cultivator", "name": "尸王", "base_hp": 400, "base_attack": 45, "speed": 6, "type": 2, "skills": ["heal", "enrage"]},
-		{"id": "enemy_puppet_cultivator", "name": "墓穴守卫", "base_hp": 350, "base_attack": 38, "speed": 9, "type": 1, "skills": ["debuff_def"]},
+	"ancient_tomb":
+	[
+		{
+			"id": "enemy_ghost_cultivator",
+			"name": "游魂",
+			"base_hp": 200,
+			"base_attack": 30,
+			"speed": 13,
+			"type": 0
+		},
+		{
+			"id": "enemy_puppet_cultivator",
+			"name": "傀儡修士",
+			"base_hp": 300,
+			"base_attack": 35,
+			"speed": 8,
+			"type": 1
+		},
+		{
+			"id": "enemy_ghost_cultivator",
+			"name": "怨灵",
+			"base_hp": 250,
+			"base_attack": 40,
+			"speed": 12,
+			"type": 1,
+			"skills": ["poison"]
+		},
+		{
+			"id": "enemy_ghost_cultivator",
+			"name": "尸王",
+			"base_hp": 400,
+			"base_attack": 45,
+			"speed": 6,
+			"type": 2,
+			"skills": ["heal", "enrage"]
+		},
+		{
+			"id": "enemy_puppet_cultivator",
+			"name": "墓穴守卫",
+			"base_hp": 350,
+			"base_attack": 38,
+			"speed": 9,
+			"type": 1,
+			"skills": ["debuff_def"]
+		},
 	],
-	"demon_domain": [
-		{"id": "enemy_evil_disciple", "name": "魔修弟子", "base_hp": 350, "base_attack": 42, "speed": 11, "type": 0},
-		{"id": "enemy_fox_spirit", "name": "妖狐", "base_hp": 400, "base_attack": 45, "speed": 14, "type": 1, "skills": ["poison"]},
-		{"id": "enemy_evil_disciple", "name": "魔道护法", "base_hp": 450, "base_attack": 50, "speed": 10, "type": 1, "skills": ["buff_atk"]},
-		{"id": "enemy_evil_elder", "name": "魔道长老", "base_hp": 500, "base_attack": 55, "speed": 10, "type": 2, "skills": ["heal", "debuff_def", "enrage"]},
-		{"id": "enemy_boss_xuesha_patriarch", "name": "血煞教主", "base_hp": 700, "base_attack": 65, "speed": 9, "type": 2, "skills": ["heal", "buff_atk", "poison", "enrage"]},
+	"demon_domain":
+	[
+		{
+			"id": "enemy_evil_disciple",
+			"name": "魔修弟子",
+			"base_hp": 350,
+			"base_attack": 42,
+			"speed": 11,
+			"type": 0
+		},
+		{
+			"id": "enemy_fox_spirit",
+			"name": "妖狐",
+			"base_hp": 400,
+			"base_attack": 45,
+			"speed": 14,
+			"type": 1,
+			"skills": ["poison"]
+		},
+		{
+			"id": "enemy_evil_disciple",
+			"name": "魔道护法",
+			"base_hp": 450,
+			"base_attack": 50,
+			"speed": 10,
+			"type": 1,
+			"skills": ["buff_atk"]
+		},
+		{
+			"id": "enemy_evil_elder",
+			"name": "魔道长老",
+			"base_hp": 500,
+			"base_attack": 55,
+			"speed": 10,
+			"type": 2,
+			"skills": ["heal", "debuff_def", "enrage"]
+		},
+		{
+			"id": "enemy_boss_xuesha_patriarch",
+			"name": "血煞教主",
+			"base_hp": 700,
+			"base_attack": 65,
+			"speed": 9,
+			"type": 2,
+			"skills": ["heal", "buff_atk", "poison", "enrage"]
+		},
 	],
-	"immortal_palace": [
-		{"id": "enemy_puppet_cultivator", "name": "仙府机关兽", "base_hp": 550, "base_attack": 55, "speed": 8, "type": 0},
-		{"id": "enemy_elemental_guardian", "name": "灵阵守卫", "base_hp": 600, "base_attack": 58, "speed": 10, "type": 1, "skills": ["heal"]},
-		{"id": "enemy_puppet_cultivator", "name": "上古傀儡", "base_hp": 650, "base_attack": 60, "speed": 7, "type": 1, "skills": ["buff_atk"]},
-		{"id": "enemy_elemental_guardian", "name": "仙府守卫", "base_hp": 800, "base_attack": 70, "speed": 9, "type": 2, "skills": ["heal", "buff_atk", "debuff_def"]},
-		{"id": "enemy_boss_beast_king", "name": "仙兽之王", "base_hp": 1000, "base_attack": 75, "speed": 11, "type": 2, "skills": ["heal", "enrage", "buff_atk"]},
+	"immortal_palace":
+	[
+		{
+			"id": "enemy_puppet_cultivator",
+			"name": "仙府机关兽",
+			"base_hp": 550,
+			"base_attack": 55,
+			"speed": 8,
+			"type": 0
+		},
+		{
+			"id": "enemy_elemental_guardian",
+			"name": "灵阵守卫",
+			"base_hp": 600,
+			"base_attack": 58,
+			"speed": 10,
+			"type": 1,
+			"skills": ["heal"]
+		},
+		{
+			"id": "enemy_puppet_cultivator",
+			"name": "上古傀儡",
+			"base_hp": 650,
+			"base_attack": 60,
+			"speed": 7,
+			"type": 1,
+			"skills": ["buff_atk"]
+		},
+		{
+			"id": "enemy_elemental_guardian",
+			"name": "仙府守卫",
+			"base_hp": 800,
+			"base_attack": 70,
+			"speed": 9,
+			"type": 2,
+			"skills": ["heal", "buff_atk", "debuff_def"]
+		},
+		{
+			"id": "enemy_boss_beast_king",
+			"name": "仙兽之王",
+			"base_hp": 1000,
+			"base_attack": 75,
+			"speed": 11,
+			"type": 2,
+			"skills": ["heal", "enrage", "buff_atk"]
+		},
 	],
-	"heavenly_peak": [
-		{"id": "enemy_evil_disciple", "name": "叛宗弟子", "base_hp": 700, "base_attack": 70, "speed": 12, "type": 0},
-		{"id": "enemy_thunder_beast_king", "name": "雷兽王", "base_hp": 1000, "base_attack": 80, "speed": 13, "type": 1, "skills": ["buff_atk", "enrage"]},
-		{"id": "enemy_elemental_guardian", "name": "剑灵", "base_hp": 900, "base_attack": 85, "speed": 15, "type": 1, "skills": ["debuff_def", "poison"]},
-		{"id": "enemy_boss_tianjie_zhenjun", "name": "天劫真君", "base_hp": 1500, "base_attack": 95, "speed": 11, "type": 2, "skills": ["heal", "buff_atk", "debuff_def", "enrage"]},
+	"heavenly_peak":
+	[
+		{
+			"id": "enemy_evil_disciple",
+			"name": "叛宗弟子",
+			"base_hp": 700,
+			"base_attack": 70,
+			"speed": 12,
+			"type": 0
+		},
+		{
+			"id": "enemy_thunder_beast_king",
+			"name": "雷兽王",
+			"base_hp": 1000,
+			"base_attack": 80,
+			"speed": 13,
+			"type": 1,
+			"skills": ["buff_atk", "enrage"]
+		},
+		{
+			"id": "enemy_elemental_guardian",
+			"name": "剑灵",
+			"base_hp": 900,
+			"base_attack": 85,
+			"speed": 15,
+			"type": 1,
+			"skills": ["debuff_def", "poison"]
+		},
+		{
+			"id": "enemy_boss_tianjie_zhenjun",
+			"name": "天劫真君",
+			"base_hp": 1500,
+			"base_attack": 95,
+			"speed": 11,
+			"type": 2,
+			"skills": ["heal", "buff_atk", "debuff_def", "enrage"]
+		},
 	],
-	"void_realm": [
-		{"id": "enemy_ghost_cultivator", "name": "虚空裂隙兽", "base_hp": 1000, "base_attack": 85, "speed": 14, "type": 1, "skills": ["poison"]},
-		{"id": "enemy_puppet_cultivator", "name": "远古守卫", "base_hp": 1200, "base_attack": 90, "speed": 10, "type": 1, "skills": ["heal", "buff_atk"]},
-		{"id": "enemy_boss_heart_demon", "name": "心魔化身", "base_hp": 1800, "base_attack": 105, "speed": 15, "type": 2, "skills": ["heal", "poison", "debuff_def", "enrage"]},
-		{"id": "enemy_boss_demon_god", "name": "魔神残影", "base_hp": 2500, "base_attack": 130, "speed": 12, "type": 2, "skills": ["heal", "buff_atk", "poison", "debuff_def", "enrage"]},
+	"void_realm":
+	[
+		{
+			"id": "enemy_ghost_cultivator",
+			"name": "虚空裂隙兽",
+			"base_hp": 1000,
+			"base_attack": 85,
+			"speed": 14,
+			"type": 1,
+			"skills": ["poison"]
+		},
+		{
+			"id": "enemy_puppet_cultivator",
+			"name": "远古守卫",
+			"base_hp": 1200,
+			"base_attack": 90,
+			"speed": 10,
+			"type": 1,
+			"skills": ["heal", "buff_atk"]
+		},
+		{
+			"id": "enemy_boss_heart_demon",
+			"name": "心魔化身",
+			"base_hp": 1800,
+			"base_attack": 105,
+			"speed": 15,
+			"type": 2,
+			"skills": ["heal", "poison", "debuff_def", "enrage"]
+		},
+		{
+			"id": "enemy_boss_demon_god",
+			"name": "魔神残影",
+			"base_hp": 2500,
+			"base_attack": 130,
+			"speed": 12,
+			"type": 2,
+			"skills": ["heal", "buff_atk", "poison", "debuff_def", "enrage"]
+		},
 	],
 }
 
@@ -105,23 +474,27 @@ const REGION_REWARD_MULTIPLIER: Array[float] = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.
 
 ## 战斗掉落物品表（按区域, 含装备和武学残页）
 const BATTLE_DROP_TABLE: Dictionary = {
-	"start_village": [
+	"start_village":
+	[
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.3, "count": 1},
 		{"item_id": "common_sword", "name": "普通铁剑", "chance": 0.05, "count": 1},
 	],
-	"bandit_fortress": [
+	"bandit_fortress":
+	[
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.25, "count": 1},
 		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.15, "count": 1},
 		{"item_id": "common_helmet", "name": "布帽", "chance": 0.08, "count": 1},
 		{"item_id": "body_cloth_robe", "name": "布衣", "chance": 0.08, "count": 1},
 		{"item_id": "feet_straw_sandals", "name": "草鞋", "chance": 0.1, "count": 1},
 	],
-	"jiangnan_water": [
+	"jiangnan_water":
+	[
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.25, "count": 1},
 		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.2, "count": 1},
 		{"item_id": "common_ring", "name": "铜戒", "chance": 0.08, "count": 1},
 	],
-	"qingyun_mountain": [
+	"qingyun_mountain":
+	[
 		{"item_id": "spirit_stone_small", "name": "小灵石", "chance": 0.3, "count": 2},
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.2, "count": 2},
 		{"item_id": "rare_sword", "name": "精钢剑", "chance": 0.06, "count": 1},
@@ -130,7 +503,8 @@ const BATTLE_DROP_TABLE: Dictionary = {
 		{"item_id": "neck_jade_pendant", "name": "翡翠坠", "chance": 0.07, "count": 1},
 		{"item_id": "ancient_sword_technique_fragment", "name": "古剑术残篇", "chance": 0.1, "count": 1},
 	],
-	"ancient_tomb": [
+	"ancient_tomb":
+	[
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.2, "count": 2},
 		{"item_id": "rare_helmet", "name": "铁盔", "chance": 0.1, "count": 1},
 		{"item_id": "rare_ring", "name": "银戒", "chance": 0.08, "count": 1},
@@ -138,7 +512,8 @@ const BATTLE_DROP_TABLE: Dictionary = {
 		{"item_id": "offhand_iron_shield", "name": "铁盾", "chance": 0.07, "count": 1},
 		{"item_id": "ancient_martial_art_fragment", "name": "上古武学残卷", "chance": 0.12, "count": 1},
 	],
-	"demon_domain": [
+	"demon_domain":
+	[
 		{"item_id": "health_pill", "name": "回春丹", "chance": 0.15, "count": 3},
 		{"item_id": "epic_sword", "name": "青冥剑", "chance": 0.04, "count": 1},
 		{"item_id": "epic_helmet", "name": "龙鳞盔", "chance": 0.04, "count": 1},
@@ -149,7 +524,8 @@ const BATTLE_DROP_TABLE: Dictionary = {
 		{"item_id": "offhand_xuanwu_shield", "name": "玄武盾", "chance": 0.04, "count": 1},
 		{"item_id": "ancient_martial_art_fragment", "name": "上古武学残卷", "chance": 0.15, "count": 1},
 	],
-	"immortal_palace": [
+	"immortal_palace":
+	[
 		{"item_id": "epic_ring", "name": "火焰戒指", "chance": 0.06, "count": 1},
 		{"item_id": "epic_sword", "name": "青冥剑", "chance": 0.05, "count": 1},
 		{"item_id": "body_celestial_armor", "name": "天蚕宝甲", "chance": 0.03, "count": 1},
@@ -158,7 +534,8 @@ const BATTLE_DROP_TABLE: Dictionary = {
 		{"item_id": "ancient_technique_scroll", "name": "上古功法卷轴", "chance": 0.1, "count": 1},
 		{"item_id": "breakthrough_pill", "name": "筑基丹", "chance": 0.08, "count": 1},
 	],
-	"heavenly_peak": [
+	"heavenly_peak":
+	[
 		{"item_id": "legendary_sword", "name": "轩辕剑", "chance": 0.02, "count": 1},
 		{"item_id": "legendary_helmet", "name": "九天玄女冠", "chance": 0.02, "count": 1},
 		{"item_id": "offhand_divine_mirror", "name": "照妖镜", "chance": 0.02, "count": 1},
@@ -166,7 +543,8 @@ const BATTLE_DROP_TABLE: Dictionary = {
 		{"item_id": "ancient_technique_complete", "name": "完整上古功法", "chance": 0.05, "count": 1},
 		{"item_id": "wash_marrow_pill", "name": "洗髓丹", "chance": 0.06, "count": 1},
 	],
-	"void_realm": [
+	"void_realm":
+	[
 		{"item_id": "legendary_sword", "name": "轩辕剑", "chance": 0.04, "count": 1},
 		{"item_id": "legendary_ring", "name": "五行轮回戒", "chance": 0.03, "count": 1},
 		{"item_id": "body_celestial_armor", "name": "天蚕宝甲", "chance": 0.04, "count": 1},
@@ -216,6 +594,7 @@ var _auto_battle_timer: Timer = null
 # 生命周期
 # ============================================================================
 
+
 func _ready() -> void:
 	call_deferred("_initialize")
 
@@ -257,9 +636,11 @@ func _connect_signals() -> void:
 	_game_events.combat_ended.connect(_on_combat_ended)
 	_game_events.combat_started.connect(_on_combat_started)
 
+
 # ============================================================================
 # 公共 API
 # ============================================================================
+
 
 ## 进入探索状态
 func enter_exploration() -> void:
@@ -314,8 +695,18 @@ func get_player_summary() -> Dictionary:
 	return {
 		"level": _character_system.level,
 		"exp": _character_system.experience,
-		"exp_next": _character_system.get_exp_required_for_level(_character_system.level + 1) if _character_system.has_method("get_exp_required_for_level") else 100,
-		"realm": _character_system.REALMS[_character_system.realm_index]["name"] if _character_system.realm_index < _character_system.REALMS.size() else "未知",
+		"exp_next":
+		(
+			_character_system.get_exp_required_for_level(_character_system.level + 1)
+			if _character_system.has_method("get_exp_required_for_level")
+			else 100
+		),
+		"realm":
+		(
+			_character_system.REALMS[_character_system.realm_index]["name"]
+			if _character_system.realm_index < _character_system.REALMS.size()
+			else "未知"
+		),
 		"hp": _character_system.attributes.constitution * 10,
 		"silver": silver,
 	}
@@ -332,9 +723,11 @@ func _auto_save() -> void:
 	if save_sys and save_sys.has_method("save_to_slot"):
 		save_sys.save_to_slot(1)
 
+
 # ============================================================================
 # 非战斗奇遇
 # ============================================================================
+
 
 ## 检查非战斗奇遇触发（概率公式：基础概率 * (1 + 福缘加成系数), 100 点后软上限递减, 总上限20%）
 ## 福缘加成系数真值: CharacterSystem.get_luck_bonus_coefficient (对齐 character-progression-system.md L146-L152)
@@ -347,7 +740,12 @@ func _check_non_combat_encounter() -> Dictionary:
 	prob = minf(prob, ENCOUNTER_PROB_CAP)
 
 	var roll := randf()
-	print("[GameLoopManager] 奇遇检定: roll=%.3f, 阈值=%.3f, %s" % [roll, prob, "通过！" if roll <= prob else "未触发"])
+	print(
+		(
+			"[GameLoopManager] 奇遇检定: roll=%.3f, 阈值=%.3f, %s"
+			% [roll, prob, "通过！" if roll <= prob else "未触发"]
+		)
+	)
 	if roll > prob:
 		return {"triggered": false}
 	# 优先使用 EncounterDataLoader 的30个数据驱动奇遇
@@ -392,9 +790,11 @@ func _check_non_combat_encounter() -> Dictionary:
 		"message": fallback_text,
 	}
 
+
 # ============================================================================
 # 战斗流程
 # ============================================================================
+
 
 func _start_random_battle() -> void:
 	if _combat_system == null:
@@ -481,6 +881,7 @@ func _build_enemy_battle_data(template: Dictionary) -> Dictionary:
 			"combo_value": 0,
 			"link_gauge": 0,
 			"attributes": {"force": int(scaled.final_attack / 2)},
+			"skills": template.get("skills", []),
 			"is_player": false,
 		}
 
@@ -497,12 +898,15 @@ func _build_enemy_battle_data(template: Dictionary) -> Dictionary:
 		"combo_value": 0,
 		"link_gauge": 0,
 		"attributes": {"force": template.base_attack / 2},
+		"skills": template.get("skills", []),
 		"is_player": false,
 	}
+
 
 # ============================================================================
 # 自动战斗
 # ============================================================================
+
 
 func _on_combat_started() -> void:
 	_set_state(GameState.IN_COMBAT)
@@ -565,9 +969,11 @@ func _find_attack_target(current_unit) -> int:
 
 	return -1
 
+
 # ============================================================================
 # 战斗结算
 # ============================================================================
+
 
 func _on_combat_ended(victory: bool, result: Dictionary) -> void:
 	_auto_battle_timer.stop()
@@ -617,8 +1023,12 @@ func _calculate_rewards() -> Dictionary:
 
 	# 战斗经验随区域等级缩放: base * 区域等级 * 区域系数
 	var region_level: int = current_region.get("level", 1)
-	var exp_reward := int(BASE_EXP_PER_ENEMY * region_level * region_mult * _current_battle_enemy_count)
-	var silver_reward := int(BASE_SILVER_PER_ENEMY * region_level * region_mult * _current_battle_enemy_count)
+	var exp_reward := int(
+		BASE_EXP_PER_ENEMY * region_level * region_mult * _current_battle_enemy_count
+	)
+	var silver_reward := int(
+		BASE_SILVER_PER_ENEMY * region_level * region_mult * _current_battle_enemy_count
+	)
 
 	# 物品掉落计算
 	var drops: Array = []
@@ -660,11 +1070,18 @@ func _distribute_rewards(rewards: Dictionary) -> void:
 			martial.increase_proficiency(ma_id, 1)
 		rewards["proficiency_ups"] = used_arts.size()
 
-	print("[GameLoopManager] 奖励分发: 经验 %d, 银两 %d, 掉落 %d 种, 武学熟练 %d 种" % [rewards.get("exp", 0), rewards.get("silver", 0), drops.size(), used_arts.size()])
+	print(
+		(
+			"[GameLoopManager] 奖励分发: 经验 %d, 银两 %d, 掉落 %d 种, 武学熟练 %d 种"
+			% [rewards.get("exp", 0), rewards.get("silver", 0), drops.size(), used_arts.size()]
+		)
+	)
+
 
 # ============================================================================
 # 状态管理
 # ============================================================================
+
 
 ## 返回主菜单，重置所有状态
 func return_to_menu() -> void:
@@ -683,6 +1100,7 @@ func _set_state(new_state: GameState) -> void:
 # ============================================================================
 # 敌人 AI 决策
 # ============================================================================
+
 
 func _decide_enemy_action(enemy_unit) -> Dictionary:
 	var target_index := _find_attack_target(enemy_unit)
@@ -712,19 +1130,25 @@ func _decide_enemy_action(enemy_unit) -> Dictionary:
 		enemy_unit.current_hp = min(enemy_unit.max_hp, enemy_unit.current_hp + heal_amount)
 		battle_log_updated.emit("[color=green]敌人运功疗伤，恢复 %d HP[/color]" % heal_amount)
 		if _combat_system:
-			_combat_system.unit_hp_changed.emit(enemy_unit, enemy_unit.current_hp - heal_amount, enemy_unit.current_hp)
+			_combat_system.unit_hp_changed.emit(
+				enemy_unit, enemy_unit.current_hp - heal_amount, enemy_unit.current_hp
+			)
 		return {"type": "defend"}
 
 	# 毒攻 (30%概率)
 	if "poison" in skills and randf() < 0.3:
 		# 对玩家施加持续伤害
-		var player_unit = _combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
+		var player_unit = (
+			_combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
+		)
 		if player_unit:
 			var poison_dmg: int = int(enemy_unit.attributes.get("force", 10) * 0.3)
 			player_unit.current_hp = max(1, player_unit.current_hp - poison_dmg)
 			battle_log_updated.emit("[color=purple]敌人释放毒雾！你受到 %d 毒伤[/color]" % poison_dmg)
 			if _combat_system:
-				_combat_system.unit_hp_changed.emit(player_unit, player_unit.current_hp + poison_dmg, player_unit.current_hp)
+				_combat_system.unit_hp_changed.emit(
+					player_unit, player_unit.current_hp + poison_dmg, player_unit.current_hp
+				)
 		return {"type": "attack", "target_index": target_index}
 
 	# 攻击增幅 (25%概率)
@@ -737,7 +1161,9 @@ func _decide_enemy_action(enemy_unit) -> Dictionary:
 
 	# 降低玩家防御 (20%概率)
 	if "debuff_def" in skills and randf() < 0.2:
-		var player_unit = _combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
+		var player_unit = (
+			_combat_system.battle_units[0] if not _combat_system.battle_units.is_empty() else null
+		)
 		if player_unit:
 			var old_con: int = player_unit.attributes.get("constitution", 10)
 			player_unit.attributes["constitution"] = max(1, int(old_con * 0.7))

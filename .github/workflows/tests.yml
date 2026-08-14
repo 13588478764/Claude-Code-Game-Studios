@@ -26,11 +26,13 @@ jobs:
       - name: Run Unit Tests
         run: |
           godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/unit -ginclude_subdirs -glog=1
+          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/unit -ginclude_subdirs -gprefix= -gsuffix=_test.gd -glog=1
         continue-on-error: false
 
       - name: Run Integration Tests
         run: |
           godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/integration -ginclude_subdirs -glog=1
+          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/integration -ginclude_subdirs -gprefix= -gsuffix=_test.gd -glog=1
         continue-on-error: false
 
       - name: Generate Test Report

@@ -8,7 +8,6 @@
 ##
 ## 架构：Autoload单例，通过信号实现对话与战斗的松耦合
 
-
 extends Node
 
 # ============================================================================
@@ -40,8 +39,10 @@ var _active_combat_context: Dictionary = {}
 # 生命周期方法
 # ============================================================================
 
+
 func _ready() -> void:
 	call_deferred("_initialize_bridge")
+
 
 func _initialize_bridge() -> void:
 	if _is_initialized:
@@ -71,27 +72,35 @@ func _initialize_bridge() -> void:
 	_is_initialized = true
 	print("[DialogueCombatBridge] 对话-战斗联动桥接器已初始化")
 
+
 # ============================================================================
 # 信号处理器 - 来自对话系统
 # ============================================================================
+
 
 ## 处理对话系统发来的战斗触发请求
 ## @param encounter_id: 战斗遭遇ID
 ## @param config: 战斗配置字典
 ## @param callback_node: 回调节点ID
-func _on_combat_trigger_requested(encounter_id: String, config: Dictionary, callback_node: String) -> void:
+func _on_combat_trigger_requested(
+	encounter_id: String, config: Dictionary, callback_node: String
+) -> void:
 	print("[DialogueCombatBridge] 收到战斗触发请求: %s" % encounter_id)
 	trigger_dialogue_combat(encounter_id, config, callback_node)
+
 
 # ============================================================================
 # 核心API
 # ============================================================================
 
+
 ## 从对话系统触发战斗
 ## @param encounter_id: 战斗遭遇ID
 ## @param config: 战斗配置字典（包含敌人、难度等）
 ## @param callback_node: 战斗结束后返回的对话节点ID
-func trigger_dialogue_combat(encounter_id: String, config: Dictionary = {}, callback_node: String = "") -> void:
+func trigger_dialogue_combat(
+	encounter_id: String, config: Dictionary = {}, callback_node: String = ""
+) -> void:
 	if not _is_initialized:
 		combat_trigger_failed.emit(encounter_id, "Bridge not initialized")
 		return
@@ -117,13 +126,16 @@ func trigger_dialogue_combat(encounter_id: String, config: Dictionary = {}, call
 
 	combat_triggered_by_dialogue.emit(encounter_id, config, callback_node)
 
+
 ## 获取战斗上下文
 func get_active_combat_context() -> Dictionary:
 	return _active_combat_context.duplicate()
 
+
 # ============================================================================
 # 战斗数据处理
 # ============================================================================
+
 
 ## 构建战斗数据
 ## @param encounter_id: 遭遇ID
@@ -150,6 +162,7 @@ func _build_battle_data(encounter_id: String, config: Dictionary) -> Dictionary:
 
 	return {"units": units}
 
+
 ## 创建玩家单位数据
 ## @return 玩家单位数据字典
 func _create_player_unit() -> Dictionary:
@@ -171,7 +184,7 @@ func _create_player_unit() -> Dictionary:
 
 	# 从CharacterSystem获取真实数据
 	var attributes = {}
-	if _character_system.has_node("attributes") or _character_system.attributes != null:
+	if _character_system != null and _character_system.attributes != null:
 		attributes = _character_system.attributes.get_total()
 
 	return {
@@ -187,6 +200,7 @@ func _create_player_unit() -> Dictionary:
 		"attributes": attributes,
 		"is_player": true
 	}
+
 
 ## 创建敌方单位数据
 ## @param config: 敌人配置
@@ -206,6 +220,7 @@ func _create_enemy_unit(config: Dictionary) -> Dictionary:
 		"is_player": false
 	}
 
+
 ## 创建默认敌人
 ## @return 默认敌人单位数据字典
 func _create_default_enemy() -> Dictionary:
@@ -223,9 +238,11 @@ func _create_default_enemy() -> Dictionary:
 		"is_player": false
 	}
 
+
 # ============================================================================
 # 信号处理器
 # ============================================================================
+
 
 ## 战斗结束处理
 ## @param result: 战斗结果字典
@@ -262,39 +279,20 @@ func _on_battle_ended(result: Dictionary) -> void:
 	# 通知战斗结束，返回对话
 	combat_ended_return_to_dialogue.emit(return_data, callback_node)
 
-	# 如果指定了回调节点，返回对话
+	# 如果指定了回调节点，返回对话并跳转到该分支节点（胜利/失败分支由此区分）
 	if not callback_node.is_empty() and _dialogue_manager != null:
-		# 重新打开对话并跳转到回调节点
-		_dialogue_manager.start_dialogue(context.get("dialogue_id", ""))
-
-	# 如果战斗失败，触发失败处理
-	if not victory:
-		_on_combat_defeat(return_data)
+		_dialogue_manager.start_dialogue(context.get("dialogue_id", ""), callback_node)
 	else:
-		_on_combat_victory(return_data)
+		if victory:
+			print("[DialogueCombatBridge] 战斗胜利")
+		else:
+			print("[DialogueCombatBridge] 战斗失败")
 
-## 战斗胜利处理
-## @param return_data: 返回数据
-func _on_combat_victory(return_data: Dictionary) -> void:
-	print("[DialogueCombatBridge] 战斗胜利，发放奖励...")
-	# 这里可以连接奇遇奖励系统
-	# 如果有奇遇系统，触发战斗胜利后的奇遇检查
-	var game_events = get_node_or_null("/root/GameEvents")
-	if game_events != null:
-		game_events.combat_ended.emit(true, return_data.get("result", {}))
-
-## 战斗失败的处理
-## @param return_data: 返回数据
-func _on_combat_defeat(return_data: Dictionary) -> void:
-	print("[DialogueCombatBridge] 战斗失败...")
-	# 这里可以处理战斗失败逻辑（如读档、惩罚等）
-	var game_events = get_node_or_null("/root/GameEvents")
-	if game_events != null:
-		game_events.combat_ended.emit(false, return_data.get("result", {}))
 
 # ============================================================================
 # 公共API
 # ============================================================================
+
 
 ## 获取桥接器状态
 func get_bridge_status() -> Dictionary:
