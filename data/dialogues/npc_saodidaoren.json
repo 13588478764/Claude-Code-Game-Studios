@@ -1,0 +1,115 @@
+{
+  "id": "npc_saodidaoren",
+  "title": "扫地道人对话",
+  "description": "玄霜宗扫地道人的日常对话（深藏不露的隐世高人）",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "saodidaoren",
+    "npc_name": "扫地道人",
+    "location": "玄霜宗山道"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "saodidaoren",
+      "text": "年轻人，山路湿滑，慢些走。摔了不打紧，别把心走急了。",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_sweep",
+          "text": "老丈天天在此扫地？",
+          "next_node": "sweeping_dao"
+        },
+        {
+          "id": "choice_ask_advice",
+          "text": "请老丈指点一二",
+          "next_node": "hidden_advice",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "saodidaoren",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "多谢提醒，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "sweeping_dao",
+      "speaker": "saodidaoren",
+      "text": "扫地扫的不是落叶，是心上的尘。尘扫不尽，叶落又生——那就天天扫呗。修行一事，同此道理。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "saodidaoren",
+          "value": 3,
+          "reason": "倾听扫地之道"
+        }
+      ],
+      "choices": [
+        {
+          "id": "choice_ponder",
+          "text": "（若有所悟）原来如此",
+          "next_node": "ponder_response",
+          "dao_heart_hint": 2
+        },
+        {
+          "id": "choice_dismiss",
+          "text": "不过是扫地罢了",
+          "next_node": "dismiss_response"
+        }
+      ]
+    },
+    {
+      "id": "ponder_response",
+      "speaker": "saodidaoren",
+      "text": "呵呵，孺子可教。去吧，剑要天天磨，心要天天扫。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "saodidaoren",
+          "value": 5,
+          "reason": "悟得扫地禅机"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "dismiss_response",
+      "speaker": "saodidaoren",
+      "text": "是，不过是扫地罢了。",
+      "emotion": "neutral",
+      "next_node": "farewell"
+    },
+    {
+      "id": "hidden_advice",
+      "speaker": "saodidaoren",
+      "text": "指点不敢当。老朽只送你一句话——剑招易学，剑势难养；剑势易养，剑心难求。你日后再回头看这句话，或许就懂了。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "saodidaoren",
+          "value": 5,
+          "reason": "诚心求教"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "saodidaoren",
+      "text": "慢走。叶落知秋，好自为之。",
+      "emotion": "neutral",
+      "is_end": true
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "travel_montage",
+  "title": "赶路",
+  "description": "快速旅行过场（fast-travel-system.md：水墨山水画卷 + 马蹄声，约2秒）",
+  "skippable": true,
+  "fade_duration": 0.4,
+  "frames": [
+    {
+      "image": "cutscene_travel_scroll",
+      "title": "千里江陵一日还",
+      "duration": 2.0,
+      "narration": ""
+    }
+  ]
+}

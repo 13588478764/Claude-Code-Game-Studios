@@ -1,7 +1,7 @@
 {
   "id": "ACT1_OPENING_001",
   "title": "第一幕开场 — 青云镇的日常",
-  "description": "玩家在青云镇家中醒来，前往春集市，触发紫色光芒异象",
+  "description": "玩家在青云镇家中醒来，前往春集市，触发紫色光芒异象。注：WAKEUP_001 的 cutscene_play 开场过场（act1_opening）为游戏新档第一眼画面",
   "start_node": "WAKEUP_001",
   "metadata": {"npc_id": "system", "event": "act1_event1"},
   "nodes": [
@@ -9,6 +9,9 @@
 	  "id": "WAKEUP_001",
 	  "speaker": "system",
 	  "text": "清晨的阳光透过窗纸洒在屋内。今天是青云镇一年一度的春集市。\n桌上的旧剑微微泛着冷光——那是父亲留给你的唯一遗物。",
+	  "effects": [
+		{"type": "cutscene_play", "target": "act1_opening"}
+	  ],
 	  "next_node": "WAKEUP_002"
 	},
 	{

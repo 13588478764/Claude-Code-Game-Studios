@@ -175,6 +175,17 @@ func _get_display_name(speaker_id: String) -> String:
 		"xiaohanye": return "萧寒夜"
 		"xuanjizhenren": return "玄机真人"
 		"xuewuhen": return "血无痕"
+		# Act 1 区域 NPC（assets/specs/ui/11-portraits-act1-expansion.md）
+		"luping": return "陆平"
+		"xuanchengzi": return "玄诚子"
+		"gufei": return "顾飞"
+		"saodidaoren": return "扫地道人"
+		"laozhou": return "老周"
+		"jinwanguan": return "金万贯"
+		"mystery_merchant": return "神秘商人"
+		"tangxiaoqi": return "唐小七"
+		"baixiaosheng": return "百晓生"
+		"sunergou": return "孙二狗"
 		"player": return "我"
 		"system", "narrator": return ""
 		_: return speaker_id.capitalize()

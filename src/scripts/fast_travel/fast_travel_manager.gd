@@ -194,10 +194,15 @@ func travel_to_location(destination_node_id: String) -> bool:
 # 开始旅行过程
 func start_travel_process(destination_node_id: String, travel_time_hours: int):
 	current_state = TravelState.TRAVELING
-	
-	# TODO(beta): 接入异步加载、过场动画; 当前用短计时器模拟
-	await get_tree().create_timer(travel_time_hours * 0.1).timeout  # 使用较短的模拟时间
-	
+
+	# GDD（fast-travel-system.md）：显示水墨山水画卷过场（约2秒）掩盖加载
+	var cutscene_mgr: Node = get_node_or_null("/root/CutsceneManager")
+	if cutscene_mgr != null and cutscene_mgr.has_method("play_cutscene") and cutscene_mgr.play_cutscene("travel_montage"):
+		await cutscene_mgr.cutscene_finished
+	else:
+		# 降级：过场系统不可用（如单元测试环境）时用短计时器模拟
+		await get_tree().create_timer(travel_time_hours * 0.1).timeout  # 使用较短的模拟时间
+
 	# 旅行完成
 	complete_travel(destination_node_id)
 

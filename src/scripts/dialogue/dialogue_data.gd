@@ -194,6 +194,7 @@ class Effect:
 		GIVE_EXP,             # 给予经验
 		SET_FLAG,             # 设置标志位
 		TRIGGER_EVENT,        # 触发事件
+		PLAY_CUTSCENE,        # 播放过场动画
 		CUSTOM                # 自定义效果
 	}
 	
@@ -366,6 +367,25 @@ class TriggerCombatEffect extends Effect:
 		var dialogue_mgr = Engine.get_main_loop().get_root().get_node("DialogueManager")
 		if dialogue_mgr != null and dialogue_mgr.has_signal("combat_trigger_requested"):
 			dialogue_mgr.combat_trigger_requested.emit(target, encounter_config, callback_node)
+
+## 播放过场动画效果（cutscene_play）
+## target 为 data/cutscenes/ 下的过场定义ID（如 "act1_ascension_memory"）
+## 注意：过场属场景级操作，对话事务不回滚（见 dialogue-system.md §5 事务规则6）
+class PlayCutsceneEffect extends Effect:
+	func _init(cutscene_id: String = "") -> void:
+		super._init(EffectType.PLAY_CUTSCENE)
+		target = cutscene_id
+	
+	func execute() -> void:
+		print("[对话效果] 播放过场动画: %s" % target)
+		var root = Engine.get_main_loop().get_root()
+		if root == null:
+			return
+		var cutscene_mgr = root.get_node_or_null("CutsceneManager")
+		if cutscene_mgr != null and cutscene_mgr.has_method("play_cutscene"):
+			cutscene_mgr.play_cutscene(target)
+		else:
+			push_warning("[对话效果] CutsceneManager 不可用，过场跳过: %s" % target)
 
 ## 对话树数据
 class DialogueTree:

@@ -194,6 +194,70 @@ entities:
     added: "2026-05-02"
     revised: ""
 
+  # ─── Act 1 区域（视觉小说场景模式）────────────────────────────────────────
+  # 命名已于 2026-07-21 统一为「青云镇」（原代码侧曾用「青石镇」，已全部迁移）
+  - name: Qingyun_Town
+    status: active
+    source: design/levels/act1-qingyun-town.md
+    referenced_by:
+      - design/levels/act1-qingyun-town.md
+      - design/narrative/story/act1-qingyun-town-crisis.md
+      - src/scripts/core/game_loop_manager.gd
+    chinese_name: 青云镇
+    region_id: start_village
+    area_type: Hub（中心枢纽）+ 教学区
+    level_band: [1, 5]
+    encounter_rate: 0.4
+    bg_asset: bg_town_street
+    added: "2026-07-21"
+    revised: ""
+
+  - name: Heifeng_Stronghold
+    status: active
+    source: design/levels/act1-heifeng-stronghold.md
+    referenced_by:
+      - design/levels/act1-heifeng-stronghold.md
+      - src/scripts/core/game_loop_manager.gd
+    chinese_name: 黑风寨
+    region_id: bandit_fortress
+    area_type: Combat（战斗挑战区）
+    level_band: [5, 8]
+    encounter_rate: 0.6
+    bg_asset: bg_evil_camp
+    added: "2026-07-21"
+    revised: ""
+
+  - name: Jiangnan_Water_Town
+    status: active
+    source: design/levels/act1-jiangnan-water-town.md
+    referenced_by:
+      - design/levels/act1-jiangnan-water-town.md
+      - src/scripts/core/game_loop_manager.gd
+    chinese_name: 江南水乡
+    region_id: jiangnan_water
+    area_type: Exploration + 经济/情报区（外围层，深层 Act 2-3 解锁）
+    level_band: [8, 12]
+    encounter_rate: 0.35
+    bg_asset: bg_jiangnan_water
+    added: "2026-07-21"
+    revised: ""
+
+  - name: Qingyun_Mountain
+    status: active
+    source: design/levels/act1-qingyun-mountain.md
+    referenced_by:
+      - design/levels/act1-qingyun-mountain.md
+      - design/narrative/story/act2-dao-heart-trials.md
+      - src/scripts/core/game_loop_manager.gd
+    chinese_name: 青云山（玄霜宗驻地）
+    region_id: qingyun_mountain
+    area_type: Mixed（宗门前哨 Hub + 灵兽战斗区）
+    level_band: [10, 15]
+    encounter_rate: 0.5
+    bg_asset: bg_sect_hall
+    added: "2026-07-21"
+    revised: ""
+
   # ─── 原有实体 ───────────────────────────────────────────────────────────
   - name: Realm_Early_Qi_Refining
     status: active

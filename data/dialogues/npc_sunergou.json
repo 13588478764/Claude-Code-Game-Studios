@@ -1,0 +1,81 @@
+{
+  "id": "npc_sunergou",
+  "title": "孙二狗对话",
+  "description": "混迹黑风寨的丐帮卧底孙二狗（表面痞气，暗藏身份）",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "sunergou",
+    "npc_name": "孙二狗",
+    "location": "黑风寨寨门"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "sunergou",
+      "text": "嘿嘿，这位爷面生得很啊。来咱们黑风寨做买卖？还是……（眼珠滴溜溜一转）寻仇？",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_fort",
+          "text": "这寨子里是什么情形？",
+          "next_node": "fort_talk"
+        },
+        {
+          "id": "choice_test_code",
+          "text": "「五湖四海皆兄弟」",
+          "next_node": "code_response",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "sunergou",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "路过而已，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "fort_talk",
+      "speaker": "sunergou",
+      "text": "嗨，能有什么情形——大当家坐镇聚义厅，弓手守寨墙，刺客巡暗哨，谁来谁倒霉呗。小的我就是个跑腿的杂役，爷有话吩咐就是，可别连累我丢了饭碗。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "sunergou",
+          "value": 3,
+          "reason": "打探寨内布防"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "code_response",
+      "speaker": "sunergou",
+      "text": "（神色一凛，压低声音）……「一方有难八方援」。原来是自家人。长话短说：寨中俘虏关在西边地牢，后夜三更守卫换岗有空档。这话你听过就忘，我也从没说过。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "sunergou",
+          "value": 5,
+          "reason": "对上丐帮切口"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "sunergou",
+      "text": "爷慢走，慢走！（眨眼）这天下的路啊，走熟了都是一家人。",
+      "emotion": "happy",
+      "is_end": true
+    }
+  ]
+}

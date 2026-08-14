@@ -1,0 +1,81 @@
+{
+  "id": "npc_baixiaosheng",
+  "title": "百晓生对话",
+  "description": "水乡说书人百晓生的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "baixiaosheng",
+    "npc_name": "百晓生",
+    "location": "江南水乡茶楼"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "baixiaosheng",
+      "text": "上回书说到——那青云镇的少年单枪匹马退群匪！……哟，这位客官，瞧您这气度，莫不是书里走下来的主角？坐坐坐，听段书润润耳朵。",
+      "emotion": "happy",
+      "choices": [
+        {
+          "id": "choice_ask_news",
+          "text": "最近江湖上有何要闻？",
+          "next_node": "jianghu_news"
+        },
+        {
+          "id": "choice_ask_source",
+          "text": "你这些消息都是哪来的？",
+          "next_node": "source_hint",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "baixiaosheng",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "改日再来听书，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "jianghu_news",
+      "speaker": "baixiaosheng",
+      "text": "要闻么，有三桩：一是玄霜宗后山灵气异动，夜里常有异光冲天；二是血煞一系近来在暗处收拢旧部，怕是要起风浪；三嘛——听说有柄失落多年的名剑，又要现世喽。欲知详情？且听下回分解！",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "baixiaosheng",
+          "value": 3,
+          "reason": "打听江湖要闻"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "source_hint",
+      "speaker": "baixiaosheng",
+      "text": "哈哈，天机不可泄露——在下这点能耐，不过是三教九流的朋友多，茶楼酒肆的耳朵长罢了。客人若想听独家秘闻，可得常来捧场，咱们日久见人心。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "baixiaosheng",
+          "value": 5,
+          "reason": "探问消息来源"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "baixiaosheng",
+      "text": "客官慢走！记住喽——江湖风波恶，消息最值钱。下回开市，给您留个好座！",
+      "emotion": "happy",
+      "is_end": true
+    }
+  ]
+}

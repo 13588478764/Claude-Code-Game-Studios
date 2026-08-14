@@ -1,0 +1,73 @@
+{
+  "id": "npc_gufei",
+  "title": "顾飞对话",
+  "description": "玄霜宗外门师兄顾飞的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "gufei",
+    "npc_name": "顾飞",
+    "location": "玄霜宗演武场"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "gufei",
+      "text": "哟，新面孔！看你脚步稳健、气息绵长，是个练家子。我叫顾飞，外门切磋榜上排第三——哪天手痒了，随时来找我过两招！",
+      "emotion": "happy",
+      "choices": [
+        {
+          "id": "choice_ask_spar",
+          "text": "现在就想讨教几招",
+          "next_node": "spar_talk"
+        },
+        {
+          "id": "choice_ask_life",
+          "text": "外门的日子怎么样？",
+          "next_node": "outer_life"
+        },
+        {
+          "id": "choice_leave",
+          "text": "改日再领教，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "spar_talk",
+      "speaker": "gufei",
+      "text": "哈哈，有胆色！不过你现在气息尚浅，真打起来我赢了也不光彩。这样——等你筑基之后，咱们痛痛快快打一场，输的人请喝一个月的灵谷酒！",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "gufei",
+          "value": 5,
+          "reason": "爽快应战"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "outer_life",
+      "speaker": "gufei",
+      "text": "自在得很！白日练剑做任务，晚上跟师兄弟们喝酒吹牛。就是贡献点攒得慢——都说攒够了能换内门的功法，也不知哪年哪月才轮到我顾飞。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "gufei",
+          "value": 3,
+          "reason": "闲聊外门生活"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "gufei",
+      "text": "走好！记着，筑基之后第一件事就是来找我打一场，别装忘啊！",
+      "emotion": "happy",
+      "is_end": true
+    }
+  ]
+}

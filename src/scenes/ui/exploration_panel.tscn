@@ -43,7 +43,7 @@ offset_right = -24.0
 [node name="RegionNameLabel" type="Label" parent="Root/TopBar/TopHBox"]
 layout_mode = 2
 theme_type_variation = &"HeaderMedium"
-text = "新手村·青石镇 · Lv.1"
+text = "新手村·青云镇 · Lv.1"
 
 [node name="Spacer" type="Control" parent="Root/TopBar/TopHBox"]
 layout_mode = 2

@@ -28,7 +28,7 @@ PROMPT_BG_VARIANT = (
 )
 
 REGION_BG_VARIANTS = [
-    # 青石镇
+    # 青云镇
     {"name": "bg_town_street_dusk", "prompt": PROMPT_BG_VARIANT.format(
         desc="ancient Chinese town street at dusk, golden sunset light, long shadows, lanterns starting to glow, warm orange atmosphere"
     ), "color": "#e8a040"},

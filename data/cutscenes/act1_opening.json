@@ -1,0 +1,21 @@
+{
+  "id": "act1_opening",
+  "title": "第一幕·开场",
+  "description": "Act 1 开场过场：青云镇晨景建立镜头 → 家中醒来（act1-qingyun-town-crisis.md §1.1）。帧1 为新插图 cutscene_town_morning（Part F，未生成时显示占位），帧2 复用 bg_player_home",
+  "skippable": true,
+  "fade_duration": 1.0,
+  "frames": [
+    {
+      "image": "cutscene_town_morning",
+      "title": "青云镇·春集之晨",
+      "duration": 4.0,
+      "narration": "九州大地，中原腹地。青云镇一年一度的春集市，在袅袅炊烟中开始了。"
+    },
+    {
+      "image": "res://assets/ui/backgrounds/bg_player_home.png",
+      "title": "家中·父亲旧剑",
+      "duration": 3.5,
+      "narration": "对你而言，这本是再平凡不过的一个清晨。"
+    }
+  ]
+}

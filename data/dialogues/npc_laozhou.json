@@ -1,0 +1,81 @@
+{
+  "id": "npc_laozhou",
+  "title": "老周对话",
+  "description": "水乡船家老周的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "laozhou",
+    "npc_name": "老周",
+    "location": "江南水乡码头"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "laozhou",
+      "text": "客官要坐船不？这十里水路，哪道湾浅、哪座桥低，我老周闭着眼都摸得清。",
+      "emotion": "happy",
+      "choices": [
+        {
+          "id": "choice_ask_town",
+          "text": "这水乡有什么说道？",
+          "next_node": "town_lore"
+        },
+        {
+          "id": "choice_ask_ferry",
+          "text": "摆渡的营生可好？",
+          "next_node": "ferry_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "laozhou",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "随便看看，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "town_lore",
+      "speaker": "laozhou",
+      "text": "要说说道，可多喽——东头是画舫，夜夜笙歌；西头那座断桥，下雨天常有人说瞧见撑伞的女子；再往南是唐门分号，人家卖的不是胭脂水粉，是精巧机关。客官慢慢逛，有看不完的热闹。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "laozhou",
+          "value": 3,
+          "reason": "听老周讲水乡掌故"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "ferry_talk",
+      "speaker": "laozhou",
+      "text": "混口饭吃罢了。风里来浪里去，一天撑下来腰都直不起来。不过听着南来北往的客官讲外头的事，也算是开眼。前儿还载了位戴斗笠的怪人，一船的货，问他是啥，光笑不说话。",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "laozhou",
+          "value": 3,
+          "reason": "关心老周营生"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "laozhou",
+      "text": "客官慢走！要坐船随时来码头喊一声，老周随叫随到。",
+      "emotion": "happy",
+      "is_end": true
+    }
+  ]
+}

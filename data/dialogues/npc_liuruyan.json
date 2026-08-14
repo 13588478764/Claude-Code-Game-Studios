@@ -1,23 +1,23 @@
 {
   "id": "npc_liuruyan",
   "title": "柳如烟对话",
-  "description": "翠微宫弟子柳如烟的日常对话",
+  "description": "天剑盟弟子柳如烟的日常对话",
   "start_node": "greeting",
   "metadata": {
     "npc_id": "liuruyan",
     "npc_name": "柳如烟",
-    "location": "翠微宫"
+    "location": "天剑盟"
   },
   "nodes": [
     {
       "id": "greeting",
       "speaker": "liuruyan",
-      "text": "你来了？翠微宫虽不比那些大宗门声名显赫，但我们自有一番天地。",
+      "text": "你来了？盟中事务繁忙，难得有片刻清静练剑。",
       "emotion": "neutral",
       "choices": [
         {
           "id": "choice_ask_sect",
-          "text": "翠微宫是怎样的门派？",
+          "text": "天剑盟是怎样的门派？",
           "next_node": "sect_intro"
         },
         {
@@ -48,26 +48,26 @@
     {
       "id": "sect_intro",
       "speaker": "liuruyan",
-      "text": "翠微宫以医术和毒术闻名修真界。救人与杀人，不过一念之差。我们追求的是对天地万物的理解。",
+      "text": "天剑盟以剑立派，执九州正道牛耳。盟中弟子修的不只是剑术，更是「守护」二字——剑为百兵之君，当为苍生而出。",
       "emotion": "confident",
       "effects": [
         {
           "type": "relationship_change",
           "target": "liuruyan",
           "value": 3,
-          "reason": "了解翠微宫"
+          "reason": "了解天剑盟"
         }
       ],
       "choices": [
         {
           "id": "choice_admire",
-          "text": "医毒双修，令人敬佩",
+          "text": "以剑护道，令人敬佩",
           "next_node": "admire_response",
           "dao_heart_hint": 2
         },
         {
           "id": "choice_doubt",
-          "text": "毒术伤人，终非正道",
+          "text": "正道之名，未免拘束",
           "next_node": "doubt_response",
           "dao_heart_hint": -2
         }
@@ -76,14 +76,14 @@
     {
       "id": "admire_response",
       "speaker": "liuruyan",
-      "text": "难得你能如此理解。世人多对毒术心存偏见，能不以偏概全者，实属少见。",
+      "text": "难得你有这份心。世人只道天剑盟弟子高高在上，却不知手中之剑为谁而握。",
       "emotion": "happy",
       "effects": [
         {
           "type": "relationship_change",
           "target": "liuruyan",
           "value": 5,
-          "reason": "理解翠微宫理念"
+          "reason": "理解天剑盟理念"
         },
         {
           "type": "dao_heart_change",
@@ -96,14 +96,14 @@
     {
       "id": "doubt_response",
       "speaker": "liuruyan",
-      "text": "哼，又是这等迂腐之见。毒能害人，药亦能害人，刀剑更能害人。关键在于用它的人。",
+      "text": "哼，拘束？若无执剑护道之人，这九州早成了魔道的猎场。自由与责任，从来一体。",
       "emotion": "angry",
       "effects": [
         {
           "type": "relationship_change",
           "target": "liuruyan",
           "value": -3,
-          "reason": "质疑毒术"
+          "reason": "质疑正道拘束"
         }
       ],
       "next_node": "END"
@@ -111,7 +111,7 @@
     {
       "id": "cultivation_talk",
       "speaker": "liuruyan",
-      "text": "最近在研习一味古方，据说能以灵草之毒反哺经脉，增进修为。不过此法颇为凶险...",
+      "text": "最近在参悟一式家传剑招，据说需以剑意淬炼心神方能大成。只是每每练到紧要处，总觉得还差了一线...",
       "emotion": "serious",
       "effects": [
         {
@@ -124,12 +124,12 @@
       "choices": [
         {
           "id": "choice_warn",
-          "text": "此法太过凶险，还请三思",
+          "text": "剑意过刚易折，还请循序渐进",
           "next_node": "warn_response"
         },
         {
           "id": "choice_help",
-          "text": "若有需要，我可以帮忙寻找灵草",
+          "text": "若有需要，我可以帮忙寻来名剑谱参阅",
           "next_node": "help_response"
         }
       ]

@@ -1,0 +1,81 @@
+{
+  "id": "npc_xuanchengzi",
+  "title": "玄诚子对话",
+  "description": "玄霜宗传功长老玄诚子的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "xuanchengzi",
+    "npc_name": "玄诚子",
+    "location": "玄霜宗传功堂"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "xuanchengzi",
+      "text": "踏入玄霜宗地界，便是与道有缘。老夫玄诚子，忝掌外门传功之职。看你根骨清奇，是可造之材。",
+      "emotion": "serious",
+      "choices": [
+        {
+          "id": "choice_ask_exam",
+          "text": "听闻晋升内门需过考核？",
+          "next_node": "exam_talk"
+        },
+        {
+          "id": "choice_ask_cultivation",
+          "text": "请长老指点修行",
+          "next_node": "cultivation_advice",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "xuanchengzi",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "不敢叨扰，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "exam_talk",
+      "speaker": "xuanchengzi",
+      "text": "外门弟子晋升，需过老夫三问三答。问道心，问根基，问志向——答得让老夫满意，内门之门方为你开。你若有心，他日修为精进之后，可来一试。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuanchengzi",
+          "value": 3,
+          "reason": "询问晋升考核"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "cultivation_advice",
+      "speaker": "xuanchengzi",
+      "text": "炼气如水，筑基如堤。水未满而强筑堤，堤必溃；水已满而不筑堤，终为散流。你当前最要紧的，是沉住气、积厚势，莫贪一时之快。",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "xuanchengzi",
+          "value": 5,
+          "reason": "虚心求教"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "xuanchengzi",
+      "text": "去吧。道阻且长，行则将至。",
+      "emotion": "neutral",
+      "is_end": true
+    }
+  ]
+}

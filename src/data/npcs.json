@@ -18,9 +18,9 @@
   "liuruyan": {
     "id": "liuruyan",
     "name": "柳如烟",
-    "title": "翠微仙子",
+    "title": "天剑盟少主",
     "alignment": "righteous",
-    "sect": "翠微宫",
+    "sect": "天剑盟",
     "gift_preferences": {
       "loves": ["jade_pendant", "poetry_book"],
       "likes": ["flowers", "tea", "calligraphy"],
@@ -98,16 +98,176 @@
   "tiewushuang": {
     "id": "tiewushuang",
     "name": "铁无双",
-    "title": "铸剑大师",
+    "title": "丐帮弟子",
     "alignment": "righteous",
-    "sect": "铁匠铺",
+    "sect": "丐帮",
     "gift_preferences": {
-      "loves": ["ancient_sword", "ore_xuantie"],
-      "likes": ["wine", "ore_ningyue"],
+      "loves": ["ancient_sword", "sword_manual"],
+      "likes": ["wine", "spirit_herb"],
       "dislikes": ["flowers", "poetry_book"]
     },
     "birthday": 260,
     "dialogue_node_ref": "npc_tiewushuang",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "luping": {
+    "id": "luping",
+    "name": "陆平",
+    "title": "守门弟子",
+    "alignment": "righteous",
+    "sect": "玄霜宗",
+    "gift_preferences": {
+      "loves": ["sword_manual"],
+      "likes": ["tea", "spirit_herb"],
+      "dislikes": ["cheap_jewelry"]
+    },
+    "birthday": 15,
+    "dialogue_node_ref": "npc_luping",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "xuanchengzi": {
+    "id": "xuanchengzi",
+    "name": "玄诚子",
+    "title": "传功长老",
+    "alignment": "righteous",
+    "sect": "玄霜宗",
+    "gift_preferences": {
+      "loves": ["calligraphy", "poetry_book"],
+      "likes": ["tea"],
+      "dislikes": ["wine", "cheap_jewelry"]
+    },
+    "birthday": 310,
+    "dialogue_node_ref": "npc_xuanchengzi",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "gufei": {
+    "id": "gufei",
+    "name": "顾飞",
+    "title": "外门师兄",
+    "alignment": "righteous",
+    "sect": "玄霜宗",
+    "gift_preferences": {
+      "loves": ["wine", "sword_manual"],
+      "likes": ["spirit_herb"],
+      "dislikes": ["poetry_book", "flowers"]
+    },
+    "birthday": 200,
+    "dialogue_node_ref": "npc_gufei",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "saodidaoren": {
+    "id": "saodidaoren",
+    "name": "扫地道人",
+    "title": "玄霜宗杂役",
+    "alignment": "neutral",
+    "sect": "玄霜宗",
+    "gift_preferences": {
+      "loves": ["tea"],
+      "likes": ["calligraphy"],
+      "dislikes": ["cheap_jewelry"]
+    },
+    "birthday": 1,
+    "dialogue_node_ref": "npc_saodidaoren",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "laozhou": {
+    "id": "laozhou",
+    "name": "老周",
+    "title": "船家",
+    "alignment": "neutral",
+    "sect": "无门无派",
+    "gift_preferences": {
+      "loves": ["wine"],
+      "likes": ["tea"],
+      "dislikes": ["poetry_book"]
+    },
+    "birthday": 250,
+    "dialogue_node_ref": "npc_laozhou",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "jinwanguan": {
+    "id": "jinwanguan",
+    "name": "金万贯",
+    "title": "商会掌柜",
+    "alignment": "neutral",
+    "sect": "金氏商会",
+    "gift_preferences": {
+      "loves": ["jade_pendant"],
+      "likes": ["wine", "cheap_jewelry"],
+      "dislikes": ["flowers"]
+    },
+    "birthday": 150,
+    "dialogue_node_ref": "npc_jinwanguan",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "mystery_merchant": {
+    "id": "mystery_merchant",
+    "name": "神秘商人",
+    "title": "游商",
+    "alignment": "neutral",
+    "sect": "行脚商",
+    "gift_preferences": {
+      "loves": ["ancient_sword"],
+      "likes": ["jade_pendant"],
+      "dislikes": ["flowers"]
+    },
+    "birthday": 333,
+    "dialogue_node_ref": "npc_mystery_merchant",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "tangxiaoqi": {
+    "id": "tangxiaoqi",
+    "name": "唐小七",
+    "title": "唐门外围弟子",
+    "alignment": "neutral",
+    "sect": "唐门",
+    "gift_preferences": {
+      "loves": ["cheap_jewelry"],
+      "likes": ["tea", "spirit_herb"],
+      "dislikes": ["poetry_book"]
+    },
+    "birthday": 120,
+    "dialogue_node_ref": "npc_tangxiaoqi",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "baixiaosheng": {
+    "id": "baixiaosheng",
+    "name": "百晓生",
+    "title": "说书人",
+    "alignment": "neutral",
+    "sect": "无门无派",
+    "gift_preferences": {
+      "loves": ["poetry_book", "calligraphy"],
+      "likes": ["tea", "wine"],
+      "dislikes": ["cheap_jewelry"]
+    },
+    "birthday": 66,
+    "dialogue_node_ref": "npc_baixiaosheng",
+    "initial_relationship": 0,
+    "is_romance_candidate": false
+  },
+  "sunergou": {
+    "id": "sunergou",
+    "name": "孙二狗",
+    "title": "黑风寨杂役",
+    "alignment": "neutral",
+    "sect": "黑风寨",
+    "gift_preferences": {
+      "loves": ["wine"],
+      "likes": ["cheap_jewelry"],
+      "dislikes": ["poetry_book", "flowers"]
+    },
+    "birthday": 288,
+    "dialogue_node_ref": "npc_sunergou",
     "initial_relationship": 0,
     "is_romance_candidate": false
   }

@@ -1,7 +1,7 @@
 {
   "id": "ACT5_RUINS_001",
   "title": "事件五 — 上古遗迹的秘密",
-  "description": "血祭阵被破坏后，地下露出上古遗迹入口，发现飞升之战秘密",
+  "description": "血祭阵被破坏后，地下露出上古遗迹入口，发现飞升之战秘密。注：MEMORY_VISION_001-005 文字节点已被 MEMORY_CRYSTAL_001 的 cutscene_play 过场（act1_ascension_memory）替代，保留作文字档案，不参与主流程",
   "start_node": "RUIN_ENTRY_001",
   "nodes": [
     {
@@ -137,7 +137,10 @@
       "id": "MEMORY_CRYSTAL_001",
       "speaker": "system",
       "text": "你触碰了记忆水晶，一股庞大的信息涌入脑海...",
-      "next_node": "MEMORY_VISION_001"
+      "effects": [
+        {"type": "cutscene_play", "target": "act1_ascension_memory"}
+      ],
+      "next_node": "MEMORY_CRYSTAL_002"
     },
     {
       "id": "MEMORY_VISION_001",

@@ -1,9 +1,9 @@
 # 08 — 场景 / 菜单背景
 
 > 主菜单、加载、对话、战斗、剧情等界面的全屏背景图。
-> 共 ~15 张背景。
+> 共 ~16 张背景。
 
-**引用文档**: [design/ux/main-menu.md](../../../design/ux/main-menu.md), [design/ux/loading-screen.md](../../../design/ux/loading-screen.md), [design/art/art-bible.md](../../../design/art/art-bible.md)
+**引用文档**: [design/ux/main-menu.md](../../../design/ux/main-menu.md), [design/ux/loading-screen.md](../../../design/ux/loading-screen.md), [design/art/art-bible.md](../../../design/art/art-bible.md), [design/levels/act1-jiangnan-water-town.md](../../../design/levels/act1-jiangnan-water-town.md)
 
 ## 设计原则
 
@@ -149,6 +149,19 @@
 
 **关键词**: 邪门祭坛, 血色骨幡, 魔气, 凶煞
 
+### 8.2.7 江南水乡 (bg_jiangnan_water)
+
+- **文件名**: `bg_jiangnan_water.png`
+- **优先级**: P0（代码已引用：`GameLoopManager.REGIONS["jiangnan_water"]`，资产缺失时显示占位）
+- **使用场景**: 江南水乡区域主背景（码头/水镇市集/画舫/断桥场景共用）
+
+**生成提示词**:
+> 宋代山水画风格的全屏场景背景，江南水乡古镇，远景是石拱桥与层叠马头墙，中景河道穿镇而过、乌篷船摇曳、两岸酒旗灯笼，近景青石板河埠头与垂柳。色调以青灰、米白、暖黄为主，水汽氤氲，桨声灯影。左侧大面积水面留白以容纳 UI。
+
+**关键词**: 江南水乡, 石拱桥马头墙, 乌篷船, 水面留白
+
+**变体需求**: 黄昏/夜晚变体（`bg_jiangnan_water_dusk` / `bg_jiangnan_water_night`，画舫夜景为核心氛围，P1）建议随主背景一并排产，由第七批变体工作流（`tools/comfyui/generate_seventh_batch_workflows.py`）从主背景生成。
+
 ---
 
 ## 三、战斗类背景
@@ -195,10 +208,10 @@
 
 ---
 
-**清单总计**: 5 菜单系统 + 6 剧情 + 4 战斗 = 15 项
+**清单总计**: 5 菜单系统 + 7 剧情 + 4 战斗 = 16 项
 
 > **生产建议**:
-> - **P0 必出 (Alpha)**: 主菜单 + 加载 + 山门正殿 + 古老山林 + 城镇 + 平原战场 + 血煞洞府 = 7 张
-> - **P1 次批 (Beta)**: 设置 + 暂停 + 存档 + 古墓 + 仙府 + 邪门 + 山顶决斗 = 7 张
+> - **P0 必出 (Alpha)**: 主菜单 + 加载 + 山门正殿 + 古老山林 + 城镇 + 平原战场 + 血煞洞府 + 江南水乡 = 8 张
+> - **P1 次批 (Beta)**: 设置 + 暂停 + 存档 + 古墓 + 仙府 + 邪门 + 山顶决斗 = 7 张（另：江南水乡黄昏/夜晚变体随主背景排产）
 > - **P2 末批 (Release)**: 渡劫天台 = 1 张（含特殊雷电特效）
 > - **视差分层**: 主菜单与战斗背景建议出分层版（前/中/远景独立 PSD），便于视差与特效叠加

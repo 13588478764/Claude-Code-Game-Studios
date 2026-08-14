@@ -1,0 +1,81 @@
+{
+  "id": "npc_luping",
+  "title": "陆平对话",
+  "description": "玄霜宗守门弟子陆平的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "luping",
+    "npc_name": "陆平",
+    "location": "玄霜宗山门"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "luping",
+      "text": "来者请止步！玄霜宗外门重地，需验明身份方可入内……啊，原来是近来名声渐起的那位少侠，失礼了。",
+      "emotion": "serious",
+      "choices": [
+        {
+          "id": "choice_ask_rules",
+          "text": "玄霜宗有何规矩？",
+          "next_node": "sect_rules"
+        },
+        {
+          "id": "choice_ask_daily",
+          "text": "守门辛苦吗？",
+          "next_node": "daily_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "luping",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "sect_rules",
+      "speaker": "luping",
+      "text": "外门弟子需恪守三条：一不得擅闯后山禁地，二不得私斗伤人，三需按时完成宗门杂役。若能攒够贡献、通过考核，便有晋升内门之望。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "luping",
+          "value": 2,
+          "reason": "认真了解宗门规矩"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "daily_talk",
+      "speaker": "luping",
+      "text": "说辛苦也辛苦，风雨无阻嘛。不过守在这山门前，能见到各路高人进出，耳濡目染也是修行。我呀，就盼着哪天也能通过传功长老的考核，进内门真正学剑。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "luping",
+          "value": 3,
+          "reason": "倾听陆平的心愿"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "luping",
+      "text": "少侠慢走。山中妖兽时有出没，夜路多加小心。",
+      "emotion": "neutral",
+      "is_end": true
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "id": "act1_ascension_memory",
+  "title": "飞升之战·记忆碎片",
+  "description": "Act 1 事件五：触碰记忆水晶后播放的上古记忆（act1-qingyun-town-crisis.md §5.3）",
+  "skippable": true,
+  "fade_duration": 0.8,
+  "frames": [
+    {
+      "image": "cutscene_ascension_gathering",
+      "title": "飞升台前·修士集结",
+      "duration": 4.0,
+      "narration": "数百年前，数十名化神期修士齐聚飞升台，只待天门开启，踏出那最后一步。"
+    },
+    {
+      "image": "cutscene_ascension_thunder",
+      "title": "九天雷落·封印启动",
+      "duration": 4.0,
+      "narration": "然而天门未开，九天之上却降下万道紫霄神雷——封印大阵，启动了。"
+    },
+    {
+      "image": "cutscene_ascension_ritual",
+      "title": "阵眼中央·黑袍之人",
+      "duration": 4.5,
+      "narration": "阵眼中央，一名黑袍人负手而立。没有人看清他的面容，只听见阵法轰鸣。"
+    },
+    {
+      "image": "cutscene_ascension_closing",
+      "title": "天门合拢·飞升路断",
+      "duration": 4.5,
+      "narration": "飞升通道在众人眼前缓缓合拢。呼喊、怒吼、哀求……都被那一线天光尽数吞没。"
+    },
+    {
+      "image": "cutscene_ascension_rune",
+      "title": "碎片尽头·符文印记",
+      "duration": 4.0,
+      "narration": "画面至此破碎。唯有这枚符文印记，深深烙进了你的识海。"
+    }
+  ]
+}

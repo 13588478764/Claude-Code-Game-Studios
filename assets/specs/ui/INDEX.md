@@ -18,8 +18,9 @@
 | 08 | [08-backgrounds.md](08-backgrounds.md) | 场景 / 菜单背景 | ~15 | P0 |
 | 09 | [09-frames-decoration.md](09-frames-decoration.md) | 边框 / 装饰元素 | ~16 | P2 |
 | 10 | [10-items.md](10-items.md) | 物品 / 装备图标 | ~70 | P1 |
+| 11 | [11-portraits-act1-expansion.md](11-portraits-act1-expansion.md) | Act 1 区域扩展（NPC/敌人立绘 + 补丁 + VFX） | 10 + 12 + 2 + 20 | P0 |
 
-**总计**: 约 250 项资源条目
+**总计**: 约 294 项资源条目
 
 ## 优先级说明
 

@@ -1,0 +1,81 @@
+{
+  "id": "npc_tangxiaoqi",
+  "title": "唐小七对话",
+  "description": "唐门外围弟子唐小七的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "tangxiaoqi",
+    "npc_name": "唐小七",
+    "location": "江南水乡唐门分号"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "tangxiaoqi",
+      "text": "欢迎光临唐门机关铺！暗器、机簧、小玩意儿，样样齐全——瞧瞧这只木鸢，上了发条能飞半条街，买一个防身解闷两相宜！",
+      "emotion": "happy",
+      "choices": [
+        {
+          "id": "choice_ask_tangmen",
+          "text": "唐门是做什么的？",
+          "next_node": "tangmen_intro"
+        },
+        {
+          "id": "choice_ask_puppet",
+          "text": "这机关鸟真是你做的？",
+          "next_node": "puppet_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "tangxiaoqi",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "随便看看，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "tangmen_intro",
+      "speaker": "tangxiaoqi",
+      "text": "蜀中唐门，暗器机关甲天下！不过本门总舵远在川中，这儿只是外围分号，做些小买卖、收些材料。像我这等外围弟子呀，苦练手艺，就盼着有朝一日能回总舵学真本事。",
+      "emotion": "happy",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "tangxiaoqi",
+          "value": 3,
+          "reason": "了解唐门"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "puppet_talk",
+      "speaker": "tangxiaoqi",
+      "text": "那当然！从选料到削齿轮，整整花了我三个月。你别看它小，肚子里一百二十三个零件，错一个都飞不起来。嘿嘿，师父说我这手艺，在外围弟子里能排进前三！",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "tangxiaoqi",
+          "value": 5,
+          "reason": "称赞机关手艺"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "tangxiaoqi",
+      "text": "慢走慢走！下回给你留个最新款的机关雀，可千万别跟别人说哦！",
+      "emotion": "happy",
+      "is_end": true
+    }
+  ]
+}

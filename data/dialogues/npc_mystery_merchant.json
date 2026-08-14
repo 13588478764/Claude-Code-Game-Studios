@@ -1,0 +1,81 @@
+{
+  "id": "npc_mystery_merchant",
+  "title": "神秘商人对话",
+  "description": "行踪诡秘的游商（呼应奇遇 10）",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "mystery_merchant",
+    "npc_name": "神秘商人",
+    "location": "江南水乡暗巷"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "mystery_merchant",
+      "text": "呵呵……客人面生得很。老朽这背篓里的东西，或许正有你想要的——就看你，出不出得起那个价。",
+      "emotion": "neutral",
+      "choices": [
+        {
+          "id": "choice_ask_goods",
+          "text": "你都卖些什么？",
+          "next_node": "goods_hint"
+        },
+        {
+          "id": "choice_ask_identity",
+          "text": "你究竟是什么人？",
+          "next_node": "identity_hint",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "mystery_merchant",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "（此人气息古怪，先行告辞）",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "goods_hint",
+      "speaker": "mystery_merchant",
+      "text": "灵丹、残卷、古器……还有些东西，有钱也未必能买。老朽卖的不只是货，更是「机缘」二字。机缘未到，看也白看；机缘到了——呵呵，自会送到你手上。",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "mystery_merchant",
+          "value": 3,
+          "reason": "探问货物"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "identity_hint",
+      "speaker": "mystery_merchant",
+      "text": "走南闯北的人罢了。天南的瘴气、海北的寒冰、西域的黄沙，老朽都走过。至于名字……名字不过是个代号，客人又何必较真呢？",
+      "emotion": "neutral",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "mystery_merchant",
+          "value": 5,
+          "reason": "试探身份"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "mystery_merchant",
+      "text": "呵呵，后会有期。说不定哪一日，你我会在意想不到的地方再相逢。",
+      "emotion": "happy",
+      "is_end": true
+    }
+  ]
+}

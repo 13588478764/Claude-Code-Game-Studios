@@ -1,0 +1,81 @@
+{
+  "id": "npc_jinwanguan",
+  "title": "金万贯对话",
+  "description": "水乡商会掌柜金万贯的日常对话",
+  "start_node": "greeting",
+  "metadata": {
+    "npc_id": "jinwanguan",
+    "npc_name": "金万贯",
+    "location": "江南水乡商会"
+  },
+  "nodes": [
+    {
+      "id": "greeting",
+      "speaker": "jinwanguan",
+      "text": "哎哟，贵客临门！金某这商会里，南货北货、灵材丹药，没有买不到，只有想不到。客官随便看，看上什么，价钱好商量！",
+      "emotion": "happy",
+      "choices": [
+        {
+          "id": "choice_ask_business",
+          "text": "掌柜的生意经可否赐教？",
+          "next_node": "business_talk"
+        },
+        {
+          "id": "choice_ask_goods",
+          "text": "最近可有什么稀罕货？",
+          "next_node": "goods_talk",
+          "conditions": [
+            {
+              "type": "relationship",
+              "target": "jinwanguan",
+              "value": 10,
+              "operator": ">="
+            }
+          ]
+        },
+        {
+          "id": "choice_leave",
+          "text": "先逛逛，告辞",
+          "next_node": "farewell"
+        }
+      ]
+    },
+    {
+      "id": "business_talk",
+      "speaker": "jinwanguan",
+      "text": "哈哈，赐教不敢当！金某做生意就八个字：「人弃我取，人取我予」。旁人都抢灵丹妙药的时候，我囤桐油石灰；旁人回过神来，嘿，价钱就翻上去喽！",
+      "emotion": "confident",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "jinwanguan",
+          "value": 3,
+          "reason": "请教生意经"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "goods_talk",
+      "speaker": "jinwanguan",
+      "text": "客官是自己人，金某就透个底——前两日来了个戴斗笠的游商，出手几件玩意儿，连金某都瞧不出门道。那才叫真正的稀罕货！只可惜人家收的是灵石，还挑买家。",
+      "emotion": "serious",
+      "effects": [
+        {
+          "type": "relationship_change",
+          "target": "jinwanguan",
+          "value": 5,
+          "reason": "打探稀罕货源"
+        }
+      ],
+      "next_node": "farewell"
+    },
+    {
+      "id": "farewell",
+      "speaker": "jinwanguan",
+      "text": "客官慢走！买卖不成仁义在，下回给您算便宜些！",
+      "emotion": "happy",
+      "is_end": true
+    }
+  ]
+}

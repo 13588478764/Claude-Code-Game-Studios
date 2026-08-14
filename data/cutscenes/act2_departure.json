@@ -1,0 +1,27 @@
+{
+  "id": "act2_departure",
+  "title": "离镇·拜入玄霜宗",
+  "description": "Act 1→Act 2 转场过场（act2-dao-heart-trials.md §1.1 离镇过场 + §1.4 山门旁白）。帧图全部复用现有背景资产（res:// 全路径），零新增资产即可上线；Act 2 排产时可替换为专属插图。",
+  "skippable": true,
+  "fade_duration": 1.0,
+  "frames": [
+    {
+      "image": "res://assets/ui/backgrounds/bg_town_street.png",
+      "title": "青云镇·回望",
+      "duration": 4.5,
+      "narration": "你回头望了一眼青云镇。三个月前，你还是这里最普通的少年人。"
+    },
+    {
+      "image": "res://assets/ui/backgrounds/bg_mystic_forest.png",
+      "title": "官道·远行",
+      "duration": 4.5,
+      "narration": "如今，你即将拜入修真宗门。父亲的旧剑在背上微微震动——它似乎也在告别。"
+    },
+    {
+      "image": "res://assets/ui/backgrounds/bg_sect_hall.png",
+      "title": "玄霜宗·山门",
+      "duration": 5.0,
+      "narration": "你抬头看着「玄霜宗」三个字，心里第一次涌起一种叫「归属」的东西。也许，这里就是你新的家了。"
+    }
+  ]
+}

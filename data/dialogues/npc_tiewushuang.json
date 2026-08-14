@@ -1,23 +1,23 @@
 {
   "id": "npc_tiewushuang",
   "title": "铁无双对话",
-  "description": "铸剑大师铁无双的日常对话",
+  "description": "丐帮弟子铁无双的日常对话",
   "start_node": "greeting",
   "metadata": {
     "npc_id": "tiewushuang",
     "npc_name": "铁无双",
-    "location": "铁匠铺"
+    "location": "丐帮分舵"
   },
   "nodes": [
     {
       "id": "greeting",
       "speaker": "tiewushuang",
-      "text": "哟，少侠来了。想打造什么兵器？",
+      "text": "哟，兄弟来了！来，先喝口酒暖暖身子。",
       "emotion": "neutral",
       "choices": [
         {
           "id": "choice_ask_forge",
-          "text": "请教铸剑之道",
+          "text": "请教武艺心得",
           "next_node": "forge_teaching",
           "conditions": [
             {
@@ -43,21 +43,21 @@
     {
       "id": "forge_teaching",
       "speaker": "tiewushuang",
-      "text": "铸剑之道，在于心与火的交融。好的剑师，能听到金属在火中歌唱。你若有心学，我可以教你一些基础锻造法门。",
+      "text": "习武之道，招式是表，气血是里。我这套降龙掌讲究先发制人、掌掌到肉。你若想学，我可以教你几手扎实的基本功。",
       "emotion": "happy",
       "next_node": "farewell"
     },
     {
       "id": "casual_chat",
       "speaker": "tiewushuang",
-      "text": "这些年见过不少名剑。最让我念念不忘的，还是当年为青云门铸造的那把青冥剑。可惜后来剑随人走，不知去了何方。",
+      "text": "这些年走南闯北，听过不少名剑传说。最让我念念不忘的，还是那把青冥剑——据说剑成之日寒光冲斗，后来剑随人走，不知流落何方。",
       "emotion": "neutral",
       "next_node": "farewell"
     },
     {
       "id": "farewell",
       "speaker": "tiewushuang",
-      "text": "有空再来，我这铁匠铺随时欢迎你。",
+      "text": "有空再来，丐帮分舵随时欢迎你，酒管够！",
       "emotion": "neutral",
       "is_end": true
     }

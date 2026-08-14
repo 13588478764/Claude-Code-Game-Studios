@@ -73,7 +73,7 @@ var _drag_start_mouse: Vector2 = Vector2.ZERO
 var _drag_start_offset: Vector2 = Vector2.ZERO
 ## 当前选中的传送点索引
 var _selected_teleport_index: int = -1
-## 传送点数据（从 FastTravelManager 获取）
+## 传送点数据（主路径从 GameLoopManager.REGIONS 生成；fallback 见 _update_map_data）
 var _teleport_points: Array[Dictionary] = []
 
 
@@ -280,8 +280,12 @@ func _update_map_data() -> void:
 				"level": region.level,
 			})
 	else:
+		# fallback：与 REGIONS 前 4 项（Act 1 区域）及上方 marker_positions 槽位一一对应
 		_teleport_points = [
-			{"id": "start_village", "name": "新手村·青石镇", "region": "青石镇", "position": Vector2(150, 350), "unlocked": true, "level": 1},
+			{"id": "start_village", "name": "新手村·青云镇", "region": "青云镇", "position": Vector2(150, 350), "unlocked": true, "level": 1},
+			{"id": "bandit_fortress", "name": "黑风寨", "region": "黑风寨", "position": Vector2(400, 200), "unlocked": true, "level": 5},
+			{"id": "jiangnan_water", "name": "江南水乡", "region": "江南水乡", "position": Vector2(650, 400), "unlocked": true, "level": 8},
+			{"id": "qingyun_mountain", "name": "青云山", "region": "青云山", "position": Vector2(350, 500), "unlocked": true, "level": 10},
 		]
 
 	# 创建传送点标记
