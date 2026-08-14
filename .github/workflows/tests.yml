@@ -25,12 +25,12 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/unit -glog=2
+          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/unit -ginclude_subdirs -glog=1
         continue-on-error: false
 
       - name: Run Integration Tests
         run: |
-          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/integration -glog=2
+          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests/integration -ginclude_subdirs -glog=1
         continue-on-error: false
 
       - name: Generate Test Report
@@ -69,7 +69,7 @@ jobs:
 
       - name: Generate Coverage Report
         run: |
-          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests -gcoverage
+          godot --headless --script addons/gut/gut_cmdln.gd -gdir=tests -ginclude_subdirs -gcoverage
         continue-on-error: true
 
       - name: Upload Coverage

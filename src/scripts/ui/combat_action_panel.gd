@@ -169,13 +169,22 @@ func _on_action_executed(result: Dictionary) -> void:
 			var skill_name: String = result.get("skill_name", "未知技能")
 			var skill_dmg: int = result.get("damage_dealt", 0)
 			var is_critical: bool = result.get("is_critical", false)
+			var weapon_type: String = result.get("weapon_type", "")
+			var element_type: String = result.get("element_type", "无")
+			var vfx_mgr: Node = get_node_or_null("/root/CombatVFXManager")
 			if _player_turn:
 				_add_log_line("你使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
 				_play_attack_anim(_player_sprite, _enemy_sprite)
+				if vfx_mgr:
+					vfx_mgr.play_skill_vfx(weapon_type, element_type, _player_sprite, _enemy_sprite)
+					vfx_mgr.play_hit_vfx(element_type, _enemy_sprite)
 				_spawn_damage_number(_enemy_sprite, skill_dmg, is_critical)
 			else:
 				_add_log_line("敌人使用了 [%s]，造成 %d 点伤害" % [skill_name, skill_dmg])
 				_play_attack_anim(_enemy_sprite, _player_sprite)
+				if vfx_mgr:
+					vfx_mgr.play_skill_vfx(weapon_type, element_type, _enemy_sprite, _player_sprite)
+					vfx_mgr.play_hit_vfx(element_type, _player_sprite)
 				_spawn_damage_number(_player_sprite, skill_dmg, is_critical)
 			var synergy_name: String = result.get("synergy_name", "")
 			if synergy_name != "":
@@ -410,6 +419,8 @@ func _populate_skill_list() -> void:
 				"martial_art_id": ma.id,
 				"tags": [ma.element_type] if ma.element_type and ma.element_type != "无" else [],
 				"internal_energy_cost": float(ma.cost_mana),
+				"weapon_type": ma.weapon_type if ma.weapon_type else "",
+				"element_type": ma.element_type if ma.element_type else "",
 			}
 			btn.pressed.connect(_on_skill_selected.bind(skill_data))
 			_skill_list_box.add_child(btn)

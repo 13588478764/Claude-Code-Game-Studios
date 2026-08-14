@@ -1,179 +1,149 @@
-[gd_scene load_steps=3 format=3 uid="uid://loading_screen_scene"]
+[gd_scene format=3 uid="uid://c8jsuwj7ggtsn"]
 
-[ext_resource type="Script" path="res://src/scripts/ui/loading_screen.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://26n4h8n22uyy" path="res://src/scripts/ui/loading_screen.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dhia14hyvyg8m" path="res://assets/ui/_masters/backgrounds_1024/bg_mystic_forest.png" id="2_as875"]
 
-[sub_resource type="Gradient" id="Gradient_progress"]
-colors = PackedColorArray(0.18, 0.545, 0.341, 1, 0.235, 0.702, 0.443, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cancel_btn"]
-bg_color = Color(0, 0, 0, 0.3)
-border_color = Color(0.961, 0.961, 0.863, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_left = 4
-corner_radius_bottom_right = 4
-
-[node name="LoadingScreen" type="CanvasLayer"]
+[node name="LoadingScreen" type="CanvasLayer" unique_id=1465723222]
 layer = 600
 script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1156677695]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+texture = ExtResource("2_as875")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="FullContainer" type="CenterContainer" parent="."]
+[node name="FullContainer" type="CenterContainer" parent="." unique_id=1410760687]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBox" type="VBoxContainer" parent="FullContainer"]
+[node name="VBox" type="VBoxContainer" parent="FullContainer" unique_id=2124639888]
 layout_mode = 2
 theme_override_constants/separation = 40
 alignment = 1
 
-[node name="LogoContainer" type="CenterContainer" parent="FullContainer/VBox"]
-layout_mode = 2
+[node name="LogoContainer" type="CenterContainer" parent="FullContainer/VBox" unique_id=2095237724]
 custom_minimum_size = Vector2(0, 120)
-
-[node name="LogoTitle" type="Label" parent="FullContainer/VBox/LogoContainer"]
 layout_mode = 2
+
+[node name="LogoTitle" type="Label" parent="FullContainer/VBox/LogoContainer" unique_id=565435745]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
 text = "武侠奇遇录"
-theme_type_variation = "HeaderLarge"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LogoSubtitle" type="Label" parent="FullContainer/VBox/LogoContainer"]
+[node name="LogoSubtitle" type="Label" parent="FullContainer/VBox/LogoContainer" unique_id=1898143611]
 layout_mode = 2
+theme_type_variation = &"HeaderSmall"
 text = "Cultivation Wuxia RPG"
-theme_type_variation = "HeaderSmall"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressContainer" type="VBoxContainer" parent="FullContainer/VBox"]
+[node name="ProgressContainer" type="VBoxContainer" parent="FullContainer/VBox" unique_id=497984279]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
-custom_minimum_size = Vector2(400, 0)
 
-[node name="StatusLabel" type="Label" parent="FullContainer/VBox/ProgressContainer"]
+[node name="StatusLabel" type="Label" parent="FullContainer/VBox/ProgressContainer" unique_id=2071879942]
 layout_mode = 2
+theme_type_variation = &"BodyMedium"
 text = "初始化资源..."
 horizontal_alignment = 1
-theme_type_variation = "BodyMedium"
 
-[node name="ProgressBar" type="ProgressBar" parent="FullContainer/VBox/ProgressContainer"]
-layout_mode = 2
-value = 0.0
-show_percentage = true
+[node name="ProgressBar" type="ProgressBar" parent="FullContainer/VBox/ProgressContainer" unique_id=701023277]
 custom_minimum_size = Vector2(300, 20)
-
-[node name="TipPanel" type="PanelContainer" parent="FullContainer/VBox"]
 layout_mode = 2
+
+[node name="TipPanel" type="PanelContainer" parent="FullContainer/VBox" unique_id=1241918968]
 visible = false
 custom_minimum_size = Vector2(450, 100)
+layout_mode = 2
 
-[node name="TipVBox" type="VBoxContainer" parent="FullContainer/VBox/TipPanel"]
+[node name="TipVBox" type="VBoxContainer" parent="FullContainer/VBox/TipPanel" unique_id=846364147]
 layout_mode = 2
 theme_override_constants/separation = 8
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = -16.0
-offset_bottom = -16.0
 
-[node name="TipIcon" type="Label" parent="FullContainer/VBox/TipPanel/TipVBox"]
+[node name="TipIcon" type="Label" parent="FullContainer/VBox/TipPanel/TipVBox" unique_id=99073507]
 layout_mode = 2
 text = "💡"
 horizontal_alignment = 1
 
-[node name="TipLabel" type="Label" parent="FullContainer/VBox/TipPanel/TipVBox"]
+[node name="TipLabel" type="Label" parent="FullContainer/VBox/TipPanel/TipVBox" unique_id=230635341]
 layout_mode = 2
+theme_type_variation = &"BodySmall"
 text = "五行相克：金克木，木克土，土克水，水克火，火克金。"
 autowrap_mode = 1
-horizontal_alignment = 0
-theme_type_variation = "BodySmall"
 
-[node name="CancelButton" type="Button" parent="FullContainer/VBox"]
-layout_mode = 2
-text = "ESC 取消"
-custom_minimum_size = Vector2(150, 36)
+[node name="CancelButton" type="Button" parent="FullContainer/VBox" unique_id=592583931]
 visible = false
-theme_type_variation = "LoadingCancelButton"
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+theme_type_variation = &"LoadingCancelButton"
+text = "ESC 取消"
 
-[node name="ErrorContainer" type="CenterContainer" parent="."]
+[node name="ErrorContainer" type="CenterContainer" parent="." unique_id=1497020732]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-visible = false
 
-[node name="ErrorPanel" type="PanelContainer" parent="ErrorContainer"]
-layout_mode = 2
+[node name="ErrorPanel" type="PanelContainer" parent="ErrorContainer" unique_id=1094815575]
 custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
 
-[node name="ErrorVBox" type="VBoxContainer" parent="ErrorContainer/ErrorPanel"]
+[node name="ErrorVBox" type="VBoxContainer" parent="ErrorContainer/ErrorPanel" unique_id=1845758826]
 layout_mode = 2
 theme_override_constants/separation = 16
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = -20.0
 alignment = 1
 
-[node name="ErrorTitle" type="Label" parent="ErrorContainer/ErrorPanel/ErrorVBox"]
+[node name="ErrorTitle" type="Label" parent="ErrorContainer/ErrorPanel/ErrorVBox" unique_id=211546901]
 layout_mode = 2
+theme_type_variation = &"HeaderMedium"
 text = "修炼记录加载失败"
 horizontal_alignment = 1
-theme_type_variation = "HeaderMedium"
 
-[node name="ErrorDesc" type="Label" parent="ErrorContainer/ErrorPanel/ErrorVBox"]
+[node name="ErrorDesc" type="Label" parent="ErrorContainer/ErrorPanel/ErrorVBox" unique_id=323137785]
 layout_mode = 2
+theme_type_variation = &"BodyMedium"
 text = "存档文件已损坏，无法读取。"
 horizontal_alignment = 1
-theme_type_variation = "BodyMedium"
 
-[node name="ErrorHBox" type="HBoxContainer" parent="ErrorContainer/ErrorPanel/ErrorVBox"]
+[node name="ErrorHBox" type="HBoxContainer" parent="ErrorContainer/ErrorPanel/ErrorVBox" unique_id=26256147]
 layout_mode = 2
 theme_override_constants/separation = 16
 alignment = 1
 
-[node name="RetryButton" type="Button" parent="ErrorContainer/ErrorPanel/ErrorVBox/ErrorHBox"]
+[node name="RetryButton" type="Button" parent="ErrorContainer/ErrorPanel/ErrorVBox/ErrorHBox" unique_id=2001975911]
+custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 text = "重试"
-custom_minimum_size = Vector2(120, 40)
 
-[node name="ReturnButton" type="Button" parent="ErrorContainer/ErrorPanel/ErrorVBox/ErrorHBox"]
+[node name="ReturnButton" type="Button" parent="ErrorContainer/ErrorPanel/ErrorVBox/ErrorHBox" unique_id=1160450047]
+custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
 text = "返回主菜单"
-custom_minimum_size = Vector2(120, 40)
 
-[node name="VersionLabel" type="Label" parent="."]
+[node name="VersionLabel" type="Label" parent="." unique_id=1680857995]
+modulate = Color(0.5, 0.5, 0.5, 0.6)
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -120.0
 offset_top = -30.0
 offset_right = -20.0
 offset_bottom = -10.0
+theme_type_variation = &"BodySmall"
 text = "v1.0.0"
 horizontal_alignment = 2
 vertical_alignment = 1
-theme_type_variation = "BodySmall"
-modulate = Color(0.5, 0.5, 0.5, 0.6)

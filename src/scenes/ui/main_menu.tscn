@@ -1,46 +1,80 @@
-[gd_scene load_steps=3 format=3 uid="uid://main_menu_scene"]
+[gd_scene format=3 uid="uid://bievvtf3vtng2"]
 
-[ext_resource type="Script" path="res://src/scripts/ui/main_menu.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cos8gqdc1jl5j" path="res://src/scripts/ui/main_menu.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dl3imj61754p5" path="res://assets/ui/_masters/backgrounds_1024/bg_main_menu.png" id="2_loxbe"]
+[ext_resource type="Texture2D" uid="uid://t2slwbe5xh6" path="res://assets/ui/frames/btn_main_menu_a_cropped.png" id="3_ttmq8"]
 
-[node name="MainMenu" type="Control"]
-script = ExtResource("1_script")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f5lm1"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+texture = ExtResource("3_ttmq8")
+texture_margin_left = 16.0
+texture_margin_top = 8.0
+texture_margin_right = 16.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_x2oeq"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 24.0
+content_margin_bottom = 12.0
+texture = ExtResource("3_ttmq8")
+texture_margin_left = 16.0
+texture_margin_top = 8.0
+texture_margin_right = 16.0
+texture_margin_bottom = 8.0
+
+[node name="MainMenu" type="Control" unique_id=1472314708]
 layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=2119427364]
 layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.102, 0.102, 0.18, 1)
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_loxbe")
+expand_mode = 1
+stretch_mode = 6
 
-[node name="ZoneA_Logo" type="CenterContainer" parent="."]
+[node name="ZoneA_Logo" type="CenterContainer" parent="." unique_id=84129265]
 layout_mode = 1
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.35
 offset_top = 20.0
 
-[node name="LogoVBox" type="VBoxContainer" parent="ZoneA_Logo"]
+[node name="LogoVBox" type="VBoxContainer" parent="ZoneA_Logo" unique_id=543295888]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="LogoTitle" type="Label" parent="ZoneA_Logo/LogoVBox"]
+[node name="LogoTitle" type="Label" parent="ZoneA_Logo/LogoVBox" unique_id=8372619]
 layout_mode = 2
+theme_type_variation = &"HeaderLarge"
 text = "武侠奇遇录"
-theme_type_variation = "HeaderLarge"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LogoSubtitle" type="Label" parent="ZoneA_Logo/LogoVBox"]
+[node name="LogoSubtitle" type="Label" parent="ZoneA_Logo/LogoVBox" unique_id=1719296155]
 layout_mode = 2
+theme_type_variation = &"HeaderSmall"
 text = "Cultivation Wuxia RPG"
-theme_type_variation = "HeaderSmall"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ZoneB_Menu" type="VBoxContainer" parent="."]
+[node name="ZoneB_Menu" type="VBoxContainer" parent="." unique_id=942923764]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.1
 anchor_top = 0.35
 anchor_right = 0.5
@@ -50,85 +84,85 @@ offset_right = -40.0
 theme_override_constants/separation = 4
 alignment = 1
 
-[node name="NewGameButton" type="Button" parent="ZoneB_Menu"]
+[node name="NewGameButton" type="Button" parent="ZoneB_Menu" unique_id=1770930836]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+theme_type_variation = &"MainMenuButton"
+theme_override_styles/normal = SubResource("StyleBoxTexture_f5lm1")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_x2oeq")
 text = "开始新修炼"
-custom_minimum_size = Vector2(0, 48)
-theme_type_variation = "MainMenuButton"
 
-[node name="ContinueButton" type="Button" parent="ZoneB_Menu"]
+[node name="ContinueButton" type="Button" parent="ZoneB_Menu" unique_id=872366334]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+theme_type_variation = &"MainMenuButton"
 text = "继续修炼"
-custom_minimum_size = Vector2(0, 48)
-theme_type_variation = "MainMenuButton"
 
-[node name="SettingsButton" type="Button" parent="ZoneB_Menu"]
+[node name="SettingsButton" type="Button" parent="ZoneB_Menu" unique_id=1907344267]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+theme_type_variation = &"MainMenuButton"
 text = "修炼设置"
-custom_minimum_size = Vector2(0, 48)
-theme_type_variation = "MainMenuButton"
 
-[node name="CreditsButton" type="Button" parent="ZoneB_Menu"]
+[node name="CreditsButton" type="Button" parent="ZoneB_Menu" unique_id=716098634]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+theme_type_variation = &"MainMenuButton"
 text = "制作人员"
-custom_minimum_size = Vector2(0, 48)
-theme_type_variation = "MainMenuButton"
 
-[node name="QuitButton" type="Button" parent="ZoneB_Menu"]
+[node name="QuitButton" type="Button" parent="ZoneB_Menu" unique_id=1873758615]
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
+theme_type_variation = &"MainMenuButton"
 text = "退出修炼"
-custom_minimum_size = Vector2(0, 48)
-theme_type_variation = "MainMenuButton"
 
-[node name="ZoneC_Info" type="Control" parent="."]
+[node name="ZoneC_Info" type="Control" parent="." unique_id=1881982101]
 layout_mode = 1
-anchor_left = 0.0
 anchor_top = 0.85
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 10.0
 offset_bottom = -10.0
 
-[node name="VersionLabel" type="Label" parent="ZoneC_Info"]
+[node name="VersionLabel" type="Label" parent="ZoneC_Info" unique_id=98795482]
+modulate = Color(0.5, 0.5, 0.5, 0.6)
 layout_mode = 1
-anchor_left = 0.0
-anchor_top = 0.0
+anchors_preset = -1
 anchor_right = 0.3
 anchor_bottom = 0.5
 offset_left = 20.0
+theme_type_variation = &"BodySmall"
 text = "v1.0.0"
-theme_type_variation = "BodySmall"
-modulate = Color(0.5, 0.5, 0.5, 0.6)
 
-[node name="SaveInfoLabel" type="Label" parent="ZoneC_Info"]
+[node name="SaveInfoLabel" type="Label" parent="ZoneC_Info" unique_id=612436238]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.3
-anchor_top = 0.0
 anchor_right = 0.7
 anchor_bottom = 0.5
+theme_type_variation = &"BodyMedium"
 text = "上次：金丹初期 · 中原腹地"
 horizontal_alignment = 1
-theme_type_variation = "BodyMedium"
 
-[node name="CloudLabel" type="Label" parent="ZoneC_Info"]
+[node name="CloudLabel" type="Label" parent="ZoneC_Info" unique_id=1522044147]
+modulate = Color(0.5, 0.5, 0.5, 0.6)
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.7
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_right = -20.0
+theme_type_variation = &"BodySmall"
 text = "云存档已启用"
 horizontal_alignment = 2
-theme_type_variation = "BodySmall"
-modulate = Color(0.5, 0.5, 0.5, 0.6)
 
-[node name="CopyrightLabel" type="Label" parent="ZoneC_Info"]
+[node name="CopyrightLabel" type="Label" parent="ZoneC_Info" unique_id=2071249286]
+modulate = Color(0.4, 0.4, 0.4, 0.5)
 layout_mode = 1
-anchor_left = 0.0
+anchors_preset = -1
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = 20.0
+theme_type_variation = &"BodySmall"
 text = "© 2026 武侠奇遇录"
-theme_type_variation = "BodySmall"
-modulate = Color(0.4, 0.4, 0.4, 0.5)

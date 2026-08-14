@@ -1,9 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "statusLine": {
-    "type": "command",
-    "command": "bash .claude/statusline.sh"
-  },
   "permissions": {
     "allow": [
       "Bash(git status*)",
@@ -15,7 +11,22 @@
       "Bash(dir *)",
       "Bash(python -m json.tool*)",
       "Bash(python -m pytest*)",
-      "Bash(py -m pytest*)"
+      "Bash(py -m pytest*)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios show 7a96c95:src/scripts/character/character_system.gd)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios status)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios diff --stat)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios diff .claude/settings.json)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add production/session-state/active.md production/milestones/milestone-beta.md production/risk-register/active.md production/sprints/sprint-007.md production/project-stage-report.md)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios commit -m ' *)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add production/sprints/sprint-008.md production/epics/index.md production/qa/polish-fixlist-2026-05-25.md)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add src/scripts/ui/main_menu.gd)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios status -s)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add src/scripts/ui/exploration_panel.gd src/scripts/ui/main_menu.gd)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add src/scripts/ui/exploration_panel.gd)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add src/scripts/combat/combat_manager.gd src/scripts/character/character_system.gd project.godot src/scripts/ui/exploration_panel.gd)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add project.godot src/scripts/ui/equipment_ui.gd src/scripts/character/character_system.gd)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add src/scripts/ui/combat_action_panel.gd)",
+      "Bash(git -C /Users/lingang/Downloads/workspace/shanlei_game/Claude-Code-Game-Studios add src/scripts/core/game_loop_manager.gd src/scripts/ui/exploration_panel.gd src/scripts/fast_travel/fast_travel_manager.gd)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -155,5 +166,9 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash .claude/statusline.sh"
   }
 }

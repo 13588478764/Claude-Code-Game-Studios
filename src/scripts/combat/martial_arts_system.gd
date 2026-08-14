@@ -469,10 +469,11 @@ func _convert_resource_to_info(res: Resource) -> MartialArtInfo:
 	var weapon_str := "Sword"
 	var weapon_val: int = res.get("weapon_type") if res.get("weapon_type") != null else 0
 	match weapon_val:
-		0: weapon_str = "None"
-		1: weapon_str = "Sword"
+		0: weapon_str = "Sword"
+		1: weapon_str = "Blade"
 		2: weapon_str = "Fist"
-		3: weapon_str = "Palm"
+		3: weapon_str = "Staff"
+		4: weapon_str = "None"
 
 	return MartialArtInfo.new(
 		res.id,

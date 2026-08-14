@@ -795,6 +795,9 @@ func execute_skill(skill_data: Dictionary) -> Dictionary:
 		"damage_dealt": effect_result.get("damage", 0),
 		"target_hp_left": effect_result.get("target_hp_left", 0),
 		"effect": effect_result,
+		"weapon_type": skill_data.get("weapon_type", ""),
+		"element_type": skill_data.get("element_type", ""),
+		"martial_art_id": ma_id,
 	}
 	if combo_result.get("synergy_triggered", false):
 		result["synergy_name"] = combo_result.get("synergy_name", "")
